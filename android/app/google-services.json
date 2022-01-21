@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1076734868236",
+    "project_id": "myboat-54b2a",
+    "storage_bucket": "myboat-54b2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076734868236:android:d7eb558e09eaf9ab406729",
+        "android_client_info": {
+          "package_name": "com.boatuser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1076734868236-hqsq16fo7rgle0c9k5091blmgm2hedc3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.boatuser",
+            "certificate_hash": "8de9fc72dd06c50f491677f533bdd556aad05b2e"
+          }
+        },
+        {
+          "client_id": "1076734868236-uon9jm6dmf6l8ss6sbjhfjmakba027ao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlcRhsVx__5eGypgp5GfD78-YAE2bgTWE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076734868236-uon9jm6dmf6l8ss6sbjhfjmakba027ao.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
