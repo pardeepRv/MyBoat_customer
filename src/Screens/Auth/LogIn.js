@@ -55,9 +55,9 @@ export default class Login extends Component {
     super(props);
     this.state = {
       // language_id: config.language,
-      password: '',
-      HidePassword: true,
-      email: '',
+      password: 'Shai@0417',
+      HidePassword: false,
+      email: 'Myboat667@gmail.com',
       loading: false,
       isConnected: true,
       checked: false,
