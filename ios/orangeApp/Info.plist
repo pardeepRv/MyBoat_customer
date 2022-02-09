@@ -35,8 +35,18 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Granting access will allow you to take photos and add them to attachment fields.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Lokahi Fishing wants to access your Documents Folder to upload the documents.</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>Lokahi Fishing wants to access your documents directory to save map overlay.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Granting access will allow you to take photos from Gallery and add them to attachment fields..</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Granting access will allow you to take photos from Gallery and add them to attachment fields..</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Black.ttf</string>

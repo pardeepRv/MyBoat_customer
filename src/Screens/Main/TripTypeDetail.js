@@ -60,7 +60,7 @@ export default class TripTypeDetail extends Component {
   componentDidMount() {
     this.getData('user_arr');
 
-    console.log(this.state.advertisement);
+  return   console.log(this.props.route.params.item,  ' hhhhhhhhhhhhh');
   }
 
   downloadImage = () => {
@@ -123,7 +123,7 @@ export default class TripTypeDetail extends Component {
     try {
       const response = await fetch(url);
       const json = await response.json();
-      console.log('json  ', json);
+       console.log('json  ', json);
 
       this.setState({
         adver_arr: json.adver_arr,
@@ -138,7 +138,7 @@ export default class TripTypeDetail extends Component {
       json.adver_arr.img_arr.forEach(item => {
         console.log(item)
         this.state.img.push(
-          'https://myboatonline.com/app/webservice/images/' + item.image,
+          config.image_url4 + item.image,
         );
       });
       if (json.success == 'true') {
@@ -154,11 +154,12 @@ export default class TripTypeDetail extends Component {
   }
 
   BookNow() {
+      console.log('object :>> ',  this.state.advertisement ,this.state.adver_arr , this.state.user , this.state.booking_arr);
     this.props.navigation.navigate('RequestPayment', {
       user_id_post: this.state.user,
       adver_arr: this.state.adver_arr,
       advertisement: this.state.advertisement,
-      booking_arr: this.state.booking_arr,
+      // booking_arr: this.state.booking_arr,
     });
   }
 
@@ -169,16 +170,18 @@ export default class TripTypeDetail extends Component {
   render() {
     return (
       <View style={{backgroundColor: Colors.white, flex: 1}}>
+        <View style={{flexDirection: 'row' , zIndex: 1, justifyContent:'space-between'}}>
         <TouchableOpacity
-         onPress={() => this.gotoBack()}
+        
           style={{
             marginBottom: -50,
-            zIndex: 1,
             alignItems: 'flex-start',
             marginTop: 20,
             marginLeft: 20,
+
           }}>
           <Icon
+           onPress={() => this.gotoBack()}
             name="arrow-back"
             type="ionicons"
             size={26}
@@ -190,13 +193,13 @@ export default class TripTypeDetail extends Component {
         
           style={{
             marginBottom: -50,
-            zIndex: 1,
             alignItems: 'flex-end',
             marginTop: 20,
             marginRight: 20,
           }}>
           <Icon name="share" type="ionicons" size={26} color={Colors.white}  onPress={this.onShare}/>
         </TouchableOpacity>
+        </View>
 
         <ScrollView>
           <SliderBox
@@ -204,6 +207,8 @@ export default class TripTypeDetail extends Component {
             images={this.state.img}
             sliderBoxHeight={300}
             sliderBoxWidth={400}
+            autoplayInterval={3000}
+            circleLoop
             onCurrentImagePressed={index =>
               console.warn(`image ${index} pressed`)
             }
@@ -233,7 +238,6 @@ export default class TripTypeDetail extends Component {
               transform: [{rotate: '40deg'}],
             }}
             autoplay
-            circleLoop
             ImageComponentStyle={{borderRadius: 5, width: '99%', marginTop: 0}}
             imageLoadingColor="#2196F3"
           />
@@ -590,7 +594,7 @@ export default class TripTypeDetail extends Component {
             </View>
 
             <View style={s.item}>
-              <Text style={s.rightText}>{this.state.adver_arr.destination} </Text>
+              <Text style={s.rightText}>{this.state.destinations_arr} </Text>
             </View>
           </View>
 

@@ -10,6 +10,7 @@ import {
   Modal,
   Image,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {Icon, Input, Card, AirbnbRating} from 'react-native-elements';
 import Header from '../../Components/Header';
@@ -190,7 +191,7 @@ export default class DestinationList extends Component {
         delete this.state.calender_arr[this.state.date];
         this.state.calender_arr[date] = {
           selected: true,
-          selectedColor: 'green',
+          selectedColor: Colors.orange,
         };
         this.setState({
           date: date,
@@ -215,7 +216,7 @@ export default class DestinationList extends Component {
       }
     } else {
       delete this.state.calender_arr[this.state.date];
-      this.state.calender_arr[date] = {selected: true, selectedColor: 'green'};
+      this.state.calender_arr[date] = {selected: true, selectedColor: Colors.orange};
       this.setState({
         date: date,
         calender_arr: {...this.state.calender_arr, date: date},
@@ -271,6 +272,7 @@ export default class DestinationList extends Component {
 
       if (json.success == 'true') {
         msgProvider.toast(json.msg[config.language], 'center');
+        this.getData('user_arr');
         //  this.setState({adver_arr:json.adver_arr})
       } else {
       }
@@ -284,6 +286,7 @@ export default class DestinationList extends Component {
   }
 
   async ShowResult() {
+
     console.log(
       'user ',
       this.state.trip_type,
@@ -308,16 +311,18 @@ export default class DestinationList extends Component {
       this.state.short;
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
 
-    console.log(url);
+     console.log(url);
     try {
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-      console.log('json  ', json);
+        console.log('json  ', json);
 
       if (json.success == 'true') {
         this.setState({modalVisible: false});
         this.setState({modalVisible2: false});
+        this.setState({modalVisible3: false});
+
 
         this.setState({adver_arr: json.adver_arr});
       } else {
@@ -340,9 +345,11 @@ export default class DestinationList extends Component {
           backImgSource={
             config.baseURL + 'images/' + this.state.destination.image
           }
-          name={this.state.trip_type.trip_type_name}
+          name={this.state.destination.destination_name}
           searchBtn={false}
           headerHeight={300}
+
+         
         />
 
         
@@ -452,6 +459,7 @@ export default class DestinationList extends Component {
             data={this.state.adver_arr}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
+              console.log('item in clo:>> ', item);
               return (
                 <View style={{padding: 5}}>
                   <TouchableOpacity
@@ -477,12 +485,18 @@ export default class DestinationList extends Component {
                         <TouchableOpacity
                           style={{position: 'absolute', right: 10,padding: 10, top: 0}}
                           onPress={() => this.addFavorite(item)}>
-                          <Icon
+                            {item.fav == "yes" ?( <Icon
                             name="heart"
                             size={20}
                             type="entypo"
-                            color={Colors.white}
-                          />
+                            color={Colors.red }
+                          />) : (<Icon
+                            name="heart"
+                            size={20}
+                            type="entypo"
+                            color={Colors.white }
+                          />)}
+                          
                         </TouchableOpacity>
                         <TouchableOpacity
                           style={{position: 'absolute', right: 50, top: 10}}>

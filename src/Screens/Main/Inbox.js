@@ -98,6 +98,7 @@ constructor(props) {
 
   checkGuestUser = async () => {
     let guest_user = await localStorage.getItemString('guest_user');
+    console.log('guest_user :>> ', guest_user);
     if (guest_user == 'yes') {
       this.setState({ guest_user_check: 'yes' })
     } else {
@@ -139,7 +140,7 @@ constructor(props) {
        
         const arrayData = JSON.parse(value);
 
-       console.log(arrayData)
+       console.log(arrayData , 'array data in inbox ')
 
        this.checkGuestUser()
        this.getMyInboxAllData1(arrayData)
@@ -157,12 +158,14 @@ constructor(props) {
 
 
   getMyInboxAllData1 = async (userdata) => {
-    console.log('159 : getMyInboxAllData');
+    console.log('159 : getMyInboxAllData' );
+    console.log('userdata :>> ', userdata);
    // userdata = await localStorage.getItemObject('user_arr')
     //------------------------------ firbase code get user inbox ---------------
     if (userdata != null) {
       // alert("himanshu");
       var id = 'u_' + userdata.user_id;
+      console.log('id :>> ', id);
       if (inboxoffcheck > 0) {
         console.log('getMyInboxAllDatainboxoffcheck');
         var queryOffinbox = firebase1.database().ref('users/' + id + '/myInbox/').child(userChatIdGlobal);

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Text,
   TextInput,
@@ -10,7 +10,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import {CheckBox, Input} from 'react-native-elements';
+import { CheckBox, Input } from 'react-native-elements';
 import {
   backgd,
   back_img,
@@ -19,15 +19,15 @@ import {
   FontFamily,
   Sizes,
 } from '../../Constants/Constants';
-import {useNavigation} from '@react-navigation/core';
-import {Picker} from '@react-native-community/picker';
+import { useNavigation } from '@react-navigation/core';
+import { Picker } from '@react-native-community/picker';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import {config} from '../../Provider/configProvider';
-import {apifuntion} from '../../Provider/apiProvider';
-import {localStorage} from '../../Provider/localStorageProvider';
-import {msgProvider, msgTitle, msgText} from '../../Provider/messageProvider';
+import { config } from '../../Provider/configProvider';
+import { apifuntion } from '../../Provider/apiProvider';
+import { localStorage } from '../../Provider/localStorageProvider';
+import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
 import AsyncStorage from '@react-native-community/async-storage';
-import {Lang_chg} from '../../Provider/Language_provider';
+import { Lang_chg } from '../../Provider/Language_provider';
 //import CheckBox from '@react-native-community/checkbox';
 
 export default class SignUp extends Component {
@@ -59,7 +59,7 @@ export default class SignUp extends Component {
       user_id: 0,
       player_id: 123456,
       admin_email: '',
-      template: [{lang: 'Eng'}, {lang: 'Arb'}],
+      template: [{ lang: 'Eng' }, { lang: 'Arb' }],
       branch: [],
       ref: [],
       inputform: false,
@@ -84,7 +84,7 @@ export default class SignUp extends Component {
 
   onChangeCheck() {
     console.log('checked');
-    this.setState({checked: !this.state.isSelected});
+    this.setState({ checked: !this.state.isSelected });
   }
 
   mailsendfunction = email_arr => {
@@ -120,7 +120,7 @@ export default class SignUp extends Component {
           console.log('obj ', obj);
           if (obj.success == 'true') {
             console.log('Mail send');
-            this.setState({inputform: true});
+            this.setState({ inputform: true });
           } else {
             console.log('not send mail');
           }
@@ -144,7 +144,7 @@ export default class SignUp extends Component {
   };
 
   VerifyOtp() {
-    let {otp, player_id, user_id, phone_number} = this.state;
+    let { otp, player_id, user_id, phone_number } = this.state;
 
     // let user_id =localStorage.getItemString('user_id');
     // let user_id=  AsyncStorage.getItem('user_id');
@@ -186,7 +186,7 @@ export default class SignUp extends Component {
     this.state.otp = this.state.otp + value;
 
     const completeFlag = `num${flag}`;
-    this.setState({[completeFlag]: value});
+    this.setState({ [completeFlag]: value });
     flag = flag + 1;
     if (flag < 7 && value) {
       const nextFlag = `num${flag}`;
@@ -200,7 +200,7 @@ export default class SignUp extends Component {
     console.log(this.state);
 
     //Keyboard.dismiss()
-    let {name, email, password, confirm_password, phone_number} = this.state;
+    let { name, email, password, confirm_password, phone_number } = this.state;
 
     if (name.length <= 0) {
       msgProvider.toast(Lang_chg.emptyName[config.language], 'center');
@@ -298,13 +298,14 @@ export default class SignUp extends Component {
     data.append('user_type_post', 1);
     data.append('language_id', config.language);
 
-    this.setState({loading: true});
+    console.log(data, 'sending to signup api');
+    this.setState({ loading: true });
     let url = config.baseURL + 'signup.php';
     apifuntion
       .postApi(url, data)
       .then(obj => {
-        // console.log(obj)
-        this.setState({loading: false});
+        console.log(obj, 'res of sign up')
+        this.setState({ loading: false });
         return obj.json();
       })
       .then(obj => {
@@ -342,7 +343,7 @@ export default class SignUp extends Component {
             if (signup_step == 1) {
               localStorage.setItemString('user_id', JSON.stringify(user_id));
               console.log('user_id', user_id);
-              this.setState({modalVisible2: false});
+              this.setState({ modalVisible2: false });
               localStorage.setItemObject('user_arr', user_arr);
               localStorage.setItemString('remember_me', 'no');
               //  firebaseprovider.firebaseUserCreate();
@@ -372,7 +373,7 @@ export default class SignUp extends Component {
       })
       .catch(error => {
         console.log('-------- error ------- ' + error);
-        this.setState({loading: false});
+        this.setState({ loading: false });
       });
   }
 
@@ -380,9 +381,9 @@ export default class SignUp extends Component {
     console.log('sdfs', select);
     // this.setState({ isSelected: false})
     if (select == true) {
-      this.setState({isSelected: false});
+      this.setState({ isSelected: false });
     } else {
-      this.setState({isSelected: true});
+      this.setState({ isSelected: true });
     }
   }
 
@@ -401,10 +402,10 @@ export default class SignUp extends Component {
                   name="globe"
                   color="#fff"
                   size={20}
-                  style={{marginTop: 12}}
+                  style={{ marginTop: 12 }}
                 />
 
-                <Text style={{color: '#fff', marginTop: 12, margin: 5}}>
+                <Text style={{ color: '#fff', marginTop: 12, margin: 5 }}>
                   Eng
                 </Text>
 
@@ -412,7 +413,7 @@ export default class SignUp extends Component {
                   name="caret-down"
                   color="#fff"
                   size={20}
-                  style={{marginTop: 12}}
+                  style={{ marginTop: 12 }}
                 />
                 {/* <Picker
             selectedValue={this.state.branch}
@@ -440,15 +441,15 @@ export default class SignUp extends Component {
                   <Image source={require('../../Images/appicon.png')} style={s.Logo} />
                 </View>
                 {/* <Text style={s.Text1}>Boat Owner</Text> */}
-                <View style={{marginVertical: 10}}>
+                <View style={{ marginVertical: 10 }}>
                   <Input
                     placeholder="Name"
                     // containerStyle={s.Input}
                     // inputContainerStyle={s.Input}
                     placeholderTextColor={Colors.white}
-                    inputStyle={{color: Colors.white}}
+                    inputStyle={{ color: Colors.white }}
                     onChangeText={txt => {
-                      this.setState({name: txt});
+                      this.setState({ name: txt });
                     }}
                   />
                   <Input
@@ -456,9 +457,9 @@ export default class SignUp extends Component {
                     // containerStyle={s.Input}
                     // inputContainerStyle={s.Input}
                     placeholderTextColor={Colors.white}
-                    inputStyle={{color: Colors.white}}
+                    inputStyle={{ color: Colors.white }}
                     onChangeText={txt => {
-                      this.setState({email: txt});
+                      this.setState({ email: txt });
                     }}
                   />
                   <Input
@@ -466,9 +467,9 @@ export default class SignUp extends Component {
                     // containerStyle={s.Input}
                     // inputContainerStyle={s.Input}
                     placeholderTextColor={Colors.white}
-                    inputStyle={{color: Colors.white}}
+                    inputStyle={{ color: Colors.white }}
                     onChangeText={txt => {
-                      this.setState({phone_number: txt});
+                      this.setState({ phone_number: txt });
                     }}
                   />
                   <Input
@@ -476,10 +477,10 @@ export default class SignUp extends Component {
                     // containerStyle={s.Input}
                     // inputContainerStyle={s.Input}
                     placeholderTextColor={Colors.white}
-                    inputStyle={{color: Colors.white}}
+                    inputStyle={{ color: Colors.white }}
                     secureTextEntry={this.state.HidePassword}
                     onChangeText={txt => {
-                      this.setState({password: txt});
+                      this.setState({ password: txt });
                     }}
                   />
                   <Input
@@ -487,10 +488,10 @@ export default class SignUp extends Component {
                     // containerStyle={s.Input}
                     // inputContainerStyle={s.Input}
                     placeholderTextColor={Colors.white}
-                    inputStyle={{color: Colors.white}}
+                    inputStyle={{ color: Colors.white }}
                     secureTextEntry={this.state.HidePassword}
                     onChangeText={txt => {
-                      this.setState({confirm_password: txt});
+                      this.setState({ confirm_password: txt });
                     }}
                   />
                 </View>
@@ -544,7 +545,7 @@ export default class SignUp extends Component {
                 </TouchableOpacity>
 
                 <View>
-                  <Text style={[s.Text1, {marginBottom: 10}]}>
+                  <Text style={[s.Text1, { marginBottom: 10 }]}>
                     I have already account ?{' '}
                     <Text
                       style={{
@@ -564,7 +565,7 @@ export default class SignUp extends Component {
           )}
 
           {this.state.inputform && (
-            <View style={{marginTop: '60%'}}>
+            <View style={{ marginTop: '60%' }}>
               <View style={s.inputView}>
                 <TextInput
                   ref={this.num1}
@@ -661,7 +662,7 @@ export default class SignUp extends Component {
                   }}
                 />
               </View>
-              <View style={{elevation: 5}}>
+              <View style={{ elevation: 5 }}>
                 <TouchableOpacity
                   style={s.btn1}
                   onPress={() => this.VerifyOtp()}>

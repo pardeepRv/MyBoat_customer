@@ -40,7 +40,7 @@ export default class RequestPayment extends Component {
       user_id_post: this.props.route.params.user_id_post,
       adver_arr: this.props.route.params.adver_arr,
       advertisement: this.props.route.params.advertisement,
-      booking_arr: this.props.route.params.booking_arr,
+      // booking_arr: this.props.route.params.booking_arr,
       webviewshow: false,
       TimeSlot: Timeslots,
       time: '',
@@ -100,13 +100,13 @@ export default class RequestPayment extends Component {
     console.log('adv_arr', this.state.booking_arr);
 
     // let markedDay = {};
-    this.state.booking_arr.map(item => {
-      this.state.calender_arr[item.date] = {
-        selected: true,
-        marked: true,
-        selectedColor: 'purple',
-      };
-    });
+    // this.state.booking_arr.map(item => {
+    //   this.state.calender_arr[item.date] = {
+    //     selected: true,
+    //     marked: true,
+    //     selectedColor: 'purple',
+    //   };
+    // });
 
     console.log('markdate2', this.state.test_arr);
   }
@@ -132,7 +132,8 @@ export default class RequestPayment extends Component {
   };
 
   Payment() {
-    console.log('*******', this.state.adver_arr);
+   
+      console.log('*******', this.state.adver_arr);
     Keyboard.dismiss();
     let {selected_date, guest, time} = this.state;
 
@@ -268,7 +269,7 @@ export default class RequestPayment extends Component {
         delete this.state.calender_arr[this.state.date];
         this.state.calender_arr[date] = {
           selected: true,
-          selectedColor: 'green',
+          selectedColor: "#0A8481",
         };
         this.setState({
           date: date,
@@ -293,7 +294,7 @@ export default class RequestPayment extends Component {
       }
     } else {
       delete this.state.calender_arr[this.state.date];
-      this.state.calender_arr[date] = {selected: true, selectedColor: 'green'};
+      this.state.calender_arr[date] = {selected: true, selectedColor: "#0A8481"};
       this.setState({
         date: date,
         calender_arr: {...this.state.calender_arr, date: date},

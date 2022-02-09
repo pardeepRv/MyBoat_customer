@@ -71,7 +71,7 @@ export default class PremotionDetail extends Component {
           style={{height: 300}}
           source={{
             uri:
-              'https://myboatonline.com/app/webservice/images/' +
+            config.image_url4+
               this.state.promotion.image,
           }}
           imageStyle={s.ImageBackground_Img}
@@ -98,7 +98,7 @@ export default class PremotionDetail extends Component {
             }}>
             Discription :
           </Text>
-          <Text style={{fontSize: 12, fontFamily: FontFamily.default}}>
+          <Text style={{fontSize: 12,top:10,  fontFamily: FontFamily.default}}>
             {this.state.promotion.description}
           </Text>
           {/* <Text style={{textAlign:'justify',marginTop:10}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </Text> */}

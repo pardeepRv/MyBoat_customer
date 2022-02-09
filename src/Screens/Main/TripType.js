@@ -216,6 +216,7 @@ export default class TripType extends Component {
             data={this.state.destinations_arr}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
+              console.log('item :>> ', item);
               return (
                 <View style={{padding: 5}}>
                   <TouchableOpacity

@@ -55,9 +55,11 @@ export default class Login extends Component {
     super(props);
     this.state = {
       // language_id: config.language,
-      password: 'Shai@0417',
+      // password: 'Shai@0417',
+      password: 'qwerty123',
       HidePassword: false,
-      email: 'Myboat667@gmail.com',
+      // email: 'Myboat667@gmail.com',
+      email: 'customer@yopmail.com',
       loading: false,
       isConnected: true,
       checked: false,
@@ -229,7 +231,7 @@ export default class Login extends Component {
                   user_id: user_id,
                   email: email,
                 });
-                this.onButtonStart();
+                // this.onButtonStart();
               }
               if (signup_step == 1) {
                 localStorage.setItemString('user_id', JSON.stringify(user_id));
@@ -244,7 +246,7 @@ export default class Login extends Component {
               // for mail send
               if (typeof email_arr !== 'undefined') {
                 if (email_arr != 'NA') {
-                  this.mailsendfunction(email_arr);
+                  // this.mailsendfunction(email_arr);
                 }
               }
               if (obj.notification_arr != 'NA') {
@@ -292,6 +294,8 @@ export default class Login extends Component {
           style={styles.ImageBackground}
           source={backgd}
           imageStyle={styles.ImageBackground_Img}>
+         <ScrollView>
+           
           <View style={styles.lang}>
             <Icon name="globe" color="#fff" size={20} style={{marginTop: 12}} />
             <Text style={{color: '#fff', marginTop: 12, margin: 5}}>Eng</Text>
@@ -311,7 +315,7 @@ export default class Login extends Component {
               paddingHorizontal: 20,
               marginBottom:10
             }}>
-            <ScrollView>
+            
 
             <View style={styles.WelComeNote}>
               <Text style={styles.myboat}>My Boat</Text>
@@ -432,8 +436,9 @@ export default class Login extends Component {
                 </View>
               </View>
             </View>
-            </ScrollView>
+            {/* </ScrollView> */}
           </View>
+        </ScrollView>
           
         </ImageBackground>
       </View>

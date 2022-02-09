@@ -9,7 +9,8 @@ import {
     FlatList,
     Image,
     ActivityIndicator,
-    Linking
+    Linking,
+    Alert
 } from 'react-native';
 import {
     Icon,
@@ -45,20 +46,27 @@ export default class Fav extends Component {
   }
 
 
-
+  // this.setState({ isLoading: true });
+  // this.getData('user_arr')
   
 
   componentDidMount(){
-   this.setState({ isLoading: true });
-   this.getData('user_arr')
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      console.log('focus :>> ');
+       this.setState({ isLoading: true });
+  this.getData('user_arr')
+    });
   }
 
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
   clearAll = async () => {
     this.setState({ isLoading: true });
      let userId= 115
      let deleteType = 'all'
      let advId = 0
-    let url = 'https://myboatonline.com/app/webservice/add_rm_fav.php?user_id_post='+userId+'&type='+deleteType+'&advertisement_id='+advId;
+    let url = config.baseURL + 'add_rm_fav.php?user_id_post='+userId+'&type='+deleteType+'&advertisement_id='+advId;
         console.log(url)
         try {
           const response = await fetch(url);
@@ -113,7 +121,7 @@ export default class Fav extends Component {
     async FavoriteList(arrayData){
       console.log("****", arrayData);
       
-     let url ='https://myboatonline.com/app/webservice/fav_list.php?user_id_post='+arrayData.user_id;
+     let url = config.baseURL + 'fav_list.php?user_id_post='+ arrayData.user_id;
     console.log(url)
     try {
       const response = await fetch(url);
@@ -140,7 +148,7 @@ export default class Fav extends Component {
 
 
   render(){
-
+console.log('this.state.fav_arr :>> ', this.state.fav_arr);
     return(
         <View style={{flex:1}}>
             <Header
@@ -160,7 +168,12 @@ export default class Fav extends Component {
       
                  renderItem={({item})=>{
                    return(
-                     <View style={{padding:5}}>
+                     <TouchableOpacity 
+                     onPress={() =>
+                      this.props.navigation.navigate('TripTypeDetail', {
+                        item: item,
+                      })}
+                     style={{padding:5}}>
                        <Card containerStyle={{padding:0,borderRadius:15,paddingHorizontal:0,margin:7.5,marginHorizontal:10,elevation:5}}>
                        <ImageBackground
                         style={s.ImageBackground}
@@ -207,7 +220,7 @@ export default class Fav extends Component {
                        }]}
           
                        >
-                       <Text style={s.place}>starting{'\n'}KD {item.destination_arr[0]['price']}
+                       <Text style={s.place}>starting{'\n'}KD {item.extra_price}
                        </Text>
                      </View>
                        </ImageBackground>
@@ -250,7 +263,7 @@ export default class Fav extends Component {
                          </View>
                        </View>
                        </Card>
-                   </View>
+                   </TouchableOpacity>
                    )
                  }}
                  keyExtractor={(i,ind)=>ind}

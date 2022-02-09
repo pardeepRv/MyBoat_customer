@@ -57,7 +57,9 @@ export default class ExtraRequest extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state.data);
+    console.log(this.state.data , "????????????????????????????/");
+    console.log(this.state.adv , "????????????????????????????/");
+
   }
 
   //   onChangeCheck(item) {
@@ -73,7 +75,7 @@ export default class ExtraRequest extends Component {
   //   }
 
   onChangeCheck = (select, index, id) => {
-    console.log(index, id, 'ITEEEEEEE', select.addon_product_price);
+      console.log(index, id, 'ITEEEEEEE', select.addon_product_price);
     const tempArray = [...this.state.adver_arr];
     if (!select.isChecked) {
       this.state.totalPrice =
@@ -112,6 +114,7 @@ export default class ExtraRequest extends Component {
   }
 
   render() {
+    console.log('this.state.adver_arr :>> ', this.state.adver_arr);
     return (
       <View style={{backgroundColor: '#fff', height: '100%'}}>
         <Header
@@ -127,33 +130,33 @@ export default class ExtraRequest extends Component {
         <View
           style={{backgroundColor: '#fff', marginTop: -20, borderRadius: 20}}>
           {this.state.adver_arr.map((item, id) => {
-            console.log(')))))', item.addon_name);
+              console.log(')))))', item.addon_name);
             return (
               <TouchableOpacity
                 //   onPress={()=>console.log()}
                 activeOpacity={0.8}>
-                <Text
+                {/* <Text
                   style={{
                     padding: 20,
                     fontFamily: FontFamily.semi_bold,
                     fontSize: 18,
                   }}>
                   {item.addon_name.toString().replace(',', ' ')}
-                </Text>
-                {item.addon_products.map((item2, index) => (
+                </Text> */}
+
                   <View style={{flexDirection: 'row'}}>
                     <View style={{width: '10%'}}>
-                      <Text
+                      {/* <Text
                         style={{
                           textAlign: 'right',
                           fontFamily: FontFamily.default,
                         }}>
                         {index + 1}{' '}
-                      </Text>
+                      </Text> */}
                     </View>
                     <View style={{width: '35%'}}>
                       <Text style={{textAlign: 'left'}}>
-                        {item2.addon_product_name}{' '}
+                        {item.addon_product_name[0]}{' '}
                       </Text>
                     </View>
 
@@ -167,11 +170,11 @@ export default class ExtraRequest extends Component {
                           fontFamily: FontFamily.default,
                         }}>
                         {' $'}
-                        {item2.addon_product_price}
+                        {item.addon_product_price}
                       </Text>
                     </View>
                     <View style={{width: '10%', padding: 0, marginTop: -13}}>
-                      <CheckBox
+                      {/* <CheckBox
                         // value={this.state.isSelected}
                         //   onValueChange={setSelection}
                         //checked={item2.checked}
@@ -179,10 +182,10 @@ export default class ExtraRequest extends Component {
                         key={index}
                         onPress={() => this.onChangeCheck(item2, index, id)}
                         style={s.checkbox}
-                      />
+                      /> */}
                     </View>
                   </View>
-                ))}
+
               </TouchableOpacity>
             );
           })}

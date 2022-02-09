@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, { Component, useState } from 'react';
 import {
   Text,
   View,
@@ -13,7 +13,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import {Icon, Input, Card, AirbnbRating} from 'react-native-elements';
+import { Icon, Input, Card, AirbnbRating } from 'react-native-elements';
 import Header from '../../Components/Header';
 import {
   back_img3,
@@ -25,20 +25,20 @@ import {
 import Ad from '../../Data/Ad';
 import Outgoing from '../../Data/Outgoing';
 import Upcoming from '../../Data/Upcoming';
-import {SliderBox} from 'react-native-image-slider-box';
+import { SliderBox } from 'react-native-image-slider-box';
 import FastImage from 'react-native-fast-image';
-import {renderNode} from 'react-native-elements/dist/helpers';
-import {apifuntion} from '../../Provider/apiProvider';
-import {config} from '../../Provider/configProvider';
+import { renderNode } from 'react-native-elements/dist/helpers';
+import { apifuntion } from '../../Provider/apiProvider';
+import { config } from '../../Provider/configProvider';
 import AsyncStorage from '@react-native-community/async-storage';
-import {Calendar} from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
 import DatePicker from 'react-native-datepicker';
-import {Lang_chg} from '../../Provider/Language_provider';
+import { Lang_chg } from '../../Provider/Language_provider';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {WebView} from 'react-native-webview';
-import {msgProvider, msgTitle, msgText} from '../../Provider/messageProvider';
+import { WebView } from 'react-native-webview';
+import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
 import moment from 'moment';
-import {CheckBox} from 'react-native-elements';
+import { CheckBox } from 'react-native-elements';
 
 export default class Checkout extends Component {
   constructor(props) {
@@ -56,26 +56,26 @@ export default class Checkout extends Component {
       createTime: '',
       isConnected: true,
       isSuccess: false,
-      selectedPaymentMethod:0,
+      selectedPaymentMethod: 0,
       paymentMethod: [
         {
-            title: 'KNET',
-            image:require('../../../assets/icons/payment1.png'),
-            checked: false
+          title: 'KNET',
+          image: require('../../../assets/icons/payment1.png'),
+          checked: false
         },
         {
           title: 'Credit Card',
-          image:require('../../../assets/icons/payment2.png'),
+          image: require('../../../assets/icons/payment2.png'),
           checked: false
         },
         {
           title: 'Bookeey PG',
-          image:require('../../../assets/icons/payment3.png'),
+          image: require('../../../assets/icons/payment3.png'),
           checked: false
         },
         {
           title: 'AMEX',
-          image:require('../../../assets/icons/payment4.png'),
+          image: require('../../../assets/icons/payment4.png'),
           checked: false
         }
       ]
@@ -112,10 +112,12 @@ export default class Checkout extends Component {
               // alert(merchantTxnId);
             }
           }
-          this._submitForPayment(txnId, merchantTxnId, this.state.booking_id);
+          console.log('object :>> ', txnId, merchantTxnId, this.state.booking_id);
+          this._submitForPayment(txnId, merchantTxnId, this.state.booking_id); // no need to comment just for iur convience
         } else if (t == 'failure.php') {
           msgProvider.toast(Lang_chg.payment_failed[config.language], 'center');
-          this.setState({webviewshow: false});
+          this.setState({ webviewshow: false });
+          // this._submitForPayment(txnId, merchantTxnId, this.state.booking_id);
           // this.props.navigation.navigate('Explore');
           return false;
         }
@@ -131,15 +133,15 @@ export default class Checkout extends Component {
     //   console.log(this.state.selectedPaymentMethod)
     //   return false;
     //  }
-     
+
 
     let url = config.baseURL + 'booking_add.php';
 
     console.log('this.state.data', url);
     var form_data = new FormData();
-       
+
     for (var key in this.state.data) {
-      if (this.state.data[key]!=null) {
+      if (this.state.data[key] != null) {
         form_data.append(key, this.state.data[key]);
       }
     }
@@ -151,8 +153,8 @@ export default class Checkout extends Component {
     apifuntion
       .postApi(url, form_data)
       .then(obj => {
-        // console.log(obj)
-        this.setState({loading: false});
+        console.log(obj, 'obj in heckout ....')
+        this.setState({ loading: false });
         return obj.json();
       })
       .then(obj => {
@@ -181,12 +183,12 @@ export default class Checkout extends Component {
       })
       .catch(error => {
         console.log('-------- error ------- ' + error);
-        this.setState({loading: false});
+        this.setState({ loading: false });
       });
   };
 
   _submitForPayment = async (txnId, merchantTxnId, booking_id) => {
-    this.setState({webviewshow: false});
+    this.setState({ webviewshow: false });
     // let result = await localStorage.getItemObject('user_arr')
     // let user_id_post = 0;
     // if (result != null) {
@@ -199,12 +201,12 @@ export default class Checkout extends Component {
       data.append('merchantTxnId', merchantTxnId);
       data.append('booking_id', booking_id);
       let url = config.baseURL + 'booking_add_pay.php';
-      console.log(url,"*****", data);
-      this.setState({loading: true});
+      console.log(url, "*****", data);
+      this.setState({ loading: true });
       apifuntion
         .postApi(url, data)
         .then(obj => {
-          this.setState({loading: false});
+          this.setState({ loading: false });
           return obj.json();
         })
         .then(obj => {
@@ -216,11 +218,11 @@ export default class Checkout extends Component {
               createTime: obj.createtime,
               isSuccess: true
             })
-          } 
+          }
         })
         .catch(error => {
           console.log('-------- error ------- ' + error);
-          this.setState({loading: false});
+          this.setState({ loading: false });
         });
     } else {
       msgProvider.alert(
@@ -240,24 +242,24 @@ export default class Checkout extends Component {
     booking_date1,
     email_arr,
   ) => {
-    console.log("############",  txnId,
-    noti,
-    booking_no,
-    booking_date1,
-    email_arr);
-    this.setState({webviewshow: false});
+    console.log("############", txnId,
+      noti,
+      booking_no,
+      booking_date1,
+      email_arr);
+    this.setState({ webviewshow: false });
     if (this.state.isConnected === true) {
       var data = new FormData();
       data.append('other_user_id', this.state.adver_arr.user_id);
       data.append('txnId', txnId);
       let url = config.baseURL + 'withdraw_request.php';
       console.log("OBBBBBBBBBBBBBBBBBBUUUUURRL", url);
-      this.setState({loading: true});
+      this.setState({ loading: true });
       apifuntion
         .postApi(url, data)
         .then(obj => {
           console.log("OBBBBBBBBBBBBBBBBBB----", obj);
-          this.setState({loading: false});
+          this.setState({ loading: false });
           return obj.json();
         })
         .then(obj => {
@@ -271,7 +273,7 @@ export default class Checkout extends Component {
             if (email_arr != 'NA') {
               this.mailsendfunction(email_arr);
             }
-            this.setState({loading: false});
+            this.setState({ loading: false });
             this.props.navigation.navigate('Success_booking', {
               booking_no: booking_no,
               booking_date: booking_date1,
@@ -290,10 +292,10 @@ export default class Checkout extends Component {
             return false;
           }
         })
-        // .catch(error => {
-        //   console.log('-------- error ------- ' + error);
-        //   this.setState({loading: false});
-        // });
+      // .catch(error => {
+      //   console.log('-------- error ------- ' + error);
+      //   this.setState({loading: false});
+      // });
     } else {
       msgProvider.alert(
         msgTitle.internet[config.language],
@@ -345,7 +347,7 @@ export default class Checkout extends Component {
       <Modal
         transparent={true}
         visible
-       >
+      >
         <View
           // onPress={() => this.hideDatePicker()}
           activeOpacity={1}
@@ -360,21 +362,21 @@ export default class Checkout extends Component {
               height: 270,
               width: '90%',
               backgroundColor: Colors.white,
-             borderRadius: 20,
-             justifyContent: 'center',
-             alignItems: 'center'
+              borderRadius: 20,
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
-            <Image style={{height: 55, width: 55}} source={require('../../../assets/icons/success.png')} resizeMode='contain'/>
-            <Text style={{fontSize: 15, fontFamily: FontFamily.semi_bold, color: Colors.black, lineHeight: 40}}>SUCCESS</Text>
-            <Text style={{fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 20}}>You have successfully created Booking</Text>
-            <Text style={{fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 30}}>Booking ID :- #{this.state.booking_id}</Text>
-            <Text style={{fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 30}}>{moment(this.state.createTime). format('DD-MM-YYYY, hh:mmA')}</Text>
-            <TouchableOpacity style={[s.Btn1, {width:'90%'}]} onPress={() => {
-             this.setState({isSuccess: false})
-             this.props.navigation.navigate('Trip')
-              }}>
-            <Text style={[s.Btn1Text]}>Continue</Text>
-          </TouchableOpacity>
+            <Image style={{ height: 55, width: 55 }} source={require('../../../assets/icons/success.png')} resizeMode='contain' />
+            <Text style={{ fontSize: 15, fontFamily: FontFamily.semi_bold, color: Colors.black, lineHeight: 40 }}>SUCCESS</Text>
+            <Text style={{ fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 20 }}>You have successfully created Booking</Text>
+            <Text style={{ fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 30 }}>Booking ID :- #{this.state.booking_id}</Text>
+            <Text style={{ fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 30 }}>{moment(this.state.createTime).format('DD-MM-YYYY, hh:mmA')}</Text>
+            <TouchableOpacity style={[s.Btn1, { width: '90%' }]} onPress={() => {
+              this.setState({ isSuccess: false })
+              this.props.navigation.navigate('Trip')
+            }}>
+              <Text style={[s.Btn1Text]}>Continue</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -383,7 +385,7 @@ export default class Checkout extends Component {
 
   render() {
     return (
-      <View style={{backgroundColor: '#fff', height: '100%'}}>
+      <View style={{ backgroundColor: '#fff', height: '100%' }}>
         <Header
           imgBack={true}
           notiBtn={false}
@@ -393,235 +395,235 @@ export default class Checkout extends Component {
           headerHeight={120}
           backImgSource={require('../../Images/back1.jpg')}
         />
-     
+
         <View
           style={{
-            flex:1,
+            flex: 1,
             marginTop: -20,
             backgroundColor: '#fff',
             borderRadius: 20,
-            marginBottom:60
+            marginBottom: 60
           }}>
           <ScrollView>
-          
-          <Text
-            style={{
-              marginTop: 15,
-              marginLeft: '5%',
-              fontSize: 18,
-              fontFamily: FontFamily.semi_bold,
-            }}>
-            Booking details:
-          </Text>
 
-          <Text />
+            <Text
+              style={{
+                marginTop: 15,
+                marginLeft: '5%',
+                fontSize: 18,
+                fontFamily: FontFamily.semi_bold,
+              }}>
+              Booking details:
+            </Text>
 
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={s.text1}> Customer name :</Text>
+            <Text />
+
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={s.text1}> Customer name :</Text>
+              </View>
+
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {/* {this.state.adver_arr.boat_capacity}{' '} */}
+                </Text>
+              </View>
             </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.adver_arr.boat_capacity}{' '}
-              </Text>
-            </View>
-          </View>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={s.text1}> Book date :</Text>
+              </View>
 
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={s.text1}> Book date :</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.data?.date}{' '}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Trip time :</Text>
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.state.data?.date}{' '}
+                </Text>
+              </View>
             </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.data?.time}{' '}
-              </Text>
-            </View>
-          </View>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Trip time :</Text>
+              </View>
 
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Number of guests :</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.props.route.params.data.no_of_guest}{' '}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Trip Hour :</Text>
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.state.data?.time}{' '}
+                </Text>
+              </View>
             </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.adver_arr.minimum_hours}{' '}
-              </Text>
-            </View>
-          </View>
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Extra hours :</Text>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Number of guests :</Text>
+              </View>
+
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.props.route.params.data.no_of_guest}{' '}
+                </Text>
+              </View>
             </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.data?.extraHours}{' '}
-              </Text>
-            </View>
-          </View>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Trip Hour :</Text>
+              </View>
 
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Equipment :</Text>
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.state.adver_arr.minimum_hours}{' '}
+                </Text>
+              </View>
+            </View>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Extra hours :</Text>
+              </View>
+
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.state.data?.extraHours}{' '}
+                </Text>
+              </View>
             </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.adver_arr?.addon_arr &&
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Equipment :</Text>
+              </View>
+
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {/* {this.state.adver_arr?.addon_arr &&
                   this.state.adver_arr?.addon_arr[2]?.addon_products[0]
-                    ?.addon_product_name}{' '}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Entertainment :</Text>
+                    ?.addon_product_name}{' '} */}
+                </Text>
+              </View>
             </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.adver_arr.addon_arr &&
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Entertainment :</Text>
+              </View>
+
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {/* {this.state.adver_arr.addon_arr &&
                   this.state.adver_arr.addon_arr[1].addon_products[0]
-                    ?.addon_product_name}{' '}
-              </Text>
+                    ?.addon_product_name}{' '} */}
+                </Text>
+              </View>
             </View>
-          </View>
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Food :</Text>
-            </View>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Food :</Text>
+              </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.adver_arr.addon_arr &&
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {/* {this.state.adver_arr.addon_arr &&
                   this.state.adver_arr.addon_arr[0].addon_products[0]
-                    ?.addon_product_name}{' '}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Boat place :</Text>
+                    ?.addon_product_name}{' '} */}
+                </Text>
+              </View>
             </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.adver_arr.city_name}{' '}
-              </Text>
-            </View>
-          </View>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Boat place :</Text>
+              </View>
 
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Trip destination :</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.adver_arr.location_address}{' '}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Trip type :</Text>
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.state.adver_arr.city_name}{' '}
+                </Text>
+              </View>
             </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.adver_arr.trip_type_name}{' '}
-              </Text>
-            </View>
-          </View>
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Discount :</Text>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Trip destination :</Text>
+              </View>
+
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.state.adver_arr.location_address}{' '}
+                </Text>
+              </View>
             </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.adver_arr?.discount}{' '}
-              </Text>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Trip type :</Text>
+              </View>
+
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.state.adver_arr.trip_type_name}{' '}
+                </Text>
+              </View>
             </View>
-          </View>
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Coupon discount :</Text>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Discount :</Text>
+              </View>
+
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.state.adver_arr?.discount}{' '}
+                </Text>
+              </View>
+            </View>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Coupon discount :</Text>
+              </View>
+
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.state.data?.coupon_discount}{' '}
+                </Text>
+              </View>
             </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.data?.coupon_discount}{' '}
-              </Text>
-            </View>
-          </View>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Total price :</Text>
+              </View>
 
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Total price :</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.data?.rent_amount}{' '}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Extra requests :</Text>
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.state.data?.rent_amount}{' '}
+                </Text>
+              </View>
             </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.adver_arr.location_address}{' '}
-              </Text>
-            </View>
-          </View>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Extra requests :</Text>
+              </View>
 
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.text1]}> Advertisment type :</Text>
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.state.adver_arr.location_address}{' '}
+                </Text>
+              </View>
             </View>
 
-            <View style={s.item}>
-              <Text style={[s.text1, {fontFamily: FontFamily.default}]}>
-                {this.state.adver_arr.location_address}{' '}
-              </Text>
+            <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> Advertisment type :</Text>
+              </View>
+
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  {this.state.adver_arr.location_address}{' '}
+                </Text>
+              </View>
             </View>
-          </View>
-          {/* <View style={{flex:1, marginBottom:40}}>
+            {/* <View style={{flex:1, marginBottom:40}}>
               <Text
                 style={{
                   lineHeight: 27,
@@ -662,10 +664,10 @@ export default class Checkout extends Component {
               ))}
               
           </View> */}
-        </ScrollView>
+          </ScrollView>
         </View>
-      
-          
+
+
         <View
           style={{
             position: 'absolute',
@@ -674,8 +676,8 @@ export default class Checkout extends Component {
             width: '100%',
             flexDirection: 'row',
             alignItems: 'center',
-            borderTopColor:Colors.orange,
-            borderTopWidth:2
+            borderTopColor: Colors.orange,
+            borderTopWidth: 2
           }}>
           <TouchableOpacity style={s.Btn1} onPress={() => this.payment()}>
             <Text style={s.Btn1Text}>Checkout</Text>
@@ -695,7 +697,7 @@ export default class Checkout extends Component {
           transparent
           visible={this.state.webviewshow}
           onRequestClose={() => {
-            this.setState({webviewshow: false});
+            this.setState({ webviewshow: false });
           }}>
           {/* <SafeAreaView style={{ flex: 0, backgroundColor: color1.white_color }} />
           <StatusBar barStyle='default' hidden={false} backgroundColor={color1.white_color} translucent={true}
@@ -722,7 +724,7 @@ export default class Checkout extends Component {
               <WebView
                 source={{
                   uri:
-                    'https://myboatonline.com/app/webservice/paymentgateway/bookeey_library/buy.php?amt=' +
+                    'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/paymentgateway/bookeey_library/buy.php?amt=' +
                     this.state.pay_amount +
                     '&oid=' +
                     this.state.booking_no +
@@ -740,7 +742,7 @@ export default class Checkout extends Component {
                 domStorageEnabled={true}
                 // injectedJavaScript = {this.state.cookie}
                 startInLoadingState={false}
-                containerStyle={{marginTop: 20, flex: 1}}
+                containerStyle={{ marginTop: 20, flex: 1 }}
                 // injectedJavaScript={runFirst}
                 // androidHardwareAccelerationDisabled={true}
                 // allowUniversalAccessFromFileURLs={true}
@@ -748,14 +750,14 @@ export default class Checkout extends Component {
                 // keyboardDisplayRequiresUserAction={false}
                 // allowFileAccess={true}
                 textZoom={100}
-                // onMessage={this.onMessage}
-                // onNavigationStateChange={(navEvent)=> console.log(navEvent.jsEvaluationValue)}
-                // onMessage={(event)=> console.log(event.nativeEvent.data)}
+              // onMessage={this.onMessage}
+              // onNavigationStateChange={(navEvent)=> console.log(navEvent.jsEvaluationValue)}
+              // onMessage={(event)=> console.log(event.nativeEvent.data)}
               />
             )}
           </View>
         </Modal>
-        {this.state.isSuccess&&this.renderSuccessModal()}
+        {this.state.isSuccess && this.renderSuccessModal()}
       </View>
     );
   }
@@ -983,18 +985,18 @@ const s = StyleSheet.create({
     borderStyle: 'solid',
     backgroundColor: 'transparent',
     alignItems: 'center',
-    transform: [{rotate: '-45deg'}],
+    transform: [{ rotate: '-45deg' }],
     marginTop: 19.2,
     marginLeft: -26,
   },
-  paymnetImage:{
-    width:50,
-    height:50
-  }, 
-  paymentText:{
-   fontSize:18,
-   justifyContent:'center',
-   textAlignVertical:'center'
+  paymnetImage: {
+    width: 50,
+    height: 50
+  },
+  paymentText: {
+    fontSize: 18,
+    justifyContent: 'center',
+    textAlignVertical: 'center'
   },
   checkbox: {
     color: '#fff',

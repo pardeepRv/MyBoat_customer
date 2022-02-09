@@ -44,9 +44,7 @@ function TabNav() {
             height:50,
             alignItems:"center"
         },
-        style:{
-            height:60
-        }
+     
       }}
     >
       <Tab.Screen

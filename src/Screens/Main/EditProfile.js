@@ -8,7 +8,7 @@ import {
   ScrollView,
   FlatList,
   Image,
-  SafeAreaView,
+  SafeAreaView,Alert,
   StatusBar,
   Modal,
   I18nManager,
@@ -64,7 +64,7 @@ export default class EditProfile extends Component {
       avatar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png',
       isShowDatePicker: false,
       about: '',
-      imageObj: {},
+      imageObj: '',
       //template:[{'lang':'Eng'},{'lang':'Arb'}],
     };
   }
@@ -296,11 +296,25 @@ export default class EditProfile extends Component {
   };
 
   onPhotoUploadDialogDone = index => {
-    if (index == 0) {
-      this.openCamera();
-    } else if (index == 1) {
-      this.openGallery();
-    }
+    Alert.alert(
+      '',
+      'Please Select',
+      [
+        {text: 'Camera', onPress: () => this._doOpenCamera()},
+        {text: 'Gallery', onPress: () => this._doOpenGallery()},
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+      ],
+      {cancelable: true},
+    );
+    // if (index == 0) {
+    //   this.openCamera();
+    // } else if (index == 1) {
+    //   this.openGallery();
+    // }
   };
 
   openCamera = () => {
@@ -315,17 +329,42 @@ export default class EditProfile extends Component {
     });
   };
 
-  openGallery = () => {
+  // openGallery = () => {
+  //   ImagePicker.openPicker({
+  //     mediaType: 'photo',
+  //   }).then(photoObj => {
+  //     this.setState({
+  //       imageObj: photoObj,
+  //       avatar: photoObj?.path,
+  //     });
+  //     console.log(photoObj);
+  //   });
+  // };
+
+  _doOpenGallery() {
     ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+      // includeBase64: true,
+      compressImageQuality: 0.2,
       mediaType: 'photo',
     }).then(photoObj => {
-      this.setState({
-        imageObj: photoObj,
-        avatar: photoObj?.path,
-      });
-      console.log(photoObj);
+      console.log(`ress`, photoObj);
+      if (Platform.OS == 'ios') {
+        // setProductPhoto(res.sourceURL);
+        this.setState({
+                imageObj: photoObj,
+                avatar: photoObj?.sourceURL,
+              });
+      } else {
+        this.setState({
+          imageObj: photoObj,
+          avatar: photoObj?.path,
+        });
+      }
     });
-  };
+  }
 
   showDatePicker = () => {
     this.setState({
@@ -503,6 +542,8 @@ export default class EditProfile extends Component {
                 alignSelf: 'center',
               }}
               source={{uri: this.state.avatar}}
+              // source={{uri: this.state.imageObj != '' ? this.state.imageObj : this.state.avatar}}
+
               imageStyle={{
                 resizeMode: 'cover',
                 borderRadius: 7,
