@@ -1,37 +1,20 @@
-import React, { Component, useState } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
+import React, { Component } from 'react';
 import {
-  Text,
-  View,
-  StyleSheet,
-  Modal,
-  ImageBackground,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
-  Image,
-  ActivityIndicator,
-  BackHandler, Alert
+  ActivityIndicator, Alert, BackHandler, FlatList,
+  Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
+// import { Card } from 'react-native-elements';
 import { Icon, Input, Card, AirbnbRating } from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
+import { SliderBox } from 'react-native-image-slider-box';
 import Header from '../../Components/Header';
 import {
-  back_img3,
-  boat_img1,
   Colors,
-  FontFamily,
-  Sizes,
+  FontFamily
 } from '../../Constants/Constants';
-import Ad from '../../Data/Ad';
-import Outgoing from '../../Data/Outgoing';
-import Upcoming from '../../Data/Upcoming';
-import { SliderBox } from 'react-native-image-slider-box';
-import FastImage from 'react-native-fast-image';
-import { renderNode } from 'react-native-elements/dist/helpers';
-import { apifuntion } from '../../Provider/apiProvider';
 import { config } from '../../Provider/configProvider';
-import PremotionDetail from './PremotionDetail';
 import { firebaseprovider } from '../../Provider/FirebaseProvider';
-import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Login extends Component {
   constructor(props) {
@@ -61,21 +44,34 @@ export default class Login extends Component {
   };
 
   componentWillUnmount() {
-    this.backHandler.remove();
+    // this.backHandler.remove();
+    this._unsubscribe();
   }
 
   componentDidMount() {
-    this.backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      this.backAction
-    );
-    this.Promotion();
-    // this.getUsers();
-    //firebaseprovider.getAllUsers();
-    //firebaseprovider.messagecountforfooter();
-    console.log('des',this.state.trips_arr)
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      console.log('focus :>> ');
+       this.setState({ isLoading: true });
+       this.Promotion();
+       this.getUsers();
+       //firebaseprovider.getAllUsers();
+       //firebaseprovider.messagecountforfooter();
+       console.log('des', this.state.trips_arr)
+   
+       this.getData('user_arr');
+    });
 
-    this.getData('user_arr');
+    // this.backHandler = BackHandler.addEventListener(
+    //   "hardwareBackPress",
+    //   this.backAction
+    // );
+    // this.Promotion();
+    // this.getUsers();
+    // //firebaseprovider.getAllUsers();
+    // //firebaseprovider.messagecountforfooter();
+    // console.log('des', this.state.trips_arr)
+
+    // this.getData('user_arr');
   }
 
   getData = async key => {
@@ -94,7 +90,7 @@ export default class Login extends Component {
   };
 
   ChangeColor(index, item, type) {
-     console.log('color', item);
+    console.log('color', item);
 
     this.setState({ modalVisible: false });
 
@@ -154,9 +150,31 @@ export default class Login extends Component {
 
     console.log('destination kist res>>>>>>>', json);
 
+    if (json && json.trips_arr && json.trips_arr.length > 0) {
+
+      let updatedArr = json.trips_arr;
+
+      let newArr = updatedArr.filter((value, i) => {
+        if (value.no_of_boat > 0) {
+          return true
+        } else {
+          false
+        }
+      })
+
+      console.log(newArr, 'newArrnewArrnewArr');
+
+
+      this.setState({
+        trips_arr: newArr
+      });
+    }
+
+   
+
     this.setState({
       destinations: json.destinations_arr,
-      trips_arr: json.trips_arr,
+      // trips_arr: json.trips_arr,
       promotions_arr: json.promotions_arr,
     });
 
@@ -183,6 +201,10 @@ export default class Login extends Component {
     this.setState({ modalVisible: true });
   }
 
+  gotoBack = () => {
+    this.setState({ modalVisible: false });
+  };
+
   Premotion(index) {
     console.log(index);
 
@@ -197,7 +219,7 @@ export default class Login extends Component {
 
   render() {
     const destinations = this.state.destinations.image;
-    //console.log('des',this.state.trips_arr)
+    console.log('render>>>>>>>>>>>>>', this.state.trips_arr)
 
     var images = [
       require('../../Images/boat.jpg'),
@@ -234,7 +256,7 @@ export default class Login extends Component {
           <View style={s.btn_1}>
             <ScrollView horizontal={true}>
               {this.state.trips_arr.map((item, index) => (
-                      
+
                 item.no_of_boat ?
                   (
                     <TouchableOpacity
@@ -332,7 +354,7 @@ export default class Login extends Component {
               images={this.state.img}
               sliderBoxHeight={200}
               slidderBoxWidth={280}
-              autoplayInterval={1000}
+              autoplayInterval={3000}
               circleLoop
               onCurrentImagePressed={index =>
                 // console.warn(`image ${index} pressed`)
@@ -522,8 +544,7 @@ export default class Login extends Component {
       }}>
       <Text>Close</Text>
     </TouchableOpacity> */}
-
-            <Text
+    <Text
               style={{
                 color: Colors.orange,
                 alignSelf: 'center',
@@ -533,58 +554,88 @@ export default class Login extends Component {
               }}>
               Type Of Trip
             </Text>
+       <View style={{flexDirection:'row' , justifyContent:'flex-end'}}>
+            
+            <TouchableOpacity
+
+            style={{
+              // marginBottom: -50,
+              alignItems: 'flex-start',
+              marginTop: -25,
+              // marginLeft: 50,
+              marginRight:20,
+              // backgroundColor: Colors.gray,
+              borderRadius: 25
+
+            }}>
+            <Icon
+              onPress={() => this.gotoBack()}
+              name="x-circle"
+              type="feather"
+              size={26}
+              color={Colors.orange}
+            />
+          </TouchableOpacity>
+          </View>
             <FlatList
               data={this.state.trips_arr}
               //  horizontal={true}
               numColumns={3}
               //  keyExtractor={(item, index) => console.log(item)}
-              renderItem={({ item, index }) => (
-                <View
-                  style={{
-                    flex: 1,
-                    alignSelf: 'center',
-                    alignItems: 'center',
-                    alignContent: 'center',
-                    backgroundColor: item.no_of_boat > 0 ? Colors.white : Colors.gray,
-                    margin: 15,
-                    borderRadius: 8,
-                    padding: 10,
-                    shadowColor: '#000',
-                    // width:90,
-                    maxWidth: '25%',
-                    shadowOffset: { width: 0, height: 1 },
-                    shadowOpacity: 0.8,
-                    shadowRadius: 2,
-                    elevation: 5,
-                  }}>
-                  <TouchableOpacity
-                    onPress={
-                      () => item.no_of_boat > 0 ? this.ChangeColor(index, item ) : null
-                      //  this.handleClick(item)
-                    }>
-                    <Image
-                      source={{
-                        uri: config.baseURL + 'images/' + item.icon_green,
-                      }}
-                      style={{ height: 40, width: 40, resizeMode: 'contain' }}
-                    />
-                    <Text
-                      style={{
-                        color: Colors.orange,
-                        fontWeight: 'bold',
-                        fontSize: 16,
-                      }}>
-                      {item.trip_type_name.slice(0, 8)}
-                    </Text>
+              renderItem={({ item, index }) => {
+                console.log('item :>> ', item);
 
-                    <Text style={{ color: '#b6b6b6' }}>
-                      {' '}
-                      {item.no_of_boat} Boats
-                    </Text>
-                  </TouchableOpacity>
+                return (
 
-                </View>
-              )}
+                  <View
+                    style={{
+                      flex: 1,
+                      alignSelf: 'center',
+                      alignItems: 'center',
+                      alignContent: 'center',
+                      backgroundColor: item.no_of_boat > 0 ? Colors.white : Colors.gray,
+                      margin: 15,
+                      borderRadius: 8,
+                      padding: 10,
+                      shadowColor: '#000',
+                      // width:90,
+                      maxWidth: '25%',
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowOpacity: 0.8,
+                      shadowRadius: 2,
+                      elevation: 5,
+                    }}>
+
+                    <TouchableOpacity
+                      onPress={
+                        () => item.no_of_boat > 0 ? this.ChangeColor(index, item) : null
+                        //  this.handleClick(item)
+                      }>
+                      <Image
+                        source={{
+                          uri: config.baseURL + 'images/' + item.icon_green,
+                        }}
+                        style={{ height: 40, width: 40, resizeMode: 'contain' }}
+                      />
+                      <Text
+                        style={{
+                          color: Colors.orange,
+                          fontWeight: 'bold',
+                          fontSize: 16,
+                        }}>
+                        {item.trip_type_name.slice(0, 8)}
+                      </Text>
+
+                      <Text style={{ color: '#b6b6b6' }}>
+                        {' '}
+                        {item.no_of_boat} Boats
+                      </Text>
+                    </TouchableOpacity>
+
+                  </View>
+
+                )
+              }}
             />
           </View>
         </Modal>

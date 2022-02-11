@@ -203,7 +203,7 @@ export default class Login extends Component {
           return obj.json();
         })
         .then(obj => {
-          console.log('user array', obj);
+           console.log('user array', obj);
           //  alert(JSON.stringify(obj))
           if (obj.success == 'true') {
             localStorage.setItemString('guest_user', 'no');
@@ -237,7 +237,7 @@ export default class Login extends Component {
                 localStorage.setItemString('user_id', JSON.stringify(user_id));
                 this.setState({modalVisible2: false});
                 localStorage.setItemObject('user_arr', user_arr);
-                this.storeData(user_arr);
+                // this.storeData(user_arr);
                 //   firebaseprovider.firebaseUserCreate();
                 //  firebaseprovider.getMyInboxAllData();
                 this.goHomePage();

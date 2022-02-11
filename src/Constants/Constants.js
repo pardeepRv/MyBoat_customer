@@ -15,6 +15,7 @@ export const Colors= {
     red:"#F00",
     confirmed:"#EBDB4E",
     theme1:'#01a8e7',
+    grey:"#979797"
 }
 
 export const FontFamily ={

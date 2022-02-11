@@ -167,6 +167,7 @@ console.log('this.state.fav_arr :>> ', this.state.fav_arr);
                 //  refreshing={this.getData('user_arr')}
       
                  renderItem={({item})=>{
+                      console.log('item :>> ', item);
                    return(
                      <TouchableOpacity 
                      onPress={() =>
@@ -195,12 +196,12 @@ console.log('this.state.fav_arr :>> ', this.state.fav_arr);
                             </Text>
                           </View>
                           {/* Three dots */}
-                          <TouchableOpacity style={{position:"absolute",right:10,top:10}}>
+                          <TouchableOpacity style={{position:"absolute",right:10,top:10  ,borderRadius:20, backgroundColor:Colors.gray}}>
                             <Icon name="heart" type="entypo" color={item.like_status==1?Colors.red:Colors.white} />
                           </TouchableOpacity>
                           <TouchableOpacity
                           onPress={()=>Linking.openURL(config.appUrl)}
-                          style={{position:"absolute",right:50,top:10}}>
+                          style={{position:"absolute",right:50,top:10 , borderRadius:20,backgroundColor:Colors.gray}}>
                             <Icon name="share" type="entypo" color={Colors.white} />
                           </TouchableOpacity>
                           <View
@@ -227,9 +228,11 @@ console.log('this.state.fav_arr :>> ', this.state.fav_arr);
                        {/*  */}
                        <View style={s.SEC3}>
                          <View style={{}}>
-                           <Text style={s.title}>
-                             {item.boat_name}
-                           </Text>
+                         <View style={{flexDirection:'row' ,height:30,  justifyContent:'space-between',width:'100%' , alignItems:'center'}}>
+                          <Text style={s.title}>{item.boat_name}</Text>
+                          
+                        </View>
+                        <View style={{flexDirection:'row' , justifyContent:'space-between'}}>
                            <View style={{flexDirection:"row",alignItems:"center",marginTop:5}}>
                              <Image style={{
                                height:40,
@@ -251,8 +254,7 @@ console.log('this.state.fav_arr :>> ', this.state.fav_arr);
                                  />
                              </View>
                            </View>
-                         </View>
-                         <View>
+                           <View>
                            <Text style={{color:"rgba(51, 51, 51, 1)",fontSize:12,fontFamily:FontFamily.default}}>
                              Destination
                            </Text>
@@ -261,6 +263,10 @@ console.log('this.state.fav_arr :>> ', this.state.fav_arr);
                            <Text style={{color:"rgba(51, 51, 51, 1)",fontSize:10,fontFamily:FontFamily.default}}>{item.no_of_people} Person</Text>
                            </View>
                          </View>
+
+                           </View>
+                         </View>
+                        
                        </View>
                        </Card>
                    </TouchableOpacity>

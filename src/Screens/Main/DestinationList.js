@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Share,
   Modal,
   Image,
   ActivityIndicator,
@@ -158,12 +159,12 @@ export default class DestinationList extends Component {
       '&filter_rating=0&filter_guest=0&filter_cabin=0&filter_price=0&filter_toilet=0';
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
 
-    console.log(url);
+     console.log(url , 'user details url ');
     try {
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-      console.log('json  ', json);
+       console.log('json  ', json);
 
       if (json.success == 'true') {
         this.setState({adver_arr: json.adver_arr!='NA'?json.adver_arr:[]});
@@ -284,6 +285,31 @@ export default class DestinationList extends Component {
       this.setState({isLoading: false});
     }
   }
+ 
+  
+
+   onShare = async (imgUrl) => {
+     console.log(imgUrl,'link');
+    try {
+      const result = await Share.share({
+        title: 'Lokahi fishing',
+        // message: 'Sharing from lokahi',
+        url: imgUrl
+      });
+      console.log(result, 'result on share >>>>>>>>>>>>>>>>>');
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   async ShowResult() {
 
@@ -337,19 +363,20 @@ export default class DestinationList extends Component {
   }
 
   render() {
+    console.log('this.state.adver_arr :>> ', this.state.adver_arr);
     return (
       <View style={{backgroundColor: Colors.white, flex: 1}}>
         <Header2
           imgBack={true}
           backBtn={true}
+
           backImgSource={
             config.baseURL + 'images/' + this.state.destination.image
           }
           name={this.state.destination.destination_name}
           searchBtn={false}
           headerHeight={300}
-
-         
+        
         />
 
         
@@ -459,7 +486,7 @@ export default class DestinationList extends Component {
             data={this.state.adver_arr}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
-              console.log('item in clo:>> ', item);
+                console.log('item in clo:>> destination list ', item);
               return (
                 <View style={{padding: 5}}>
                   <TouchableOpacity
@@ -479,16 +506,19 @@ export default class DestinationList extends Component {
                       }}>
                       <ImageBackground
                         style={s.ImageBackground}
+                        resizeMode="contain"
                         imageStyle={s.imgStyle}
                         source={{uri: config.baseURL + 'images/' + item.image}}>
                         
                         <TouchableOpacity
-                          style={{position: 'absolute', right: 10,padding: 10, top: 0}}
-                          onPress={() => this.addFavorite(item)}>
+                          style={{position: 'absolute', right: 10,padding: 3, top: 7 , backgroundColor:Colors.gray1 , borderRadius:20}}
+                          onPress={() => this.addFavorite(item)}
+                          >
                             {item.fav == "yes" ?( <Icon
                             name="heart"
                             size={20}
                             type="entypo"
+                          
                             color={Colors.red }
                           />) : (<Icon
                             name="heart"
@@ -499,7 +529,8 @@ export default class DestinationList extends Component {
                           
                         </TouchableOpacity>
                         <TouchableOpacity
-                          style={{position: 'absolute', right: 50, top: 10}}>
+                        onPress={() => this.onShare(config.baseURL + 'images/' + item.image)}
+                          style={{position: 'absolute', right: 50, top: 7 ,padding:3,backgroundColor:Colors.gray1 , borderRadius:20}}>
                           <Icon
                             name="share"
                             size={20}
@@ -531,8 +562,36 @@ export default class DestinationList extends Component {
                       </ImageBackground>
                       {/*  */}
                       <View style={s.SEC3}>
-                        <View style={{}}>
+                        <View style={{flex:1 }}>
+                          <View style={{flexDirection:'row' ,height:30,  justifyContent:'space-between',width:'100%' , alignItems:'center'}}>
                           <Text style={s.title}>{item.boat_name}</Text>
+                          {/* <TouchableOpacity
+                          style={{position: 'absolute', right: 10,padding: 10, top: -5}}
+                          onPress={() => this.addFavorite(item)}>
+                            {item.fav == "yes" ?( <Icon
+                            name="heart"
+                            size={20}
+                            type="entypo"
+                            color={Colors.red }
+                          />) : (<Icon
+                            name="heart"
+                            size={20}
+                            type="entypo"
+                            color={Colors.black1 }
+                          />)}
+                          
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={{position: 'absolute', right: 50,padding: 10, top: -5}}>
+                          <Icon
+                            name="share"
+                            size={20}
+                            type="entypo"
+                            color={Colors.black}
+                          />
+                        </TouchableOpacity> */}
+                        </View>
+                        <View style={{flexDirection:'row' , justifyContent:'space-between'}}>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -575,8 +634,7 @@ export default class DestinationList extends Component {
                               />
                             </View>
                           </View>
-                        </View>
-                        <View>
+                          <View>
                           <Text
                             style={{
                               color: 'rgba(51, 51, 51, 1)',
@@ -602,6 +660,9 @@ export default class DestinationList extends Component {
                             </Text>
                           </View>
                         </View>
+                          </View>
+                        </View>
+                        
                       </View>
                     </Card>
                   </TouchableOpacity>

@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/core';
 const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,backImgSource}) =>{
     const navigation=useNavigation();
     const [state,setState]=useState({
-        backBtn: false || backBtn,
+        backBtn: false || backBtn ,
         notiBtn: false || notiBtn,
         searchBtn : false || searchBtn,
         imgBack: false || imgBack,
@@ -22,7 +22,8 @@ const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,
         backColor : Colors.orange || backColor ,
         headerHeight : headerHeight || 200 ,
         back_img_source : backgd2 || backImgSource,
-        back_img_source2 :  backImgSource
+        back_img_source2 :  backImgSource,
+       
     })
     const gotoBack=()=>{
         navigation.goBack();
@@ -41,7 +42,7 @@ const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,
                 <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:30,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
                     {
                         state.backBtn ? (
-                            <TouchableOpacity onPress={()=>gotoBack()}>
+                            <TouchableOpacity onPress={()=>gotoBack()}  style={{backgroundColor:Colors.grey , borderRadius:20}} >
                                 <Icon name="arrow-back" type="ionicons" size={24} color={Colors.white} />
                             </TouchableOpacity>
                         ) : state.notiBtn ? (
@@ -50,12 +51,14 @@ const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,
                             </TouchableOpacity>
                         ) : <View style={{height:25,width:25}} />
                     }
-                    <Text style={{fontFamily:FontFamily.semi_bold,color:Colors.white,textAlign:"center"}}>
+                    <View style={{backgroundColor:Colors.grey , borderRadius:20}} >
+                    <Text style={{fontFamily:FontFamily.semi_bold,color:Colors.white,textAlign:"center" ,}}>
                         {name}
                     </Text>
+                    </View>
                     {
                         state.searchBtn ? (
-                            <TouchableOpacity>
+                            <TouchableOpacity >
                                 <Icon name="search1" type="antdesign" size={25} color={Colors.white} />
                             </TouchableOpacity>
                         ) : <View style={{height:25,width:25}} />

@@ -130,7 +130,7 @@ export default class ExtraRequest extends Component {
         <View
           style={{backgroundColor: '#fff', marginTop: -20, borderRadius: 20}}>
           {this.state.adver_arr.map((item, id) => {
-              console.log(')))))', item.addon_name);
+              console.log(')))))', item);
             return (
               <TouchableOpacity
                 //   onPress={()=>console.log()}
