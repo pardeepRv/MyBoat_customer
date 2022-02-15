@@ -144,6 +144,7 @@ constructor(props) {
 
        this.checkGuestUser()
        this.getMyInboxAllData1(arrayData)
+      //  console.log('object :>> ', object);
        this.showUserInbox(arrayData)
        firebaseprovider.firebaseUserGetInboxCount(arrayData);
        
@@ -159,7 +160,7 @@ constructor(props) {
 
   getMyInboxAllData1 = async (userdata) => {
     console.log('159 : getMyInboxAllData' );
-    console.log('userdata :>> ', userdata);
+   return  console.log('userdata :>> ', userdata);
    // userdata = await localStorage.getItemObject('user_arr')
     //------------------------------ firbase code get user inbox ---------------
     if (userdata != null) {

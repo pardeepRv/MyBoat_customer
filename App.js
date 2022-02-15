@@ -19,7 +19,7 @@ const App =()=>{
               backgroundColor: Colors.orange
             }} />
             {/* <StatusBar hidden /> */}
-            <StatusBar  />
+            <StatusBar backgroundColor={Colors.orange} />
             <Stacks />
             {/* <TabNav /> */}
         

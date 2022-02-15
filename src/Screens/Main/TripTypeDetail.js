@@ -53,14 +53,15 @@ export default class TripTypeDetail extends Component {
       webviewshow: false,
       booking_arr: [],
       isSelected: false,
-      selectedMethod: 0
+      selectedMethod: 0,
+      list:this.props.route.params.list
     };
   }
 
   componentDidMount() {
     this.getData('user_arr');
 
-    return console.log(this.props.route.params.item, ' hhhhhhhhhhhhh');
+    return console.log(this.props.route.params.list, ' hhhhhhhhhhhhh');
   }
 
   downloadImage = () => {
@@ -165,6 +166,9 @@ export default class TripTypeDetail extends Component {
     });
   }
 
+  ratings = () => {
+    this.props.navigation.navigate('Ratings');
+  };
   gotoBack = () => {
     this.props.navigation.goBack();
   };
@@ -257,6 +261,9 @@ export default class TripTypeDetail extends Component {
                   alignItems: 'center',
                   marginTop: 5,
                 }}>
+                  <TouchableOpacity  
+                  // onPress={() => this.ratings()}
+                  >
                 <Image
                   style={{
                     height: 40,
@@ -264,6 +271,7 @@ export default class TripTypeDetail extends Component {
                     borderRadius: 20,
                     resizeMode: 'cover',
                   }}
+                
                   source={{
                     uri:
                       config.baseURL +
@@ -278,6 +286,7 @@ export default class TripTypeDetail extends Component {
                     />
                   }
                 />
+                </TouchableOpacity>
                 <View style={{ marginLeft: '15%' }}>
                   <Text
                     style={{
@@ -713,7 +722,7 @@ export default class TripTypeDetail extends Component {
             </View>
 
           </View>
-          <View
+          { this.state.list == 1 ? (<View
             style={{
               backgroundColor: Colors.orange,
               flexDirection: 'row',
@@ -722,15 +731,41 @@ export default class TripTypeDetail extends Component {
             }}>
 
             <View>
-              <TouchableOpacity style={s.Btn1} onPress={() => this.BookNow()}>
-                <Text style={s.Btn1Text}>Book Now</Text>
+              <TouchableOpacity style={s.Btnbook} onPress={() => this.BookNow()}>
+                <Text style={s.Btn1Textbook}>Book Now</Text>
               </TouchableOpacity>
             </View>
             <View style={{ justifyContent: 'center', marginLeft: '20%' }}>
               <Text style={s.rent}>Rental Amount</Text>
               <Text style={s.rent}>KWD {this.state.advertisement?.price}</Text>
             </View>
+          </View>) : ( 
+            <View
+            style={{
+              // backgroundColor: Colors.orange,
+              // flexDirection: 'row',
+              padding: 10,
+              marginTop: 20,
+            }}>
+
+            <View 
+            // style={{backgroundColor: Colors.orange,}}
+            >
+              <TouchableOpacity style={s.Btn1}>
+                <Text style={s.Btn1Text}>Location</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ justifyContent: 'center' , flexDirection:'row' }}>
+              <TouchableOpacity style={s.Btn2}>
+                <Text style={s.Btn1Text2}>Chat Now</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={s.Btn2}>
+                <Text style={s.Btn1Text2}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
           </View>
+          ) }
+          
         </ScrollView>
       </View>
     );
@@ -779,10 +814,11 @@ const s = StyleSheet.create({
   },
   rent: {
     color: '#fff',
+    backgroundColor: Colors.orange,
     fontSize: 16,
     alignSelf: 'flex-end',
   },
-  Btn1: {
+  Btnbook: {
     height: 48,
     width: 175,
     backgroundColor: Colors.white,
@@ -796,6 +832,36 @@ const s = StyleSheet.create({
     shadowRadius: 10,
     shadowOpacity: 1,
   },
+  Btn1: {
+    height: 48,
+    width: '90%',
+    backgroundColor: Colors.orange,
+    margin: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    elevation: 3,
+    overflow: 'hidden',
+    shadowColor: Colors.orange,
+    shadowRadius: 10,
+    shadowOpacity: 1,
+  },
+  Btn2: {
+    height: 48,
+    width: 150,
+    backgroundColor: Colors.white,
+    margin: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    borderWidth:2,
+    borderColor:Colors.orange,
+    elevation: 3,
+    // overflow: 'hidden',
+    shadowColor: Colors.orange,
+    shadowRadius: 10,
+    shadowOpacity: 1,
+  },
   text: {
     fontSize: 11,
     fontFamily: FontFamily.semi_bold,
@@ -805,9 +871,18 @@ const s = StyleSheet.create({
   Btn1Text: {
     fontSize: 18,
     fontFamily: FontFamily.semi_bold,
+    color: Colors.white,
+  },
+  Btn1Textbook: {
+    fontSize: 18,
+    fontFamily: FontFamily.semi_bold,
     color: Colors.orange,
   },
-
+  Btn1Text2: {
+    fontSize: 18,
+    fontFamily: FontFamily.semi_bold,
+    color: Colors.orange,
+  },
   categery: {
     backgroundColor: '#F3F9F9',
     width: width - 40,

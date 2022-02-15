@@ -49,6 +49,7 @@ export default class ExtraRequest extends Component {
       isSelected: false,
       coupon_discount: '0.00',
       check: [],
+      isChecked:false,
       couponCode: '',
       totalPrice:
         Number(this.props.route.params.data.rent_amount) +
@@ -75,7 +76,7 @@ export default class ExtraRequest extends Component {
   //   }
 
   onChangeCheck = (select, index, id) => {
-      console.log(index, id, 'ITEEEEEEE', select.addon_product_price);
+       console.log(index, id, 'ITEEEEEEE', select.addon_product_price);
     const tempArray = [...this.state.adver_arr];
     if (!select.isChecked) {
       this.state.totalPrice =
@@ -84,8 +85,9 @@ export default class ExtraRequest extends Component {
       this.state.totalPrice =
         this.state.totalPrice - Number(select.addon_product_price);
     }
-    console.log('Total Price', this.state.totalPrice);
-    tempArray[id].addon_products[index].isChecked = !select.isChecked;
+     console.log('Total Price', this.state.totalPrice);
+    return   console.log('object :>> ', tempArray);
+    tempArray[id].addon_product_name[index].isChecked = !select.isChecked;
     this.setState({
       adver_arr: tempArray,
     });
@@ -129,7 +131,7 @@ export default class ExtraRequest extends Component {
 
         <View
           style={{backgroundColor: '#fff', marginTop: -20, borderRadius: 20}}>
-          {this.state.adver_arr.map((item, id) => {
+          {this.state.adver_arr.map((item, id , index) => {
               console.log(')))))', item);
             return (
               <TouchableOpacity
@@ -175,18 +177,73 @@ export default class ExtraRequest extends Component {
                     </View>
                     <View style={{width: '10%', padding: 0, marginTop: -13}}>
                       {/* <CheckBox
-                        // value={this.state.isSelected}
-                        //   onValueChange={setSelection}
-                        //checked={item2.checked}
-                        checked={item2.isChecked}
+                        value={this.state.isSelected}
+                          // onValueChange={setSelection}
+                        //checked={item.checked}
+                        checked={item.isChecked}
                         key={index}
-                        onPress={() => this.onChangeCheck(item2, index, id)}
+                        onPress={() => this.onChangeCheck(item, index, id)}
                         style={s.checkbox}
                       /> */}
                     </View>
                   </View>
 
               </TouchableOpacity>
+              // <TouchableOpacity
+              //   //   onPress={()=>console.log()}
+              //   activeOpacity={0.8}>
+              //   <Text
+              //     style={{
+              //       padding: 20,
+              //       fontFamily: FontFamily.semi_bold,
+              //       fontSize: 18,
+              //     }}>
+              //     {item.addon_name.toString().replace(',', ' ')}
+              //   </Text>
+              //   {item.addon_products.map((item2, index) => (
+              //     <View style={{flexDirection: 'row'}}>
+              //       <View style={{width: '10%'}}>
+              //         <Text
+              //           style={{
+              //             textAlign: 'right',
+              //             fontFamily: FontFamily.default,
+              //           }}>
+              //           {index + 1}{' '}
+              //         </Text>
+              //       </View>
+              //       <View style={{width: '35%'}}>
+              //         <Text style={{textAlign: 'left'}}>
+              //           {item2.addon_product_name}{' '}
+              //         </Text>
+              //       </View>
+
+              //       <View style={{width: '35%', textAlign: 'right'}}>
+              //         <Text
+              //           style={{
+              //             textAlign: 'right',
+              //             marginLeft: '20%',
+              //             //   padding: 10,
+              //             //   marginTop: -5,
+              //             fontFamily: FontFamily.default,
+              //           }}>
+              //           {' $'}
+              //           {item2.addon_product_price}
+              //         </Text>
+              //       </View>
+              //       <View style={{width: '10%', padding: 0, marginTop: -13}}>
+              //         <CheckBox
+              //           // value={this.state.isSelected}
+              //           //   onValueChange={setSelection}
+              //           //checked={item2.checked}
+              //           checked={item2.isChecked}
+              //           key={index}
+              //           onPress={() => this.onChangeCheck(item2, index, id)}
+              //           style={s.checkbox}
+              //         />
+              //       </View>
+              //     </View>
+              //   ))}
+              // </TouchableOpacity>
             );
           })}
           {/* <Text>

@@ -1,39 +1,17 @@
-import React, {Component, useState} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
-  Share,
-  Modal,
-  Image,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
-import {Icon, Input, Card, AirbnbRating} from 'react-native-elements';
-import Header from '../../Components/Header';
-import Header2 from '../../Components/Header2';
-import {msgProvider, msgTitle, msgText} from '../../Provider/messageProvider';
-import {
-  back_img3,
-  boat_img1,
-  Colors,
-  FontFamily,
-  Sizes,
-} from '../../Constants/Constants';
-import Ad from '../../Data/Ad';
-import Outgoing from '../../Data/Outgoing';
-import Upcoming from '../../Data/Upcoming';
-import {SliderBox} from 'react-native-image-slider-box';
-import FastImage from 'react-native-fast-image';
-import {renderNode} from 'react-native-elements/dist/helpers';
-import {apifuntion} from '../../Provider/apiProvider';
-import {config} from '../../Provider/configProvider';
 import AsyncStorage from '@react-native-community/async-storage';
-import {Calendar} from 'react-native-calendars';
+import React, { Component } from 'react';
+import {
+  ActivityIndicator, FlatList, Image, ImageBackground, Modal, Share, StyleSheet, Text, TouchableOpacity, View
+} from 'react-native';
+import { Calendar } from 'react-native-calendars';
+import { AirbnbRating, Card, colors, Icon } from 'react-native-elements';
+import Header2 from '../../Components/Header2';
+import {
+  Colors,
+  FontFamily
+} from '../../Constants/Constants';
+import { config } from '../../Provider/configProvider';
+import { msgProvider } from '../../Provider/messageProvider';
 //import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 export default class DestinationList extends Component {
@@ -82,6 +60,7 @@ export default class DestinationList extends Component {
       unavailabe_arr: 'NA',
       bookingDateTimeStart: '',
       bookingDateTimeEnd: '',
+      isLoading: false
     };
 
     // console.log(this.props.navigation.state.params.item)
@@ -94,7 +73,7 @@ export default class DestinationList extends Component {
 
     console.log('date ', this?.props?.route?.params?.trip_type,);
 
-    this.setState({getdate: date});
+    this.setState({ getdate: date });
 
     console.log(this.state.destination);
 
@@ -102,6 +81,9 @@ export default class DestinationList extends Component {
   }
 
   getData = async key => {
+    this.setState({
+      isLoading: true
+    })
     console.log('local ' + key);
     try {
       const value = await AsyncStorage.getItem(key);
@@ -113,7 +95,7 @@ export default class DestinationList extends Component {
         const arrayData = JSON.parse(value);
 
         console.log(arrayData);
-        this.setState({localData: arrayData});
+        this.setState({ localData: arrayData, isLoading: false });
         this.ProfileDetail(arrayData.user_id);
       }
     } catch (e) {
@@ -129,15 +111,15 @@ export default class DestinationList extends Component {
   }
 
   Filter = () => {
-    this.setState({modalVisible: true});
+    this.setState({ modalVisible: true });
   };
 
   Selectdate = () => {
-    this.setState({modalVisible3: true});
+    this.setState({ modalVisible3: true });
   };
 
   Price = () => {
-    this.setState({modalVisible2: true});
+    this.setState({ modalVisible2: true });
   };
 
   async ProfileDetail(user_id) {
@@ -159,15 +141,15 @@ export default class DestinationList extends Component {
       '&filter_rating=0&filter_guest=0&filter_cabin=0&filter_price=0&filter_toilet=0';
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
 
-     console.log(url , 'user details url ');
+    console.log(url, 'user details url ');
     try {
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-       console.log('json  ', json);
+      console.log('json  ', json);
 
       if (json.success == 'true') {
-        this.setState({adver_arr: json.adver_arr!='NA'?json.adver_arr:[]});
+        this.setState({ adver_arr: json.adver_arr != 'NA' ? json.adver_arr : [] });
       } else {
       }
 
@@ -175,14 +157,14 @@ export default class DestinationList extends Component {
     } catch (error) {
       console.log(error);
     } finally {
-      this.setState({isLoading: false});
+      this.setState({ isLoading: false });
     }
   }
 
   _selectDate = async date => {
     console.log('date ', date);
 
-    this.setState({selected_date: date});
+    this.setState({ selected_date: date });
     if (this.state.unavailabe_arr != 'NA') {
       var i = this.state.unavailabe_arr.findIndex(x => x.date == date);
       if (i >= 0) {
@@ -196,7 +178,7 @@ export default class DestinationList extends Component {
         };
         this.setState({
           date: date,
-          calender_arr: {...this.state.calender_arr, date: date},
+          calender_arr: { ...this.state.calender_arr, date: date },
         });
         // console.log(this.state.calender_arr);
 
@@ -217,10 +199,10 @@ export default class DestinationList extends Component {
       }
     } else {
       delete this.state.calender_arr[this.state.date];
-      this.state.calender_arr[date] = {selected: true, selectedColor: Colors.orange};
+      this.state.calender_arr[date] = { selected: true, selectedColor: Colors.orange };
       this.setState({
         date: date,
-        calender_arr: {...this.state.calender_arr, date: date},
+        calender_arr: { ...this.state.calender_arr, date: date },
       });
 
       let idle_hours = this.state.adver_arr.idle_time;
@@ -282,14 +264,14 @@ export default class DestinationList extends Component {
     } catch (error) {
       console.log(error);
     } finally {
-      this.setState({isLoading: false});
+      this.setState({ isLoading: false });
     }
   }
- 
-  
 
-   onShare = async (imgUrl) => {
-     console.log(imgUrl,'link');
+
+
+  onShare = async (imgUrl) => {
+    console.log(imgUrl, 'link');
     try {
       const result = await Share.share({
         title: 'Lokahi fishing',
@@ -337,20 +319,20 @@ export default class DestinationList extends Component {
       this.state.short;
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
 
-     console.log(url);
+    console.log(url);
     try {
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-        console.log('json  ', json);
+      console.log('json  ', json);
 
       if (json.success == 'true') {
-        this.setState({modalVisible: false});
-        this.setState({modalVisible2: false});
-        this.setState({modalVisible3: false});
+        this.setState({ modalVisible: false });
+        this.setState({ modalVisible2: false });
+        this.setState({ modalVisible3: false });
 
 
-        this.setState({adver_arr: json.adver_arr});
+        this.setState({ adver_arr: json.adver_arr });
       } else {
       }
 
@@ -358,14 +340,25 @@ export default class DestinationList extends Component {
     } catch (error) {
       console.log(error);
     } finally {
-      this.setState({isLoading: false});
+      this.setState({ isLoading: false });
     }
+  }
+
+  _listEmptyComponent = () => {
+    return (
+      <View style={{
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        {this.state.isLoading && <ActivityIndicator size={30} color={Colors.orange} />}
+      </View>
+    )
   }
 
   render() {
     console.log('this.state.adver_arr :>> ', this.state.adver_arr);
     return (
-      <View style={{backgroundColor: Colors.white, flex: 1}}>
+      <View style={{ backgroundColor: Colors.white, flex: 1 }}>
         <Header2
           imgBack={true}
           backBtn={true}
@@ -376,10 +369,7 @@ export default class DestinationList extends Component {
           name={this.state.destination.destination_name}
           searchBtn={false}
           headerHeight={300}
-        
         />
-
-        
         <View
           style={{
             backgroundColor: '#fff',
@@ -392,12 +382,12 @@ export default class DestinationList extends Component {
             borderColor: Colors.orange,
             borderWidth: 1,
             shadowColor: '#fff',
-            shadowOffset: {width: 500, height: 500},
+            shadowOffset: { width: 500, height: 500 },
             shadowOpacity: 0.8,
             shadowRadius: 0,
             elevation: 5,
           }}>
-          <TouchableOpacity style={s.col} onPress={()=>this.Price()}>
+          <TouchableOpacity style={s.col} onPress={() => this.Price()}>
             <Image
               source={require('../../../assets/icons/updown.png')}
               style={s.icons}
@@ -413,7 +403,7 @@ export default class DestinationList extends Component {
               Sort By{' '}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={s.col} onPress={()=>this.Filter()}>
+          <TouchableOpacity style={s.col} onPress={() => this.Filter()}>
             <Image
               source={require('../../../assets/icons/filter_icon.png')}
               style={s.icons}
@@ -431,14 +421,14 @@ export default class DestinationList extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-          onPress={()=> this.Goto()}
+            onPress={() => this.Goto()}
             style={[
               s.col,
-              {borderRightColor: 'transparent', borderRightWidth: 0},
+              { borderRightColor: 'transparent', borderRightWidth: 0 },
             ]}>
             <Image
               source={require('../../../assets/icons/map_icon.png')}
-              style={[s.icons, {height: 18}]}
+              style={[s.icons, { height: 18 }]}
               resizeMode="contain"
             />
             <Text
@@ -467,7 +457,7 @@ export default class DestinationList extends Component {
             borderRadius: 30,
             borderColor: Colors.orange,
             shadowColor: '#fff',
-            shadowOffset: {width: 500, height: 500},
+            shadowOffset: { width: 500, height: 500 },
             shadowOpacity: 0.8,
             shadowRadius: 0,
             elevation: 5,
@@ -477,24 +467,27 @@ export default class DestinationList extends Component {
 
         <View
           style={{
-            marginTop: '15%',
-            marginBottom: '60%',
+            marginTop: '10%',
+            // marginBottom: '60%',
             borderRadius: 20,
             backgroundColor: Colors.white,
+            flex: 1
           }}>
           <FlatList
             data={this.state.adver_arr}
             showsVerticalScrollIndicator={false}
-            renderItem={({item}) => {
-                console.log('item in clo:>> destination list ', item);
+            renderItem={({ item }) => {
+              console.log('item in clo:>> destination list ', item);
               return (
-                <View style={{padding: 5}}>
+                <View style={{ padding: 5 }}>
                   <TouchableOpacity
                     onPress={() =>
                       this.props.navigation.navigate('TripTypeDetail', {
                         item: item,
+                        list: '1'
                       })
-                    }>
+                    }
+                  >
                     <Card
                       containerStyle={{
                         padding: 0,
@@ -506,31 +499,31 @@ export default class DestinationList extends Component {
                       }}>
                       <ImageBackground
                         style={s.ImageBackground}
-                        resizeMode="contain"
+                        resizeMode="cover"
                         imageStyle={s.imgStyle}
-                        source={{uri: config.baseURL + 'images/' + item.image}}>
-                        
+                        source={{ uri: config.baseURL + 'images/' + item.image }}>
+
                         <TouchableOpacity
-                          style={{position: 'absolute', right: 10,padding: 3, top: 7 , backgroundColor:Colors.gray1 , borderRadius:20}}
+                          style={{ position: 'absolute', right: 10, padding: 3, top: 7, backgroundColor: Colors.gray1, borderRadius: 20 }}
                           onPress={() => this.addFavorite(item)}
-                          >
-                            {item.fav == "yes" ?( <Icon
+                        >
+                          {item.fav == "yes" ? (<Icon
                             name="heart"
                             size={20}
                             type="entypo"
-                          
-                            color={Colors.red }
+
+                            color={Colors.red}
                           />) : (<Icon
                             name="heart"
                             size={20}
                             type="entypo"
-                            color={Colors.white }
+                            color={Colors.white}
                           />)}
-                          
+
                         </TouchableOpacity>
                         <TouchableOpacity
-                        onPress={() => this.onShare(config.baseURL + 'images/' + item.image)}
-                          style={{position: 'absolute', right: 50, top: 7 ,padding:3,backgroundColor:Colors.gray1 , borderRadius:20}}>
+                          onPress={() => this.onShare(config.baseURL + 'images/' + item.image)}
+                          style={{ position: 'absolute', right: 50, top: 7, padding: 3, backgroundColor: Colors.gray1, borderRadius: 20 }}>
                           <Icon
                             name="share"
                             size={20}
@@ -562,10 +555,10 @@ export default class DestinationList extends Component {
                       </ImageBackground>
                       {/*  */}
                       <View style={s.SEC3}>
-                        <View style={{flex:1 }}>
-                          <View style={{flexDirection:'row' ,height:30,  justifyContent:'space-between',width:'100%' , alignItems:'center'}}>
-                          <Text style={s.title}>{item.boat_name}</Text>
-                          {/* <TouchableOpacity
+                        <View style={{ flex: 1 }}>
+                          <View style={{ flexDirection: 'row', height: 30, justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                            <Text style={s.title}>{item.boat_name}</Text>
+                            {/* <TouchableOpacity
                           style={{position: 'absolute', right: 10,padding: 10, top: -5}}
                           onPress={() => this.addFavorite(item)}>
                             {item.fav == "yes" ?( <Icon
@@ -590,79 +583,79 @@ export default class DestinationList extends Component {
                             color={Colors.black}
                           />
                         </TouchableOpacity> */}
-                        </View>
-                        <View style={{flexDirection:'row' , justifyContent:'space-between'}}>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              marginTop: 5,
-                            }}>
-                            <Image
+                          </View>
+                          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View
                               style={{
-                                height: 40,
-                                width: 40,
-                                borderRadius: 20,
-                                resizeMode: 'cover',
-                              }}
-                              source={{
-                                uri: config.baseURL + 'images/' + item.user_image,
-                              }}
-                              PlaceholderContent={
-                                <ActivityIndicator
-                                  size={30}
-                                  color={Colors.orange}
-                                  style={{alignSelf: 'center'}}
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                marginTop: 5,
+                              }}>
+                              <Image
+                                style={{
+                                  height: 40,
+                                  width: 40,
+                                  borderRadius: 20,
+                                  resizeMode: 'cover',
+                                }}
+                                source={{
+                                  uri: config.baseURL + 'images/' + item.user_image,
+                                }}
+                                PlaceholderContent={
+                                  <ActivityIndicator
+                                    size={30}
+                                    color={Colors.orange}
+                                    style={{ alignSelf: 'center' }}
+                                  />
+                                }
+                              />
+                              <View style={{ marginLeft: 5 }}>
+                                <Text
+                                  style={{
+                                    color: 'rgba(51, 51, 51, 1)',
+                                    fontSize: 14,
+                                    fontFamily: FontFamily.default,
+                                  }}>
+                                  {item.user_name}
+                                </Text>
+                                <AirbnbRating
+                                  showRating={false}
+                                  size={12}
+                                  isDisabled
+                                  defaultRating={item.rating}
+                                  starContainerStyle={{ alignSelf: 'flex-start' }}
                                 />
-                              }
-                            />
-                            <View style={{marginLeft: 5}}>
+                              </View>
+                            </View>
+                            <View>
                               <Text
                                 style={{
                                   color: 'rgba(51, 51, 51, 1)',
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   fontFamily: FontFamily.default,
                                 }}>
-                                {item.user_name}
+                                {item?.destination_name}
                               </Text>
-                              <AirbnbRating
-                                showRating={false}
-                                size={12}
-                                isDisabled
-                                defaultRating={item.rating}
-                                starContainerStyle={{alignSelf: 'flex-start'}}
-                              />
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  alignSelf: 'flex-end',
+                                }}>
+                                <Icon name="person" size={14} />
+                                <Text
+                                  style={{
+                                    color: 'rgba(51, 51, 51, 1)',
+                                    fontSize: 10,
+                                    fontFamily: FontFamily.default,
+                                  }}>
+                                  {item?.no_of_people} Person
+                                </Text>
+                              </View>
                             </View>
                           </View>
-                          <View>
-                          <Text
-                            style={{
-                              color: 'rgba(51, 51, 51, 1)',
-                              fontSize: 12,
-                              fontFamily: FontFamily.default,
-                            }}>
-                            {item?.destination_name}
-                          </Text>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              alignSelf: 'flex-end',
-                            }}>
-                            <Icon name="person" size={14} />
-                            <Text
-                              style={{
-                                color: 'rgba(51, 51, 51, 1)',
-                                fontSize: 10,
-                                fontFamily: FontFamily.default,
-                              }}>
-                              {item?.no_of_people} Person
-                            </Text>
-                          </View>
                         </View>
-                          </View>
-                        </View>
-                        
+
                       </View>
                     </Card>
                   </TouchableOpacity>
@@ -670,18 +663,15 @@ export default class DestinationList extends Component {
               );
             }}
             keyExtractor={(i, ind) => ind}
-            style={
-              {
-                // marginTop:30
-              }
-            }
             contentInsetAdjustmentBehavior="automatic"
             contentContainerStyle={{
               paddingBottom: 10,
-              //  height:"100%"
             }}
+            ListEmptyComponent={this._listEmptyComponent}
+
           />
         </View>
+
         <Text>
           {'\n'}
           {'\n'}
@@ -693,7 +683,7 @@ export default class DestinationList extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => {
             // this.closeButtonFunction()
-            this.setState({modalVisible: false});
+            this.setState({ modalVisible: false });
           }}>
           <View
             style={{
@@ -735,10 +725,10 @@ export default class DestinationList extends Component {
               Location
             </Text>
 
-            <View style={{flexDirection: 'row', marginTop: -10}}>
-              <View style={{width: '30%'}}>
+            <View style={{ flexDirection: 'row', marginTop: -10 }}>
+              <View style={{ width: '30%' }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({location: 'fail'})}>
+                  onPress={() => this.setState({ location: 'fail' })}>
                   <View
                     style={{
                       borderColor:
@@ -766,9 +756,9 @@ export default class DestinationList extends Component {
                 </TouchableOpacity>
               </View>
 
-              <View style={{width: '30%'}}>
+              <View style={{ width: '30%' }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({location: 'Al Jhara'})}>
+                  onPress={() => this.setState({ location: 'Al Jhara' })}>
                   <View
                     style={{
                       borderColor:
@@ -810,8 +800,8 @@ export default class DestinationList extends Component {
               Cabin
             </Text>
 
-            <View style={{flexDirection: 'row', marginTop: -10}}>
-              <TouchableOpacity onPress={() => this.setState({cabin: '1'})}>
+            <View style={{ flexDirection: 'row', marginTop: -10 }}>
+              <TouchableOpacity onPress={() => this.setState({ cabin: '1' })}>
                 <View
                   style={{
                     borderColor: this.state.cabin != '1' ? 'grey' : '#fff',
@@ -834,7 +824,7 @@ export default class DestinationList extends Component {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => this.setState({cabin: '2'})}>
+              <TouchableOpacity onPress={() => this.setState({ cabin: '2' })}>
                 <View
                   style={{
                     borderColor: this.state.cabin != '2' ? 'grey' : '#fff',
@@ -857,7 +847,7 @@ export default class DestinationList extends Component {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => this.setState({cabin: '3'})}>
+              <TouchableOpacity onPress={() => this.setState({ cabin: '3' })}>
                 <View
                   style={{
                     borderColor: this.state.cabin != '3' ? 'grey' : '#fff',
@@ -880,7 +870,7 @@ export default class DestinationList extends Component {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => this.setState({cabin: '4'})}>
+              <TouchableOpacity onPress={() => this.setState({ cabin: '4' })}>
                 <View
                   style={{
                     borderColor: this.state.cabin != '4' ? 'grey' : '#fff',
@@ -903,7 +893,7 @@ export default class DestinationList extends Component {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => this.setState({cabin: '5'})}>
+              <TouchableOpacity onPress={() => this.setState({ cabin: '5' })}>
                 <View
                   style={{
                     borderColor: this.state.cabin != '5' ? 'grey' : '#fff',
@@ -937,10 +927,10 @@ export default class DestinationList extends Component {
               Type Gear
             </Text>
 
-            <View style={{flexDirection: 'row', marginTop: -10}}>
-              <View style={{width: '30%'}}>
+            <View style={{ flexDirection: 'row', marginTop: -10 }}>
+              <View style={{ width: '30%' }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({type_gear: 'full'})}>
+                  onPress={() => this.setState({ type_gear: 'full' })}>
                   <View
                     style={{
                       borderColor:
@@ -968,9 +958,9 @@ export default class DestinationList extends Component {
                 </TouchableOpacity>
               </View>
 
-              <View style={{width: '30%'}}>
+              <View style={{ width: '30%' }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({type_gear: 'half'})}>
+                  onPress={() => this.setState({ type_gear: 'half' })}>
                   <View
                     style={{
                       borderColor:
@@ -998,9 +988,9 @@ export default class DestinationList extends Component {
                 </TouchableOpacity>
               </View>
 
-              <View style={{width: '30%'}}>
+              <View style={{ width: '30%' }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({type_gear: 'no'})}>
+                  onPress={() => this.setState({ type_gear: 'no' })}>
                   <View
                     style={{
                       borderColor:
@@ -1037,9 +1027,9 @@ export default class DestinationList extends Component {
               Food
             </Text>
 
-            <View style={{flexDirection: 'row', marginTop: -10}}>
+            <View style={{ flexDirection: 'row', marginTop: -10 }}>
               <TouchableOpacity
-                onPress={() => this.setState({food: 'Vid Food'})}>
+                onPress={() => this.setState({ food: 'Vid Food' })}>
                 <View
                   style={{
                     borderColor:
@@ -1066,7 +1056,7 @@ export default class DestinationList extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => this.setState({food: 'Indian Food'})}>
+                onPress={() => this.setState({ food: 'Indian Food' })}>
                 <View
                   style={{
                     borderColor:
@@ -1104,9 +1094,9 @@ export default class DestinationList extends Component {
               Star Rating
             </Text>
 
-            <View style={{flexDirection: 'row', marginTop: -10}}>
-              <View style={{width: '30%'}}>
-                <TouchableOpacity onPress={() => this.setState({rating: '1'})}>
+            <View style={{ flexDirection: 'row', marginTop: -10 }}>
+              <View style={{ width: '30%' }}>
+                <TouchableOpacity onPress={() => this.setState({ rating: '1' })}>
                   <View
                     style={{
                       borderColor: this.state.rating != '1' ? 'grey' : '#fff',
@@ -1132,8 +1122,8 @@ export default class DestinationList extends Component {
                 </TouchableOpacity>
               </View>
 
-              <View style={{width: '30%'}}>
-                <TouchableOpacity onPress={() => this.setState({rating: '2'})}>
+              <View style={{ width: '30%' }}>
+                <TouchableOpacity onPress={() => this.setState({ rating: '2' })}>
                   <View
                     style={{
                       borderColor: this.state.rating != '2' ? 'grey' : '#fff',
@@ -1159,8 +1149,8 @@ export default class DestinationList extends Component {
                 </TouchableOpacity>
               </View>
 
-              <View style={{width: '30%'}}>
-                <TouchableOpacity onPress={() => this.setState({rating: '3'})}>
+              <View style={{ width: '30%' }}>
+                <TouchableOpacity onPress={() => this.setState({ rating: '3' })}>
                   <View
                     style={{
                       borderColor: this.state.rating != '3' ? 'grey' : '#fff',
@@ -1187,9 +1177,9 @@ export default class DestinationList extends Component {
               </View>
             </View>
 
-            <View style={{flexDirection: 'row'}}>
-              <View style={{width: '30%'}}>
-                <TouchableOpacity onPress={() => this.setState({rating: '4'})}>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ width: '30%' }}>
+                <TouchableOpacity onPress={() => this.setState({ rating: '4' })}>
                   <View
                     style={{
                       borderColor: this.state.rating != '4' ? 'grey' : '#fff',
@@ -1215,8 +1205,8 @@ export default class DestinationList extends Component {
                 </TouchableOpacity>
               </View>
 
-              <View style={{width: '30%'}}>
-                <TouchableOpacity onPress={() => this.setState({rating: '5'})}>
+              <View style={{ width: '30%' }}>
+                <TouchableOpacity onPress={() => this.setState({ rating: '5' })}>
                   <View
                     style={{
                       borderColor: this.state.rating != '5' ? 'grey' : '#fff',
@@ -1254,7 +1244,7 @@ export default class DestinationList extends Component {
           visible={this.state.modalVisible2}
           onRequestClose={() => {
             // this.closeButtonFunction()
-            this.setState({modalVisible2: false});
+            this.setState({ modalVisible2: false });
           }}>
           <View
             style={{
@@ -1276,10 +1266,10 @@ export default class DestinationList extends Component {
               </Text>
             </View>
 
-            <View style={{flexDirection: 'row', marginTop: '10%'}}>
-              <View style={{width: '50%'}}>
+            <View style={{ flexDirection: 'row', marginTop: '10%' }}>
+              <View style={{ width: '50%' }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({short: 'Price_low_high'})}>
+                  onPress={() => this.setState({ short: 'Price_low_high' })}>
                   <View
                     style={{
                       borderColor:
@@ -1310,9 +1300,9 @@ export default class DestinationList extends Component {
                 </TouchableOpacity>
               </View>
 
-              <View style={{width: '50%'}}>
+              <View style={{ width: '50%' }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({short: 'Price_high_low'})}>
+                  onPress={() => this.setState({ short: 'Price_high_low' })}>
                   <View
                     style={{
                       borderColor:
@@ -1344,10 +1334,10 @@ export default class DestinationList extends Component {
               </View>
             </View>
 
-            <View style={{flexDirection: 'row'}}>
-              <View style={{width: '50%'}}>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ width: '50%' }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({short: 'Boat_small_large'})}>
+                  onPress={() => this.setState({ short: 'Boat_small_large' })}>
                   <View
                     style={{
                       borderColor:
@@ -1380,9 +1370,9 @@ export default class DestinationList extends Component {
                 </TouchableOpacity>
               </View>
 
-              <View style={{width: '50%'}}>
+              <View style={{ width: '50%' }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({short: 'Boat_large_small'})}>
+                  onPress={() => this.setState({ short: 'Boat_large_small' })}>
                   <View
                     style={{
                       borderColor:
@@ -1428,7 +1418,7 @@ export default class DestinationList extends Component {
           visible={this.state.modalVisible3}
           onRequestClose={() => {
             // this.closeButtonFunction()
-            this.setState({modalVisible3: false});
+            this.setState({ modalVisible3: false });
           }}>
           <View
             style={{
@@ -1438,7 +1428,7 @@ export default class DestinationList extends Component {
               fontFamily: 'Montserrat-Regular',
               borderRadius: 30,
             }}>
-            <View style={{marginTop: '10%'}}>
+            <View style={{ marginTop: '10%' }}>
               <Calendar
                 minDate={new Date()}
                 markedDates={this.state.calender_arr}
@@ -1475,7 +1465,7 @@ const s = StyleSheet.create({
     borderRightColor: '#39DCE5',
     borderRightWidth: 0.8,
   },
-  icons: {height: 15, width: 15},
+  icons: { height: 15, width: 15 },
   btn1: {
     height: 90,
     width: 60,
@@ -1613,7 +1603,7 @@ const s = StyleSheet.create({
     borderStyle: 'solid',
     backgroundColor: 'transparent',
     alignItems: 'center',
-    transform: [{rotate: '-45deg'}],
+    transform: [{ rotate: '-45deg' }],
     marginTop: 19.2,
     marginLeft: -26,
   },

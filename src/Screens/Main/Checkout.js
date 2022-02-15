@@ -12,6 +12,7 @@ import {
   FlatList,
   Image,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { Icon, Input, Card, AirbnbRating } from 'react-native-elements';
 import Header from '../../Components/Header';
@@ -39,6 +40,7 @@ import { WebView } from 'react-native-webview';
 import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
 import moment from 'moment';
 import { CheckBox } from 'react-native-elements';
+import Header2 from '../../Components/Header2';
 
 export default class Checkout extends Component {
   constructor(props) {
@@ -56,6 +58,7 @@ export default class Checkout extends Component {
       createTime: '',
       isConnected: true,
       isSuccess: false,
+      isfailure: false,
       selectedPaymentMethod: 0,
       paymentMethod: [
         {
@@ -86,6 +89,10 @@ export default class Checkout extends Component {
     console.log(this.state.adver_arr);
   }
 
+  gotoBack = () => {
+    this.setState({ webviewshow: false });
+  };
+
   _onNavigationStateChange(webViewState) {
     webViewState.canGoBack = false;
     if (webViewState.loading == false) {
@@ -112,12 +119,10 @@ export default class Checkout extends Component {
               // alert(merchantTxnId);
             }
           }
-          console.log('object :>> ', txnId, merchantTxnId, this.state.booking_id);
           this._submitForPayment(txnId, merchantTxnId, this.state.booking_id); // no need to comment just for iur convience
         } else if (t == 'failure.php') {
           msgProvider.toast(Lang_chg.payment_failed[config.language], 'center');
-          this.setState({ webviewshow: false });
-          // this._submitForPayment(txnId, merchantTxnId, this.state.booking_id);
+          this.setState({ webviewshow: false, isfailure: true });
           // this.props.navigation.navigate('Explore');
           return false;
         }
@@ -153,12 +158,12 @@ export default class Checkout extends Component {
     apifuntion
       .postApi(url, form_data)
       .then(obj => {
-        console.log(obj, 'obj in heckout ....')
+         console.log(obj, 'obj in heckout ....')
         this.setState({ loading: false });
         return obj.json();
       })
       .then(obj => {
-        console.log(obj);
+         console.log(obj);
 
         if (obj.success == 'true') {
           this.setState({
@@ -178,7 +183,8 @@ export default class Checkout extends Component {
           // });
           //    this.props.navigation.navigate('RequestPayment',{'user_id_post':this.state.user.user_id_post,'adver_arr':this.state.adver_arr})
         } else {
-          msgProvider.toast(obj.msg[config.language], 'center');
+          alert(obj.msg[config.language])
+          // msgProvider.toast(obj.msg[config.language], 'center');
         }
       })
       .catch(error => {
@@ -232,8 +238,6 @@ export default class Checkout extends Component {
       );
     }
   };
-
-
 
   _submitWidthDrowReq = async (
     txnId,
@@ -374,6 +378,47 @@ export default class Checkout extends Component {
             <TouchableOpacity style={[s.Btn1, { width: '90%' }]} onPress={() => {
               this.setState({ isSuccess: false })
               this.props.navigation.navigate('Trip')
+            }}>
+              <Text style={[s.Btn1Text]}>Continue</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
+  renderFailureModal = () => {
+    return (
+      <Modal
+        transparent={true}
+        visible
+      >
+        <View
+          // onPress={() => this.hideDatePicker()}
+          activeOpacity={1}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}>
+          <View
+            style={{
+              height: 270,
+              width: '90%',
+              backgroundColor: Colors.white,
+              borderRadius: 20,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+            <Image style={{ height: 55, width: 55 }} source={require('../../../assets/icons/Failure.png')} resizeMode='contain' />
+            <Text style={{ fontSize: 15, fontFamily: FontFamily.semi_bold, color: Colors.black, lineHeight: 40 }}>Failure</Text>
+            <Text style={{ textAlign: 'center', fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 20 }}>Wallet Balance is not available.Please Recharge your wallet</Text>
+            <Text style={{ fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 30 }}>Booking ID :- #{this.state.booking_id}</Text>
+            {/* <Text style={{ fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 30 }}>{moment(this.state.createTime).format('DD-MM-YYYY, hh:mmA')}</Text> */}
+            <TouchableOpacity style={[s.Btn1, { width: '90%' }]} onPress={() => {
+              this.setState({ isfailure: false })
+              this.props.navigation.navigate('Home')
             }}>
               <Text style={[s.Btn1Text]}>Continue</Text>
             </TouchableOpacity>
@@ -709,6 +754,27 @@ export default class Checkout extends Component {
               paddingLeft: 20,
               paddingRight: 20,
             }}>
+            <TouchableOpacity
+
+              style={{
+                // marginBottom: -50,
+                alignItems: 'flex-start',
+                marginTop: 35,
+                height: 50,
+                // marginLeft: 50,
+                marginRight: 20,
+                // backgroundColor: Colors.gray,
+                borderRadius: 25
+
+              }}>
+              <Icon
+                onPress={() => this.gotoBack()}
+                name="x-circle"
+                type="feather"
+                size={26}
+                color={Colors.orange}
+              />
+            </TouchableOpacity>
             <View
               style={{
                 flexDirection: 'row',
@@ -758,6 +824,8 @@ export default class Checkout extends Component {
           </View>
         </Modal>
         {this.state.isSuccess && this.renderSuccessModal()}
+        {this.state.isfailure && this.renderFailureModal()}
+
       </View>
     );
   }

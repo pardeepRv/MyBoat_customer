@@ -184,7 +184,7 @@ export default class RequestPayment extends Component {
         'rent_amount': this.state.advertisement?.price,
         'minimum_hours': this.state.adver_arr.minimum_hours,
         'discount': this.state.adver_arr.discount,
-        'extra_rent_amt':this.state.hour && Number(this.state.hour) * Number(this.state.adver_arr.extra_price),
+        'extra_rent_amt': Number(this.state.hour) * Number(this.state.adver_arr.extra_price),
         'payment_type': 1,
         'other_user_id': this.state.adver_arr.user_id,
         'coupon_code': this.state.adver_arr.coupon_code,

@@ -51,14 +51,13 @@ export default class Login extends Component {
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       console.log('focus :>> ');
-       this.setState({ isLoading: true });
-       this.Promotion();
-       this.getUsers();
-       //firebaseprovider.getAllUsers();
-       //firebaseprovider.messagecountforfooter();
-       console.log('des', this.state.trips_arr)
-   
-       this.getData('user_arr');
+      this.Promotion();
+      this.getUsers();
+      //firebaseprovider.getAllUsers();
+      //firebaseprovider.messagecountforfooter();
+      console.log('des', this.state.trips_arr)
+
+      this.getData('user_arr');
     });
 
     // this.backHandler = BackHandler.addEventListener(
@@ -170,7 +169,7 @@ export default class Login extends Component {
       });
     }
 
-   
+
 
     this.setState({
       destinations: json.destinations_arr,
@@ -362,7 +361,7 @@ export default class Login extends Component {
               }
               //currentImageEmitter={index => console.warn(`image ${index} pressed`)}
               dotColor={Colors.orange}
-              resizeMethod={'resize'}
+              // resizeMethod={'resize'}
               resizeMode={'cover'}
               inactiveDotColor="#90A4AE"
               paginationBoxVerticalPadding={10}
@@ -384,7 +383,7 @@ export default class Login extends Component {
                 padding: 0,
                 margin: 0,
                 backgroundColor: 'rgba(128, 128, 128, 0.92)',
-                transform: [{ rotate: '45deg' }],
+                // transform: [{ rotate: '45deg' }],
               }}
               autoplay
               ImageComponentStyle={{
@@ -544,7 +543,7 @@ export default class Login extends Component {
       }}>
       <Text>Close</Text>
     </TouchableOpacity> */}
-    <Text
+            <Text
               style={{
                 color: Colors.orange,
                 alignSelf: 'center',
@@ -554,29 +553,29 @@ export default class Login extends Component {
               }}>
               Type Of Trip
             </Text>
-       <View style={{flexDirection:'row' , justifyContent:'flex-end'}}>
-            
-            <TouchableOpacity
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
 
-            style={{
-              // marginBottom: -50,
-              alignItems: 'flex-start',
-              marginTop: -25,
-              // marginLeft: 50,
-              marginRight:20,
-              // backgroundColor: Colors.gray,
-              borderRadius: 25
+              <TouchableOpacity
 
-            }}>
-            <Icon
-              onPress={() => this.gotoBack()}
-              name="x-circle"
-              type="feather"
-              size={26}
-              color={Colors.orange}
-            />
-          </TouchableOpacity>
-          </View>
+                style={{
+                  // marginBottom: -50,
+                  alignItems: 'flex-start',
+                  marginTop: -25,
+                  // marginLeft: 50,
+                  marginRight: 20,
+                  // backgroundColor: Colors.gray,
+                  borderRadius: 25
+
+                }}>
+                <Icon
+                  onPress={() => this.gotoBack()}
+                  name="x-circle"
+                  type="feather"
+                  size={26}
+                  color={Colors.orange}
+                />
+              </TouchableOpacity>
+            </View>
             <FlatList
               data={this.state.trips_arr}
               //  horizontal={true}

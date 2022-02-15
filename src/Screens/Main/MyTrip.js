@@ -78,9 +78,16 @@ export class MyTrip extends Component {
     this.getMyTrips();
   }
   CardView = ({ item }) => {
-    console.log(item)
+     console.log(item)
     return <Card containerStyle={s.Card}>
-      <TouchableOpacity>
+      <TouchableOpacity 
+      // onPress={() =>
+      //                 this.props.navigation.navigate('TripTypeDetail', {
+      //                   item: item,
+      //                   list:'2'
+      //                 })
+      //               }
+                    >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
             source={{ uri: config.baseURL + 'images/' + item.image }}
@@ -121,6 +128,7 @@ export class MyTrip extends Component {
                   },
                 ]}>
                 {item.status}
+                {/* confirmed */}
               </Text>
             </View>
           </View>
@@ -130,6 +138,7 @@ export class MyTrip extends Component {
   };
 
   render() {
+    console.log('object :>> ', this.state.myTrips);
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
         <Header name="My Trip" searchBtn={true} imgBack={true} headerHeight={250} />
