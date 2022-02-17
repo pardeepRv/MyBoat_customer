@@ -790,14 +790,15 @@
     "minimatch" "^3.0.4"
     "strip-json-comments" "^3.1.1"
 
-"@expo/config-plugins@^4.0.3":
-  "integrity" "sha512-3wv0uhG5U5O4BGX2qm4gjFK3jvYVTy0raFsR6B/2zoBNgD3lXF8Ae5osVN118aKNZb2B7SMx3V7McunZhf7RXg=="
-  "resolved" "https://registry.npmjs.org/@expo/config-plugins/-/config-plugins-4.0.9.tgz"
-  "version" "4.0.9"
+"@expo/config-plugins@^4.0.18":
+  "integrity" "sha512-tW4bnrnKhn+PPHF8wf1KAoubICAVUHW8CcagvyFqaRIzeh6yavMIOsQShxOVTbgx7LzSyymZ1nEs45yCGAiMfA=="
+  "resolved" "https://registry.npmjs.org/@expo/config-plugins/-/config-plugins-4.0.18.tgz"
+  "version" "4.0.18"
   dependencies:
-    "@expo/config-types" "^43.0.1"
+    "@expo/config-types" "^44.0.0"
     "@expo/json-file" "8.2.34"
-    "@expo/plist" "0.0.16"
+    "@expo/plist" "0.0.17"
+    "@expo/sdk-runtime-versions" "^1.0.0"
     "@react-native/normalize-color" "^2.0.0"
     "chalk" "^4.1.2"
     "debug" "^4.3.1"
@@ -811,10 +812,10 @@
     "xcode" "^3.0.1"
     "xml2js" "0.4.23"
 
-"@expo/config-types@^43.0.1":
-  "integrity" "sha512-EtllpCGDdB/UdwAIs5YXJwBLpbFQNdlLLrxIvoILA9cXrpQMWkeDCT9lQPJzFRMFcLUaMuGvkzX2tR4tx5EQFQ=="
-  "resolved" "https://registry.npmjs.org/@expo/config-types/-/config-types-43.0.1.tgz"
-  "version" "43.0.1"
+"@expo/config-types@^44.0.0":
+  "integrity" "sha512-d+gpdKOAhqaD5RmcMzGgKzNtvE1w+GCqpFQNSXLliYlXjj+Tv0eL8EPeAdPtvke0vowpPFwd5McXLA90dgY6Jg=="
+  "resolved" "https://registry.npmjs.org/@expo/config-types/-/config-types-44.0.0.tgz"
+  "version" "44.0.0"
 
 "@expo/json-file@8.2.34":
   "integrity" "sha512-ZxtBodAZGxdLtgKzmsC+8ViUxt1mhFW642Clu2OuG3f6PAyAFsU/SqEGag9wKFaD3x3Wt8VhL+3y5fMJmUFgPw=="
@@ -825,14 +826,19 @@
     "json5" "^1.0.1"
     "write-file-atomic" "^2.3.0"
 
-"@expo/plist@0.0.16":
-  "integrity" "sha512-yQMt2CTm2VNLiHv2/EqHYrHvfflI2mFJd+DZIQQy569hvpZle0CxMPGH1p2KatbrO8htxJNvwrlR/4TIwhQJ5w=="
-  "resolved" "https://registry.npmjs.org/@expo/plist/-/plist-0.0.16.tgz"
-  "version" "0.0.16"
+"@expo/plist@0.0.17":
+  "integrity" "sha512-5Ul3d/YOYE6mfum0jCE25XUnkKHZ5vGlU/X2275ZmCtGrpRn1Fl8Nq+jQKSaks3NqTfxdyXROi/TgH8Zxeg2wg=="
+  "resolved" "https://registry.npmjs.org/@expo/plist/-/plist-0.0.17.tgz"
+  "version" "0.0.17"
   dependencies:
     "@xmldom/xmldom" "~0.7.0"
     "base64-js" "^1.2.3"
     "xmlbuilder" "^14.0.0"
+
+"@expo/sdk-runtime-versions@^1.0.0":
+  "integrity" "sha512-Doz2bfiPndXYFPMRwPyGa1k5QaKDVpY806UJj570epIiMzWaYyCtobasyfC++qfIXVb5Ocy7r3tP9d62hAQ7IQ=="
+  "resolved" "https://registry.npmjs.org/@expo/sdk-runtime-versions/-/sdk-runtime-versions-1.0.0.tgz"
+  "version" "1.0.0"
 
 "@firebase/analytics-compat@0.1.5":
   "integrity" "sha512-5cfr0uWwlhoHQYAr6UtQCHwnGjs/3J/bWrfA3INNtzaN4/tTTLTD02iobbccRcM7dM5TR0sZFWS5orfAU3OBFg=="
@@ -1730,19 +1736,24 @@
   "resolved" "https://registry.npmjs.org/@react-native-community/picker/-/picker-1.8.1.tgz"
   "version" "1.8.1"
 
-"@react-native-firebase/app@^13.0.1", "@react-native-firebase/app@13.0.1":
-  "integrity" "sha512-ZURaagmBy97oI5it9IiZkX+0Fpfbv6nc5CKs9ISShxEmDqgTbGXcD8o6k0uDxtG9nbi0ft2dsWgKqXm6YI1o9w=="
-  "resolved" "https://registry.npmjs.org/@react-native-firebase/app/-/app-13.0.1.tgz"
-  "version" "13.0.1"
+"@react-native-firebase/app@^14.5.0", "@react-native-firebase/app@14.5.0":
+  "integrity" "sha512-pMTYZA4gQl/m4+9tYE9/3YpGVfuqePg2RF1Fj+/6EUyt6w8y8ADvJyTXzFmJwEkG5CdyWaqvtEyZmsifInUp3w=="
+  "resolved" "https://registry.npmjs.org/@react-native-firebase/app/-/app-14.5.0.tgz"
+  "version" "14.5.0"
   dependencies:
-    "@expo/config-plugins" "^4.0.3"
+    "@expo/config-plugins" "^4.0.18"
     "opencollective-postinstall" "^2.0.1"
     "superstruct" "^0.6.2"
 
-"@react-native-firebase/database@^13.0.1":
-  "integrity" "sha512-B8fBC+NAcUdZvNOEvbmT1VC6KjZ/EfFWy3iZM8+diGY2PHbPrtrx7mpfvw9HQub6s2inSzpNsvyynD7HPfZ9Yw=="
-  "resolved" "https://registry.npmjs.org/@react-native-firebase/database/-/database-13.0.1.tgz"
-  "version" "13.0.1"
+"@react-native-firebase/database@^14.5.0":
+  "integrity" "sha512-8j6zkOo5v1A+isyYrLBW6GGfNiCGqzLK/w7zOGXRtIvb+WO1b5kfXAk+7yJ8ravoapzgjoUxu7uNl6I2IYZB8g=="
+  "resolved" "https://registry.npmjs.org/@react-native-firebase/database/-/database-14.5.0.tgz"
+  "version" "14.5.0"
+
+"@react-native-firebase/messaging@^14.5.0":
+  "integrity" "sha512-kLA5lx0xoHwMo1fPQWE5IzIKOrmmSYRAfxKQqCETEmCEv/TSa/siiKAWvB8BzSvNUJeZkFFWwv77MxfArtZsyg=="
+  "resolved" "https://registry.npmjs.org/@react-native-firebase/messaging/-/messaging-14.5.0.tgz"
+  "version" "14.5.0"
 
 "@react-native-google-signin/google-signin@^7.0.1":
   "integrity" "sha512-iG1OkFx1ohSupofWnlbV+Re74L2HF823SOL1KNl1gGDiVxzNKJTZm/wuaPuujzci4kr8GuwR9PRgxLShiAZwlg=="
