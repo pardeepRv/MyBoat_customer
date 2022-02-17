@@ -49,6 +49,7 @@ export default class ExtraRequest extends Component {
       isSelected: false,
       coupon_discount: '0.00',
       check: [],
+      hour: '',
       isChecked:false,
       couponCode: '',
       totalPrice:
@@ -176,7 +177,7 @@ export default class ExtraRequest extends Component {
                       </Text>
                     </View>
                     <View style={{width: '10%', padding: 0, marginTop: -13}}>
-                      {/* <CheckBox
+                      <CheckBox
                         value={this.state.isSelected}
                           // onValueChange={setSelection}
                         //checked={item.checked}
@@ -184,7 +185,7 @@ export default class ExtraRequest extends Component {
                         key={index}
                         onPress={() => this.onChangeCheck(item, index, id)}
                         style={s.checkbox}
-                      /> */}
+                      />
                     </View>
                   </View>
 
@@ -259,6 +260,52 @@ export default class ExtraRequest extends Component {
             alignSelf: 'center',
           }}
         />
+         <View
+          style={{
+            height: 60,
+            width: '89%',
+            alignSelf: 'center',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              marginLeft: 10,
+              fontFamily: FontFamily.semi_bold,
+              color: Colors.black,
+              fontSize: 18,
+            }}>
+           Extra Hours
+          </Text>
+          <Text
+            style={{
+              marginLeft: 10,
+              fontFamily: FontFamily.semi_bold,
+              color: Colors.black,
+              fontSize: 18,
+            }}>
+            {' '}
+            #
+          </Text>
+          <Input
+        
+            inputContainerStyle={{
+              marginTop: 20,
+              height: 40,
+              width: 120,
+              right: 0,
+            }}
+            inputStyle={{
+              fontSize: 14,
+              width: 100,
+              fontFamily: FontFamily.default,
+              color: Colors.black,
+            }}
+            defaultValue={this.state.couponCode}
+            onChangeText={val => this.setState({couponCode: val})}
+          />
+        </View>
         <View
           style={{
             height: 60,
@@ -288,6 +335,7 @@ export default class ExtraRequest extends Component {
             #
           </Text>
           <Input
+        
             inputContainerStyle={{
               marginTop: 20,
               height: 40,

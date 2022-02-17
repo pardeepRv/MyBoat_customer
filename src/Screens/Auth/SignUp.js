@@ -35,13 +35,15 @@ export default class SignUp extends Component {
 
   constructor(props) {
     super(props);
+    console.log('props :>> ', props);
     this.state = {
+      googleData: '',
       language_id: config.language,
       password: '',
       confirm_password: '',
       HidePassword: true,
-      email: '',
-      name: '',
+      email: props?.route?.params?.google_data?.email ? props?.route?.params?.google_data?.email : '',
+      name: props?.route?.params?.google_data?.name ? props?.route?.params?.google_data?.name : '',
       user_name: '',
       login_type: 0,
       user_type_post: 1,
@@ -197,6 +199,7 @@ export default class SignUp extends Component {
   }
 
   SignUp() {
+    debugger
     console.log(this.state);
 
     //Keyboard.dismiss()
@@ -451,6 +454,7 @@ export default class SignUp extends Component {
                     onChangeText={txt => {
                       this.setState({ name: txt });
                     }}
+                    defaultValue={this.state.name}
                   />
                   <Input
                     placeholder="Email"
@@ -461,6 +465,8 @@ export default class SignUp extends Component {
                     onChangeText={txt => {
                       this.setState({ email: txt });
                     }}
+                    defaultValue={this.state.email}
+
                   />
                   <Input
                     placeholder="Mobile"

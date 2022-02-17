@@ -90,16 +90,19 @@ export default class DestinationList extends Component {
 
       //          console.log('local '+value)
 
-      //  console.log('array ',arrayData.email);
+       console.log('value 93',value);
       if (value !== null) {
         const arrayData = JSON.parse(value);
 
         console.log(arrayData);
         this.setState({ localData: arrayData, isLoading: false });
         this.ProfileDetail(arrayData.user_id);
+      }else{
+        this.ProfileDetail(null);
       }
     } catch (e) {
       // error reading value
+      console.log(e,'coming in err');
     }
   };
 
@@ -141,7 +144,7 @@ export default class DestinationList extends Component {
       '&filter_rating=0&filter_guest=0&filter_cabin=0&filter_price=0&filter_toilet=0';
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
 
-    console.log(url, 'user details url ');
+    console.log(url, 'user details url');
     try {
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);

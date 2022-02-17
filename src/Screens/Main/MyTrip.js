@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState, Component, PureComponent } from 'react';
 import {
   Text,
   View,
@@ -31,7 +31,7 @@ import Outgoing from '../../Data/Outgoing';
 import AsyncStorage from '@react-native-community/async-storage';
 import { config } from '../../Provider/configProvider';
 
-export class MyTrip extends Component {
+export class MyTrip extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -46,6 +46,8 @@ export class MyTrip extends Component {
 
 
   getMyTrips = async () => {
+    this.setState({ loading: true, });
+
     try {
       const value = await AsyncStorage.getItem('user_arr');
       // if (value !== null) {
@@ -72,22 +74,24 @@ export class MyTrip extends Component {
       this.setState({ loading: false });
     }
   }
-
   componentDidMount() {
-    this.setState({ loading: true });
-    this.getMyTrips();
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      console.log('focus :>> ');
+      this.getMyTrips();
+    });
   }
+
   CardView = ({ item }) => {
-     console.log(item)
+    console.log(item)
     return <Card containerStyle={s.Card}>
-      <TouchableOpacity 
+      <TouchableOpacity
       // onPress={() =>
       //                 this.props.navigation.navigate('TripTypeDetail', {
       //                   item: item,
       //                   list:'2'
       //                 })
       //               }
-                    >
+      >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
             source={{ uri: config.baseURL + 'images/' + item.image }}

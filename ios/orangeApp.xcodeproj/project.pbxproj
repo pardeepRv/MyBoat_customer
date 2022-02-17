@@ -33,6 +33,7 @@
 		CE47357027983345005F069A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE47356B27983345005F069A /* LaunchScreen.storyboard */; };
 		CE47357127983345005F069A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE47356C27983345005F069A /* AppDelegate.m */; };
 		CE47357227983345005F069A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CE47356D27983345005F069A /* main.m */; };
+		CEF6BEEB27BCBFD9007372D1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEF6BEEA27BCBFD8007372D1 /* GoogleService-Info.plist */; };
 		D6CF8269E00F46DDBDA038CE /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BD0FDB17135248C6BF6EBAE1 /* Montserrat-Light.ttf */; };
 		DECB9EF37DA341A286F1C700 /* Ubuntu-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B2A48E88D7874669B44481D7 /* Ubuntu-Regular.ttf */; };
 		E1634D5C0E95415DA6E716C5 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37347DD09DAC4A239ACA487C /* Montserrat-Black.ttf */; };
@@ -91,6 +92,7 @@
 		CE47356C27983345005F069A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = orangeApp/AppDelegate.m; sourceTree = "<group>"; };
 		CE47356D27983345005F069A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = orangeApp/main.m; sourceTree = "<group>"; };
 		CE47356E27983345005F069A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = orangeApp/Info.plist; sourceTree = "<group>"; };
+		CEF6BEEA27BCBFD8007372D1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "orangeApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D97D3424D5A34FF295C75D21 /* Montserrat-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ThinItalic.ttf"; path = "../assets/fonts/Montserrat-ThinItalic.ttf"; sourceTree = "<group>"; };
 		D9B1D254664B452DB636B21D /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		E1D255E917444407BA6394BA /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 		13B07FAE1A68108700A75B9A /* blueApp */ = {
 			isa = PBXGroup;
 			children = (
+				CEF6BEEA27BCBFD8007372D1 /* GoogleService-Info.plist */,
 				CE47356927983345005F069A /* AppDelegate.h */,
 				CE47356C27983345005F069A /* AppDelegate.m */,
 				CE47356A27983345005F069A /* Images.xcassets */,
@@ -289,6 +292,7 @@
 				1430361AD26A484BA26D7523 /* Montserrat-BlackItalic.ttf in Resources */,
 				A37C39408E6E4B8EBC7EA5B9 /* Montserrat-Bold.ttf in Resources */,
 				935379B27A7945468773917C /* Montserrat-BoldItalic.ttf in Resources */,
+				CEF6BEEB27BCBFD9007372D1 /* GoogleService-Info.plist in Resources */,
 				AD3FBC535FA14A50971DD65A /* Montserrat-ExtraBold.ttf in Resources */,
 				CE47356F27983345005F069A /* Images.xcassets in Resources */,
 				4EE7294FDEBB4DDEA3C3463E /* Montserrat-ExtraBoldItalic.ttf in Resources */,

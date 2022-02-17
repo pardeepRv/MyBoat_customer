@@ -104,7 +104,9 @@ class SocialLoginProvider extends Component {
           name: result.name,
           email: result.email,
         };
-        navigation.navigate('Signup');
+        navigation.navigate('SignUp' , {
+          google_data: social_login_data,
+        });
       }
     } else {
       if (obj.account_active_status == 'deactivate') {
@@ -261,6 +263,9 @@ class SocialLoginProvider extends Component {
     if (profile_complete == 1) {
       localStorage.setItemString('guest_user', 'no');
       this.goHomePage(navigation);
+    }else if(profile_complete ==0){
+      this.goHomePage(navigation);
+
     }
   };
 }

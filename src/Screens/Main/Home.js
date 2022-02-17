@@ -135,9 +135,16 @@ export default class Login extends Component {
     console.log('value :>> ', value);
     const arrayData = JSON.parse(value);
     console.log('arrayData :>> ', arrayData);
+    let url
+    if (arrayData != null) {
+      url = config.baseURL +
+        `destination_list.php?user_id_post=${arrayData.user_id}`;
+    }
+    else {
+      url = config.baseURL +
+        `destination_list.php?user_id_post=`;
+    }
 
-    let url = config.baseURL +
-      `destination_list.php?user_id_post=${arrayData.user_id}`;
 
     console.log(url, 'urlurlurl');
     const response = await fetch(url
@@ -146,6 +153,7 @@ export default class Login extends Component {
     console.log('response', response);
 
     const json = await response.json();
+    this.setState({ isLoading: false });
 
     console.log('destination kist res>>>>>>>', json);
 
