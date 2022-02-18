@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState } from "react";
 import {
   Text,
   View,
@@ -10,32 +10,32 @@ import {
   Image,
   ActivityIndicator,
   Dimensions,
-} from 'react-native';
-import { Icon, Input, Card, AirbnbRating } from 'react-native-elements';
-import Header from '../../Components/Header';
+} from "react-native";
+import { Icon, Input, Card, AirbnbRating } from "react-native-elements";
+import Header from "../../Components/Header";
 import {
   back_img3,
   boat_img1,
   Colors,
   FontFamily,
   Sizes,
-} from '../../Constants/Constants';
-import Ad from '../../Data/Ad';
-import Outgoing from '../../Data/Outgoing';
-import Upcoming from '../../Data/Upcoming';
-import { SliderBox } from 'react-native-image-slider-box';
-import FastImage from 'react-native-fast-image';
-import { renderNode } from 'react-native-elements/dist/helpers';
-import { apifuntion } from '../../Provider/apiProvider';
-import { config } from '../../Provider/configProvider';
-import AsyncStorage from '@react-native-community/async-storage';
-import { Calendar } from 'react-native-calendars';
-import RNFetchBlob from 'rn-fetch-blob'
-import Share from 'react-native-share';
-import { CheckBox } from 'react-native-elements';
+} from "../../Constants/Constants";
+import Ad from "../../Data/Ad";
+import Outgoing from "../../Data/Outgoing";
+import Upcoming from "../../Data/Upcoming";
+import { SliderBox } from "react-native-image-slider-box";
+import FastImage from "react-native-fast-image";
+import { renderNode } from "react-native-elements/dist/helpers";
+import { apifuntion } from "../../Provider/apiProvider";
+import { config } from "../../Provider/configProvider";
+import AsyncStorage from "@react-native-community/async-storage";
+import { Calendar } from "react-native-calendars";
+import RNFetchBlob from "rn-fetch-blob";
+import Share from "react-native-share";
+import { CheckBox } from "react-native-elements";
 
 //import {SliderBox} from 'react-native-image-slider-box';
-const { width } = Dimensions.get('window')
+const { width } = Dimensions.get("window");
 export default class TripTypeDetail extends Component {
   constructor(props) {
     super(props);
@@ -54,46 +54,56 @@ export default class TripTypeDetail extends Component {
       booking_arr: [],
       isSelected: false,
       selectedMethod: 0,
-      list:this.props.route.params.list
+      list: this.props.route.params.list,
     };
   }
 
   componentDidMount() {
-    this.getData('user_arr');
+    this.getData("user_arr");
 
-    return console.log(this.props.route.params.list, ' hhhhhhhhhhhhh');
+    return console.log(this.props.route.params.list, " hhhhhhhhhhhhh");
   }
 
   downloadImage = () => {
-    RNFetchBlob.fetch('GET', `https://myboatonline.com/app/webservice/images/2BqiM20wtjxOdlJ1366903610.jpeg`)
-      .then(resp => {
-        console.log('response : ', resp);
+    RNFetchBlob.fetch(
+      "GET",
+      `https://myboatonline.com/app/webservice/images/2BqiM20wtjxOdlJ1366903610.jpeg`
+    )
+      .then((resp) => {
+        console.log("response : ", resp);
         console.log(resp.data);
         let base64image = resp.data;
-        this.onShare('data:image/png;base64,' + base64image);
+        this.onShare("data:image/png;base64," + base64image);
       })
-      .catch(err => errorHandler(err));
-  }
+      .catch((err) => errorHandler(err));
+  };
 
   onShare = async () => {
-
-    let shareMessage = 'Advertisement Details \n Trip Type : ' + this.state?.adver_arr?.trip_type_name + '\n Destination :' + this.state?.adver_arr?.destination + '\n Trip price :' + this.state?.adver_arr?.price + '\n Max number of guests :' + this.state?.adver_arr?.no_of_people + '\n\n You can donwload the application - https://myboatonline.com/';
+    let shareMessage =
+      "Advertisement Details \n Trip Type : " +
+      this.state?.adver_arr?.trip_type_name +
+      "\n Destination :" +
+      this.state?.adver_arr?.destination +
+      "\n Trip price :" +
+      this.state?.adver_arr?.price +
+      "\n Max number of guests :" +
+      this.state?.adver_arr?.no_of_people +
+      "\n\n You can donwload the application - https://myboatonline.com/";
     const options = {
       title: "Advertim",
       // url:'https://myboatonline.com/app/webservice/images/2BqiM20wtjxOdlJ1366903610.jpeg',
       message: shareMessage,
-
     };
     try {
       await Share.open(options);
-      return console.log('Options :>> ', options);
+      return console.log("Options :>> ", options);
     } catch (err) {
       console.log(err);
     }
   };
 
-  getData = async key => {
-    console.log('local ' + key);
+  getData = async (key) => {
+    console.log("local " + key);
     try {
       const value = await AsyncStorage.getItem(key);
 
@@ -113,38 +123,36 @@ export default class TripTypeDetail extends Component {
   };
 
   async ProfileDetail(user_id) {
-    console.log('user ', user_id);
+    console.log("user ", user_id);
 
     let url =
       config.baseURL +
-      'advertisement_details.php?user_id_post=' +
+      "advertisement_details.php?user_id_post=" +
       user_id +
-      '&type=booking&advertisement_id=' +
+      "&type=booking&advertisement_id=" +
       this.state.advertisement.advertisement_id;
 
     console.log(url);
     try {
       const response = await fetch(url);
       const json = await response.json();
-      console.log('json  ', json);
+      console.log("json  ", json);
 
       this.setState({
         adver_arr: json.adver_arr,
         img_arr: json.adver_arr.img_arr,
-        booking_arr: json.booking_arr != 'NA' ? json.booking_arr : [],
+        booking_arr: json.booking_arr != "NA" ? json.booking_arr : [],
       });
 
       // console.log('add ',json.adver_arr.addon_arr)
 
       // console.log('obj ',json.adver_arr.destination_arr)
 
-      json.adver_arr.img_arr.forEach(item => {
-        console.log(item)
-        this.state.img.push(
-          config.image_url4 + item.image,
-        );
+      json.adver_arr.img_arr.forEach((item) => {
+        console.log(item);
+        this.state.img.push(config.image_url4 + item.image);
       });
-      if (json.success == 'true') {
+      if (json.success == "true") {
       } else {
       }
 
@@ -157,8 +165,14 @@ export default class TripTypeDetail extends Component {
   }
 
   BookNow() {
-    console.log('object :>> ', this.state.advertisement, this.state.adver_arr, this.state.user, this.state.booking_arr);
-    this.props.navigation.navigate('RequestPayment', {
+    console.log(
+      "object :>> ",
+      this.state.advertisement,
+      this.state.adver_arr,
+      this.state.user,
+      this.state.booking_arr
+    );
+    this.props.navigation.navigate("RequestPayment", {
       user_id_post: this.state.user,
       adver_arr: this.state.adver_arr,
       advertisement: this.state.advertisement,
@@ -167,7 +181,8 @@ export default class TripTypeDetail extends Component {
   }
 
   ratings = () => {
-    this.props.navigation.navigate('Ratings');
+    // this.props.navigation.navigate('Ratings');
+    this.props.navigation.navigate("DetailsRating", { item: {} });
   };
   gotoBack = () => {
     this.props.navigation.goBack();
@@ -176,39 +191,49 @@ export default class TripTypeDetail extends Component {
   render() {
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
-        <View style={{ flexDirection: 'row', zIndex: 1, justifyContent: 'space-between' }}>
+        <View
+          style={{
+            flexDirection: "row",
+            zIndex: 1,
+            justifyContent: "space-between",
+          }}
+        >
           <TouchableOpacity
-
             style={{
               marginBottom: -50,
-              alignItems: 'flex-start',
+              alignItems: "flex-start",
               marginTop: 20,
               marginLeft: 20,
               backgroundColor: Colors.gray,
-              borderRadius: 25
-
-            }}>
+              borderRadius: 25,
+            }}
+          >
             <Icon
               onPress={() => this.gotoBack()}
               name="arrow-back"
               type="ionicons"
               size={26}
               color={Colors.white}
-
             />
           </TouchableOpacity>
 
           <TouchableOpacity
-
             style={{
               marginBottom: -50,
-              alignItems: 'flex-end',
+              alignItems: "flex-end",
               marginTop: 20,
               marginRight: 20,
               backgroundColor: Colors.gray,
-              borderRadius: 20
-            }}>
-            <Icon name="share" type="ionicons" size={26} color={Colors.white} onPress={this.onShare} />
+              borderRadius: 20,
+            }}
+          >
+            <Icon
+              name="share"
+              type="ionicons"
+              size={26}
+              color={Colors.white}
+              onPress={this.onShare}
+            />
           </TouchableOpacity>
         </View>
 
@@ -220,7 +245,7 @@ export default class TripTypeDetail extends Component {
             sliderBoxWidth={400}
             autoplayInterval={3000}
             circleLoop
-            onCurrentImagePressed={index =>
+            onCurrentImagePressed={(index) =>
               console.warn(`image ${index} pressed`)
             }
             //currentImageEmitter={index => console.warn(`image ${index} pressed`)}
@@ -228,12 +253,12 @@ export default class TripTypeDetail extends Component {
             inactiveDotColor="#90A4AE"
             paginationBoxVerticalPadding={10}
             paginationBoxStyle={{
-              position: 'absolute',
+              position: "absolute",
               bottom: -30,
               padding: 0,
-              alignItems: 'center',
-              alignSelf: 'center',
-              justifyContent: 'center',
+              alignItems: "center",
+              alignSelf: "center",
+              justifyContent: "center",
               paddingVertical: 10,
             }}
             dotStyle={{
@@ -245,11 +270,15 @@ export default class TripTypeDetail extends Component {
               //  borderRadius:0,
               padding: 0,
               margin: 0,
-              backgroundColor: 'rgba(128, 128, 128, 0.92)',
-              transform: [{ rotate: '40deg' }],
+              backgroundColor: "rgba(128, 128, 128, 0.92)",
+              transform: [{ rotate: "40deg" }],
             }}
             autoplay
-            ImageComponentStyle={{ borderRadius: 5, width: '99%', marginTop: 0 }}
+            ImageComponentStyle={{
+              borderRadius: 5,
+              width: "99%",
+              marginTop: 0,
+            }}
             imageLoadingColor="#2196F3"
           />
 
@@ -257,45 +286,44 @@ export default class TripTypeDetail extends Component {
             <View style={{}}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  flexDirection: "row",
+                  alignItems: "center",
                   marginTop: 5,
-                }}>
-                  <TouchableOpacity  
-                  // onPress={() => this.ratings()}
-                  >
-                <Image
-                  style={{
-                    height: 40,
-                    width: 40,
-                    borderRadius: 20,
-                    resizeMode: 'cover',
-                  }}
-                
-                  source={{
-                    uri:
-                      config.baseURL +
-                      'images/' +
-                      this.state.adver_arr?.user_image,
-                  }}
-                  PlaceholderContent={
-                    <ActivityIndicator
-                      size={30}
-                      color={Colors.orange}
-                      style={{ alignSelf: 'center' }}
-                    />
-                  }
-                />
+                }}
+              >
+                <TouchableOpacity onPress={() => this.ratings()}>
+                  <Image
+                    style={{
+                      height: 40,
+                      width: 40,
+                      borderRadius: 20,
+                      resizeMode: "cover",
+                    }}
+                    source={{
+                      uri:
+                        config.baseURL +
+                        "images/" +
+                        this.state.adver_arr?.user_image,
+                    }}
+                    PlaceholderContent={
+                      <ActivityIndicator
+                        size={30}
+                        color={Colors.orange}
+                        style={{ alignSelf: "center" }}
+                      />
+                    }
+                  />
                 </TouchableOpacity>
-                <View style={{ marginLeft: '15%' }}>
+                <View style={{ marginLeft: "15%" }}>
                   <Text
                     style={{
                       color: Colors.orange,
                       fontSize: 18,
-                      fontWeight: 'bold',
+                      fontWeight: "bold",
                       fontFamily: FontFamily.default,
                       marginLeft: 5,
-                    }}>
+                    }}
+                  >
                     {this.state.adver_arr?.boat_name}
                   </Text>
                   <AirbnbRating
@@ -303,20 +331,21 @@ export default class TripTypeDetail extends Component {
                     size={12}
                     isDisabled
                     defaultRating={this.state?.adver_arr?.rating}
-                    starContainerStyle={{ alignSelf: 'flex-start' }}
+                    starContainerStyle={{ alignSelf: "flex-start" }}
                   />
                 </View>
               </View>
-              <View style={{ flexDirection: 'row', marginLeft: 65 }}>
+              <View style={{ flexDirection: "row", marginLeft: 65 }}>
                 <Icon name="person" size={14} />
                 {/* <Text style={{color:"rgba(51, 51, 51, 1)",fontSize:14,fontFamily:FontFamily.default}}>{this.state.adver_arr.captain_name}</Text> */}
                 <Text
                   style={{
-                    color: 'rgba(51, 51, 51, 1)',
+                    color: "rgba(51, 51, 51, 1)",
                     fontSize: 14,
                     fontFamily: FontFamily.default,
                     marginTop: -2,
-                  }}>
+                  }}
+                >
                   {this.state?.adver_arr?.captain_name &&
                     this.state?.adver_arr?.captain_name[0]}
                 </Text>
@@ -326,29 +355,30 @@ export default class TripTypeDetail extends Component {
 
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              alignSelf: 'flex-end',
-            }}>
-            <View style={{ width: '50%', height: '50%', alignItems: 'center' }}>
+              flexDirection: "row",
+              alignItems: "center",
+              alignSelf: "flex-end",
+            }}
+          >
+            <View style={{ width: "50%", height: "50%", alignItems: "center" }}>
               <View
                 style={{
                   width: 60,
                   height: 60,
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  flexDirection: "row",
+                  alignItems: "center",
                   backgroundColor: Colors.orange,
                   borderRadius: 80,
                   padding: 10,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Image
-                  source={require('../../../assets/icons/tag.png')}
+                  source={require("../../../assets/icons/tag.png")}
                   style={[s.tool, { marginLeft: 3 }]}
-                  resizeMode='contain'
+                  resizeMode="contain"
                 />
-
               </View>
               <Text style={s.text}>
                 {this.state.adver_arr?.trip_type_name &&
@@ -356,26 +386,26 @@ export default class TripTypeDetail extends Component {
               </Text>
             </View>
 
-            <View style={{ width: '50%', height: '50%', alignItems: 'center' }}>
+            <View style={{ width: "50%", height: "50%", alignItems: "center" }}>
               <View
                 style={{
                   width: 60,
                   height: 60,
-                  alignItems: 'center',
+                  alignItems: "center",
                   backgroundColor: Colors.orange,
                   borderRadius: 80,
                   padding: 10,
-                }}>
+                }}
+              >
                 <Image
-                  source={require('../../../assets/icons/tag2.png')}
+                  source={require("../../../assets/icons/tag2.png")}
                   style={s.tool}
-                  resizeMode='contain'
+                  resizeMode="contain"
                 />
-
               </View>
               <Text style={s.text}>
                 {this.state.adver_arr?.city_name &&
-                  this.state.adver_arr?.city_name[0]}{' '}
+                  this.state.adver_arr?.city_name[0]}{" "}
               </Text>
             </View>
 
@@ -387,166 +417,166 @@ export default class TripTypeDetail extends Component {
 
           <View style={s.categery}>
             <View style={(s.container1, s.top_margin)}>
-              <View
-                style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ flex: 1, alignItems: "center" }}>
                 <ImageBackground
                   style={s.circleView}
-                  resizeMode='contain'
-                  source={require('../../../assets/icons/ellipse.png')}>
+                  resizeMode="contain"
+                  source={require("../../../assets/icons/ellipse.png")}
+                >
                   <Image
-                    source={require('../../../assets/icons/boat_solid.png')}
+                    source={require("../../../assets/icons/boat_solid.png")}
                     style={s.small_icon}
-                    resizeMode='contain'
+                    resizeMode="contain"
                   />
                 </ImageBackground>
                 <Text style={s.text}>Boat size</Text>
                 <Text style={s.text}>{this.state.adver_arr.boat_capacity}</Text>
               </View>
 
-              <View
-                style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ flex: 1, alignItems: "center" }}>
                 <ImageBackground
                   style={s.circleView}
-                  resizeMode='contain'
-                  source={require('../../../assets/icons/ellipse.png')}>
+                  resizeMode="contain"
+                  source={require("../../../assets/icons/ellipse.png")}
+                >
                   <Image
-                    source={require('../../../assets/icons/boat_solid.png')}
+                    source={require("../../../assets/icons/boat_solid.png")}
                     style={s.small_icon}
-                    resizeMode='contain'
+                    resizeMode="contain"
                   />
                 </ImageBackground>
                 <Text style={s.text}> Boat brand </Text>
                 <Text style={s.text}> {this.state.adver_arr.boat_brand} </Text>
               </View>
 
-              <View
-                style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ flex: 1, alignItems: "center" }}>
                 <ImageBackground
                   style={s.circleView}
-                  resizeMode='contain'
-                  source={require('../../../assets/icons/ellipse.png')}>
+                  resizeMode="contain"
+                  source={require("../../../assets/icons/ellipse.png")}
+                >
                   <Image
-                    source={require('../../../assets/icons/watch_icon2.png')}
+                    source={require("../../../assets/icons/watch_icon2.png")}
                     style={s.small_icon}
-                    resizeMode='contain'
+                    resizeMode="contain"
                   />
                 </ImageBackground>
                 <Text style={s.text}> Trip Hours </Text>
                 <Text style={s.text}>
-                  {' '}
-                  {this.state.adver_arr?.minimum_hours}{' '}
+                  {" "}
+                  {this.state.adver_arr?.minimum_hours}{" "}
                 </Text>
               </View>
             </View>
 
             <View style={[s.container1]}>
-              <View
-                style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ flex: 1, alignItems: "center" }}>
                 <ImageBackground
                   style={s.circleView}
-                  resizeMode='contain'
-                  source={require('../../../assets/icons/ellipse.png')}>
+                  resizeMode="contain"
+                  source={require("../../../assets/icons/ellipse.png")}
+                >
                   <Image
-                    source={require('../../../assets/icons/equipment1.png')}
+                    source={require("../../../assets/icons/equipment1.png")}
                     style={s.small_icon}
-                    resizeMode='contain'
+                    resizeMode="contain"
                   />
                 </ImageBackground>
                 <Text style={s.text}>Equipment</Text>
-                <Text style={{ fontWeight: 'bold', fontSize: 12 }}>
+                <Text style={{ fontWeight: "bold", fontSize: 12 }}>
                   {this.state.adver_arr?.addon_arr &&
-                    this.state.adver_arr?.addon_arr[2]?.count}{' '}
+                    this.state.adver_arr?.addon_arr[2]?.count}{" "}
                 </Text>
               </View>
 
-              <View
-                style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ flex: 1, alignItems: "center" }}>
                 <ImageBackground
                   style={s.circleView}
-                  resizeMode='contain'
-                  source={require('../../../assets/icons/ellipse.png')}>
+                  resizeMode="contain"
+                  source={require("../../../assets/icons/ellipse.png")}
+                >
                   <Image
-                    source={require('../../../assets/icons/entertainment.png')}
+                    source={require("../../../assets/icons/entertainment.png")}
                     style={s.small_icon}
-                    resizeMode='contain'
+                    resizeMode="contain"
                   />
                 </ImageBackground>
                 <Text style={s.text}> Entertainment </Text>
-                <Text style={{ fontWeight: 'bold', fontSize: 12 }}>
-                  {' '}
+                <Text style={{ fontWeight: "bold", fontSize: 12 }}>
+                  {" "}
                   {this.state.adver_arr?.addon_arr &&
-                    this.state.adver_arr?.addon_arr[1]?.count}{' '}
+                    this.state.adver_arr?.addon_arr[1]?.count}{" "}
                 </Text>
               </View>
 
-              <View
-                style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ flex: 1, alignItems: "center" }}>
                 <ImageBackground
                   style={s.circleView}
-                  resizeMode='contain'
-                  source={require('../../../assets/icons/ellipse.png')}>
+                  resizeMode="contain"
+                  source={require("../../../assets/icons/ellipse.png")}
+                >
                   <Image
-                    source={require('../../../assets/icons/food.png')}
+                    source={require("../../../assets/icons/food.png")}
                     style={s.small_icon}
-                    resizeMode='contain'
+                    resizeMode="contain"
                   />
                 </ImageBackground>
                 <Text style={s.text}> Food </Text>
-                <Text style={{ fontWeight: 'bold', fontSize: 12 }}>
+                <Text style={{ fontWeight: "bold", fontSize: 12 }}>
                   {this.state.adver_arr?.addon_arr &&
-                    this.state.adver_arr?.addon_arr[0]?.count}{' '}
+                    this.state.adver_arr?.addon_arr[0]?.count}{" "}
                 </Text>
               </View>
             </View>
 
             <View style={[s.container1]}>
-              <View
-                style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ flex: 1, alignItems: "center" }}>
                 <ImageBackground
                   style={s.circleView}
-                  resizeMode='contain'
-                  source={require('../../../assets/icons/ellipse.png')}>
+                  resizeMode="contain"
+                  source={require("../../../assets/icons/ellipse.png")}
+                >
                   <Image
-                    source={require('../../../assets/icons/cabin.png')}
+                    source={require("../../../assets/icons/cabin.png")}
                     style={s.small_icon}
-                    resizeMode='contain'
+                    resizeMode="contain"
                   />
                 </ImageBackground>
                 <Text style={s.text}>Cabin </Text>
                 <Text style={s.text}>
-                  {' '}
-                  {this.state.adver_arr?.boat_cabins}{' '}
+                  {" "}
+                  {this.state.adver_arr?.boat_cabins}{" "}
                 </Text>
               </View>
 
-              <View
-                style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ flex: 1, alignItems: "center" }}>
                 <ImageBackground
                   style={s.circleView}
-                  resizeMode='contain'
-                  source={require('../../../assets/icons/ellipse.png')}>
+                  resizeMode="contain"
+                  source={require("../../../assets/icons/ellipse.png")}
+                >
                   <Image
-                    source={require('../../../assets/icons/guest.png')}
+                    source={require("../../../assets/icons/guest.png")}
                     style={s.small_icon}
-                    resizeMode='contain'
+                    resizeMode="contain"
                   />
                 </ImageBackground>
                 <Text style={s.text}>No. of guest</Text>
                 <Text style={s.text}>
-                  {this.state.adver_arr?.no_of_people}{' '}
+                  {this.state.adver_arr?.no_of_people}{" "}
                 </Text>
               </View>
 
-              <View
-                style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ flex: 1, alignItems: "center" }}>
                 <ImageBackground
                   style={s.circleView}
-                  resizeMode='contain'
-                  source={require('../../../assets/icons/ellipse.png')}>
+                  resizeMode="contain"
+                  source={require("../../../assets/icons/ellipse.png")}
+                >
                   <Image
-                    source={require('../../../assets/icons/toilet.png')}
+                    source={require("../../../assets/icons/toilet.png")}
                     style={s.small_icon}
-                    resizeMode='contain'
+                    resizeMode="contain"
                   />
                 </ImageBackground>
                 <Text style={s.text}>Toilet</Text>
@@ -566,11 +596,12 @@ export default class TripTypeDetail extends Component {
           <Text
             style={{
               lineHeight: 27,
-              marginLeft: '3%',
+              marginLeft: "3%",
               fontSize: 18,
               fontFamily: FontFamily.semi_bold,
-            }}>
-            {' '}
+            }}
+          >
+            {" "}
             Booking details:
           </Text>
           <View style={{ flex: 1 }}>
@@ -581,7 +612,7 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr.boat_type}{' '}
+                  {this.state.adver_arr.boat_type}{" "}
                 </Text>
               </View>
             </View>
@@ -592,7 +623,9 @@ export default class TripTypeDetail extends Component {
               </View>
 
               <View style={s.item}>
-                <Text style={s.rightText}>{this.state.adver_arr.discount} </Text>
+                <Text style={s.rightText}>
+                  {this.state.adver_arr.discount}{" "}
+                </Text>
               </View>
             </View>
             <View style={s.container}>
@@ -601,7 +634,9 @@ export default class TripTypeDetail extends Component {
               </View>
 
               <View style={s.item}>
-                <Text style={s.rightText}>{this.state.adver_arr.trip_type_name} </Text>
+                <Text style={s.rightText}>
+                  {this.state.adver_arr.trip_type_name}{" "}
+                </Text>
               </View>
             </View>
 
@@ -611,13 +646,15 @@ export default class TripTypeDetail extends Component {
               </View>
 
               <View style={s.item}>
-                <Text style={s.rightText}>{this.state.adver_arr &&
-                  this.state.adver_arr.destination_arr &&
-                  this.state.adver_arr.destination_arr.length > 0 &&
-                  this.state.adver_arr.destination_arr[0].destination &&
-                  this.state.adver_arr.destination_arr[0].destination.length > 0 &&
-                  this.state.adver_arr.destination_arr[0].destination[0]
-                } </Text>
+                <Text style={s.rightText}>
+                  {this.state.adver_arr &&
+                    this.state.adver_arr.destination_arr &&
+                    this.state.adver_arr.destination_arr.length > 0 &&
+                    this.state.adver_arr.destination_arr[0].destination &&
+                    this.state.adver_arr.destination_arr[0].destination.length >
+                      0 &&
+                    this.state.adver_arr.destination_arr[0].destination[0]}{" "}
+                </Text>
               </View>
             </View>
 
@@ -627,7 +664,10 @@ export default class TripTypeDetail extends Component {
               </View>
 
               <View style={s.item}>
-                <Text style={s.rightText}>{this.state.adver_arr.city_name && this.state.adver_arr.city_name[0]} </Text>
+                <Text style={s.rightText}>
+                  {this.state.adver_arr.city_name &&
+                    this.state.adver_arr.city_name[0]}{" "}
+                </Text>
               </View>
             </View>
 
@@ -647,7 +687,9 @@ export default class TripTypeDetail extends Component {
               </View>
 
               <View style={s.item}>
-                <Text style={s.rightText}>{this.state.adver_arr.extra_price} </Text>
+                <Text style={s.rightText}>
+                  {this.state.adver_arr.extra_price}{" "}
+                </Text>
               </View>
             </View>
             {/* <View style={s.container}>
@@ -665,7 +707,9 @@ export default class TripTypeDetail extends Component {
               </View>
 
               <View style={s.item}>
-                <Text style={s.rightText}>{this.state.adver_arr.no_of_people} </Text>
+                <Text style={s.rightText}>
+                  {this.state.adver_arr.no_of_people}{" "}
+                </Text>
               </View>
             </View>
 
@@ -675,7 +719,9 @@ export default class TripTypeDetail extends Component {
               </View>
 
               <View style={s.item}>
-                <Text style={s.rightText}>{this.state.adver_arr?.minimum_hours} </Text>
+                <Text style={s.rightText}>
+                  {this.state.adver_arr?.minimum_hours}{" "}
+                </Text>
               </View>
             </View>
 
@@ -695,7 +741,12 @@ export default class TripTypeDetail extends Component {
               </View>
 
               <View style={s.item}>
-                <Text style={s.rightText}>{(this.state.adver_arr.addon_arr && this.state.adver_arr?.addon_arr[2]?.count) ? "Available" : "Not available"} </Text>
+                <Text style={s.rightText}>
+                  {this.state.adver_arr.addon_arr &&
+                  this.state.adver_arr?.addon_arr[2]?.count
+                    ? "Available"
+                    : "Not available"}{" "}
+                </Text>
               </View>
             </View>
 
@@ -706,7 +757,10 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {(this.state.adver_arr.addon_arr && this.state.adver_arr.addon_arr[1].count) ? "Available" : "Not available"}
+                  {this.state.adver_arr.addon_arr &&
+                  this.state.adver_arr.addon_arr[1].count
+                    ? "Available"
+                    : "Not available"}
                 </Text>
               </View>
             </View>
@@ -717,55 +771,65 @@ export default class TripTypeDetail extends Component {
               </View>
 
               <View style={s.item}>
-                <Text style={s.rightText}>{(this.state.adver_arr.addon_arr && this.state.adver_arr.addon_arr[0].count) ? "Available" : "Not available"} </Text>
+                <Text style={s.rightText}>
+                  {this.state.adver_arr.addon_arr &&
+                  this.state.adver_arr.addon_arr[0].count
+                    ? "Available"
+                    : "Not available"}{" "}
+                </Text>
               </View>
             </View>
-
           </View>
-          { this.state.list == 1 ? (<View
-            style={{
-              backgroundColor: Colors.orange,
-              flexDirection: 'row',
-              padding: 10,
-              marginTop: 20,
-            }}>
-
-            <View>
-              <TouchableOpacity style={s.Btnbook} onPress={() => this.BookNow()}>
-                <Text style={s.Btn1Textbook}>Book Now</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{ justifyContent: 'center', marginLeft: '20%' }}>
-              <Text style={s.rent}>Rental Amount</Text>
-              <Text style={s.rent}>KWD {this.state.advertisement?.price}</Text>
-            </View>
-          </View>) : ( 
+          {this.state.list == 1 ? (
             <View
-            style={{
-              // backgroundColor: Colors.orange,
-              // flexDirection: 'row',
-              padding: 10,
-              marginTop: 20,
-            }}>
-
-            <View 
-            // style={{backgroundColor: Colors.orange,}}
+              style={{
+                backgroundColor: Colors.orange,
+                flexDirection: "row",
+                padding: 10,
+                marginTop: 20,
+              }}
             >
-              <TouchableOpacity style={s.Btn1}>
-                <Text style={s.Btn1Text}>Location</Text>
-              </TouchableOpacity>
+              <View>
+                <TouchableOpacity
+                  style={s.Btnbook}
+                  onPress={() => this.BookNow()}
+                >
+                  <Text style={s.Btn1Textbook}>Book Now</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{ justifyContent: "center", marginLeft: "20%" }}>
+                <Text style={s.rent}>Rental Amount</Text>
+                <Text style={s.rent}>
+                  KWD {this.state.advertisement?.price}
+                </Text>
+              </View>
             </View>
-            <View style={{ justifyContent: 'center' , flexDirection:'row' }}>
-              <TouchableOpacity style={s.Btn2}>
-                <Text style={s.Btn1Text2}>Chat Now</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={s.Btn2}>
-                <Text style={s.Btn1Text2}>Cancel</Text>
-              </TouchableOpacity>
+          ) : (
+            <View
+              style={{
+                // backgroundColor: Colors.orange,
+                // flexDirection: 'row',
+                padding: 10,
+                marginTop: 20,
+              }}
+            >
+              <View
+              // style={{backgroundColor: Colors.orange,}}
+              >
+                <TouchableOpacity style={s.Btn1}>
+                  <Text style={s.Btn1Text}>Location</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{ justifyContent: "center", flexDirection: "row" }}>
+                <TouchableOpacity style={s.Btn2}>
+                  <Text style={s.Btn1Text2}>Chat Now</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={s.Btn2}>
+                  <Text style={s.Btn1Text2}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-          ) }
-          
+          )}
         </ScrollView>
       </View>
     );
@@ -784,12 +848,12 @@ const s = StyleSheet.create({
   circleView: {
     width: 50,
     height: 50,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
   },
   small_icon: { width: 25, height: 25 },
   borders: {
-    borderBottomColor: '#000',
+    borderBottomColor: "#000",
     borderBottomWidth: 1,
     margin: 20,
     marginTop: 1,
@@ -805,43 +869,43 @@ const s = StyleSheet.create({
   },
   top_margin: {
     marginTop: 15,
-    flexDirection: 'row', // set elements horizontally, try column.
+    flexDirection: "row", // set elements horizontally, try column.
   },
   tool1: {
-    width: '80%',
-    height: '80%',
+    width: "80%",
+    height: "80%",
     marginTop: 3,
   },
   rent: {
-    color: '#fff',
+    color: "#fff",
     backgroundColor: Colors.orange,
     fontSize: 16,
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
   },
   Btnbook: {
     height: 48,
     width: 175,
     backgroundColor: Colors.white,
     margin: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 30,
     elevation: 3,
-    overflow: 'hidden',
+    overflow: "hidden",
     shadowColor: Colors.orange,
     shadowRadius: 10,
     shadowOpacity: 1,
   },
   Btn1: {
     height: 48,
-    width: '90%',
+    width: "90%",
     backgroundColor: Colors.orange,
     margin: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 10,
     elevation: 3,
-    overflow: 'hidden',
+    overflow: "hidden",
     shadowColor: Colors.orange,
     shadowRadius: 10,
     shadowOpacity: 1,
@@ -851,11 +915,11 @@ const s = StyleSheet.create({
     width: 150,
     backgroundColor: Colors.white,
     margin: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 10,
-    borderWidth:2,
-    borderColor:Colors.orange,
+    borderWidth: 2,
+    borderColor: Colors.orange,
     elevation: 3,
     // overflow: 'hidden',
     shadowColor: Colors.orange,
@@ -866,7 +930,7 @@ const s = StyleSheet.create({
     fontSize: 11,
     fontFamily: FontFamily.semi_bold,
     color: Colors.black,
-    textAlign: 'center',
+    textAlign: "center",
   },
   Btn1Text: {
     fontSize: 18,
@@ -884,27 +948,27 @@ const s = StyleSheet.create({
     color: Colors.orange,
   },
   categery: {
-    backgroundColor: '#F3F9F9',
+    backgroundColor: "#F3F9F9",
     width: width - 40,
     flex: 1,
-    marginTop: '10%',
+    marginTop: "10%",
     // padding: 0,
-    alignSelf: 'center',
+    alignSelf: "center",
     paddingBottom: 10,
     // margin: '7%',
   },
   container: {
     top: 15,
     height: 20,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start', // if you want to fill rows left to right
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "flex-start", // if you want to fill rows left to right
 
-    margin: 4
+    margin: 4,
   },
   item: {
-    width: '45%', // is 50% of container width
-    marginLeft: '3%',
+    width: "45%", // is 50% of container width
+    marginLeft: "3%",
     fontSize: 10,
   },
   leftText: {
@@ -921,29 +985,29 @@ const s = StyleSheet.create({
     marginTop: 10,
     marginLeft: 20,
     fontSize: 18,
-    textAlign: 'justify',
+    textAlign: "justify",
     fontFamily: FontFamily.semi_bold,
   },
   detail: {
     marginTop: 10,
     marginLeft: 20,
     marginRight: 20,
-    textAlign: 'justify',
+    textAlign: "justify",
     fontFamily: FontFamily.default,
-    color: Colors.black
+    color: Colors.black,
   },
   container1: {
     marginTop: 15,
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    flexDirection: 'row', // set elements horizontally, try column.
+    flexWrap: "wrap",
+    justifyContent: "center",
+    flexDirection: "row", // set elements horizontally, try column.
   },
   btn1: {
     height: 90,
     width: 60,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 7,
     elevation: 5,
     margin: 7,
@@ -953,8 +1017,8 @@ const s = StyleSheet.create({
     fontFamily: FontFamily.semi_bold,
   },
   btn_1: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   Card: {
     borderRadius: 20,
@@ -985,38 +1049,38 @@ const s = StyleSheet.create({
     fontFamily: FontFamily.semi_bold,
     fontSize: 15,
     color: Colors.price,
-    textAlign: 'right',
+    textAlign: "right",
   },
   status: {
     color: Colors.orange,
     fontFamily: FontFamily.default,
-    fontWeight: '500',
+    fontWeight: "500",
     fontSize: 14,
-    textAlign: 'right',
+    textAlign: "right",
   },
   ImageBackground: {
     height: 215,
-    width: '100%',
+    width: "100%",
     borderRadius: 15,
-    alignSelf: 'center',
+    alignSelf: "center",
     // marginHorizontal:10,
     elevation: 0,
   },
   imgStyle: {
     borderRadius: 15,
     height: 215,
-    width: '100%',
-    alignSelf: 'center',
+    width: "100%",
+    alignSelf: "center",
   },
   SEC3: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 10,
     paddingHorizontal: 20,
-    alignItems: 'center',
-    marginTop: '8%',
-    backgroundColor: '#F3F9F9',
-    margin: '5%',
+    alignItems: "center",
+    marginTop: "8%",
+    backgroundColor: "#F3F9F9",
+    margin: "5%",
   },
   title: {
     fontFamily: FontFamily.semi_bold,
@@ -1052,28 +1116,28 @@ const s = StyleSheet.create({
     borderBottomWidth: 25,
     borderBottomColor: Colors.orange,
     borderLeftWidth: 25,
-    borderLeftColor: 'transparent',
+    borderLeftColor: "transparent",
     borderRightWidth: 25,
-    borderRightColor: 'transparent',
-    borderStyle: 'solid',
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    transform: [{ rotate: '-45deg' }],
+    borderRightColor: "transparent",
+    borderStyle: "solid",
+    backgroundColor: "transparent",
+    alignItems: "center",
+    transform: [{ rotate: "-45deg" }],
     marginTop: 19.2,
     marginLeft: -26,
   },
   paymnetImage: {
     width: 50,
-    height: 50
+    height: 50,
   },
   paymentText: {
     fontSize: 18,
-    justifyContent: 'center',
-    textAlignVertical: 'center'
+    justifyContent: "center",
+    textAlignVertical: "center",
   },
   checkbox: {
-    color: '#fff',
-    backgroundColor: '#fff',
+    color: "#fff",
+    backgroundColor: "#fff",
     //padding:40
   },
 });

@@ -434,6 +434,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = blueApp.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Mahmoud Albandar (4J2NC63459)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MTG47X9M92;
@@ -450,7 +452,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.boatuser;
 				PRODUCT_NAME = blueApp;
-				PROVISIONING_PROFILE_SPECIFIER = my_Boat_dev_customer;
+				PROVISIONING_PROFILE_SPECIFIER = dev_certs_customer_prince;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -465,6 +467,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = blueAppRelease.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Mahmoud Albandar (MTG47X9M92)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MTG47X9M92;
@@ -480,7 +483,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.boatuser;
 				PRODUCT_NAME = blueApp;
-				PROVISIONING_PROFILE_SPECIFIER = MyBoat_KC_adhoc;
+				PROVISIONING_PROFILE_SPECIFIER = Adhoc_boatuser_pk;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

@@ -485,10 +485,18 @@ export default class DestinationList extends Component {
                 <View style={{ padding: 5 }}>
                   <TouchableOpacity
                     onPress={() =>
-                      this.props.navigation.navigate('TripTypeDetail', {
-                        item: item,
-                        list: '1'
-                      })
+                      {
+                        if(this.state.localData && this.state.localData.length ==0){
+                          alert('You need to login first.')
+                       return this.props.navigation.navigate('Login');
+                        }
+                        console.log(this.state.localData,'localDatalocalData');
+                        this.props.navigation.navigate('TripTypeDetail', {
+                          item: item,
+                          list: '1'
+                        })
+                      }
+                    
                     }
                   >
                     <Card

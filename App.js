@@ -17,9 +17,9 @@ LogBox.ignoreAllLogs();
 const App = () => {
   
   useEffect(() => {
-    checkPermission();
-    requestUserPermission();
-    createNotificationListener();
+    // checkPermission();
+    // requestUserPermission();
+    // createNotificationListener();
   }, []);
   
   return (

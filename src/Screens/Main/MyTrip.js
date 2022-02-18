@@ -85,12 +85,12 @@ export class MyTrip extends PureComponent {
     console.log(item)
     return <Card containerStyle={s.Card}>
       <TouchableOpacity
-      // onPress={() =>
-      //                 this.props.navigation.navigate('TripTypeDetail', {
-      //                   item: item,
-      //                   list:'2'
-      //                 })
-      //               }
+      onPress={() =>
+                      this.props.navigation.navigate('TripTypeDetail', {
+                        item: item,
+                        list:'2'
+                      })
+                    }
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
