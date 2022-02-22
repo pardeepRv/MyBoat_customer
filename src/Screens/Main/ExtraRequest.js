@@ -130,6 +130,7 @@ export default class ExtraRequest extends Component {
           backImgSource={require('../../Images/backgd2.jpg')}
         />
 
+
         <View
           style={{backgroundColor: '#fff', marginTop: -20, borderRadius: 20}}>
           {this.state.adver_arr.map((item, id , index) => {
@@ -302,8 +303,17 @@ export default class ExtraRequest extends Component {
               fontFamily: FontFamily.default,
               color: Colors.black,
             }}
-            defaultValue={this.state.couponCode}
-            onChangeText={val => this.setState({couponCode: val})}
+            onSubmitEditing={() => {
+              Keyboard.dismiss();
+            }}
+            keyboardType="numeric"
+            maxLength={50}
+            minLength={6}
+            value={this.state.hour}
+            // onChangeText={val => this.setState({couponCode: val})}
+            onChangeText={txt => {
+              this.setState({hour: txt});
+            }}
           />
         </View>
         <View

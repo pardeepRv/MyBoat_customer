@@ -291,7 +291,8 @@ export default class TripTypeDetail extends Component {
                   marginTop: 5,
                 }}
               >
-                <TouchableOpacity onPress={() => this.ratings()}>
+                {this.state.list == 1 ? 
+                 <View >
                   <Image
                     style={{
                       height: 40,
@@ -313,7 +314,32 @@ export default class TripTypeDetail extends Component {
                       />
                     }
                   />
-                </TouchableOpacity>
+                </View>
+                : 
+                 <TouchableOpacity onPress={() => this.ratings()}>
+                  <Image
+                    style={{
+                      height: 40,
+                      width: 40,
+                      borderRadius: 20,
+                      resizeMode: "cover",
+                    }}
+                    source={{
+                      uri:
+                        config.baseURL +
+                        "images/" +
+                        this.state.adver_arr?.user_image,
+                    }}
+                    PlaceholderContent={
+                      <ActivityIndicator
+                        size={30}
+                        color={Colors.orange}
+                        style={{ alignSelf: "center" }}
+                      />
+                    }
+                  />
+                </TouchableOpacity>}
+               
                 <View style={{ marginLeft: "15%" }}>
                   <Text
                     style={{

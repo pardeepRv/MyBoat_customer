@@ -483,7 +483,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.boatuser;
 				PRODUCT_NAME = blueApp;
-				PROVISIONING_PROFILE_SPECIFIER = Adhoc_boatuser_pk;
+				PROVISIONING_PROFILE_SPECIFIER = MyBoat_KC_adhoc;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
