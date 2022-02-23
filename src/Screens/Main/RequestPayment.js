@@ -90,7 +90,9 @@ export default class RequestPayment extends Component {
     };
   }
 
+
   componentDidMount() {
+    // alert(this.state.adver_arr.extra_price)
     let date = new Date('2020-06-12T14:42:42');
 
     console.log('date ', date);
@@ -181,15 +183,15 @@ export default class RequestPayment extends Component {
         'date': this.state.selected_date,
         'time': this.state.time,
         'idle_time': this.state.adver_arr.idle_time,
-        'rent_amount': this.state.advertisement?.price,
+        'rent_amount': this.state.advertisement?.price, 
         'minimum_hours': this.state.adver_arr.minimum_hours,
         'discount': this.state.adver_arr.discount,
-        'extra_rent_amt': Number(this.state.hour) * Number(this.state.adver_arr.extra_price),
+        // 'extra_rent_amt': Number(this.state.hour) * Number(this.state.adver_arr.extra_price), //aa
         'payment_type': 1,
         'other_user_id': this.state.adver_arr.user_id,
         'coupon_code': this.state.adver_arr.coupon_code,
         'coupon_discount': this.state.adver_arr.coupon_discount,
-        'extraHours':this.state.hour,
+        // 'extraHours':this.state.hour, //aa
       }
       // paymentDetail: {
       //   booking_no: obj.booking_no,
@@ -722,7 +724,7 @@ export default class RequestPayment extends Component {
           </TouchableOpacity>
 
           <View style={{width: '100%', alignItems: 'center'}}>
-            <Input
+            {/* <Input
               placeholder="Extra Hour"
               placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
               inputStyle={{color: Colors.black, fontFamily: FontFamily.default}}
@@ -743,7 +745,7 @@ export default class RequestPayment extends Component {
                 width: '93%',
                 borderBottomColor: 'rgba(0, 0, 0, 0.3)',
               }}
-            />
+            /> */}
 
             <Input
               placeholder="How Many Guest"

@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, { Component, useState } from 'react';
 import {
   Text,
   View,
@@ -13,7 +13,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import {CheckBox, Icon, Input, Card, AirbnbRating} from 'react-native-elements';
+import { CheckBox, Icon, Input, Card, AirbnbRating } from 'react-native-elements';
 
 import Header from '../../Components/Header';
 import {
@@ -26,18 +26,18 @@ import {
 import Ad from '../../Data/Ad';
 import Outgoing from '../../Data/Outgoing';
 import Upcoming from '../../Data/Upcoming';
-import {SliderBox} from 'react-native-image-slider-box';
+import { SliderBox } from 'react-native-image-slider-box';
 import FastImage from 'react-native-fast-image';
-import {renderNode} from 'react-native-elements/dist/helpers';
-import {apifuntion} from '../../Provider/apiProvider';
-import {config} from '../../Provider/configProvider';
+import { renderNode } from 'react-native-elements/dist/helpers';
+import { apifuntion } from '../../Provider/apiProvider';
+import { config } from '../../Provider/configProvider';
 import AsyncStorage from '@react-native-community/async-storage';
-import {Calendar} from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
 import DatePicker from 'react-native-datepicker';
-import {Lang_chg} from '../../Provider/Language_provider';
+import { Lang_chg } from '../../Provider/Language_provider';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {WebView} from 'react-native-webview';
-import {msgProvider, msgTitle, msgText} from '../../Provider/messageProvider';
+import { WebView } from 'react-native-webview';
+import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
 
 export default class ExtraRequest extends Component {
   constructor(props) {
@@ -50,8 +50,9 @@ export default class ExtraRequest extends Component {
       coupon_discount: '0.00',
       check: [],
       hour: '',
-      isChecked:false,
+      isChecked: false,
       couponCode: '',
+      extraHours: "",
       totalPrice:
         Number(this.props.route.params.data.rent_amount) +
         Number(this.props.route.params.data.extra_rent_amt),
@@ -59,38 +60,40 @@ export default class ExtraRequest extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state.data , "????????????????????????????/");
-    console.log(this.state.adv , "????????????????????????????/");
+
+    // alert(this.props.route.params.adv.extra_price)
+    console.log(this.state.data, "????????????????????????????/");
+    console.log(this.state.adv, "????????????????????????????/");
 
   }
+  onChangeCheck = (item, index, id) => {
+    console.log(item, 'item');
+    console.log(index, 'index');
+    console.log(id, 'id');
 
-  //   onChangeCheck(item) {
-  //     console.log('checked ', item);
-
-  //     //   this.setState({ checked: !this.state.isSelected})
-
-  //     const data = this.state.data;
-
-  //     const index = data.findIndex(x => x.id === id);
-  //     data[index].checked = !data[index].checked;
-  //     this.setState(data);
-  //   }
-
-  onChangeCheck = (select, index, id) => {
-       console.log(index, id, 'ITEEEEEEE', select.addon_product_price);
     const tempArray = [...this.state.adver_arr];
-    if (!select.isChecked) {
+
+    console.log(tempArray, 'tem arr');
+
+    const array = tempArray.map(v => {
+      const newItem = Object.assign({}, v);
+      return newItem;
+    });
+
+    console.log(array, 'arrayarray');
+    if (!item.isChecked) {
       this.state.totalPrice =
-        this.state.totalPrice + Number(select.addon_product_price);
+        this.state.totalPrice + Number(item.addon_product_price);
     } else {
       this.state.totalPrice =
-        this.state.totalPrice - Number(select.addon_product_price);
+        this.state.totalPrice - Number(item.addon_product_price);
     }
-     console.log('Total Price', this.state.totalPrice);
-    return   console.log('object :>> ', tempArray);
-    tempArray[id].addon_product_name[index].isChecked = !select.isChecked;
+    console.log('Total Price', this.state.totalPrice);
+
+    console.log(array[id], 'array[index]');
+    array[id].isChecked = !array[id].isChecked;
     this.setState({
-      adver_arr: tempArray,
+      adver_arr: array,
     });
   };
 
@@ -103,23 +106,32 @@ export default class ExtraRequest extends Component {
       } else {
         this.setState({
           coupon_discount: this.state.data.coupon_discount,
+          // adver_arr:Number(this.state.extraHours) * Number(this.props.route.params.adv.extra_price)
+          // extraHours:this.state.extraHours
+
         });
       }
     }
+
     this.props.navigation.navigate('Checkout', {
       adver_arr: this.state.adver_arr,
       adv: this.state.adv,
       coupon_discount: this.state.data.coupon_discount,
       data: this.state.data,
-      totalPrice:
-        this.state.totalPrice + Number(this.state.data.coupon_discount),
-    });
+      extraHours: this.state.extraHours,
+      extra_rent_amt: Number(this.state.extraHours) * Number(this.props.route.params.adv.extra_price),
+      totalPrice: this.state.totalPrice + Number(this.state.data.coupon_discount),
+    }
+    );
   }
 
   render() {
+    // alert(Number(this.state.extraHours) * Number(this.state.adver_arr.addon_product_price));
     console.log('this.state.adver_arr :>> ', this.state.adver_arr);
     return (
-      <View style={{backgroundColor: '#fff', height: '100%'}}>
+
+
+      <View style={{ backgroundColor: '#fff', height: '100%' }}>
         <Header
           imgBack={true}
           notiBtn={false}
@@ -130,257 +142,243 @@ export default class ExtraRequest extends Component {
           backImgSource={require('../../Images/backgd2.jpg')}
         />
 
+        <ScrollView style={{ flex: 1 }}>
+          <View
+            style={{ backgroundColor: '#fff', borderRadius: 20 }}>
+            {this.state.adver_arr.map((item, id, index) => {
 
-        <View
-          style={{backgroundColor: '#fff', marginTop: -20, borderRadius: 20}}>
-          {this.state.adver_arr.map((item, id , index) => {
-              console.log(')))))', item);
-            return (
-              <TouchableOpacity
-                //   onPress={()=>console.log()}
-                activeOpacity={0.8}>
-                {/* <Text
-                  style={{
-                    padding: 20,
-                    fontFamily: FontFamily.semi_bold,
-                    fontSize: 18,
-                  }}>
-                  {item.addon_name.toString().replace(',', ' ')}
-                </Text> */}
-
-                  <View style={{flexDirection: 'row'}}>
-                    <View style={{width: '10%'}}>
-                      {/* <Text
-                        style={{
-                          textAlign: 'right',
-                          fontFamily: FontFamily.default,
-                        }}>
-                        {index + 1}{' '}
-                      </Text> */}
-                    </View>
-                    <View style={{width: '35%'}}>
-                      <Text style={{textAlign: 'left'}}>
+              console.log(')))))200', item);
+              return (
+                <TouchableOpacity
+                  activeOpacity={0.8}>
+                  <View style={{ flexDirection: 'row', top: 12 }}>
+                    <View style={{ width: '10%' }} />
+                    <View style={{ width: '35%' }}>
+                      <Text style={{ textAlign: 'left' }}>
                         {item.addon_product_name[0]}{' '}
                       </Text>
                     </View>
 
-                    <View style={{width: '35%', textAlign: 'right'}}>
+                    <View style={{ width: '35%', textAlign: 'right' }}>
                       <Text
                         style={{
                           textAlign: 'right',
                           marginLeft: '20%',
-                          //   padding: 10,
-                          //   marginTop: -5,
                           fontFamily: FontFamily.default,
                         }}>
                         {' $'}
                         {item.addon_product_price}
                       </Text>
                     </View>
-                    <View style={{width: '10%', padding: 0, marginTop: -13}}>
+                    <View style={{ width: '10%', padding: 0, top: -15 }}>
+
                       <CheckBox
-                        value={this.state.isSelected}
-                          // onValueChange={setSelection}
-                        //checked={item.checked}
-                        checked={item.isChecked}
+                        // value={this.state.isChecked}
+                        // onValueChange={setSelection}
+                        checked={item && item.isChecked}
                         key={index}
                         onPress={() => this.onChangeCheck(item, index, id)}
                         style={s.checkbox}
                       />
+
                     </View>
+
                   </View>
 
-              </TouchableOpacity>
-              // <TouchableOpacity
-              //   //   onPress={()=>console.log()}
-              //   activeOpacity={0.8}>
-              //   <Text
-              //     style={{
-              //       padding: 20,
-              //       fontFamily: FontFamily.semi_bold,
-              //       fontSize: 18,
-              //     }}>
-              //     {item.addon_name.toString().replace(',', ' ')}
-              //   </Text>
-              //   {item.addon_products.map((item2, index) => (
-              //     <View style={{flexDirection: 'row'}}>
-              //       <View style={{width: '10%'}}>
-              //         <Text
-              //           style={{
-              //             textAlign: 'right',
-              //             fontFamily: FontFamily.default,
-              //           }}>
-              //           {index + 1}{' '}
-              //         </Text>
-              //       </View>
-              //       <View style={{width: '35%'}}>
-              //         <Text style={{textAlign: 'left'}}>
-              //           {item2.addon_product_name}{' '}
-              //         </Text>
-              //       </View>
+                </TouchableOpacity>
+                // <TouchableOpacity
+                //   //   onPress={()=>console.log()}
+                //   activeOpacity={0.8}>
+                //   <Text
+                //     style={{
+                //       padding: 20,
+                //       fontFamily: FontFamily.semi_bold,
+                //       fontSize: 18,
+                //     }}>
+                //     {item.addon_name.toString().replace(',', ' ')}
+                //   </Text>
+                //   {item.addon_products.map((item2, index) => (
+                //     <View style={{flexDirection: 'row'}}>
+                //       <View style={{width: '10%'}}>
+                //         <Text
+                //           style={{
+                //             textAlign: 'right',
+                //             fontFamily: FontFamily.default,
+                //           }}>
+                //           {index + 1}{' '}
+                //         </Text>
+                //       </View>
+                //       <View style={{width: '35%'}}>
+                //         <Text style={{textAlign: 'left'}}>
+                //           {item2.addon_product_name}{' '}
+                //         </Text>
+                //       </View>
 
-              //       <View style={{width: '35%', textAlign: 'right'}}>
-              //         <Text
-              //           style={{
-              //             textAlign: 'right',
-              //             marginLeft: '20%',
-              //             //   padding: 10,
-              //             //   marginTop: -5,
-              //             fontFamily: FontFamily.default,
-              //           }}>
-              //           {' $'}
-              //           {item2.addon_product_price}
-              //         </Text>
-              //       </View>
-              //       <View style={{width: '10%', padding: 0, marginTop: -13}}>
-              //         <CheckBox
-              //           // value={this.state.isSelected}
-              //           //   onValueChange={setSelection}
-              //           //checked={item2.checked}
-              //           checked={item2.isChecked}
-              //           key={index}
-              //           onPress={() => this.onChangeCheck(item2, index, id)}
-              //           style={s.checkbox}
-              //         />
-              //       </View>
-              //     </View>
-              //   ))}
-              // </TouchableOpacity>
-            );
-          })}
-          {/* <Text>
+                //       <View style={{width: '35%', textAlign: 'right'}}>
+                //         <Text
+                //           style={{
+                //             textAlign: 'right',
+                //             marginLeft: '20%',
+                //             //   padding: 10,
+                //             //   marginTop: -5,
+                //             fontFamily: FontFamily.default,
+                //           }}>
+                //           {' $'}
+                //           {item2.addon_product_price}
+                //         </Text>
+                //       </View>
+                //       <View style={{width: '10%', padding: 0, marginTop: -13}}>
+                //         <CheckBox
+                //           // value={this.state.isSelected}
+                //           //   onValueChange={setSelection}
+                //           //checked={item2.checked}
+                //           checked={item2.isChecked}
+                //           key={index}
+                //           onPress={() => this.onChangeCheck(item2, index, id)}
+                //           style={s.checkbox}
+                //         />
+                //       </View>
+                //     </View>
+                //   ))}
+                // </TouchableOpacity>
+              );
+            })}
+            {/* <Text>
             {this.state.adver_arr[0].addon_products[0].addon_product_name}
           </Text> */}
-        </View>
-        {/* <Text>{'\n'}</Text> */}
-        <View
-          style={{
-            height: 0.5,
-            width: '89%',
-            backgroundColor: Colors.black,
-            alignSelf: 'center',
-          }}
-        />
-         <View
-          style={{
-            height: 60,
-            width: '89%',
-            alignSelf: 'center',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <Text
+          </View>
+          {/* <Text>{'\n'}</Text> */}
+          <View
             style={{
-              marginLeft: 10,
-              fontFamily: FontFamily.semi_bold,
-              color: Colors.black,
-              fontSize: 18,
-            }}>
-           Extra Hours
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              fontFamily: FontFamily.semi_bold,
-              color: Colors.black,
-              fontSize: 18,
-            }}>
-            {' '}
-            #
-          </Text>
-          <Input
-        
-            inputContainerStyle={{
-              marginTop: 20,
-              height: 40,
-              width: 120,
-              right: 0,
-            }}
-            inputStyle={{
-              fontSize: 14,
-              width: 100,
-              fontFamily: FontFamily.default,
-              color: Colors.black,
-            }}
-            onSubmitEditing={() => {
-              Keyboard.dismiss();
-            }}
-            keyboardType="numeric"
-            maxLength={50}
-            minLength={6}
-            value={this.state.hour}
-            // onChangeText={val => this.setState({couponCode: val})}
-            onChangeText={txt => {
-              this.setState({hour: txt});
+              height: 0.5,
+              width: '89%',
+              backgroundColor: Colors.black,
+              alignSelf: 'center',
             }}
           />
-        </View>
-        <View
-          style={{
-            height: 60,
-            width: '89%',
-            alignSelf: 'center',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <Text
+          <View
             style={{
-              marginLeft: 10,
-              fontFamily: FontFamily.semi_bold,
-              color: Colors.black,
-              fontSize: 18,
+              height: 60,
+              width: '89%',
+              alignSelf: 'center',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}>
-            Discount coupon
-          </Text>
-          <Text
+            <Text
+              style={{
+                marginLeft: 10,
+                fontFamily: FontFamily.semi_bold,
+                color: Colors.black,
+                fontSize: 18,
+              }}>
+              Extra Hours
+            </Text>
+            <Text
+              style={{
+                marginLeft: 10,
+                fontFamily: FontFamily.semi_bold,
+                color: Colors.black,
+                fontSize: 18,
+              }}>
+              {' '}
+              #
+            </Text>
+            <Input
+
+              inputContainerStyle={{
+                marginTop: 20,
+                height: 40,
+                width: 120,
+                right: 0,
+              }}
+              inputStyle={{
+                fontSize: 14,
+                width: 100,
+                fontFamily: FontFamily.default,
+                color: Colors.black,
+              }}
+              onSubmitEditing={() => {
+                Keyboard.dismiss();
+              }}
+              keyboardType="numeric"
+              maxLength={50}
+              minLength={6}
+              defaultValue={this.state.extraHours}
+              // onChangeText={val => this.setState({couponCode: val})}
+              onChangeText={txt => {
+                this.setState({ extraHours: txt });
+              }}
+            />
+          </View>
+          <View
             style={{
-              marginLeft: 10,
-              fontFamily: FontFamily.semi_bold,
-              color: Colors.black,
-              fontSize: 18,
+              height: 60,
+              width: '89%',
+              alignSelf: 'center',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}>
-            {' '}
-            #
-          </Text>
-          <Input
-        
-            inputContainerStyle={{
-              marginTop: 20,
-              height: 40,
-              width: 120,
-              right: 0,
+            <Text
+              style={{
+                marginLeft: 10,
+                fontFamily: FontFamily.semi_bold,
+                color: Colors.black,
+                fontSize: 18,
+              }}>
+              Discount coupon
+            </Text>
+            <Text
+              style={{
+                marginLeft: 10,
+                fontFamily: FontFamily.semi_bold,
+                color: Colors.black,
+                fontSize: 18,
+
+              }}>
+              {' '}
+              #
+            </Text>
+            <Input
+
+              inputContainerStyle={{
+                height: 40,
+                width: 120,
+                right: 0,
+              }}
+              inputStyle={{
+                fontSize: 14,
+                width: 100,
+                fontFamily: FontFamily.default,
+                color: Colors.black,
+              }}
+              defaultValue={this.state.couponCode}
+              onChangeText={val => this.setState({ couponCode: val })}
+            />
+          </View>
+          <View
+            style={{
+              height: 0.7,
+              width: '89%',
+              backgroundColor: Colors.black,
+              alignSelf: 'center',
+
             }}
-            inputStyle={{
-              fontSize: 14,
-              width: 100,
-              fontFamily: FontFamily.default,
-              color: Colors.black,
-            }}
-            defaultValue={this.state.couponCode}
-            onChangeText={val => this.setState({couponCode: val})}
           />
-        </View>
-        <View
-          style={{
-            height: 0.7,
-            width: '89%',
-            backgroundColor: Colors.black,
-            alignSelf: 'center',
-          }}
-        />
+        </ScrollView>
         <View
           style={{
             alignContent: 'center',
             alignSelf: 'center',
             position: 'absolute',
-            bottom: 20,
+            bottom: 40,
             width: '100%',
             alignItems: 'center',
+
           }}>
           <TouchableOpacity style={s.Btn2} onPress={() => this.ExtraRequest()}>
-            <Text style={[s.Btn1Text, {color: Colors.orange}]}>SKIP</Text>
+            <Text style={[s.Btn1Text, { color: Colors.orange, }]}>SKIP</Text>
           </TouchableOpacity>
           <TouchableOpacity style={s.Btn1} onPress={() => this.ExtraRequest()}>
             <Text style={s.Btn1Text}>Proceed</Text>
@@ -389,7 +387,9 @@ export default class ExtraRequest extends Component {
 
         <Text>{'\n'}</Text>
         <Text>{'\n'}</Text>
+
       </View>
+
     );
   }
 }

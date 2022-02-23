@@ -87,6 +87,8 @@ export default class Checkout extends Component {
 
   componentDidMount() {
     console.log(this.state.adver_arr);
+    // alert(JSON.stringify(this.props.route.params.extra_rent_amt))
+    
   }
 
   gotoBack = () => {
@@ -150,8 +152,9 @@ export default class Checkout extends Component {
         form_data.append(key, this.state.data[key]);
       }
     }
-    form_data.append('rent_amount', this.state.totalPrice)
-
+    form_data.append('extraHours', this.props.route.params.extraHours)
+    form_data.append('extra_rent_amt', this.props.route.params.extra_rent_amt)
+    form_data.append('rent_amount', this.state.totalPrice) //aa
     console.log('Form data', form_data);
 
     // return;
@@ -529,7 +532,8 @@ export default class Checkout extends Component {
 
               <View style={s.item}>
                 <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                  {this.state.data?.extraHours}{' '}
+                  {this.props.route.params.extraHours}
+                  {/* {this.state.data?.extraHours}{' '} */}
                 </Text>
               </View>
             </View>
