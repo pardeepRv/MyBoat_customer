@@ -30,7 +30,7 @@ const App = () => {
         }}
       />
       {/* <StatusBar hidden /> */}
-      <StatusBar backgroundColor={Colors.orange} />
+      <StatusBar  />
       <Stacks />
       {/* <TabNav /> */}
 

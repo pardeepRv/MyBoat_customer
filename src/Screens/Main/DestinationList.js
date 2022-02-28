@@ -5,11 +5,13 @@ import {
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { AirbnbRating, Card, colors, Icon } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
 import Header2 from '../../Components/Header2';
 import {
   Colors,
   FontFamily
 } from '../../Constants/Constants';
+import Timeslots from '../../Data/Timeslots';
 import { config } from '../../Provider/configProvider';
 import { msgProvider } from '../../Provider/messageProvider';
 //import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -90,19 +92,19 @@ export default class DestinationList extends Component {
 
       //          console.log('local '+value)
 
-       console.log('value 93',value);
+      console.log('value 93', value);
       if (value !== null) {
         const arrayData = JSON.parse(value);
 
         console.log(arrayData);
         this.setState({ localData: arrayData, isLoading: false });
         this.ProfileDetail(arrayData.user_id);
-      }else{
+      } else {
         this.ProfileDetail(null);
       }
     } catch (e) {
       // error reading value
-      console.log(e,'coming in err');
+      console.log(e, 'coming in err');
     }
   };
 
@@ -110,8 +112,10 @@ export default class DestinationList extends Component {
     console.log('goto');
     this.props.navigation.navigate('GoogleMap', {
       adver_arr: this.state.adver_arr,
+      type: 1
     });
   }
+
 
   Filter = () => {
     this.setState({ modalVisible: true });
@@ -230,6 +234,22 @@ export default class DestinationList extends Component {
     console.log(date);
   }
 
+  gotoBack = () => {
+    this.setState({ modalVisible: false });
+    this.setState({ modalVisible2: false });
+    this.setState({ modalVisible3: false });
+  };
+
+  reset() {
+    this.setState({
+      location: '',
+      cabin: '',
+      type_gear: '',
+      food: '',
+      rating: '',
+    });
+  }
+
   async addFavorite(item) {
     console.log(item);
 
@@ -317,7 +337,7 @@ export default class DestinationList extends Component {
       this.state.rating +
       '&filter_guest=0&filter_cabin=' +
       this.state.cabin +
-      '&filter_price=0&filter_toilet=0' +
+      '&filter_price=0&filter_toilet=0' + '&filter_food=' + this.state.food +
       '&sort_key=' +
       this.state.short;
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
@@ -334,28 +354,17 @@ export default class DestinationList extends Component {
         this.setState({ modalVisible2: false });
         this.setState({ modalVisible3: false });
 
-
-        this.setState({ adver_arr: json.adver_arr });
-      } else {
+        if (json && json.adver_arr != "NA") {
+          this.setState({ adver_arr: json.adver_arr });
+        } else {
+          this.setState({ adver_arr: [] });
+        }
       }
-
-      // console.log(this.state.img)
     } catch (error) {
       console.log(error);
     } finally {
       this.setState({ isLoading: false });
     }
-  }
-
-  _listEmptyComponent = () => {
-    return (
-      <View style={{
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
-        {this.state.isLoading && <ActivityIndicator size={30} color={Colors.orange} />}
-      </View>
-    )
   }
 
   render() {
@@ -476,27 +485,26 @@ export default class DestinationList extends Component {
             backgroundColor: Colors.white,
             flex: 1
           }}>
+
           <FlatList
             data={this.state.adver_arr}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => {
-              console.log('item in clo:>> destination list ', item);
               return (
                 <View style={{ padding: 5 }}>
                   <TouchableOpacity
-                    onPress={() =>
-                      {
-                        if(this.state.localData && this.state.localData.length ==0){
-                          alert('You need to login first.')
-                       return this.props.navigation.navigate('Login');
-                        }
-                        console.log(this.state.localData,'localDatalocalData');
-                        this.props.navigation.navigate('TripTypeDetail', {
-                          item: item,
-                          list: '1'
-                        })
+                    onPress={() => {
+                      if (this.state.localData && this.state.localData.length == 0) {
+                        alert('You need to login first.')
+                        return this.props.navigation.navigate('Login');
                       }
-                    
+                      console.log(this.state.localData, 'localDatalocalData');
+                      this.props.navigation.navigate('TripTypeDetail', {
+                        item: item,
+                        list: '1'
+                      })
+                    }
+
                     }
                   >
                     <Card
@@ -610,7 +618,7 @@ export default class DestinationList extends Component {
                                   resizeMode: 'cover',
                                 }}
                                 source={{
-                                  uri: config.baseURL + 'images/' + item.user_image,
+                                  uri: `https://${item.userimage}`,
                                 }}
                                 PlaceholderContent={
                                   <ActivityIndicator
@@ -678,8 +686,19 @@ export default class DestinationList extends Component {
             contentContainerStyle={{
               paddingBottom: 10,
             }}
-            ListEmptyComponent={this._listEmptyComponent}
-
+            // ListEmptyComponent={this}
+            ListEmptyComponent={() =>
+              this.state.adver_arr &&
+              this.state.adver_arr.length >= 0 && (
+                <Text style={{
+                  alignSelf: 'center',
+                  marginTop: 20,
+                  color: colors.orange,
+                  // fontFamily: fonts.semiBold,
+                  fontWeight:'bold'
+                }}>No Request found</Text>
+              )
+            }
           />
         </View>
 
@@ -704,7 +723,11 @@ export default class DestinationList extends Component {
               fontFamily: 'Montserrat-Regular',
               borderRadius: 30,
             }}>
-            {/* <View >
+
+
+
+            <ScrollView>
+              {/* <View >
       <Text>This is Half Modal</Text>
     </View>
     <TouchableOpacity
@@ -714,244 +737,383 @@ export default class DestinationList extends Component {
       <Text>Close</Text>
     </TouchableOpacity> */}
 
-            <View>
+              <View>
+                <Text
+                  style={{
+                    alignSelf: 'center',
+                    fontWeight: 'bold',
+                    fontSize: 18,
+                    marginTop: 8,
+                  }}>
+                  Filter
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+
+                <TouchableOpacity
+                  onPress={() => this.gotoBack()}
+
+                  style={{
+
+                    alignItems: 'flex-start',
+                    marginTop: -25,
+                    marginLeft: 20,
+
+                    borderRadius: 25
+
+                  }}>
+                  <Icon
+
+                    name="x-circle"
+                    type="feather"
+                    size={26}
+                    color={Colors.orange}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.reset()}
+
+                  style={{
+                    alignItems: 'flex-end',
+                    marginTop: -30,
+                    marginRight: 30,
+                    borderRadius: 25
+                  }}>
+                  <Text style={{
+                    alignSelf: 'center',
+                    fontWeight: 'bold',
+                    fontSize: 15,
+                    marginTop: 8,
+                    color: Colors.orange
+                  }}>Reset</Text>
+                </TouchableOpacity>
+              </View>
               <Text
                 style={{
-                  alignSelf: 'center',
-                  fontWeight: 'bold',
+                  color: Colors.black,
                   fontSize: 18,
-                  marginTop: 8,
+                  fontWeight: 'bold',
+                  padding: 8,
                 }}>
-                Filter
+                Location
               </Text>
-            </View>
 
-            <Text
-              style={{
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: 'bold',
-                padding: 8,
-              }}>
-              Location
-            </Text>
-
-            <View style={{ flexDirection: 'row', marginTop: -10 }}>
-              <View style={{ width: '30%' }}>
-                <TouchableOpacity
-                  onPress={() => this.setState({ location: 'fail' })}>
-                  <View
-                    style={{
-                      borderColor:
-                        this.state.location != 'fail' ? 'grey' : '#fff',
-                      backgroundColor:
-                        this.state.location != 'fail' ? '#fff' : Colors.orange,
-                      borderWidth: 1,
-                      padding: 8,
-                      margin: 8,
-                      width: 100,
-                      alignSelf: 'center',
-                      borderRadius: 15,
-                    }}>
-                    <Text
+              <View style={{ flexDirection: 'row', marginTop: -10 }}>
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ location: 'fail' })}>
+                    <View
                       style={{
+                        borderColor:
+                          this.state.location != 'fail' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.location != 'fail' ? '#fff' : Colors.orange,
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
                         alignSelf: 'center',
-                        color:
-                          this.state.location != 'fail'
-                            ? Colors.orange
-                            : '#fff',
+                        borderRadius: 15,
                       }}>
-                      Fail
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.location != 'fail'
+                              ? Colors.orange
+                              : '#fff',
+                        }}>
+                        Fail
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
 
-              <View style={{ width: '30%' }}>
-                <TouchableOpacity
-                  onPress={() => this.setState({ location: 'Al Jhara' })}>
-                  <View
-                    style={{
-                      borderColor:
-                        this.state.location != 'Al Jhara' ? 'grey' : '#fff',
-                      backgroundColor:
-                        this.state.location != 'Al Jhara'
-                          ? '#fff'
-                          : Colors.orange,
-                      borderWidth: 1,
-                      padding: 8,
-                      margin: 8,
-                      width: 100,
-                      alignSelf: 'center',
-                      borderRadius: 15,
-                    }}>
-                    <Text
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ location: 'Al Jhara' })}>
+                    <View
                       style={{
-                        alignSelf: 'center',
-                        color:
+                        borderColor:
+                          this.state.location != 'Al Jhara' ? 'grey' : '#fff',
+                        backgroundColor:
                           this.state.location != 'Al Jhara'
-                            ? Colors.orange
-                            : '#fff',
+                            ? '#fff'
+                            : Colors.orange,
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
                       }}>
-                      Al Jhara
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.location != 'Al Jhara'
+                              ? Colors.orange
+                              : '#fff',
+                        }}>
+                        Al Jhara
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  padding: 8,
+                  marginTop: -6,
+                }}>
+                Cabin
+              </Text>
+
+              <View style={{ flexDirection: 'row', marginTop: -10 }}>
+                <TouchableOpacity onPress={() => this.setState({ cabin: '1' })}>
+                  <View
+                    style={{
+                      borderColor: this.state.cabin != '1' ? 'grey' : '#fff',
+                      backgroundColor:
+                        this.state.cabin != '1' ? '#fff' : Colors.orange,
+                      borderWidth: 1,
+                      padding: 8,
+                      margin: 8,
+                      width: 60,
+                      alignSelf: 'center',
+                      borderRadius: 15,
+                    }}>
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        color: this.state.cabin != '1' ? Colors.orange : '#fff',
+                      }}>
+                      1
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => this.setState({ cabin: '2' })}>
+                  <View
+                    style={{
+                      borderColor: this.state.cabin != '2' ? 'grey' : '#fff',
+                      backgroundColor:
+                        this.state.cabin != '2' ? '#fff' : Colors.orange,
+                      borderWidth: 1,
+                      padding: 8,
+                      margin: 8,
+                      width: 60,
+                      alignSelf: 'center',
+                      borderRadius: 15,
+                    }}>
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        color: this.state.cabin != '2' ? Colors.orange : '#fff',
+                      }}>
+                      2
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => this.setState({ cabin: '3' })}>
+                  <View
+                    style={{
+                      borderColor: this.state.cabin != '3' ? 'grey' : '#fff',
+                      backgroundColor:
+                        this.state.cabin != '3' ? '#fff' : Colors.orange,
+                      borderWidth: 1,
+                      padding: 8,
+                      margin: 8,
+                      width: 60,
+                      alignSelf: 'center',
+                      borderRadius: 15,
+                    }}>
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        color: this.state.cabin != '3' ? Colors.orange : '#fff',
+                      }}>
+                      3
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => this.setState({ cabin: '4' })}>
+                  <View
+                    style={{
+                      borderColor: this.state.cabin != '4' ? 'grey' : '#fff',
+                      backgroundColor:
+                        this.state.cabin != '4' ? '#fff' : Colors.orange,
+                      borderWidth: 1,
+                      padding: 8,
+                      margin: 8,
+                      width: 60,
+                      alignSelf: 'center',
+                      borderRadius: 15,
+                    }}>
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        color: this.state.cabin != '4' ? Colors.orange : '#fff',
+                      }}>
+                      4
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => this.setState({ cabin: '5' })}>
+                  <View
+                    style={{
+                      borderColor: this.state.cabin != '5' ? 'grey' : '#fff',
+                      backgroundColor:
+                        this.state.cabin != '5' ? '#fff' : Colors.orange,
+                      borderWidth: 1,
+                      padding: 8,
+                      margin: 8,
+                      width: 60,
+                      alignSelf: 'center',
+                      borderRadius: 15,
+                    }}>
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        color: this.state.cabin != '5' ? Colors.orange : '#fff',
+                      }}>
+                      5
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
-            </View>
 
-            <Text
-              style={{
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: 'bold',
-                padding: 8,
-                marginTop: -6,
-              }}>
-              Cabin
-            </Text>
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  padding: 8,
+                }}>
+                Type Gear
+              </Text>
 
-            <View style={{ flexDirection: 'row', marginTop: -10 }}>
-              <TouchableOpacity onPress={() => this.setState({ cabin: '1' })}>
-                <View
-                  style={{
-                    borderColor: this.state.cabin != '1' ? 'grey' : '#fff',
-                    backgroundColor:
-                      this.state.cabin != '1' ? '#fff' : Colors.orange,
-                    borderWidth: 1,
-                    padding: 8,
-                    margin: 8,
-                    width: 60,
-                    alignSelf: 'center',
-                    borderRadius: 15,
-                  }}>
-                  <Text
-                    style={{
-                      alignSelf: 'center',
-                      color: this.state.cabin != '1' ? Colors.orange : '#fff',
-                    }}>
-                    1
-                  </Text>
+              <View style={{ flexDirection: 'row', marginTop: -10 }}>
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ type_gear: 'full' })}>
+                    <View
+                      style={{
+                        borderColor:
+                          this.state.type_gear != '1' ? 'full' : '#fff',
+                        backgroundColor:
+                          this.state.type_gear != 'full' ? '#fff' : Colors.orange,
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.type_gear != 'full'
+                              ? Colors.orange
+                              : '#fff',
+                        }}>
+                        Full
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => this.setState({ cabin: '2' })}>
-                <View
-                  style={{
-                    borderColor: this.state.cabin != '2' ? 'grey' : '#fff',
-                    backgroundColor:
-                      this.state.cabin != '2' ? '#fff' : Colors.orange,
-                    borderWidth: 1,
-                    padding: 8,
-                    margin: 8,
-                    width: 60,
-                    alignSelf: 'center',
-                    borderRadius: 15,
-                  }}>
-                  <Text
-                    style={{
-                      alignSelf: 'center',
-                      color: this.state.cabin != '2' ? Colors.orange : '#fff',
-                    }}>
-                    2
-                  </Text>
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ type_gear: 'half' })}>
+                    <View
+                      style={{
+                        borderColor:
+                          this.state.type_gear != 'half' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.type_gear != 'half' ? '#fff' : Colors.orange,
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.type_gear != 'half'
+                              ? Colors.orange
+                              : '#fff',
+                        }}>
+                        Half
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => this.setState({ cabin: '3' })}>
-                <View
-                  style={{
-                    borderColor: this.state.cabin != '3' ? 'grey' : '#fff',
-                    backgroundColor:
-                      this.state.cabin != '3' ? '#fff' : Colors.orange,
-                    borderWidth: 1,
-                    padding: 8,
-                    margin: 8,
-                    width: 60,
-                    alignSelf: 'center',
-                    borderRadius: 15,
-                  }}>
-                  <Text
-                    style={{
-                      alignSelf: 'center',
-                      color: this.state.cabin != '3' ? Colors.orange : '#fff',
-                    }}>
-                    3
-                  </Text>
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ type_gear: 'no' })}>
+                    <View
+                      style={{
+                        borderColor:
+                          this.state.type_gear != 'no' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.type_gear != 'no' ? '#fff' : Colors.orange,
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.type_gear != 'no' ? Colors.orange : '#fff',
+                        }}>
+                        No
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
+              </View>
 
-              <TouchableOpacity onPress={() => this.setState({ cabin: '4' })}>
-                <View
-                  style={{
-                    borderColor: this.state.cabin != '4' ? 'grey' : '#fff',
-                    backgroundColor:
-                      this.state.cabin != '4' ? '#fff' : Colors.orange,
-                    borderWidth: 1,
-                    padding: 8,
-                    margin: 8,
-                    width: 60,
-                    alignSelf: 'center',
-                    borderRadius: 15,
-                  }}>
-                  <Text
-                    style={{
-                      alignSelf: 'center',
-                      color: this.state.cabin != '4' ? Colors.orange : '#fff',
-                    }}>
-                    4
-                  </Text>
-                </View>
-              </TouchableOpacity>
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  padding: 8,
+                }}>
+                Food
+              </Text>
 
-              <TouchableOpacity onPress={() => this.setState({ cabin: '5' })}>
-                <View
-                  style={{
-                    borderColor: this.state.cabin != '5' ? 'grey' : '#fff',
-                    backgroundColor:
-                      this.state.cabin != '5' ? '#fff' : Colors.orange,
-                    borderWidth: 1,
-                    padding: 8,
-                    margin: 8,
-                    width: 60,
-                    alignSelf: 'center',
-                    borderRadius: 15,
-                  }}>
-                  <Text
-                    style={{
-                      alignSelf: 'center',
-                      color: this.state.cabin != '5' ? Colors.orange : '#fff',
-                    }}>
-                    5
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            <Text
-              style={{
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: 'bold',
-                padding: 8,
-              }}>
-              Type Gear
-            </Text>
-
-            <View style={{ flexDirection: 'row', marginTop: -10 }}>
-              <View style={{ width: '30%' }}>
+              <View style={{ flexDirection: 'row', marginTop: -10 }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({ type_gear: 'full' })}>
+                  onPress={() => this.setState({ food: 'Vip_Food' })}>
                   <View
                     style={{
                       borderColor:
-                        this.state.type_gear != '1' ? 'full' : '#fff',
+                        this.state.food != 'Vip_Food' ? 'grey' : '#fff',
                       backgroundColor:
-                        this.state.type_gear != 'full' ? '#fff' : Colors.orange,
+                        this.state.food != 'Vip_Food' ? '#fff' : Colors.orange,
+                      borderColor: 'grey',
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
-                      width: 100,
+                      width: 150,
                       alignSelf: 'center',
                       borderRadius: 15,
                     }}>
@@ -959,29 +1121,25 @@ export default class DestinationList extends Component {
                       style={{
                         alignSelf: 'center',
                         color:
-                          this.state.type_gear != 'full'
-                            ? Colors.orange
-                            : '#fff',
+                          this.state.food != 'Vip_Food' ? Colors.orange : '#fff',
                       }}>
-                      Full
+                      Vip Food
                     </Text>
                   </View>
                 </TouchableOpacity>
-              </View>
 
-              <View style={{ width: '30%' }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({ type_gear: 'half' })}>
+                  onPress={() => this.setState({ food: 'Indian_Food' })}>
                   <View
                     style={{
                       borderColor:
-                        this.state.type_gear != 'half' ? 'grey' : '#fff',
+                        this.state.food != 'Indian_Food' ? 'grey' : '#fff',
                       backgroundColor:
-                        this.state.type_gear != 'half' ? '#fff' : Colors.orange,
+                        this.state.food != 'Indian_Food' ? '#fff' : Colors.orange,
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
-                      width: 100,
+                      width: 150,
                       alignSelf: 'center',
                       borderRadius: 15,
                     }}>
@@ -989,263 +1147,168 @@ export default class DestinationList extends Component {
                       style={{
                         alignSelf: 'center',
                         color:
-                          this.state.type_gear != 'half'
+                          this.state.food != 'Indian_Food'
                             ? Colors.orange
                             : '#fff',
                       }}>
-                      Half
+                      Indian Food
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
-              <View style={{ width: '30%' }}>
-                <TouchableOpacity
-                  onPress={() => this.setState({ type_gear: 'no' })}>
-                  <View
-                    style={{
-                      borderColor:
-                        this.state.type_gear != 'no' ? 'grey' : '#fff',
-                      backgroundColor:
-                        this.state.type_gear != 'no' ? '#fff' : Colors.orange,
-                      borderWidth: 1,
-                      padding: 8,
-                      margin: 8,
-                      width: 100,
-                      alignSelf: 'center',
-                      borderRadius: 15,
-                    }}>
-                    <Text
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  padding: 8,
+                }}>
+                Star Rating
+              </Text>
+
+              <View style={{ flexDirection: 'row', marginTop: -10 }}>
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity onPress={() => this.setState({ rating: '1' })}>
+                    <View
                       style={{
+                        borderColor: this.state.rating != '1' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.rating != '1' ? '#fff' : Colors.orange,
+                        borderColor: 'grey',
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
                         alignSelf: 'center',
-                        color:
-                          this.state.type_gear != 'no' ? Colors.orange : '#fff',
+                        borderRadius: 15,
                       }}>
-                      No
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <Text
-              style={{
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: 'bold',
-                padding: 8,
-              }}>
-              Food
-            </Text>
-
-            <View style={{ flexDirection: 'row', marginTop: -10 }}>
-              <TouchableOpacity
-                onPress={() => this.setState({ food: 'Vid Food' })}>
-                <View
-                  style={{
-                    borderColor:
-                      this.state.food != 'Vid Food' ? 'grey' : '#fff',
-                    backgroundColor:
-                      this.state.food != 'Vid Food' ? '#fff' : Colors.orange,
-                    borderColor: 'grey',
-                    borderWidth: 1,
-                    padding: 8,
-                    margin: 8,
-                    width: 150,
-                    alignSelf: 'center',
-                    borderRadius: 15,
-                  }}>
-                  <Text
-                    style={{
-                      alignSelf: 'center',
-                      color:
-                        this.state.food != 'Vid Food' ? Colors.orange : '#fff',
-                    }}>
-                    Vip Food
-                  </Text>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.rating != '1' ? Colors.orange : '#fff',
+                        }}>
+                        1Stars
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
 
-              <TouchableOpacity
-                onPress={() => this.setState({ food: 'Indian Food' })}>
-                <View
-                  style={{
-                    borderColor:
-                      this.state.food != 'Indian Food' ? 'grey' : '#fff',
-                    backgroundColor:
-                      this.state.food != 'Indian Food' ? '#fff' : Colors.orange,
-                    borderWidth: 1,
-                    padding: 8,
-                    margin: 8,
-                    width: 150,
-                    alignSelf: 'center',
-                    borderRadius: 15,
-                  }}>
-                  <Text
-                    style={{
-                      alignSelf: 'center',
-                      color:
-                        this.state.food != 'Indian Food'
-                          ? Colors.orange
-                          : '#fff',
-                    }}>
-                    Indian Food
-                  </Text>
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity onPress={() => this.setState({ rating: '2' })}>
+                    <View
+                      style={{
+                        borderColor: this.state.rating != '2' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.rating != '2' ? '#fff' : Colors.orange,
+                        borderColor: 'grey',
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.rating != '2' ? Colors.orange : '#fff',
+                        }}>
+                        2Starts
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
+
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity onPress={() => this.setState({ rating: '3' })}>
+                    <View
+                      style={{
+                        borderColor: this.state.rating != '3' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.rating != '3' ? '#fff' : Colors.orange,
+                        borderColor: 'grey',
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.rating != '3' ? Colors.orange : '#fff',
+                        }}>
+                        3Starts
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity onPress={() => this.setState({ rating: '4' })}>
+                    <View
+                      style={{
+                        borderColor: this.state.rating != '4' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.rating != '4' ? '#fff' : Colors.orange,
+                        borderColor: 'grey',
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.rating != '4' ? Colors.orange : '#fff',
+                        }}>
+                        4Starts
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity onPress={() => this.setState({ rating: '5' })}>
+                    <View
+                      style={{
+                        borderColor: this.state.rating != '5' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.rating != '5' ? '#fff' : Colors.orange,
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.rating != '5' ? Colors.orange : '#fff',
+                        }}>
+                        5Starts
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <TouchableOpacity style={s.Btn1} onPress={() => this.ShowResult()}>
+                <Text style={s.Btn1Text}>Show Results</Text>
               </TouchableOpacity>
-            </View>
-
-            <Text
-              style={{
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: 'bold',
-                padding: 8,
-              }}>
-              Star Rating
-            </Text>
-
-            <View style={{ flexDirection: 'row', marginTop: -10 }}>
-              <View style={{ width: '30%' }}>
-                <TouchableOpacity onPress={() => this.setState({ rating: '1' })}>
-                  <View
-                    style={{
-                      borderColor: this.state.rating != '1' ? 'grey' : '#fff',
-                      backgroundColor:
-                        this.state.rating != '1' ? '#fff' : Colors.orange,
-                      borderColor: 'grey',
-                      borderWidth: 1,
-                      padding: 8,
-                      margin: 8,
-                      width: 100,
-                      alignSelf: 'center',
-                      borderRadius: 15,
-                    }}>
-                    <Text
-                      style={{
-                        alignSelf: 'center',
-                        color:
-                          this.state.rating != '1' ? Colors.orange : '#fff',
-                      }}>
-                      1Stars
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-
-              <View style={{ width: '30%' }}>
-                <TouchableOpacity onPress={() => this.setState({ rating: '2' })}>
-                  <View
-                    style={{
-                      borderColor: this.state.rating != '2' ? 'grey' : '#fff',
-                      backgroundColor:
-                        this.state.rating != '2' ? '#fff' : Colors.orange,
-                      borderColor: 'grey',
-                      borderWidth: 1,
-                      padding: 8,
-                      margin: 8,
-                      width: 100,
-                      alignSelf: 'center',
-                      borderRadius: 15,
-                    }}>
-                    <Text
-                      style={{
-                        alignSelf: 'center',
-                        color:
-                          this.state.rating != '2' ? Colors.orange : '#fff',
-                      }}>
-                      2Starts
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-
-              <View style={{ width: '30%' }}>
-                <TouchableOpacity onPress={() => this.setState({ rating: '3' })}>
-                  <View
-                    style={{
-                      borderColor: this.state.rating != '3' ? 'grey' : '#fff',
-                      backgroundColor:
-                        this.state.rating != '3' ? '#fff' : Colors.orange,
-                      borderColor: 'grey',
-                      borderWidth: 1,
-                      padding: 8,
-                      margin: 8,
-                      width: 100,
-                      alignSelf: 'center',
-                      borderRadius: 15,
-                    }}>
-                    <Text
-                      style={{
-                        alignSelf: 'center',
-                        color:
-                          this.state.rating != '3' ? Colors.orange : '#fff',
-                      }}>
-                      3Starts
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ width: '30%' }}>
-                <TouchableOpacity onPress={() => this.setState({ rating: '4' })}>
-                  <View
-                    style={{
-                      borderColor: this.state.rating != '4' ? 'grey' : '#fff',
-                      backgroundColor:
-                        this.state.rating != '4' ? '#fff' : Colors.orange,
-                      borderColor: 'grey',
-                      borderWidth: 1,
-                      padding: 8,
-                      margin: 8,
-                      width: 100,
-                      alignSelf: 'center',
-                      borderRadius: 15,
-                    }}>
-                    <Text
-                      style={{
-                        alignSelf: 'center',
-                        color:
-                          this.state.rating != '4' ? Colors.orange : '#fff',
-                      }}>
-                      4Starts
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-
-              <View style={{ width: '30%' }}>
-                <TouchableOpacity onPress={() => this.setState({ rating: '5' })}>
-                  <View
-                    style={{
-                      borderColor: this.state.rating != '5' ? 'grey' : '#fff',
-                      backgroundColor:
-                        this.state.rating != '5' ? '#fff' : Colors.orange,
-                      borderWidth: 1,
-                      padding: 8,
-                      margin: 8,
-                      width: 100,
-                      alignSelf: 'center',
-                      borderRadius: 15,
-                    }}>
-                    <Text
-                      style={{
-                        alignSelf: 'center',
-                        color:
-                          this.state.rating != '5' ? Colors.orange : '#fff',
-                      }}>
-                      5Starts
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <TouchableOpacity style={s.Btn1} onPress={() => this.ShowResult()}>
-              <Text style={s.Btn1Text}>Show Results</Text>
-            </TouchableOpacity>
+            </ScrollView>
           </View>
         </Modal>
 
@@ -1276,7 +1339,29 @@ export default class DestinationList extends Component {
                 Filter
               </Text>
             </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
+              <TouchableOpacity
+                onPress={() => this.gotoBack()}
+
+                style={{
+
+                  alignItems: 'flex-start',
+                  marginTop: -25,
+                  marginLeft: 20,
+
+                  borderRadius: 25
+
+                }}>
+                <Icon
+
+                  name="x-circle"
+                  type="feather"
+                  size={26}
+                  color={Colors.orange}
+                />
+              </TouchableOpacity>
+            </View>
             <View style={{ flexDirection: 'row', marginTop: '10%' }}>
               <View style={{ width: '50%' }}>
                 <TouchableOpacity
@@ -1439,7 +1524,30 @@ export default class DestinationList extends Component {
               fontFamily: 'Montserrat-Regular',
               borderRadius: 30,
             }}>
-            <View style={{ marginTop: '10%' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+
+              <TouchableOpacity
+                onPress={() => this.gotoBack()}
+
+                style={{
+
+                  alignItems: 'flex-start',
+                  marginTop: 10,
+                  marginLeft: 20,
+
+                  borderRadius: 25
+
+                }}>
+                <Icon
+
+                  name="x-circle"
+                  type="feather"
+                  size={26}
+                  color={Colors.orange}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ marginTop: '3%' }}>
               <Calendar
                 minDate={new Date()}
                 markedDates={this.state.calender_arr}
@@ -1448,6 +1556,7 @@ export default class DestinationList extends Component {
                 }}
               />
             </View>
+
 
             <TouchableOpacity style={s.Btn1} onPress={() => this.ShowResult()}>
               <Text style={s.Btn1Text}>Select Date</Text>

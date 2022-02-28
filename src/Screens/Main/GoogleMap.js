@@ -48,6 +48,9 @@ export default class GoogleMap extends Component {
       addressselected: '',
       address_selected: '',
       input_search: '',
+      destination : this?.props?.route?.params?.destinations_arr 
+      ? this?.props?.route?.params?.destinations_arr : [],
+      type:this?.props?.route?.params?.type,
       adver_arr: this?.props?.route?.params?.adver_arr
         ? this?.props?.route?.params?.adver_arr
         : [],
@@ -120,7 +123,7 @@ export default class GoogleMap extends Component {
     console.log("$$$$$", this.state.adver_arr);
     return (
       <View style={{flex: 1}}>
-        <StatusBar backgroundColor="#0A8481"></StatusBar>
+        {/* <StatusBar backgroundColor="#ffffff25" ></StatusBar> */}
         <View>
           <ImageBackground
             style={{width: '100%', height: 250}}
@@ -178,6 +181,7 @@ export default class GoogleMap extends Component {
             </View>
           </View> */}
         </View>
+    { this.state.type != 3 ?
         <View
           style={{
             top: -70,
@@ -188,6 +192,7 @@ export default class GoogleMap extends Component {
             borderTopLeftRadius: 25,
             borderTopRightRadius: 25,
           }}>
+            {this.state.type == 1 ?  
           <MapView
             style={{
               flex: 1,
@@ -232,7 +237,7 @@ export default class GoogleMap extends Component {
                     <Callout
                       onPress={() =>
                         this.props.navigation.navigate('TripTypeDetail', {
-                          item: item,
+                          item: item,list: '1'
                         })
                       }>
                       <TouchableOpacity
@@ -301,7 +306,133 @@ export default class GoogleMap extends Component {
                 ) : null,
               )}
           </MapView>
+          : 
+<MapView
+            style={{
+              flex: 1,
+              borderRadius: 40,
+              width: '100%',
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+            }}
+            followUserLocation={true}
+            ref={ref => (this.mapView = ref)}
+            zoomEnabled={true}
+            showsUserLocation={true}
+            onMapReady={() => {
+              this.goToInitialLocation();
+            }}
+            initialRegion={this.state.initialRegion}>
+           
+                  <Marker.Animated
+                    coordinate={{
+                      latitude: parseFloat(this.state.adver_arr.location_lat),
+                      longitude: parseFloat(this.state.adver_arr.location_lng),
+                    }}
+                    isPreselected={true}
+                    description={'Your Boat location'}>
+                    <View
+                      style={{
+                        height: 40,
+                        width: 40,
+                        borderRadius: 20,
+                        backgroundColor: '#fff',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Image
+                        style={{height: 30}}
+                        source={require('../../../assets/icons/markerIcon.png')}
+                        resizeMode="contain"
+                      />
+                    </View>
+                 
+                    
+                  </Marker.Animated>
+               
+          </MapView>
+          } 
         </View>
+        : 
+         <View
+        style={{
+          top: -70,
+          width: '100%',
+          height: '100%',
+          overflow: 'hidden',
+          marginTop: '16%',
+          borderTopLeftRadius: 25,
+          borderTopRightRadius: 25,
+        }}>
+         
+        <MapView
+          style={{
+            flex: 1,
+            borderRadius: 40,
+            width: '100%',
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+          }}
+          followUserLocation={true}
+          ref={ref => (this.mapView = ref)}
+          zoomEnabled={true}
+          showsUserLocation={true}
+          onMapReady={() => {
+            this.goToInitialLocation();
+          }}
+          initialRegion={this.state.initialRegion}>
+          {this.state.destination != 'NA' &&
+            this.state.destination.map((item, index) =>
+              item.lat && item.lng ? (
+                <Marker.Animated
+                  coordinate={{
+                    latitude: parseFloat(item.lat),
+                    longitude: parseFloat(item.lng),
+                  }}
+                  isPreselected={true}
+                  description={'Your Destination  location'}>
+                  <View
+                    style={{
+                      height: 40,
+                      width: 40,
+                      borderRadius: 20,
+                      backgroundColor: '#fff',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Image
+                      style={{height: 30}}
+                      source={require('../../../assets/icons/markerIcon.png')}
+                      resizeMode="contain"
+                    />
+                  </View>
+
+                  {/* <TouchableOpacity
+                    style={{flexDirection: 'row', backgroundColor: 'red', alignItems: 'center'}}
+                    activeOpacity={0.9}>
+                    <Image
+                      resizeMode="contain"
+                      style={{width: 40, height: 40}}
+                      source={require('../../../assets/icons/offer.png')}
+                    />
+                    <View
+                      style={{
+                        backgroundColor: '#ccc',
+                        height: 37,
+                        justifyContent: 'center',
+                        borderRadius: 2,
+                      }}>
+                      <Text style={styles.map_kwd}>
+                        {Lang_chg.KWD_txt[config.language]}{' '}
+                        {item.rental_price}
+                      </Text>
+                    </View>
+                  </TouchableOpacity> */}
+                </Marker.Animated>
+              ) : null,
+            )}
+        </MapView>
+        </View>}
       </View>
     );
   }

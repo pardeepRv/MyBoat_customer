@@ -85,12 +85,12 @@ export class MyTrip extends PureComponent {
     console.log(item)
     return <Card containerStyle={s.Card}>
       <TouchableOpacity
-      onPress={() =>
-                      this.props.navigation.navigate('TripTypeDetail', {
-                        item: item,
-                        list:'2'
-                      })
-                    }
+        onPress={() =>
+          this.props.navigation.navigate('TripTypeDetail', {
+            item: item,
+            list: '2'
+          })
+        }
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
@@ -119,21 +119,50 @@ export class MyTrip extends PureComponent {
                 {item.status_time}
               </Text>
               <Text style={s.price}>{item.total_amt}</Text>
+              { item.booking_status === 0 ? 
               <Text
-                style={[
-                  s.status,
-                  {
-                    color:
-                      item.status === 'Confirmed'
-                        ? Colors.confirmed
-                        : item.status === 'Cancelled'
-                          ? Colors.red
-                          : Colors.orange,
-                  },
-                ]}>
-                {item.status}
-                {/* confirmed */}
-              </Text>
+              style={[
+                s.status,
+                {
+                  color:Colors.confirmed
+                },
+              ]}>
+                
+              Pending
+                
+            </Text>: null }
+            { item.booking_status === 1 ? 
+              <Text
+              style={[
+                s.status,
+                {
+                  color:Colors.orange
+                },
+              ]}>     
+              Confirmed  
+            </Text>: null }
+            { item.booking_status === 4 ? 
+              <Text
+              style={[
+                s.status,
+                {
+                  color:Colors.red
+                },
+              ]}>              
+              Cancelled
+            </Text>: null }
+            { item.booking_status === 3 ? 
+              <Text
+              style={[
+                s.status,
+                {
+                  textAlign:'center',
+                  color:Colors.red
+                },
+              ]}>              
+              Cancelled
+            </Text>: null }
+            
             </View>
           </View>
         </View>

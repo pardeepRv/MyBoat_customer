@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  SafeAreaView,
   Image,
   ActivityIndicator,
 } from 'react-native';
@@ -48,14 +49,14 @@ export default class PremotionDetail extends Component {
 
   render() {
     return (
-      <View>
+      <SafeAreaView style={{flex:1}}>
         <TouchableOpacity
           onPress={() => this.props.navigation.goBack()}
           style={{
             marginBottom: -50,
             zIndex: 1,
             alignItems: 'flex-start',
-            marginTop: 20,
+marginTop:10,
             marginLeft: 20,
           }}>
           <Icon
@@ -66,7 +67,7 @@ export default class PremotionDetail extends Component {
           />
         </TouchableOpacity>
 
-       
+       <View>
         <ImageBackground
           style={{height: 300}}
           source={{
@@ -80,7 +81,7 @@ export default class PremotionDetail extends Component {
                         {"Promotion"}
                     </Text>
             </ImageBackground>
-
+            </View>
         <View
           style={{
             backgroundColor: Colors.white,
@@ -103,7 +104,8 @@ export default class PremotionDetail extends Component {
           </Text>
           {/* <Text style={{textAlign:'justify',marginTop:10}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </Text> */}
         </View>
-      </View>
+      
+      </SafeAreaView>
     );
   }
 }

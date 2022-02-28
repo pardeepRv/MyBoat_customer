@@ -5,7 +5,7 @@ import {
   Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
 // import { Card } from 'react-native-elements';
-import { Icon, Input, Card, AirbnbRating } from 'react-native-elements';
+import { Card, Icon } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import { SliderBox } from 'react-native-image-slider-box';
 import Header from '../../Components/Header';
@@ -27,7 +27,8 @@ export default class Login extends Component {
       backgroundColor: 1,
       modalVisible: false,
       item: {},
-      isLoading: false
+      isLoading: false,
+      err: false
     };
   }
 
@@ -42,6 +43,10 @@ export default class Login extends Component {
     ]);
     return true;
   };
+  static getDerivedStateFromError(prevprops, prevState) {
+    console.log('props :>> props ', prevprops);
+    console.log('state :>> state ', prevState);
+  }
 
   componentWillUnmount() {
     // this.backHandler.remove();
@@ -51,8 +56,8 @@ export default class Login extends Component {
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       console.log('focus :>> ');
-      this.Promotion();
       this.getUsers();
+      this.Promotion();
       //firebaseprovider.getAllUsers();
       //firebaseprovider.messagecountforfooter();
       console.log('des', this.state.trips_arr)
@@ -71,6 +76,7 @@ export default class Login extends Component {
     // console.log('des', this.state.trips_arr)
 
     // this.getData('user_arr');
+
   }
 
   getData = async key => {
@@ -126,12 +132,10 @@ export default class Login extends Component {
     }
   }
 
-
+  //get promotions
   Promotion = async () => {
-
     this.setState({ isLoading: true });
     const value = await AsyncStorage.getItem('user_arr');
-    // if (value !== null) {
     console.log('value :>> ', value);
     const arrayData = JSON.parse(value);
     console.log('arrayData :>> ', arrayData);
@@ -144,19 +148,13 @@ export default class Login extends Component {
       url = config.baseURL +
         `destination_list.php?user_id_post=`;
     }
-
-
     console.log(url, 'urlurlurl');
     const response = await fetch(url
     );
-
     console.log('response', response);
-
     const json = await response.json();
     this.setState({ isLoading: false });
-
     console.log('destination kist res>>>>>>>', json);
-
     if (json && json.trips_arr && json.trips_arr.length > 0) {
 
       let updatedArr = json.trips_arr;
@@ -169,32 +167,46 @@ export default class Login extends Component {
         }
       })
 
+      json.promotions_arr.forEach(item => {
+        item.serverImg = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/' + item.image;
+
+      });
+
       console.log(newArr, 'newArrnewArrnewArr');
-
-
       this.setState({
         trips_arr: newArr
       });
     }
+    let imgAr = [];
+    this.setState(prevState => {
+      console.log(prevState, 'pre state');
+      if (prevState && prevState.promotions_arr && prevState.promotions_arr.length > 0 && this.state.img.length > 0) {
+        prevState.promotions_arr.forEach(i => {
+          this.state.img.forEach(j => {
+            if (i.serverImg == j) {
+              console.log('coming in if');
+              // this.state.img.push(i.serverImg);
+            }
+          });
+        });
+      } else {
+        console.log('coming in else');
+        json.promotions_arr.forEach(i => {
+          this.state.img.push(i.serverImg);
 
-
+        });
+      }
+    })
 
     this.setState({
       destinations: json.destinations_arr,
-      // trips_arr: json.trips_arr,
       promotions_arr: json.promotions_arr,
+      isLoading: false
     });
 
-    //  console.log('response ',json)
-
-    json.promotions_arr.forEach(item => {
-      this.state.img.push(
-        // 'https://myboatonline.com/app/webservice/images/' + item.image,
-        'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/' + item.image,
-      );
-    });
-    this.setState({ isLoading: false });
-
+    // json.promotions_arr.forEach(item => {
+    //   this.state.img.push(item.serverImg);
+    // });
   }
 
   ModalClick(item) {
@@ -372,7 +384,7 @@ export default class Login extends Component {
               // resizeMethod={'resize'}
               resizeMode={'cover'}
               inactiveDotColor="#90A4AE"
-              paginationBoxVerticalPadding={10}
+              // paginationBoxVerticalPadding={10}
               paginationBoxStyle={{
                 position: 'absolute',
                 bottom: -30,
@@ -382,18 +394,18 @@ export default class Login extends Component {
                 justifyContent: 'center',
                 paddingVertical: 10,
               }}
-              dotStyle={{
-                width: 9,
-                height: 9,
-                // borderRadius: 5,
-                marginHorizontal: -9,
-                borderRadius: 20,
-                padding: 0,
-                margin: 0,
-                backgroundColor: 'rgba(128, 128, 128, 0.92)',
-                // transform: [{ rotate: '45deg' }],
-              }}
-              autoplay
+              // dotStyle={{
+              //   width: 9,
+              //   height: 9,
+              //   // borderRadius: 5,
+              //   marginHorizontal: -9,
+              //   borderRadius: 20,
+              //   padding: 0,
+              //   margin: 0,
+              //   backgroundColor: 'rgba(128, 128, 128, 0.92)',
+              //   // transform: [{ rotate: '45deg' }],
+              // }}
+              // autoplay
               ImageComponentStyle={{
                 borderRadius: 0,
                 width: '90%',

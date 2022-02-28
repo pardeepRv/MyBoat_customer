@@ -31,11 +31,15 @@ const CustomHeader = ({ name }) => {
       imageStyle={[s.ImageBackground_Img, { opacity: 0.8 }]}>
       <View
         style={{
-          width: '90%',
+          // width: '90%',
+          width:80,
           marginTop: 30,
           alignSelf: 'center',
           backgroundColor: 'transparent',
           alignItems: 'center',
+          backgroundColor:Colors.orange,
+          borderRadius:20 
+          
         }}>
         <Text
           style={{

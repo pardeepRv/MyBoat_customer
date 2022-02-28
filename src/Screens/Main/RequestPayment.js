@@ -664,7 +664,7 @@ export default class RequestPayment extends Component {
         this.state.user_id_post.user_id,
     );
     return (
-      <KeyboardAvoidingView behavior="position">
+      
         <View style={{backgroundColor: '#fff'}}>
           <Header
             imgBack={true}
@@ -675,7 +675,7 @@ export default class RequestPayment extends Component {
             backImgSource={require('../../Images/backgd2.jpg')}
             name="Request"
           />
-
+<KeyboardAvoidingView behavior="position">
           <View style={{marginTop: -20, height: 'auto', borderTopLeftRadius: 20, borderTopRightRadius: 25, backgroundColor: '#fff'}}>
             <TouchableOpacity style={{marginTop: 15, borderTopLeftRadius: 20, borderTopRightRadius: 25,}}>
               <Calendar
@@ -776,18 +776,9 @@ export default class RequestPayment extends Component {
             <TouchableOpacity style={s.Btn1} onPress={() => this.Payment()}>
               <Text style={s.Btn1Text}>Proceed</Text>
             </TouchableOpacity>
-            <Text>
-              {'\n'}
-              {'\n'}
-              {'\n'}
-              {'\n'}
-              {'\n'}
-              {'\n'}
-              {'\n'}
-              {'\n'}
-            </Text>
+           
           </View>
-
+          </KeyboardAvoidingView>
           <Modal
             animationType="slide"
             transparent
@@ -851,15 +842,16 @@ export default class RequestPayment extends Component {
               )}
             </View>
           </Modal>
-        </View>
+       
         {/* <DateTimePickerModal
           isVisible={this.state.isShowDatePicker}
           mode="time"
           onConfirm={this.handleConfirm}
           onCancel={this.hideDatePicker}
         /> */}
+         
         {this.state.isShowDatePicker && this.selectTimeModal()}
-      </KeyboardAvoidingView>
+        </View>
     );
   }
 }

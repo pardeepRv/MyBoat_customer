@@ -33,6 +33,7 @@ import { Calendar } from "react-native-calendars";
 import RNFetchBlob from "rn-fetch-blob";
 import Share from "react-native-share";
 import { CheckBox } from "react-native-elements";
+import { msgProvider } from "../../Provider/messageProvider";
 
 //import {SliderBox} from 'react-native-image-slider-box';
 const { width } = Dimensions.get("window");
@@ -48,6 +49,7 @@ export default class TripTypeDetail extends Component {
       destinations_arr: [],
       img_arr: [],
       adver_arr: [],
+      ratingscreen: [],
       user: [],
       calender_arr: [],
       webviewshow: false,
@@ -55,6 +57,7 @@ export default class TripTypeDetail extends Component {
       isSelected: false,
       selectedMethod: 0,
       list: this.props.route.params.list,
+      loader:false
     };
   }
 
@@ -139,6 +142,7 @@ export default class TripTypeDetail extends Component {
       console.log("json  ", json);
 
       this.setState({
+        ratingscreen: json,
         adver_arr: json.adver_arr,
         img_arr: json.adver_arr.img_arr,
         booking_arr: json.booking_arr != "NA" ? json.booking_arr : [],
@@ -182,13 +186,63 @@ export default class TripTypeDetail extends Component {
 
   ratings = () => {
     // this.props.navigation.navigate('Ratings');
-    this.props.navigation.navigate("DetailsRating", { item: {} });
+    this.props.navigation.navigate("DetailsRating", { item: this.state.ratingscreen });
   };
   gotoBack = () => {
     this.props.navigation.goBack();
   };
 
+  Goto() {
+    console.log('goto');
+    this.props.navigation.navigate('GoogleMap', {
+      adver_arr: this.state.adver_arr,
+      type: 2
+
+    });
+  }
+
+  cancelbooking() {
+    this.setState({loader: true});
+    let url = config.baseURL + "customer_booking_status.php";
+
+    var formData = new FormData();
+    formData.append("booking_id", this.state.advertisement.booking_id);
+    formData.append("customer_id", this.state.advertisement.user_id);
+   console.log('url :>> ', url);
+
+     console.log(formData);
+
+     apifuntion
+      // .postApi(url, formData)
+      // .then((res) => {
+      //    console.log("res from cancelation ", res);
+      //   this.setState({loading: false});
+      //   if (res.success === "true") {
+      //     this.gotoBack()
+      //   } else {
+      //     alert("Something went wrong");
+      //   }
+      // })
+      .postApi(url, formData)
+      .then(obj => {
+        return obj.json();
+      })
+      .then(obj => {
+        this.setState({loader: false});
+         console.log("Update Response", obj);
+       
+        if (obj.success == 'true') {
+          this.gotoBack()
+        }else{
+          msgProvider.toast(obj?.msg, 'center');
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+
   render() {
+    console.log('advertisement :>> ', this.state.advertisement);
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
         <View
@@ -204,7 +258,7 @@ export default class TripTypeDetail extends Component {
               alignItems: "flex-start",
               marginTop: 20,
               marginLeft: 20,
-              backgroundColor: Colors.gray,
+              backgroundColor: Colors.orange,
               borderRadius: 25,
             }}
           >
@@ -223,7 +277,7 @@ export default class TripTypeDetail extends Component {
               alignItems: "flex-end",
               marginTop: 20,
               marginRight: 20,
-              backgroundColor: Colors.gray,
+              backgroundColor: Colors.orange,
               borderRadius: 20,
             }}
           >
@@ -291,8 +345,7 @@ export default class TripTypeDetail extends Component {
                   marginTop: 5,
                 }}
               >
-                {this.state.list == 1 ? 
-                 <View >
+                <TouchableOpacity  >
                   <Image
                     style={{
                       height: 40,
@@ -314,32 +367,9 @@ export default class TripTypeDetail extends Component {
                       />
                     }
                   />
-                </View>
-                : 
-                 <TouchableOpacity onPress={() => this.ratings()}>
-                  <Image
-                    style={{
-                      height: 40,
-                      width: 40,
-                      borderRadius: 20,
-                      resizeMode: "cover",
-                    }}
-                    source={{
-                      uri:
-                        config.baseURL +
-                        "images/" +
-                        this.state.adver_arr?.user_image,
-                    }}
-                    PlaceholderContent={
-                      <ActivityIndicator
-                        size={30}
-                        color={Colors.orange}
-                        style={{ alignSelf: "center" }}
-                      />
-                    }
-                  />
-                </TouchableOpacity>}
-               
+                </TouchableOpacity>
+
+
                 <View style={{ marginLeft: "15%" }}>
                   <Text
                     style={{
@@ -630,7 +660,7 @@ export default class TripTypeDetail extends Component {
             {" "}
             Booking details:
           </Text>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, bottom: 15 }}>
             <View style={s.container}>
               <View style={s.item}>
                 <Text style={s.leftText}> Advertisment type:</Text>
@@ -678,7 +708,7 @@ export default class TripTypeDetail extends Component {
                     this.state.adver_arr.destination_arr.length > 0 &&
                     this.state.adver_arr.destination_arr[0].destination &&
                     this.state.adver_arr.destination_arr[0].destination.length >
-                      0 &&
+                    0 &&
                     this.state.adver_arr.destination_arr[0].destination[0]}{" "}
                 </Text>
               </View>
@@ -769,7 +799,7 @@ export default class TripTypeDetail extends Component {
               <View style={s.item}>
                 <Text style={s.rightText}>
                   {this.state.adver_arr.addon_arr &&
-                  this.state.adver_arr?.addon_arr[2]?.count
+                    this.state.adver_arr?.addon_arr[2]?.count
                     ? "Available"
                     : "Not available"}{" "}
                 </Text>
@@ -784,7 +814,7 @@ export default class TripTypeDetail extends Component {
               <View style={s.item}>
                 <Text style={s.rightText}>
                   {this.state.adver_arr.addon_arr &&
-                  this.state.adver_arr.addon_arr[1].count
+                    this.state.adver_arr.addon_arr[1].count
                     ? "Available"
                     : "Not available"}
                 </Text>
@@ -799,7 +829,7 @@ export default class TripTypeDetail extends Component {
               <View style={s.item}>
                 <Text style={s.rightText}>
                   {this.state.adver_arr.addon_arr &&
-                  this.state.adver_arr.addon_arr[0].count
+                    this.state.adver_arr.addon_arr[0].count
                     ? "Available"
                     : "Not available"}{" "}
                 </Text>
@@ -830,32 +860,57 @@ export default class TripTypeDetail extends Component {
                 </Text>
               </View>
             </View>
-          ) : (
-            <View
-              style={{
-                // backgroundColor: Colors.orange,
-                // flexDirection: 'row',
-                padding: 10,
-                marginTop: 20,
-              }}
-            >
-              <View
-              // style={{backgroundColor: Colors.orange,}}
+          ) : <View>
+            {this.state.advertisement.booking_status == 4 || this.state.advertisement.booking_status == 3 ? null : <View>
+              {this.state.advertisement.booking_status == 2 ? <View
+                style={{
+                  // backgroundColor: Colors.orange,
+                  // flexDirection: 'row',
+                  padding: 10,
+                  marginTop: 20,
+                }}
               >
-                <TouchableOpacity style={s.Btn1}>
-                  <Text style={s.Btn1Text}>Location</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                <TouchableOpacity style={s.Btn2}>
-                  <Text style={s.Btn1Text2}>Chat Now</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={s.Btn2}>
-                  <Text style={s.Btn1Text2}>Cancel</Text>
-                </TouchableOpacity>
-              </View>
+                <View
+                // style={{backgroundColor: Colors.orange,}}
+                >
+                  <TouchableOpacity style={s.Btn1}
+                    onPress={() => this.ratings()}
+                  >
+                    <Text style={s.Btn1Text}>Rate Now</Text>
+                  </TouchableOpacity>
+                </View>
+
+              </View> : <View
+                style={{
+                  // backgroundColor: Colors.orange,
+                  // flexDirection: 'row',
+                  padding: 10,
+                  marginTop: 20,
+                }}
+              >
+                <View
+                // style={{backgroundColor: Colors.orange,}}
+                >
+                  <TouchableOpacity style={s.Btn1}
+                    onPress={() => this.Goto()}
+                  >
+                    <Text style={s.Btn1Text}>Location</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ justifyContent: "center", flexDirection: "row" }}>
+                  <TouchableOpacity style={s.Btn2}>
+                    <Text style={s.Btn1Text2}>Chat Now</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={s.Btn2} onPress={() => this.cancelbooking()}>
+                    <Text style={s.Btn1Text2}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>}
+
             </View>
-          )}
+            }
+          </View>
+          }
         </ScrollView>
       </View>
     );

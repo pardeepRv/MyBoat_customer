@@ -13,7 +13,7 @@ export const Colors= {
     inputFieldEditProfile:"rgba(0, 0, 0, 0.6)",
     inputFieldBottomColor:"#EFE8E8",
     red:"#F00",
-    confirmed:"#EBDB4E",
+    confirmed:"#ebd34e",
     theme1:'#01a8e7',
     grey:"#979797"
 }

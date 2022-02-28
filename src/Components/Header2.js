@@ -42,7 +42,7 @@ const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,
                 <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:30,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
                     {
                         state.backBtn ? (
-                            <TouchableOpacity onPress={()=>gotoBack()}  style={{backgroundColor:Colors.grey , borderRadius:20}} >
+                            <TouchableOpacity onPress={()=>gotoBack()}  style={{backgroundColor:Colors.orange , borderRadius:20}} >
                                 <Icon name="arrow-back" type="ionicons" size={24} color={Colors.white} />
                             </TouchableOpacity>
                         ) : state.notiBtn ? (
@@ -51,7 +51,7 @@ const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,
                             </TouchableOpacity>
                         ) : <View style={{height:25,width:25}} />
                     }
-                    <View style={{backgroundColor:Colors.grey , borderRadius:20}} >
+                    <View style={{backgroundColor:Colors.orange , borderRadius:20}} >
                     <Text style={{fontFamily:FontFamily.semi_bold,color:Colors.white,textAlign:"center" ,}}>
                         {name}
                     </Text>

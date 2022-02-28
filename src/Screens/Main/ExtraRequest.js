@@ -53,9 +53,11 @@ export default class ExtraRequest extends Component {
       isChecked: false,
       couponCode: '',
       extraHours: "",
+      rentam:this.props.route.params.adv.extra_price,
       totalPrice:
-        Number(this.props.route.params.data.rent_amount) +
-        Number(this.props.route.params.data.extra_rent_amt),
+        Number(this.props.route.params.data.rent_amount) 
+        // +
+        // Number(this.props.route.params.data.extra_rent_amt),
     };
   }
 
@@ -64,12 +66,13 @@ export default class ExtraRequest extends Component {
     // alert(this.props.route.params.adv.extra_price)
     console.log(this.state.data, "????????????????????????????/");
     console.log(this.state.adv, "????????????????????????????/");
+    console.log('object :>> ', this.state.rentam);
 
   }
   onChangeCheck = (item, index, id) => {
-    console.log(item, 'item');
+    console.log(item.addon_product_price, 'item.addon_product_price');
     console.log(index, 'index');
-    console.log(id, 'id');
+     console.log(id, 'id');
 
     const tempArray = [...this.state.adver_arr];
 
@@ -88,7 +91,7 @@ export default class ExtraRequest extends Component {
       this.state.totalPrice =
         this.state.totalPrice - Number(item.addon_product_price);
     }
-    console.log('Total Price', this.state.totalPrice);
+     console.log('Total Price', this.state.totalPrice);
 
     console.log(array[id], 'array[index]');
     array[id].isChecked = !array[id].isChecked;
@@ -96,6 +99,25 @@ export default class ExtraRequest extends Component {
       adver_arr: array,
     });
   };
+
+//   onChangeCheck = (select, index, id) => {
+//     console.log(index, id, 'ITEEEEEEE', select.addon_product_price);
+//  const tempArray = [...this.state.adver_arr];
+//  if (!select.isChecked) {
+//    this.state.totalPrice =
+//      this.state.totalPrice + Number(select.addon_product_price);
+//  } else {
+//    this.state.totalPrice =
+//      this.state.totalPrice - Number(select.addon_product_price);
+//  }
+//   console.log('Total Price', this.state.totalPrice);
+//  return   console.log('object :>> ', tempArray);
+//  tempArray[id].addon_product_name[index].isChecked = !select.isChecked;
+//  this.setState({
+//    adver_arr: tempArray,
+//  });
+// };
+
 
   ExtraRequest() {
     console.log(this.state.couponCode, '^^^^^', this.state.data.coupon_code);
@@ -142,7 +164,7 @@ export default class ExtraRequest extends Component {
           backImgSource={require('../../Images/backgd2.jpg')}
         />
 
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView style={{flex:1}}>
           <View
             style={{ backgroundColor: '#fff', borderRadius: 20 }}>
             {this.state.adver_arr.map((item, id, index) => {
@@ -186,68 +208,11 @@ export default class ExtraRequest extends Component {
                   </View>
 
                 </TouchableOpacity>
-                // <TouchableOpacity
-                //   //   onPress={()=>console.log()}
-                //   activeOpacity={0.8}>
-                //   <Text
-                //     style={{
-                //       padding: 20,
-                //       fontFamily: FontFamily.semi_bold,
-                //       fontSize: 18,
-                //     }}>
-                //     {item.addon_name.toString().replace(',', ' ')}
-                //   </Text>
-                //   {item.addon_products.map((item2, index) => (
-                //     <View style={{flexDirection: 'row'}}>
-                //       <View style={{width: '10%'}}>
-                //         <Text
-                //           style={{
-                //             textAlign: 'right',
-                //             fontFamily: FontFamily.default,
-                //           }}>
-                //           {index + 1}{' '}
-                //         </Text>
-                //       </View>
-                //       <View style={{width: '35%'}}>
-                //         <Text style={{textAlign: 'left'}}>
-                //           {item2.addon_product_name}{' '}
-                //         </Text>
-                //       </View>
-
-                //       <View style={{width: '35%', textAlign: 'right'}}>
-                //         <Text
-                //           style={{
-                //             textAlign: 'right',
-                //             marginLeft: '20%',
-                //             //   padding: 10,
-                //             //   marginTop: -5,
-                //             fontFamily: FontFamily.default,
-                //           }}>
-                //           {' $'}
-                //           {item2.addon_product_price}
-                //         </Text>
-                //       </View>
-                //       <View style={{width: '10%', padding: 0, marginTop: -13}}>
-                //         <CheckBox
-                //           // value={this.state.isSelected}
-                //           //   onValueChange={setSelection}
-                //           //checked={item2.checked}
-                //           checked={item2.isChecked}
-                //           key={index}
-                //           onPress={() => this.onChangeCheck(item2, index, id)}
-                //           style={s.checkbox}
-                //         />
-                //       </View>
-                //     </View>
-                //   ))}
-                // </TouchableOpacity>
               );
             })}
-            {/* <Text>
-            {this.state.adver_arr[0].addon_products[0].addon_product_name}
-          </Text> */}
+          
           </View>
-          {/* <Text>{'\n'}</Text> */}
+         
           <View
             style={{
               height: 0.5,
@@ -366,15 +331,18 @@ export default class ExtraRequest extends Component {
 
             }}
           />
-        </ScrollView>
-        <View
+          
+        
+       
+          <View
           style={{
             alignContent: 'center',
             alignSelf: 'center',
-            position: 'absolute',
-            bottom: 40,
+            // position: 'absolute',
+            // bottom: 40,
             width: '100%',
             alignItems: 'center',
+            backgroundColor:'white'
 
           }}>
           <TouchableOpacity style={s.Btn2} onPress={() => this.ExtraRequest()}>
@@ -384,10 +352,10 @@ export default class ExtraRequest extends Component {
             <Text style={s.Btn1Text}>Proceed</Text>
           </TouchableOpacity>
         </View>
-
         <Text>{'\n'}</Text>
         <Text>{'\n'}</Text>
-
+        
+        </ScrollView>
       </View>
 
     );

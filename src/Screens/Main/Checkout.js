@@ -50,7 +50,7 @@ export default class Checkout extends Component {
       adv: this.props.route.params.adver_arr,
       adver_arr: this.props.route.params.adv,
       data: this.props.route.params.data,
-      totalPrice: this.props.route.params.totalPrice,
+      totalPrice: Number(this.props.route.params.totalPrice) + Number(this.props.route.params.extra_rent_amt),
       webviewshow: false,
       booking_no: '',
       pay_amount: '',
@@ -155,7 +155,7 @@ export default class Checkout extends Component {
     form_data.append('extraHours', this.props.route.params.extraHours)
     form_data.append('extra_rent_amt', this.props.route.params.extra_rent_amt)
     form_data.append('rent_amount', this.state.totalPrice) //aa
-    console.log('Form data', form_data);
+       console.log('Form data', form_data);
 
     // return;
     apifuntion

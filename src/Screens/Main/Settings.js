@@ -53,6 +53,7 @@ const Settings=()=>{
             <Header
              backBtn={true}
              name="Settings" />
+             
              <View style={sb.SEC2}>
                  <ScrollView style={{marginTop:30}} showsVerticalScrollIndicator={false}>
                      {/* Account */}
