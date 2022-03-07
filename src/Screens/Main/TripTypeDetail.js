@@ -186,7 +186,7 @@ export default class TripTypeDetail extends Component {
 
   ratings = () => {
     // this.props.navigation.navigate('Ratings');
-    this.props.navigation.navigate("DetailsRating", { item: this.state.ratingscreen });
+    this.props.navigation.navigate("DetailsRating", { item: this.state.ratingscreen , data: this.state.advertisement });
   };
   gotoBack = () => {
     this.props.navigation.goBack();
@@ -345,7 +345,8 @@ export default class TripTypeDetail extends Component {
                   marginTop: 5,
                 }}
               >
-                <TouchableOpacity  >
+                <View   
+                 >
                   <Image
                     style={{
                       height: 40,
@@ -367,7 +368,7 @@ export default class TripTypeDetail extends Component {
                       />
                     }
                   />
-                </TouchableOpacity>
+                </View>
 
 
                 <View style={{ marginLeft: "15%" }}>
@@ -861,7 +862,7 @@ export default class TripTypeDetail extends Component {
               </View>
             </View>
           ) : <View>
-            {this.state.advertisement.booking_status == 4 || this.state.advertisement.booking_status == 3 ? null : <View>
+            {this.state.advertisement.booking_status == 4 || this.state.advertisement.booking_status == 3  || this.state.advertisement.review_status == 1 ? null : <View>
               {this.state.advertisement.booking_status == 2 ? <View
                 style={{
                   // backgroundColor: Colors.orange,
@@ -873,11 +874,17 @@ export default class TripTypeDetail extends Component {
                 <View
                 // style={{backgroundColor: Colors.orange,}}
                 >
-                  <TouchableOpacity style={s.Btn1}
+                  {this.state.advertisement.review_status == 1 ?
+                  <View style={s.Btn1}
                     onPress={() => this.ratings()}
                   >
                     <Text style={s.Btn1Text}>Rate Now</Text>
-                  </TouchableOpacity>
+                  </View> 
+                  :<TouchableOpacity style={s.Btn1}
+                  onPress={() => this.ratings()}
+                >
+                  <Text style={s.Btn1Text}>Rate Now</Text>
+                </TouchableOpacity> }
                 </View>
 
               </View> : <View

@@ -23,37 +23,89 @@ import { back_img3, boat_img1, Colors, FontFamily, Sizes } from '../../Constants
 import { useNavigation } from '@react-navigation/core';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Caption } from 'react-native-paper';
+import { config } from '../../Provider/configProvider';
+import { apifuntion } from '../../Provider/apiProvider';
+import { msgProvider } from '../../Provider/messageProvider';
+import { NavigationContainer } from '@react-navigation/native';
 
 
 const DetailsRatings = ({ route }) => {
     console.log('route :>> ', route);
-    const [data, setData] = useState(route?.params?.item?.adver_arr)
+    const [item, setItem] = useState(route?.params?.item?.adver_arr)
+    const [data, setdata] = useState(route?.params?.data)
+    const navigate=useNavigation();
     const [additionalNotes, setAdditionalNotes] = useState('');
     const [Captain, setCaptain] = useState(null);
     const [food, setfood] = useState(null);
+    const [time, setTime] = useState(null);
     const [clean, setclean] = useState(null);
     const [hospitality, sethospitality] = useState(null);
     const [Equipment, setEquipments] = useState(null);
     const [Entertainment, setEntertainment] = useState(null);
-    const [allrating, setallrating] = useState(null);
+    const [allrating, setallrating] = useState(0);
 
 
 
 
     const Navigator = useNavigation();
 
-    const gotoBack = (id ) => {
-        let rate = id / 6 ;
+    const gotoBack = (id) => {
+        let rate = id / 6;
         console.log('rate :>> ', rate);
-     setallrating(rate)  
-     return
+        setallrating(rate)
+        return
         Navigator.goBack();
     }
+
+   const  postapihere =(id) =>  {
+    let rate = id / 6;
+    console.log('rate :>> ', rate);
+    setallrating(rate)
+     
+        // this.setState({loader: true});
+        let url = config.baseURL + "rating_review_add.php";
+    
+        var formData = new FormData();
+        formData.append("total_rate", rate);
+        formData.append("clean_rating", clean);
+        formData.append("entertain_rating", Entertainment);
+        formData.append("equip_rating", Equipment);
+        formData.append("hospitality_rating", hospitality);
+        formData.append("food_rating", food);
+        formData.append("captain_rating", Captain);
+        formData.append("review", additionalNotes);
+        formData.append("time_rating", time);
+        formData.append("user_id_post", data?.user_id);
+        formData.append("advertisement_id", data?.booking_id);
+        formData.append("booking_id", data?.booking_id);
+
+       console.log('url :>> ', url);
+    
+           console.log(formData);
+    
+         apifuntion
+          .postApi(url, formData)
+          .then(obj => {
+            return obj.json();
+          })
+          .then(obj => {
+            // this.setState({loader: false});
+             console.log("Update Response", obj);
+           
+            if (obj.success == 'true') {
+                navigate.navigate('MyTrip');
+                msgProvider.toast(obj?.msg[0], 'center');
+            }else{
+              msgProvider.toast(obj?.msg[0], 'center');
+            }
+          })
+          .catch((err) => console.log(err));
+      };
+    
     useEffect(() => {
-        console.log('data :>> ', data);
-
+        console.log('item :>> ', item , 'data>>' , data);
     }, []);
-
+    
     const captainRatingCompleted = (rating) => {
         console.log("Rating is: captainRatingCompleted" + rating)
         setCaptain(rating);
@@ -61,6 +113,10 @@ const DetailsRatings = ({ route }) => {
     const foodRatingCompleted = (rating) => {
         console.log("Rating is: captainRatingCompleted" + rating)
         setfood(rating);
+    }
+    const timetaingcompleted = (rating) => {
+        console.log("Rating is:timetaingcompleted " + rating)
+        setTime(rating);
     }
 
     const cleanRatingCompleted = (rating) => {
@@ -88,7 +144,9 @@ const DetailsRatings = ({ route }) => {
         <View style={{ flex: 1, backgroundColor: Colors.white }}>
             <Header
                 imgBack={true}
-                backBtn={true} />
+                backBtn={true}
+                name="Rating"
+                 />
             <ScrollView style={{ flex: 1 }}>
                 <KeyboardAwareScrollView
                     // extraScrollHeight={10}
@@ -103,8 +161,8 @@ const DetailsRatings = ({ route }) => {
                             {/*  */}
                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                 <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                                    <Image style={{ height: 40, width: 40 }} source={{ uri: `https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/${data.user_image}` }} />
-                                    <Text style={{ marginLeft: 5, fontFamily: FontFamily.semi_bold, fontSize: 16 }}>{data.user_name}</Text>
+                                    <Image style={{ height: 40, width: 40 }} source={{ uri: `https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/${item.user_image}` }} />
+                                    <Text style={{ marginLeft: 5, fontFamily: FontFamily.semi_bold, fontSize: 16 }}>{item.user_name}</Text>
                                 </View>
                                 <Text style={{ fontSize: 10, fontFamily: FontFamily.default, color: "#999" }}>10:30 PM</Text>
                             </View>
@@ -115,7 +173,7 @@ const DetailsRatings = ({ route }) => {
                                 </Text>
                                 <AirbnbRating
                                     showRating={false}
-                                    // value={allrating}
+                                    value={allrating}
                                     size={14}
                                     count={5}
                                     defaultRating={allrating}
@@ -133,12 +191,28 @@ const DetailsRatings = ({ route }) => {
                             <View style={{ marginTop: 10 }}>
                                 <Text style={{ fontFamily: FontFamily.semi_bold, fontSize: 14 }}>Rating :</Text>
                                 <View style={{ marginVertical: 10 }}>
-                                    {/* Captain */}
-                                    <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between", marginBottom: 5, paddingHorizontal: 40 }}>
+                                    {/* time ratinge */}
+                                <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between", marginTop: 5 ,marginBottom: 5, paddingHorizontal: 40 }}>
                                         <Text style={{ fontSize: 13, fontFamily: FontFamily.semi_bold }}>
-                                            Captain
+                                            Time
                                         </Text>
-                                        <Rating
+                                        <AirbnbRating
+                                            value={time}
+                                            showRating={false}
+                                            onFinishRating={timetaingcompleted}
+                                            style={{ paddingVertical: 10 }}
+                                            startingValue={0}
+                                            size={16}
+                                            count={5}
+                                            defaultRating={0}
+                                            // isDisabled
+                                            selectedColor="#FFCC39"
+                                            starContainerStyle={{
+                                                elevation: 5,
+                                                // alignSelf:"flex-start"
+                                                marginLeft: 15
+                                            }} />
+                                        {/* <Rating
                                             imageSize={20}
                                             // defaultRating={1}
                                             value={Captain}
@@ -147,95 +221,144 @@ const DetailsRatings = ({ route }) => {
                                             onFinishRating={captainRatingCompleted}
                                             style={{ paddingVertical: 10 }}
                                             startingValue={0}
-                                        />
+                                        /> */}
+                                    </View>
+                                    {/* Captain */}
+                                    <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between", marginTop: 5 ,marginBottom: 5, paddingHorizontal: 40 }}>
+                                        <Text style={{ fontSize: 13, fontFamily: FontFamily.semi_bold }}>
+                                            Captain
+                                        </Text>
+                                        <AirbnbRating
+                                            value={Captain}
+                                            showRating={false}
+                                            onFinishRating={captainRatingCompleted}
+                                            style={{ paddingVertical: 10 }}
+                                            startingValue={0}
+                                            size={16}
+                                            count={5}
+                                            defaultRating={0}
+                                            // isDisabled
+                                            selectedColor="#FFCC39"
+                                            starContainerStyle={{
+                                                elevation: 5,
+                                                // alignSelf:"flex-start"
+                                                marginLeft: 15
+                                            }} />
+                                        {/* <Rating
+                                            imageSize={20}
+                                            // defaultRating={1}
+                                            value={Captain}
+                                            showRating={false}
+                                            ratingCount={5}
+                                            onFinishRating={captainRatingCompleted}
+                                            style={{ paddingVertical: 10 }}
+                                            startingValue={0}
+                                        /> */}
                                     </View>
                                     {/*Food */}
-                                    <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between", marginBottom: 5, paddingHorizontal: 40 }}>
+                                    <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between",marginTop: 10, marginBottom: 5, paddingHorizontal: 40 }}>
                                         <Text style={{ fontSize: 13, fontFamily: FontFamily.semi_bold }}>
                                             Food
                                         </Text>
-                                        <Rating
-                                            imageSize={20}
+                                        <AirbnbRating
                                             value={food}
                                             showRating={false}
-                                            ratingCount={5}
                                             onFinishRating={foodRatingCompleted}
+                                            defaultRating={0}
                                             style={{ paddingVertical: 10 }}
                                             startingValue={0}
-
-                                        // type='heart'
-                                        />
+                                            size={16}
+                                            count={5}
+                                            selectedColor="#FFCC39"
+                                            starContainerStyle={{
+                                                elevation: 5,
+                                                // alignSelf:"flex-start"
+                                                marginLeft: 15
+                                            }} />
                                     </View>
                                     {/* Clean */}
-                                    <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between", marginBottom: 5, paddingHorizontal: 40 }}>
+                                    <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between",marginTop: 10, marginBottom: 5, paddingHorizontal: 40 }}>
                                         <Text style={{ fontSize: 13, fontFamily: FontFamily.semi_bold }}>
                                             Clean
                                         </Text>
-                                        <Rating
-                                            imageSize={20}
+                                        <AirbnbRating
+                                            defaultRating={0}
                                             value={clean}
                                             showRating={false}
-                                            ratingCount={5}
                                             onFinishRating={cleanRatingCompleted}
-                                            // onStartRating={rateMe()}
                                             style={{ paddingVertical: 10 }}
                                             startingValue={0}
-
-                                        // type='heart'
-                                        />
+                                            size={16}
+                                            count={5}
+                                            selectedColor="#FFCC39"
+                                            starContainerStyle={{
+                                                elevation: 5,
+                                                // alignSelf:"flex-start"
+                                                marginLeft: 15
+                                            }} />
                                     </View>
                                     {/* Hospitality */}
-                                    <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between", marginBottom: 5, paddingHorizontal: 40 }}>
+                                    <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between", marginTop: 10 ,marginBottom: 5, paddingHorizontal: 40 }}>
                                         <Text style={{ fontSize: 13, fontFamily: FontFamily.semi_bold }}>
                                             Hospitality
                                         </Text>
-                                        <Rating
-                                            imageSize={20}
+                                        <AirbnbRating
+                                            defaultRating={0}
                                             value={hospitality}
                                             showRating={false}
-                                            ratingCount={5}
                                             onFinishRating={hospitalityRatingCompleted}
-                                            // onStartRating={rateMe()}
                                             style={{ paddingVertical: 10 }}
                                             startingValue={0}
-                                        // type='heart'
-                                        />
+                                            size={16}
+                                            count={5}
+                                            selectedColor="#FFCC39"
+                                            starContainerStyle={{
+                                                elevation: 5,
+                                                // alignSelf:"flex-start"
+                                                marginLeft: 15
+                                            }} />
                                     </View>
                                     {/* Equipment */}
-                                    <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between", marginBottom: 5, paddingHorizontal: 40 }}>
+                                    <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between",marginTop: 10,  marginBottom: 5, paddingHorizontal: 40 }}>
                                         <Text style={{ fontSize: 13, fontFamily: FontFamily.semi_bold }}>
                                             Equipment
                                         </Text>
-                                        <Rating
-                                            imageSize={20}
-                                            value={Equipment}
+                                        <AirbnbRating
                                             showRating={false}
-                                            ratingCount={5}
+                                            defaultRating={0}
+                                            value={Equipment}
                                             onFinishRating={equipmentsRatingCompleted}
-                                            // onStartRating={rateMe()}
                                             style={{ paddingVertical: 10 }}
                                             startingValue={0}
-
-                                        // type='heart'
-                                        />
+                                            size={16}
+                                            count={5}
+                                            selectedColor="#FFCC39"
+                                            starContainerStyle={{
+                                                elevation: 5,
+                                                // alignSelf:"flex-start"
+                                                marginLeft: 15
+                                            }} />
                                     </View>
                                     {/* Entertainment */}
-                                    <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between", marginBottom: 5, paddingHorizontal: 40 }}>
+                                    <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between", marginTop: 10 ,marginBottom: 5, paddingHorizontal: 40 }}>
                                         <Text style={{ fontSize: 13, fontFamily: FontFamily.semi_bold }}>
                                             Entertainment
                                         </Text>
-                                        <Rating
-                                            imageSize={20}
+                                        <AirbnbRating
                                             showRating={false}
-                                            ratingCount={5}
                                             onFinishRating={entertainmentRatingCompleted}
                                             value={Entertainment}
-                                            // onStartRating={rateMe()}
+                                            defaultRating={0}
                                             style={{ paddingVertical: 10 }}
                                             startingValue={0}
-
-                                        // type='heart'
-                                        />
+                                            size={16}
+                                            count={5}
+                                            selectedColor="#FFCC39"
+                                            starContainerStyle={{
+                                                elevation: 5,
+                                                // alignSelf:"flex-start"
+                                                marginLeft: 15
+                                            }} />
 
                                     </View>
                                     {/*  */}
@@ -245,7 +368,7 @@ const DetailsRatings = ({ route }) => {
                             <View style={sb.DIVIDER} />
                             {/*  */}
 
-                            <View style={{ marginTop: 10 }}>
+                            <View style={{ marginTop: 15 }}>
                                 <Text style={{ fontFamily: FontFamily.semi_bold, fontSize: 14 }}>Comment :</Text>
                                 <View style={{ height: 150, paddingHorizontal: 20, marginTop: 6 }}>
                                     <TextInput
@@ -293,7 +416,7 @@ const DetailsRatings = ({ route }) => {
                         </View>
 
                         <Card containerStyle={[{}, sb.Btn1]}>
-                            <TouchableOpacity onPress={() => gotoBack(food + Captain + clean + Equipment + Entertainment + hospitality)}>
+                            <TouchableOpacity onPress={() => postapihere(food + Captain + clean + Equipment + Entertainment + hospitality)}>
                                 <View>
                                     <Text style={{ fontSize: 20, fontFamily: FontFamily.semi_bold, color: Colors.orange }}>Post </Text>
                                 </View>

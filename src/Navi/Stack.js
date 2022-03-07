@@ -33,17 +33,19 @@ import PremotionDetail from '../Screens/Main/PremotionDetail';
 import Splash from '../Screens/Main/Splash';
 import ExtraRequest from '../Screens/Main/ExtraRequest';
 import Checkout from '../Screens/Main/Checkout';
+import Citylist from '../Screens/Main/Citylist';
+import OneToOneChat from '../Screens/Main/OneToOneChat';
 
 // import MyTabs from './BottomNav';
 
-   const Stack= createStackNavigator();
+const Stack = createStackNavigator();
 
 
-const Stacks=()=>{
-    return(
+const Stacks = () => {
+    return (
         <Stack.Navigator
-         initialRouteName="Splash"
-         headerMode="none"
+            initialRouteName="Splash"
+            headerMode="none"
         >
             <Stack.Screen name="Home" component={TabNav} />
             <Stack.Screen name="Login" component={Login} />
@@ -55,6 +57,7 @@ const Stacks=()=>{
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Ratings" component={Ratings} />
             <Stack.Screen name="Chats" component={Chats} />
+            <Stack.Screen name="OneToOneChat" component={OneToOneChat} />
             <Stack.Screen name="DetailsRating" component={DetailsRatings} />
             <Stack.Screen name="Noti_Setting" component={Noti_Setting} />
             <Stack.Screen name="Change_Language" component={Change_Language} />
@@ -64,6 +67,8 @@ const Stacks=()=>{
             <Stack.Screen name="Terms_Conditions" component={Terms_Conditions} />
             <Stack.Screen name="Edit_Profile" component={EditProfile} />
             <Stack.Screen name="SelectedDate" component={SelectedDate} />
+            <Stack.Screen name="Citylist" component={Citylist} />
+
             <Stack.Screen name="MyTrip" component={MyTrip} />
             <Stack.Screen name="TripType" component={TripType} />
             <Stack.Screen name="ContactUs" component={ContactUs} />

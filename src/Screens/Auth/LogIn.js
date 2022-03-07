@@ -105,6 +105,11 @@ export default class Login extends Component {
     firebaseprovider.getAllUsers();
   }
 
+   onAppleButtonPress = navigation => {
+        // Make a request to apple.
+        SocialLogin.btnSocialLoginApple(navigation);
+      };
+
   goHomePage = () => {
     this.props.navigation.dispatch(
       CommonActions.reset({
@@ -296,7 +301,11 @@ export default class Login extends Component {
           imageStyle={styles.ImageBackground_Img}>
          <ScrollView>
            
-          <View style={styles.lang}>
+          <TouchableOpacity style={styles.lang}
+          //  onPress={() => {
+          //   changeLanguage(restartApp);
+          // }}
+          >
             <Icon name="globe" color="#fff" size={20} style={{marginTop: 12}} />
             <Text style={{color: '#fff', marginTop: 12, margin: 5}}>Eng</Text>
             <Icon
@@ -305,7 +314,8 @@ export default class Login extends Component {
               size={20}
               style={{marginTop: 12}}
             />
-          </View>
+          </TouchableOpacity>
+         
 
           <View
             style={{
@@ -416,7 +426,9 @@ export default class Login extends Component {
                       justifyContent: Platform.OS=="ios"?'space-between':"center",
                       marginTop: 24,
                     }}>
-                    {Platform.OS=="ios"&&<TouchableOpacity style={styles.LoginIcon}>
+                    {Platform.OS=="ios"&&<TouchableOpacity style={styles.LoginIcon}
+                    onPress={() => this.onAppleButtonPress()}
+                    >
                       <Icon
                         name="apple"
                         type="fontisto"

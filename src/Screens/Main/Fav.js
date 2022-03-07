@@ -196,12 +196,12 @@ export default class Fav extends Component {
                         </Text>
                       </View>
                       {/* Three dots */}
-                      <TouchableOpacity style={{ position: "absolute", right: 10, top: 10, borderRadius: 20, backgroundColor: Colors.gray }}>
+                      <TouchableOpacity style={{ position: "absolute", right: 10, top: 10, borderRadius: 20, backgroundColor: Colors.orange }}>
                         <Icon name="heart" type="entypo" color={item.like_status == 1 ? Colors.red : Colors.white} />
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => Linking.openURL(config.appUrl)}
-                        style={{ position: "absolute", right: 50, top: 10, borderRadius: 20, backgroundColor: Colors.gray }}>
+                        style={{ position: "absolute", right: 50, top: 10, borderRadius: 20, backgroundColor: Colors.orange }}>
                         <Icon name="share" type="entypo" color={Colors.white} />
                       </TouchableOpacity>
                       <View

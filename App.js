@@ -24,11 +24,7 @@ const App = () => {
   
   return (
     <NavigationContainer>
-      <SafeAreaView
-        style={{
-          backgroundColor: Colors.orange,
-        }}
-      />
+      
       {/* <StatusBar hidden /> */}
       <StatusBar  />
       <Stacks />

@@ -187,6 +187,7 @@ class SocialLoginProvider extends Component {
         return obj.json();
       })
       .then(obj => {
+        console.log('obj in apple  :>> ', obj);
         if (obj.success == 'true') {
           var user_arr = obj.user_details;
           var email_arr = obj.email_arr;

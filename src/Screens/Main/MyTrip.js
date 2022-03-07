@@ -162,6 +162,17 @@ export class MyTrip extends PureComponent {
               ]}>              
               Cancelled
             </Text>: null }
+            { item.booking_status === 2 ? 
+              <Text
+              style={[
+                s.status,
+                {
+                  textAlign:'center',
+                  color:Colors.orange
+                },
+              ]}>              
+              Completed
+            </Text>: null }
             
             </View>
           </View>

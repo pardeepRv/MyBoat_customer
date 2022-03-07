@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   Modal
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Input, Card, AirbnbRating } from 'react-native-elements';
 import Header from '../../Components/Header';
 import Header2 from '../../Components/Header2';
@@ -31,7 +32,9 @@ import FastImage from 'react-native-fast-image';
 import { renderNode } from 'react-native-elements/dist/helpers';
 import { apifuntion } from '../../Provider/apiProvider';
 import { config } from '../../Provider/configProvider';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
+// import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import {  Icon } from 'react-native-elements';
+
 
 export default class TripType extends Component {
   constructor(props) {
@@ -43,25 +46,226 @@ export default class TripType extends Component {
       promotions_arr: [],
       trip_type: this.props.route.params.item,
       destinations_arr: [],
+      addon_arr: [],
+      citylist: [],
+      type_gear: [],
+      entertainment: [],
+      food: [],
+      triphours:'',
+      rating:'',
+      advertisment: '',
+      Guests:'',
+      foodselected: null,
+      entertainmentselected: null,
+      citylistselected: null,
+      type_gearslected: null,
+      isSelected: false,
       isShowDatePicker: false,
       modalVisible: false,
       modalVisible2: false,
       modalVisible3: false,
       descending: false,
       short: 'none',
+      userid:'',
     };
+    this.foodArr = [];
+    this.enterarr =[];
+    this.equipmearr=[];
+    this.cityarr =[];
 
     // console.log(this.props.navigation.state.params.item)
   }
 
   componentDidMount() {
     // const text = this.props.navigation.getParams('item');
-
-    console.log('did ', this.state.trip_type);
-
-    this.TripType();
+     console.log('did ', this.state.trip_type);
+    this.getData('user_arr');
   }
 
+  getData = async key => {
+    this.setState({
+      isLoading: true
+    })
+    console.log('local ' + key);
+    try {
+      const value = await AsyncStorage.getItem(key);
+
+      //          console.log('local '+value)
+
+      console.log('value 93', value);
+      if (value !== null) {
+        const arrayData = JSON.parse(value);
+
+         console.log(arrayData);
+        this.setState({ localData: arrayData, isLoading: false });
+        // this.ProfileDetail(arrayData.user_id);
+        this.TripType();
+        this.filterdata(arrayData.user_id);
+        this.setState({userid:arrayData.user_id});
+      } else {
+        // this.ProfileDetail(null);
+        this.TripType(null);
+      }
+    } catch (e) {
+      // error reading value
+      console.log(e, 'coming in err');
+    }
+  };
+
+  async filterdata(user_id) {
+    // console.log(
+    //   'user ',
+    //   this.state.trip_type,
+    //   'destination ',
+    //   this.state.destination.destination_id,
+    // );
+
+    // https://server3.rvtechnologies.in/My-Boat/app/app/webservice/boat_trip_type_for_add_advr.php?user_id_post=206&country_code=965
+
+    let url =
+      config.baseURL +
+      'boat_trip_type_for_add_advr.php?user_id_post=' +
+      user_id +
+      '&country_code=965';
+
+    // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
+
+     console.log(url, 'user details url in filter array');
+    try {
+      // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
+      const response = await fetch(url);
+      const json = await response.json();
+       console.log('json  ', json);
+
+      if (json.success == 'true') {
+        this.setState({ addon_arr: json.addon_arr != 'NA' ? json.addon_arr : [] });
+        this.equipmearr =json.addon_arr[2].addon_products;
+        this.setState({ type_gear: json.addon_arr[2].addon_products })
+
+        this.foodArr = json.addon_arr[0].addon_products;
+        this.setState({ food: json.addon_arr[0].addon_products })
+        this.enterarr =json.addon_arr[1].addon_products ;
+        this.setState({ entertainment: json.addon_arr[1].addon_products })
+this.cityarr=  json.selected_City_Array ;
+        this.setState({ citylist: json.selected_City_Array != 'NA' ? json.selected_City_Array : [] })
+
+        // console.log('typearr :>> ', this.state.type_gear);
+        // console.log('food :>> ', this.state.food);
+        // console.log('entertainment :>> ', this.state.entertainment);
+        // console.log('citylist :>> ', this.state.citylist);
+        // console.log('this.cityarr :>> ', this.cityarr);
+        // console.log('this.enterarr :>> ', this.enterarr);
+        // console.log('this.foodArr :>> ', this.foodArr);
+        // console.log('this.equipmearr :>> ', this.equipmearr);
+
+
+        return console.log('addon arr :>> ', this.state.addon_arr);
+      } else {
+      }
+
+      // console.log(this.state.img)
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  }
+
+  onChangeCheck = (idx) => {
+    console.log('id :>> ', idx);
+
+    const array = this.state.food.map(v => {
+      const newItem = Object.assign({}, v);
+      newItem.isSelected = false;
+      return newItem;
+    });
+    console.log(array, ' food before');
+
+
+    array[idx].isSelected = !array[idx].isSelected;
+    this.setState({
+      food: array,
+      foodselected: array[idx].addon_product_id,
+    }, () => {
+      console.log(this.state.food, 'after food');
+      console.log(this.state.foodselected, 'after foodselected');
+    })
+  }
+
+
+  onChangeselected = (idx) => {
+    console.log('id :>> ', idx);
+
+    const array = this.state.entertainment.map(v => {
+      const newItem = Object.assign({}, v);
+      newItem.isSelected = false;
+      return newItem;
+    });
+    console.log(array, ' food before');
+
+
+    array[idx].isSelected = !array[idx].isSelected;
+    this.setState({
+      entertainment: array,
+      entertainmentselected: array[idx].addon_product_id
+    }, () => {
+      console.log(this.state.entertainment, 'after food');
+      console.log(this.state.entertainmentselected, 'after foodselected');
+    })
+  }
+  onChangedone = (idx) => {
+    console.log('id :>> ', idx);
+
+    const array = this.state.type_gear.map(v => {
+      const newItem = Object.assign({}, v);
+      newItem.isSelected = false;
+      return newItem;
+    });
+    console.log(array, ' food before');
+
+
+    array[idx].isSelected = !array[idx].isSelected;
+    this.setState({
+      type_gear: array,
+      type_gearslected: array[idx].addon_product_id
+    }, () => {
+      console.log(this.state.type_gear, 'after food');
+      console.log(this.state.type_gearslected, 'after foodselected');
+    })
+  }
+
+  _oncityselected = (idx) => {
+    console.log('id :>> ', idx);
+
+    const array = this.state.citylist.map(v => {
+      const newItem = Object.assign({}, v);
+      newItem.isSelected = false;
+      return newItem;
+    });
+    console.log(array, ' food before');
+
+
+    array[idx].isSelected = !array[idx].isSelected;
+    this.setState({
+      citylist: array,
+      citylistselected: array[idx].city_id
+    }, () => {
+      console.log(this.state.citylist, 'after food');
+      console.log(this.state.citylistselected, 'after foodselected');
+    })
+  }
+  reset() {
+    this.setState({
+      citylist: this.cityarr,
+      triphours: '',
+      type_gear: this.equipmearr,
+      food: this.foodArr,
+      rating: '',
+      advertisment: '',
+      entertainment: this.enterarr,
+      Guests:'',
+    });
+  }
   async TripType() {
     let url =
       config.baseURL +
@@ -97,6 +301,11 @@ export default class TripType extends Component {
     });
   };
 
+  gotoBack = () => {
+    this.setState({ modalVisible: false });
+    this.setState({ modalVisible2: false });
+    this.setState({ modalVisible3: false });
+  };
   handleConfirm = date => {
     console.warn('A date has been picked: ', date);
     // this.setState({
@@ -108,6 +317,9 @@ export default class TripType extends Component {
   Price = () => {
     this.setState({ modalVisible2: true });
   };
+  filtertrip =() => {
+    this.setState({ modalVisible: true });
+  }
 
   // sort function>>>
   sortingBYPrice = (descending) => {
@@ -140,38 +352,29 @@ export default class TripType extends Component {
   }
 
   async ShowResult() {
-    this.setState({ modalVisible2: false });
-    return;
-    // console.log(
-    //   'user ',
-    //   this.state.trip_type,
-    //   'destination ',
-    //   this.state.destination.destination_id,
-    // );
-
+        this.setState({ modalVisible: false });
+   
     let url =
       config.baseURL +
-      'adver_filter_user.php?user_id_post=' +
-      this.state.localData.user_id +
+      'adver_filter_island.php?user_id_post=' +
+      this.state.userid +
       '&latitude=29.3117&longitude=47.4818&find_key=NA&trip_type=all&trip_type_id_send=' +
-      this.state.trip_type +
-      '&search_type=by_trip&destination_id=' +
-      this.state.destination.destination_id +
-      '&filter_rating=' +
-      this.state.rating +
-      '&filter_guest=0&filter_cabin=' +
-      this.state.cabin +
-      '&filter_price=0&filter_toilet=0' +
-      '&sort_key=' +
-      this.state.short;
+      this.state.trip_type.trip_id + 
+      '&filter_guest=' + this.state.Guests + '&filter_triphours=' +
+      this.state.triphours +
+      + '&filter_food=' +
+      this.state.foodselected + '&filter_entertainment=' + this.state.entertainmentselected +
+      '&filter_citylist=' + this.state.citylistselected + '&filter_advertisement=' + this.state.advertisment +
+      '&filter_equipement=' + this.state.type_gearslected 
+      ;
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
 
-    return console.log(url);
+     console.log(url);
     try {
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-      console.log('json  ', json);
+     return console.log('json  ', json);
 
       if (json.success == 'true') {
         this.setState({ modalVisible: false });
@@ -193,6 +396,8 @@ export default class TripType extends Component {
 
 
   render() {
+console.log('this.state.des :>> ', this.state.destinations_arr);
+
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
         <Header2
@@ -238,8 +443,8 @@ export default class TripType extends Component {
               {' '}
               Sort By{' '}
             </Text>
-          </TouchableOpacity>
-          <View style={s.col}>
+          </TouchableOpacity  >
+          <TouchableOpacity style={s.col} onPress={() => this.filtertrip()}>
             <Image
               source={require('../../../assets/icons/filter_icon.png')}
               style={s.icons}
@@ -254,7 +459,7 @@ export default class TripType extends Component {
               }}>
               Filter
             </Text>
-          </View>
+          </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => this.Goto()}
@@ -304,8 +509,9 @@ export default class TripType extends Component {
         <View
           style={{
             marginTop: '15%',
-            marginBottom: '60%',
+            // marginBottom: '10%',
             borderRadius: 20,
+            flex: 1,
             backgroundColor: Colors.white,
           }}>
           <FlatList
@@ -313,7 +519,7 @@ export default class TripType extends Component {
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => {
               return (
-                <View style={{ padding: 5 }}>
+                <View style={{ }}>
                   <TouchableOpacity
                     onPress={() =>
                       this.props.navigation.navigate('DestinationList', {
@@ -404,18 +610,6 @@ export default class TripType extends Component {
               //  height:"100%"
             }}
           />
-          <Text>
-            {'\n'}
-            {'\n'}
-          </Text>
-          <Text>
-            {'\n'}
-            {'\n'}
-          </Text>
-          <Text>
-            {'\n'}
-            {'\n'}
-          </Text>
         </View>
         <DateTimePickerModal
           isVisible={this.state.isShowDatePicker}
@@ -448,8 +642,31 @@ export default class TripType extends Component {
                   fontSize: 18,
                   marginTop: 8,
                 }}>
-                Filter
+                Sort By
               </Text>
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+
+              <TouchableOpacity
+                onPress={() => this.gotoBack()}
+
+                style={{
+
+                  alignItems: 'flex-start',
+                  marginTop: -25,
+                  marginLeft: 20,
+
+                  borderRadius: 25
+
+                }}>
+                <Icon
+
+                  name="x-circle"
+                  type="feather"
+                  size={26}
+                  color={Colors.orange}
+                />
+              </TouchableOpacity>
             </View>
 
             <View style={{ flexDirection: 'row', marginTop: '10%' }}>
@@ -530,6 +747,656 @@ export default class TripType extends Component {
             }}>
               <Text style={s.Btn1Text}>Show Results</Text>
             </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            // this.closeButtonFunction()
+            this.setState({ modalVisible: false });
+          }}>
+          <View
+            style={{
+              height: '72%',
+              marginTop: 'auto',
+              backgroundColor: '#fff',
+              fontFamily: 'Montserrat-Regular',
+              borderRadius: 30,
+            }}>
+
+
+
+            <ScrollView>
+              {/* <View >
+      <Text>This is Half Modal</Text>
+    </View>
+    <TouchableOpacity
+      onPress={() => {
+        this.setState({modalVisible:false});
+      }}>
+      <Text>Close</Text>
+    </TouchableOpacity> */}
+
+              <View>
+                <Text
+                  style={{
+                    alignSelf: 'center',
+                    fontWeight: 'bold',
+                    fontSize: 18,
+                    marginTop: 8,
+                  }}>
+                  Filter
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+
+                <TouchableOpacity
+                  onPress={() => this.gotoBack()}
+
+                  style={{
+
+                    alignItems: 'flex-start',
+                    marginTop: -25,
+                    marginLeft: 20,
+
+                    borderRadius: 25
+
+                  }}>
+                  <Icon
+
+                    name="x-circle"
+                    type="feather"
+                    size={26}
+                    color={Colors.orange}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.reset()}
+
+                  style={{
+                    alignItems: 'flex-end',
+                    marginTop: -30,
+                    marginRight: 30,
+                    borderRadius: 25
+                  }}>
+                  <Text style={{
+                    alignSelf: 'center',
+                    fontWeight: 'bold',
+                    fontSize: 15,
+                    marginTop: 8,
+                    color: Colors.orange
+                  }}>Reset</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <Text
+                  style={{
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    padding: 8,
+                  }}>
+                  Pickup Location
+                  {/* {this.state.entertainment && this.state.entertainment?.addon_name?.length > 0 && this.state.entertainment?.addon_name[0]} */}
+                </Text>
+                <FlatList
+                  extraData={this.state.citylist}
+                  showsHorizontalScrollIndicator={false}
+                  numColumns={3}
+                  data={this.state.citylist}
+                  // data={dateWiseList}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <View style={{}}>
+                        <TouchableOpacity
+                          //  onPress={() => this.setState({ type_gear: 'full' })}
+                          onPress={() => this._oncityselected(index)}
+                        >
+                          <View
+                            style={{
+                              borderColor: item.isSelected ? Colors.orange : '#000',
+                              backgroundColor: item.isSelected ? Colors.orange : 'white',
+                              borderWidth: 1,
+                              padding: 8,
+                              margin: 8,
+                              width: 100,
+                              alignSelf: 'center',
+                              borderRadius: 15,
+                            }}>
+                            <Text
+                              style={{
+                                alignSelf: 'center',
+
+                                color:
+                                  item.isSelected ? 'white' : Colors.orange,
+                              }}>
+                              {item && item?.city}
+
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+
+                    );
+                  }}
+                  keyExtractor={(i, ind) => ind}
+                // ListHeaderComponent={() =>
+                //   !this.state.entertainment.addon_products.length ? (
+                //     <Text >No data found</Text>
+                //   ) : null
+                // }
+                />
+              </View>
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  padding: 8,
+                }}>
+                Advertisement
+              </Text>
+
+              <View style={{ flexDirection: 'row', marginTop: -10 }}>
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ advertisment: ' Public' })}>
+                    <View
+                      style={{
+                        borderColor:
+                          this.state.advertisment != ' Public' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.advertisment != ' Public' ? '#fff' : Colors.orange,
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.advertisment != ' Public'
+                              ? Colors.orange
+                              : '#fff',
+                        }}>
+                        Public
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ advertisment: 'Private' })}>
+                    <View
+                      style={{
+                        borderColor:
+                          this.state.advertisment != 'Private' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.advertisment != 'Private'
+                            ? '#fff'
+                            : Colors.orange,
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.advertisment != 'Private'
+                              ? Colors.orange
+                              : '#fff',
+                        }}>
+                        Private
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View>
+                <Text
+                  style={{
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    padding: 8,
+                  }}>
+                  Food
+                  {/*  need to change form addon_arr */}
+                  {/* {this.state.food && this.state.food?.addon_name?.length > 0 && this.state.food?.addon_name[0]} */}
+                </Text>
+
+
+                <FlatList
+                  extraData={this.state.food}
+                  showsHorizontalScrollIndicator={false}
+                  numColumns={3}
+                  data={this.state.food}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <View style={{}}>
+                        <TouchableOpacity
+                          onPress={() => this.onChangeCheck(index)}  >
+                          <View
+                            style={{
+                              borderColor: item.isSelected ? Colors.orange : '#000',
+                              backgroundColor: item.isSelected ? Colors.orange : 'white',
+                              borderWidth: 1,
+                              padding: 8,
+                              margin: 8,
+                              width: 100,
+                              alignSelf: 'center',
+                              borderRadius: 15,
+                            }}>
+                            <Text
+                              style={{
+                                alignSelf: 'center',
+                                color:
+                                  item.isSelected ? 'white' : Colors.orange,
+                              }}>
+                              {item && item?.addon_product_name && item?.addon_product_name?.length > 0 ? item?.addon_product_name[0] : null}
+
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+
+                    );
+                  }}
+                  keyExtractor={(i, ind) => ind}
+                // ListHeaderComponent={() =>
+                //   !this.state.food ? (
+                //     <Text >No data found</Text>
+                //   ) : null
+                // }
+                />
+
+              </View>
+              <View>
+                <Text
+                  style={{
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    padding: 8,
+                  }}>
+                  Entertainment
+                  {/* {this.state.entertainment && this.state.entertainment?.addon_name?.length > 0 && this.state.entertainment?.addon_name[0]} */}
+                </Text>
+
+
+                <FlatList
+                  extraData={this.state.entertainment}
+                  showsHorizontalScrollIndicator={false}
+                  numColumns={3}
+                  data={this.state.entertainment}
+                  // data={dateWiseList}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <View style={{}}>
+                        <TouchableOpacity
+                          //  onPress={() => this.setState({ type_gear: 'full' })}
+                          onPress={() => this.onChangeselected(index)}
+                        >
+                          <View
+                            style={{
+                              borderColor: item.isSelected ? Colors.orange : '#000',
+                              backgroundColor: item.isSelected ? Colors.orange : 'white',
+                              borderWidth: 1,
+                              padding: 8,
+                              margin: 8,
+                              width: 100,
+                              alignSelf: 'center',
+                              borderRadius: 15,
+                            }}>
+                            <Text
+                              style={{
+                                alignSelf: 'center',
+
+                                color:
+                                  item.isSelected ? 'white' : Colors.orange,
+                              }}>
+                              {item && item?.addon_product_name && item?.addon_product_name?.length > 0 ? item?.addon_product_name[0] : null}
+
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+
+                    );
+                  }}
+                  keyExtractor={(i, ind) => ind}
+                // ListHeaderComponent={() =>
+                //   !this.state.entertainment.addon_products.length ? (
+                //     <Text >No data found</Text>
+                //   ) : null
+                // }
+                />
+
+              </View>
+              <View>
+                <Text
+                  style={{
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    padding: 8,
+                  }}>
+                  Equpments
+                  {/* {this.state.type_gear && this.state.type_gear?.addon_name?.length > 0 && this.state.type_gear?.addon_name[0]} */}
+                </Text>
+
+
+                <FlatList
+                  extraData={this.state.type_gear}
+
+                  showsHorizontalScrollIndicator={false}
+                  numColumns={3}
+                  data={this.state.type_gear}
+                  // data={dateWiseList}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <View style={{}}>
+                        <TouchableOpacity
+                          onPress={() => this.onChangedone(index)}
+
+                        >
+                          <View
+                            style={{
+                              borderColor: item.isSelected ? Colors.orange : '#000',
+                              backgroundColor: item.isSelected ? Colors.orange : 'white',
+                              borderWidth: 1,
+                              padding: 8,
+                              margin: 8,
+                              width: 100,
+                              alignSelf: 'center',
+                              borderRadius: 15,
+                            }}>
+                            <Text
+                              style={{
+                                alignSelf: 'center',
+                                color:
+                                  item.isSelected ? 'white' : Colors.orange,
+                              }}>
+                              {item && item?.addon_product_name && item?.addon_product_name?.length > 0 ? item?.addon_product_name[0] : null}
+
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    );
+                  }}
+                  keyExtractor={(i, ind) => ind}
+                // ListHeaderComponent={() =>
+                //   !this.state.type_gear.addon_products.length > 0 ? (
+                //     <Text >No data found</Text>
+                //   ) : null
+                // }
+                />
+              </View>
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  padding: 8,
+                }}>
+                Guests
+              </Text>
+
+              <View style={{ flexDirection: 'row', marginTop: -10 }}>
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity onPress={() => this.setState({ Guests: '1 / 3' })}>
+                    <View
+                      style={{
+                        borderColor: this.state.Guests != '1 - 3' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.Guests != '1 - 3' ? '#fff' : Colors.orange,
+                        borderColor: 'grey',
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.Guests != '1 - 3' ? Colors.orange : '#fff',
+                        }}>
+                        1 - 3
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity onPress={() => this.setState({ Guests: '4 - 6' })}>
+                    <View
+                      style={{
+                        borderColor: this.state.Guests != '4 - 6' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.Guests != '4 - 6' ? '#fff' : Colors.orange,
+                        borderColor: 'grey',
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.Guests != '4 - 6' ? Colors.orange : '#fff',
+                        }}>
+                        4 - 6
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity onPress={() => this.setState({ Guests: '7 - 9' })}>
+                    <View
+                      style={{
+                        borderColor: this.state.Guests != '7 - 9' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.Guests != '7 - 9' ? '#fff' : Colors.orange,
+                        borderColor: 'grey',
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.Guests != '7 - 9' ? Colors.orange : '#fff',
+                        }}>
+                       7 - 9
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ width: '30%' }}>
+                  <TouchableOpacity onPress={() => this.setState({ Guests: '10+' })}>
+                    <View
+                      style={{
+                        borderColor: this.state.Guests != '10+' ? 'grey' : '#fff',
+                        backgroundColor:
+                          this.state.Guests != '10+' ? '#fff' : Colors.orange,
+                        borderColor: 'grey',
+                        borderWidth: 1,
+                        padding: 8,
+                        margin: 8,
+                        width: 100,
+                        alignSelf: 'center',
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          color:
+                            this.state.Guests != '10+' ? Colors.orange : '#fff',
+                        }}>
+                        10+
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  padding: 8,
+                  marginTop: 6,
+                }}>
+                Trip Hours
+              </Text>
+
+              <View style={{ flexDirection: 'row', marginTop: -10 }}>
+                <TouchableOpacity onPress={() => this.setState({ triphours: '1-2hrs' })}>
+                  <View
+                    style={{
+                      borderColor: this.state.triphours != '1-2hrs' ? 'grey' : '#fff',
+                      backgroundColor:
+                        this.state.triphours != '1-2hrs' ? '#fff' : Colors.orange,
+                      borderWidth: 1,
+                      padding: 8,
+                      margin: 8,
+                      width: 60,
+                      alignSelf: 'center',
+                      borderRadius: 15,
+                    }}>
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        color: this.state.triphours != '1-2hrs' ? Colors.orange : '#fff',
+                      }}>
+                      1-2hr
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => this.setState({ triphours: '3-4hrs' })}>
+                  <View
+                    style={{
+                      borderColor: this.state.triphours != '3-4hrs' ? 'grey' : '#fff',
+                      backgroundColor:
+                        this.state.triphours != '3-4hrs' ? '#fff' : Colors.orange,
+                      borderWidth: 1,
+                      padding: 8,
+                      margin: 8,
+                      width: 60,
+                      alignSelf: 'center',
+                      borderRadius: 15,
+                    }}>
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        color: this.state.triphours != '3-4hrs' ? Colors.orange : '#fff',
+                      }}>
+                      3-4hr
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => this.setState({ triphours: '5-6hr' })}>
+                  <View
+                    style={{
+                      borderColor: this.state.triphours != '5-6hr' ? 'grey' : '#fff',
+                      backgroundColor:
+                        this.state.triphours != '5-6hr' ? '#fff' : Colors.orange,
+                      borderWidth: 1,
+                      padding: 8,
+                      margin: 8,
+                      width: 60,
+                      alignSelf: 'center',
+                      borderRadius: 15,
+                    }}>
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        color: this.state.triphours != '5-6hr' ? Colors.orange : '#fff',
+                      }}>
+                     5-6hr
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => this.setState({ triphours: '7-8hr' })}>
+                  <View
+                    style={{
+                      borderColor: this.state.triphours != '7-8hr' ? 'grey' : '#fff',
+                      backgroundColor:
+                        this.state.triphours != '7-8hr' ? '#fff' : Colors.orange,
+                      borderWidth: 1,
+                      padding: 8,
+                      margin: 8,
+                      width: 60,
+                      alignSelf: 'center',
+                      borderRadius: 15,
+                    }}>
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        color: this.state.triphours != '7-8hr' ? Colors.orange : '#fff',
+                      }}>
+                      7-8hr
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => this.setState({ triphours: '9-10hr' })}>
+                  <View
+                    style={{
+                      borderColor: this.state.triphours != '9-10hr' ? 'grey' : '#fff',
+                      backgroundColor:
+                        this.state.triphours != '9-10hr' ? '#fff' : Colors.orange,
+                      borderWidth: 1,
+                      padding: 8,
+                      margin: 8,
+                      width: 60,
+                      alignSelf: 'center',
+                      borderRadius: 15,
+                    }}>
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        color: this.state.triphours != '9-10hr' ? Colors.orange : '#fff',
+                      }}>
+                    9-10h
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity style={s.Btn1} onPress={() => this.ShowResult()}>
+                <Text style={s.Btn1Text}>Show Results</Text>
+              </TouchableOpacity>
+            </ScrollView>
           </View>
         </Modal>
       </View>

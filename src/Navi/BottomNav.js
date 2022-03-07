@@ -15,6 +15,7 @@ import Profile from '../Screens/Main/Profile';
 import FavList from '../Screens/Main/Fav';
 import MyTrip from '../Screens/Main/MyTrip';
 import DestinationList from '../Screens/Main/DestinationList';
+import AllChats from '../Screens/Main/AllChats';
 
 const Stacks=()=>{
   return(
@@ -79,7 +80,7 @@ function TabNav() {
       />
       <Tab.Screen
         name="Inbox"
-        component={Inbox}
+        component={AllChats}
         options={{
           tabBarLabel: 'Inbox',
           tabBarIcon: ({ focused,color}) => (

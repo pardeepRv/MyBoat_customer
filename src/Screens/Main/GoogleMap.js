@@ -113,12 +113,10 @@ export default class GoogleMap extends Component {
       animated: true,
     });
   };
-
   goAnotherPage = () => {
     // this.mapView.clear();
     this.props.navigation.goBack();
   };
-
   render() {
     console.log("$$$$$", this.state.adver_arr);
     return (
@@ -319,9 +317,9 @@ export default class GoogleMap extends Component {
             ref={ref => (this.mapView = ref)}
             zoomEnabled={true}
             showsUserLocation={true}
-            onMapReady={() => {
-              this.goToInitialLocation();
-            }}
+            // onMapReady={() => {
+            //   this.goToInitialLocation();
+            // }}
             initialRegion={this.state.initialRegion}>
            
                   <Marker.Animated
@@ -345,11 +343,8 @@ export default class GoogleMap extends Component {
                         source={require('../../../assets/icons/markerIcon.png')}
                         resizeMode="contain"
                       />
-                    </View>
-                 
-                    
+                    </View> 
                   </Marker.Animated>
-               
           </MapView>
           } 
         </View>
@@ -377,9 +372,9 @@ export default class GoogleMap extends Component {
           ref={ref => (this.mapView = ref)}
           zoomEnabled={true}
           showsUserLocation={true}
-          onMapReady={() => {
-            this.goToInitialLocation();
-          }}
+          // onMapReady={() => {
+          //   this.goToInitialLocation();
+          // }}
           initialRegion={this.state.initialRegion}>
           {this.state.destination != 'NA' &&
             this.state.destination.map((item, index) =>

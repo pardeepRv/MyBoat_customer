@@ -239,6 +239,7 @@ export default class Login extends Component {
   render() {
     const destinations = this.state.destinations.image;
     console.log('render>>>>>>>>>>>>>', this.state.trips_arr)
+    console.log('render>>>>>>>>>>>>>',this.state.destinations)
 
     var images = [
       require('../../Images/boat.jpg'),
