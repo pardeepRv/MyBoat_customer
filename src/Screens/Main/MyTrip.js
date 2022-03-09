@@ -59,7 +59,7 @@ export class MyTrip extends PureComponent {
         'booking_list_user.php?user_id_post=' + arrayData.user_id,
       );
       //https://myboatonline.com/app/webservice/booking_list_user.php?user_id_post=115
-
+//https://server3.rvtechnologies.in/My-Boat/app/app/webservice/booking_list_user.php?user_id_post=209
       const json = await response.json();
 
       console.log('______', json);

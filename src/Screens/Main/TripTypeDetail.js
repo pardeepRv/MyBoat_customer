@@ -158,6 +158,8 @@ export default class TripTypeDetail extends Component {
       });
       if (json.success == "true") {
       } else {
+        msgProvider.toast(json?.msg[0], 'center');
+
       }
 
       // console.log(this.state.img)
@@ -875,11 +877,7 @@ export default class TripTypeDetail extends Component {
                 // style={{backgroundColor: Colors.orange,}}
                 >
                   {this.state.advertisement.review_status == 1 ?
-                  <View style={s.Btn1}
-                    onPress={() => this.ratings()}
-                  >
-                    <Text style={s.Btn1Text}>Rate Now</Text>
-                  </View> 
+                  null
                   :<TouchableOpacity style={s.Btn1}
                   onPress={() => this.ratings()}
                 >

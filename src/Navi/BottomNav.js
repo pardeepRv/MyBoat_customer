@@ -102,7 +102,7 @@ function TabNav() {
           tabBarIcon: ({ focused,color}) => (
             // <Icon name="sait-boat" color={color} size={20} type="fontisto" />
             focused ? (
-              <Image style={{height:25,width:30,resizeMode:"contain"}} source={require('../../assets/icons/fav_active.png')} />
+              <Image style={{tintColor:Colors.orange, height:25,width:30,resizeMode:"contain"}} source={require('../../assets/icons/fav-1.png')} />
             ) : (
               <Image style={{height:20,width:30,resizeMode:"contain"}} source={require('../../assets/icons/fav-1.png')} />
             )

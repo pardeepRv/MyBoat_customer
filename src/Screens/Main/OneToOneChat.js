@@ -16,6 +16,8 @@ import ChatBubble from "./ChatBubble";
 import { Icon } from "react-native-elements";
 import Header from "../../Components/Header";
 import { ActivityIndicator } from "react-native-paper";
+import socketServices from "../../Provider/socketServices";
+
 
 
 const { width, height } = Dimensions.get("window");
@@ -44,8 +46,67 @@ class OneToOneChat extends PureComponent {
   };
 
 
+  componentDidMount() { 
+    socketServices.on(`message`, this.onReceiveMessage);
+}
+ 
+  onReceiveMessage = param => {
+
+    console.log(param, 'receive>>>');
+
+    const { userData } = this.props;
+    const { data } = this.props.route?.params;
+
+
+    const message = {
+        _id: param.id,
+        text: param.message,
+        createdAt: param.message_date,
+        user: {
+            _id: param.sender_id,
+            // name: firstName,
+            // avatar: profileImg && profileImg[0].thumbnail,
+        },
+    };
+    // console.log(data,"----------data")
+    // console.log(commonConversationId,'the commonejoijoj');
+    //To make sure that all the messages are seen if new message comes
+
+    if (param.id == param.sender_id || data.id == param.receiver_id) {
+        console.log(data.id, 'data.id', param.sender_id, 'sender id', param.receiver_id, 'rec')
+        this.setState(previousState => ({
+            messages: GiftedChat.append(previousState.messages, message),
+        }));
+
+    }
+    console.log(data.id, 'data.id', param.sender_id, 'sender id', param.receiver_id, 'rec')
+
+
+    return
+    if (data.commonConversationId === commonConversationId) {
+        socketServices.emit(`${SOCKET_STRINGS.RECEIVED_MESSAGE}${userData.id}`, {
+            senderId: data.senderId,
+            isRead: true,
+            recieverId: data.recieverId,
+        });
+
+        this.setState(previousState => ({
+            messages: GiftedChat.append(previousState.messages, message),
+        }));
+    }
+};
+
 
   onSend = (messages = []) => {
+    socketServices.emit('sendMessage', {
+      sender_id: 209,
+      receiver_id: 206, //if user came to match screen then we sending swipe id instead of _id
+      message_type: 'Text',
+      message: messages[0].text,
+      timestamp: new Date()
+  });
+
+    return
     this.setState((previousState) => ({
       messages: GiftedChat.append(previousState.messages, messages),
     }));
@@ -55,10 +116,10 @@ class OneToOneChat extends PureComponent {
     const { messages } = this.state;
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <Header
+      <SafeAreaView style={{ flex: 1,  backgroundColor: Colors.orange, }}>
+        {/* <Header
           headerHeight={30}
-        />
+        /> */}
         <View
           style={{
             backgroundColor: Colors.orange,
@@ -94,11 +155,11 @@ class OneToOneChat extends PureComponent {
           </View>
           <TouchableOpacity
             style={{ top: 13, backgroundColor: Colors.orange, alignItems: 'center', marginRight: 14, justifyContent: 'center', height: 40, width: 40, borderRadius: 50 }}>
-            <Icon
+            {/* <Icon
               name="dots-three-vertical"
               type="entypo"
               color={"#fff"}
-            />
+            /> */}
           </TouchableOpacity>
         </View>
         <View style={{
@@ -115,7 +176,7 @@ class OneToOneChat extends PureComponent {
             onSend={(messages) => this.onSend(messages)}
             renderBubble={this.renderChats}
             user={{
-              _id: 1,
+              _id: 2,
             }}
             alwaysShowSend
             renderAvatar={null}

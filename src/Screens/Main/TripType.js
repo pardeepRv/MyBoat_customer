@@ -361,7 +361,7 @@ this.cityarr=  json.selected_City_Array ;
       '&latitude=29.3117&longitude=47.4818&find_key=NA&trip_type=all&trip_type_id_send=' +
       this.state.trip_type.trip_id + 
       '&filter_guest=' + this.state.Guests + '&filter_triphours=' +
-      this.state.triphours +
+      this.state.triphours
       + '&filter_food=' +
       this.state.foodselected + '&filter_entertainment=' + this.state.entertainmentselected +
       '&filter_citylist=' + this.state.citylistselected + '&filter_advertisement=' + this.state.advertisment +
@@ -374,21 +374,26 @@ this.cityarr=  json.selected_City_Array ;
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-     return console.log('json  ', json);
+      console.log('json  ', json);
 
       if (json.success == 'true') {
         this.setState({ modalVisible: false });
         this.setState({ modalVisible2: false });
         this.setState({ modalVisible3: false });
-
-
-        this.setState({ adver_arr: json.adver_arr });
+        if (json && json.destinations_arr != "NA") {
+          this.setState({ destinations_arr:  json.destinations_arr != 'NA' ? json.destinations_arr : [], });
+        } else {
+          this.setState({ destinations_arr: [] });
+        }
       } else {
       }
 
       // console.log(this.state.img)
     } catch (error) {
       console.log(error);
+      this.setState({ modalVisible: false });
+        this.setState({ modalVisible2: false });
+        this.setState({ modalVisible3: false });
     } finally {
       this.setState({ isLoading: false });
     }
@@ -599,10 +604,17 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
               );
             }}
             keyExtractor={(i, ind) => ind}
-            style={
-              {
-                // marginTop:30
-              }
+            ListEmptyComponent={() =>
+              this.state.destinations_arr &&
+              this.state.destinations_arr.length >= 0 && (
+                <Text style={{
+                  alignSelf: 'center',
+                  marginTop: 20,
+                  color: Colors.black,
+                  // fontFamily: fonts.semiBold,
+                  fontWeight: 'bold'
+                }}>No Request found</Text>
+              )
             }
             contentInsetAdjustmentBehavior="automatic"
             contentContainerStyle={{
@@ -1155,12 +1167,12 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
 
               <View style={{ flexDirection: 'row', marginTop: -10 }}>
                 <View style={{ width: '30%' }}>
-                  <TouchableOpacity onPress={() => this.setState({ Guests: '1 / 3' })}>
+                  <TouchableOpacity onPress={() => this.setState({ Guests: '1_3' })}>
                     <View
                       style={{
-                        borderColor: this.state.Guests != '1 - 3' ? 'grey' : '#fff',
+                        borderColor: this.state.Guests != '1_3' ? 'grey' : '#fff',
                         backgroundColor:
-                          this.state.Guests != '1 - 3' ? '#fff' : Colors.orange,
+                          this.state.Guests != '1_3' ? '#fff' : Colors.orange,
                         borderColor: 'grey',
                         borderWidth: 1,
                         padding: 8,
@@ -1173,7 +1185,7 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                         style={{
                           alignSelf: 'center',
                           color:
-                            this.state.Guests != '1 - 3' ? Colors.orange : '#fff',
+                            this.state.Guests != '1_3' ? Colors.orange : '#fff',
                         }}>
                         1 - 3
                       </Text>
@@ -1182,12 +1194,12 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                 </View>
 
                 <View style={{ width: '30%' }}>
-                  <TouchableOpacity onPress={() => this.setState({ Guests: '4 - 6' })}>
+                  <TouchableOpacity onPress={() => this.setState({ Guests: '4_6' })}>
                     <View
                       style={{
-                        borderColor: this.state.Guests != '4 - 6' ? 'grey' : '#fff',
+                        borderColor: this.state.Guests != '4_6' ? 'grey' : '#fff',
                         backgroundColor:
-                          this.state.Guests != '4 - 6' ? '#fff' : Colors.orange,
+                          this.state.Guests != '4_6' ? '#fff' : Colors.orange,
                         borderColor: 'grey',
                         borderWidth: 1,
                         padding: 8,
@@ -1200,7 +1212,7 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                         style={{
                           alignSelf: 'center',
                           color:
-                            this.state.Guests != '4 - 6' ? Colors.orange : '#fff',
+                            this.state.Guests != '4_6' ? Colors.orange : '#fff',
                         }}>
                         4 - 6
                       </Text>
@@ -1209,12 +1221,12 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                 </View>
 
                 <View style={{ width: '30%' }}>
-                  <TouchableOpacity onPress={() => this.setState({ Guests: '7 - 9' })}>
+                  <TouchableOpacity onPress={() => this.setState({ Guests: '7_9' })}>
                     <View
                       style={{
-                        borderColor: this.state.Guests != '7 - 9' ? 'grey' : '#fff',
+                        borderColor: this.state.Guests != '7_9' ? 'grey' : '#fff',
                         backgroundColor:
-                          this.state.Guests != '7 - 9' ? '#fff' : Colors.orange,
+                          this.state.Guests != '7_9' ? '#fff' : Colors.orange,
                         borderColor: 'grey',
                         borderWidth: 1,
                         padding: 8,
@@ -1227,7 +1239,7 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                         style={{
                           alignSelf: 'center',
                           color:
-                            this.state.Guests != '7 - 9' ? Colors.orange : '#fff',
+                            this.state.Guests != '7_9' ? Colors.orange : '#fff',
                         }}>
                        7 - 9
                       </Text>
@@ -1238,12 +1250,12 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
 
               <View style={{ flexDirection: 'row' }}>
                 <View style={{ width: '30%' }}>
-                  <TouchableOpacity onPress={() => this.setState({ Guests: '10+' })}>
+                  <TouchableOpacity onPress={() => this.setState({ Guests: '10_' })}>
                     <View
                       style={{
-                        borderColor: this.state.Guests != '10+' ? 'grey' : '#fff',
+                        borderColor: this.state.Guests != '10_' ? 'grey' : '#fff',
                         backgroundColor:
-                          this.state.Guests != '10+' ? '#fff' : Colors.orange,
+                          this.state.Guests != '10_' ? '#fff' : Colors.orange,
                         borderColor: 'grey',
                         borderWidth: 1,
                         padding: 8,
@@ -1256,7 +1268,7 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                         style={{
                           alignSelf: 'center',
                           color:
-                            this.state.Guests != '10+' ? Colors.orange : '#fff',
+                            this.state.Guests != '10_' ? Colors.orange : '#fff',
                         }}>
                         10+
                       </Text>
@@ -1277,12 +1289,12 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
               </Text>
 
               <View style={{ flexDirection: 'row', marginTop: -10 }}>
-                <TouchableOpacity onPress={() => this.setState({ triphours: '1-2hrs' })}>
+                <TouchableOpacity onPress={() => this.setState({ triphours: '1_2' })}>
                   <View
                     style={{
-                      borderColor: this.state.triphours != '1-2hrs' ? 'grey' : '#fff',
+                      borderColor: this.state.triphours != '1_2' ? 'grey' : '#fff',
                       backgroundColor:
-                        this.state.triphours != '1-2hrs' ? '#fff' : Colors.orange,
+                        this.state.triphours != '1_2' ? '#fff' : Colors.orange,
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
@@ -1293,19 +1305,19 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                     <Text
                       style={{
                         alignSelf: 'center',
-                        color: this.state.triphours != '1-2hrs' ? Colors.orange : '#fff',
+                        color: this.state.triphours != '1_2' ? Colors.orange : '#fff',
                       }}>
                       1-2hr
                     </Text>
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.setState({ triphours: '3-4hrs' })}>
+                <TouchableOpacity onPress={() => this.setState({ triphours: '3_4' })}>
                   <View
                     style={{
-                      borderColor: this.state.triphours != '3-4hrs' ? 'grey' : '#fff',
+                      borderColor: this.state.triphours != '3_4' ? 'grey' : '#fff',
                       backgroundColor:
-                        this.state.triphours != '3-4hrs' ? '#fff' : Colors.orange,
+                        this.state.triphours != '3_4' ? '#fff' : Colors.orange,
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
@@ -1316,19 +1328,19 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                     <Text
                       style={{
                         alignSelf: 'center',
-                        color: this.state.triphours != '3-4hrs' ? Colors.orange : '#fff',
+                        color: this.state.triphours != '3_4' ? Colors.orange : '#fff',
                       }}>
                       3-4hr
                     </Text>
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.setState({ triphours: '5-6hr' })}>
+                <TouchableOpacity onPress={() => this.setState({ triphours: '5_6' })}>
                   <View
                     style={{
-                      borderColor: this.state.triphours != '5-6hr' ? 'grey' : '#fff',
+                      borderColor: this.state.triphours != '5_6' ? 'grey' : '#fff',
                       backgroundColor:
-                        this.state.triphours != '5-6hr' ? '#fff' : Colors.orange,
+                        this.state.triphours != '5_6' ? '#fff' : Colors.orange,
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
@@ -1339,19 +1351,19 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                     <Text
                       style={{
                         alignSelf: 'center',
-                        color: this.state.triphours != '5-6hr' ? Colors.orange : '#fff',
+                        color: this.state.triphours != '5_6' ? Colors.orange : '#fff',
                       }}>
                      5-6hr
                     </Text>
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.setState({ triphours: '7-8hr' })}>
+                <TouchableOpacity onPress={() => this.setState({ triphours: '7_8' })}>
                   <View
                     style={{
-                      borderColor: this.state.triphours != '7-8hr' ? 'grey' : '#fff',
+                      borderColor: this.state.triphours != '7_8' ? 'grey' : '#fff',
                       backgroundColor:
-                        this.state.triphours != '7-8hr' ? '#fff' : Colors.orange,
+                        this.state.triphours != '7_8' ? '#fff' : Colors.orange,
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
@@ -1362,19 +1374,19 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                     <Text
                       style={{
                         alignSelf: 'center',
-                        color: this.state.triphours != '7-8hr' ? Colors.orange : '#fff',
+                        color: this.state.triphours != '7_8' ? Colors.orange : '#fff',
                       }}>
                       7-8hr
                     </Text>
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.setState({ triphours: '9-10hr' })}>
+                <TouchableOpacity onPress={() => this.setState({ triphours: '9_10' })}>
                   <View
                     style={{
-                      borderColor: this.state.triphours != '9-10hr' ? 'grey' : '#fff',
+                      borderColor: this.state.triphours != '9_10' ? 'grey' : '#fff',
                       backgroundColor:
-                        this.state.triphours != '9-10hr' ? '#fff' : Colors.orange,
+                        this.state.triphours != '9_10' ? '#fff' : Colors.orange,
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
@@ -1385,7 +1397,7 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                     <Text
                       style={{
                         alignSelf: 'center',
-                        color: this.state.triphours != '9-10hr' ? Colors.orange : '#fff',
+                        color: this.state.triphours != '9_10' ? Colors.orange : '#fff',
                       }}>
                     9-10h
                     </Text>

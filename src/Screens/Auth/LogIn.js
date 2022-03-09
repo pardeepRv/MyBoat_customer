@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Text,
   Linking,
@@ -11,11 +11,14 @@ import {
   TouchableOpacity,
   Keyboard,
   Platform,
-  BackHandler, Alert
+  BackHandler, Alert, I18nManager
 } from 'react-native';
-import {Input, SocialIcon} from 'react-native-elements';
-import {apifuntion} from '../../Provider/apiProvider';
-import {msgProvider, msgTitle, msgText} from '../../Provider/messageProvider';
+import { Input, SocialIcon } from 'react-native-elements';
+import messaging from '@react-native-firebase/messaging';
+import RNRestart from "react-native-restart";
+
+import { apifuntion } from '../../Provider/apiProvider';
+import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
 import {
   backgd,
   back_img,
@@ -24,18 +27,18 @@ import {
   FontFamily,
   Sizes,
 } from '../../Constants/Constants';
-import {useNavigation} from '@react-navigation/core';
-import {config} from '../../Provider/configProvider';
-import {SocialLogin} from '../../Provider/SocialLoginProvider';
-import {localStorage} from '../../Provider/localStorageProvider';
-import {CommonActions} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/core';
+import { config } from '../../Provider/configProvider';
+import { SocialLogin } from '../../Provider/SocialLoginProvider';
+import { localStorage } from '../../Provider/localStorageProvider';
+import { CommonActions } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 //import {Picker} from '@react-native-picker/picker';
-import {Picker} from '@react-native-community/picker';
+import { Picker } from '@react-native-community/picker';
 //import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
-import AsyncStorage  from "@react-native-community/async-storage";
-import {Lang_chg} from '../../Provider/Language_provider';
-import {firebaseprovider} from '../../Provider/FirebaseProvider';
+import AsyncStorage from "@react-native-community/async-storage";
+import { Lang_chg } from '../../Provider/Language_provider';
+import { firebaseprovider } from '../../Provider/FirebaseProvider';
 
 export default class Login extends Component {
   //  WelComeNote=()=>{
@@ -72,9 +75,10 @@ export default class Login extends Component {
       user_id: 0,
       player_id: 123456,
       admin_email: '',
-      template: [{lang: 'Eng'}, {lang: 'Arb'}],
+      template: [{ lang: 'Eng' }, { lang: 'Arb' }],
       branch: [],
     };
+    this.lng = null;
   }
 
   backAction = () => {
@@ -93,28 +97,62 @@ export default class Login extends Component {
     this.backHandler.remove();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+
+    this.lng = await AsyncStorage.getItem('language');
+    console.log('LANG option on login', this.lng)
+
+    // if (this.lng == 1) {
+    //   I18nManager.forceRTL(true);
+    // } else {
+    //   I18nManager.forceRTL(false);
+    // }
     this.backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       this.backAction
     );
-    //let data={'lang':'Eng','lang':'Arb'};
 
-    //this.setState({ template: data});
+    // let data = { 'lang': 'Eng', 'lang': 'Arb' };
+
+    // this.setState({ template: data });
 
     firebaseprovider.getAllUsers();
+
   }
 
-   onAppleButtonPress = navigation => {
-        // Make a request to apple.
-        SocialLogin.btnSocialLoginApple(navigation);
-      };
+
+  restartApp = async () => {
+    Alert.alert(
+      "Restart app?",
+      "You have changed the app language. You need to restart the app for it to be effective.",
+      [
+        {
+          text: "Restart now",
+          onPress: () => {
+            RNRestart.Restart();
+          },
+        },
+        {
+          text: "Cancel",
+          onPress: () => {
+            console.log('cancel');
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  onAppleButtonPress = navigation => {
+    // Make a request to apple.
+    SocialLogin.btnSocialLoginApple(navigation);
+  };
 
   goHomePage = () => {
     this.props.navigation.dispatch(
       CommonActions.reset({
         index: 1,
-        routes: [{name: 'Home'}],
+        routes: [{ name: 'Home' }],
       }),
     );
   };
@@ -145,14 +183,15 @@ export default class Login extends Component {
     await AsyncStorage.clear();
     this.props.navigation.navigate('Home')
   }
-  _btnSubmiLogin = () => {
+  _btnSubmiLogin = async () => {
     console.log('login');
-
+    fcmToken = await messaging().getToken();
+    console.log('object :>> ', fcmToken);
     console.log('this.state.player_id', this.state.player_id);
     // return false;
     // alert(this.state.paye);
     Keyboard.dismiss();
-    let {email, password} = this.state;
+    let { email, password } = this.state;
     //remember me=============
 
     //email============================
@@ -189,6 +228,7 @@ export default class Login extends Component {
       let url = config.baseURL + 'login.php';
       var data = new FormData();
 
+      data.append('device_token', fcmToken);
       data.append('email', email);
       data.append('password', password);
       data.append('device_type', config.device_type);
@@ -198,17 +238,17 @@ export default class Login extends Component {
       data.append('language_id', config.language);
       data.append('country_code', 965);
       data.append('user_type', 1);
-      this.setState({loading: true});
+      this.setState({ loading: true });
       console.log('user array====', data);
       apifuntion
         .postApi(url, data)
         .then(obj => {
           console.log(obj);
-          this.setState({loading: false});
+          this.setState({ loading: false });
           return obj.json();
         })
         .then(obj => {
-           console.log('user array', obj);
+          console.log('user array', obj);
           //  alert(JSON.stringify(obj))
           if (obj.success == 'true') {
             localStorage.setItemString('guest_user', 'no');
@@ -240,7 +280,7 @@ export default class Login extends Component {
               }
               if (signup_step == 1) {
                 localStorage.setItemString('user_id', JSON.stringify(user_id));
-                this.setState({modalVisible2: false});
+                this.setState({ modalVisible2: false });
                 localStorage.setItemObject('user_arr', user_arr);
                 // this.storeData(user_arr);
                 //   firebaseprovider.firebaseUserCreate();
@@ -275,7 +315,7 @@ export default class Login extends Component {
         })
         .catch(error => {
           console.log('-------- error ------- ' + error);
-          this.setState({loading: false});
+          this.setState({ loading: false });
         });
     } else {
       msgProvider.alert(
@@ -286,12 +326,12 @@ export default class Login extends Component {
     }
   };
 
-  
+
   render() {
     const template = this.state.template;
-    const {width, height} = Dimensions.get('window');
+    const { width, height } = Dimensions.get('window');
 
-    console.log(template);
+    console.log(template, 'eng arb');
 
     return (
       <View>
@@ -299,159 +339,184 @@ export default class Login extends Component {
           style={styles.ImageBackground}
           source={backgd}
           imageStyle={styles.ImageBackground_Img}>
-         <ScrollView>
-           
-          <TouchableOpacity style={styles.lang}
-          //  onPress={() => {
-          //   changeLanguage(restartApp);
-          // }}
-          >
-            <Icon name="globe" color="#fff" size={20} style={{marginTop: 12}} />
-            <Text style={{color: '#fff', marginTop: 12, margin: 5}}>Eng</Text>
-            <Icon
-              name="caret-down"
-              color="#fff"
-              size={20}
-              style={{marginTop: 12}}
-            />
-          </TouchableOpacity>
-         
+          <ScrollView>
 
-          <View
-            style={{
-              flex:1,
-               marginTop: height / 3,
-              // position: 'absolute',               
-              paddingHorizontal: 20,
-              marginBottom:10
-            }}>
-            
+            <TouchableOpacity style={styles.lang}
+              onPress={() => {
+                Lang_chg.language_set(1)
+                this.restartApp();
+              }}
+            >
+              <Icon name="globe" color="#fff" size={20} style={{ marginTop: 12 }} />
+              <Text style={{ color: '#fff', marginTop: 12, margin: 5 }}>AR</Text>
+              <Icon
+                name="caret-down"
+                color="#fff"
+                size={20}
+                style={{ marginTop: 12 }}
+              />
+            </TouchableOpacity>
 
-            <View style={styles.WelComeNote}>
-              <Text style={styles.myboat}>My Boat</Text>
-              <Text style={styles.Wlcome}>Welcome</Text>
-            </View>
+            <TouchableOpacity style={styles.lang}
+              onPress={() => {
+                Lang_chg.language_set(0)
+                this.restartApp();
+              }}
+            >
+              <Icon name="globe" color="#fff" size={20} style={{ marginTop: 12 }} />
+              <Text style={{ color: '#fff', marginTop: 12, margin: 5 }}>Eng</Text>
+              <Icon
+                name="caret-down"
+                color="#fff"
+                size={20}
+                style={{ marginTop: 12 }}
+              />
+            </TouchableOpacity>
+
+
+            <View
+              style={{
+                flex: 1,
+                marginTop: height / 3,
+                // position: 'absolute',               
+                paddingHorizontal: 20,
+                marginBottom: 10
+              }}>
+
+
+              <View >
+                <Text style={styles.myboat}>My Boat</Text>
+                <Text style={styles.Wlcome}>Welcome</Text>
+              </View>
               <Text style={styles.Login}>Login</Text>
               <Input
                 placeholder="Email"
                 containerStyle={styles.Input}
                 inputContainerStyle={styles.Input}
                 placeholderTextColor={Colors.white}
-                inputStyle={{color: Colors.white}}
+                inputStyle={{ color: Colors.white }}
+                textAlign={this.lng == 0 ? "left" : "right"}
                 returnKeyType="done"
                 onSubmitEditing={() => {
                   Keyboard.dismiss();
                 }}
                 onChangeText={txt => {
-                  this.setState({email: txt});
+                  this.setState({ email: txt });
                 }}
                 maxLength={50}
                 minLength={6}
                 value={this.state.email}
               />
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
                 <Input
                   placeholder="Password"
                   containerStyle={styles.Input}
                   inputContainerStyle={styles.Input}
                   placeholderTextColor={Colors.white}
-                  inputStyle={{color: Colors.white}}
+                  inputStyle={{ color: Colors.white }}
+                  textAlign={this.lng == 0 ? "left" : "right"}
+                  secureTextEntry
                   onSubmitEditing={() => {
                     Keyboard.dismiss();
                   }}
                   onChangeText={txt => {
-                    this.setState({password: txt});
+                    this.setState({ password: txt });
                   }}
                   maxLength={16}
                   minLength={6}
                   value={this.state.password}
                   keyboardType="default"
-                  secureTextEntry={this.state.HidePassword}
+                // secureTextEntry={this.state.HidePassword}
                 />
                 <TouchableOpacity
-                  style={{marginLeft: -100, marginTop: -13}}
+                  style={{ marginLeft: -100, marginTop: -13 }}
                   onPress={() => this.props.navigation.navigate('Forgot')}>
                   <Text style={styles.FGPASS}>Forgot Password ?</Text>
                 </TouchableOpacity>
               </View>
-            
-            <View style={styles.SEC3}>
-              <View style={{alignItems: 'center'}}>
-                <TouchableOpacity
-                  style={styles.Btn1}
-                  onPress={() => this._btnSubmiLogin()}>
-                  <Text style={styles.Btn1Text}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.Btn1}
-                  onPress={() => this.loginAsGuest()}
+
+              <View style={styles.SEC3}>
+                <View style={{ alignItems: 'center' }}>
+                  <TouchableOpacity
+                    style={styles.Btn1}
+                    onPress={() => this._btnSubmiLogin()}>
+                    {
+                      this.lng == 1 ?
+                        <Text style={styles.Btn1Text}>{Lang_chg.Login_txt[1]}</Text> :
+                        <Text style={styles.Btn1Text}>{Lang_chg.Login_txt[0]}</Text>
+                    }
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.Btn1}
+                    onPress={() => this.loginAsGuest()}
                   >
-                  <Text style={styles.Btn1Text}>Guest</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{marginTop: 25}}
-                  onPress={() => Linking.openURL('mailto:myboat667@gmail.com')}>
-                  <Text style={styles.contact_admin}>Contact admin ?</Text>
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  height: 80,
-                  borderWidth: 1,
-                  borderColor: Colors.white,
-                  marginTop: -50,
-                  marginHorizontal: 20,
-                }}
-              />
-              <View style={{alignItems: 'center', marginHorizontal: 20}}>
-                <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate('SignUp')}>
-                  <Text style={styles.Text1}>Sign Up ?</Text>
-                </TouchableOpacity>
-                <View style={styles.OR}>
-                  <Text
-                    style={{
-                      fontFamily: FontFamily.bold,
-                      color: Colors.orange,
-                      fontSize: 10,
-                    }}>
-                    OR
-                  </Text>
+                    <Text style={styles.Btn1Text}>Guest</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{ marginTop: 25 }}
+                    onPress={() => Linking.openURL('mailto:myboat667@gmail.com')}>
+                    <Text style={styles.contact_admin}>Contact admin ?</Text>
+                  </TouchableOpacity>
                 </View>
-                <View>
-                  <Text style={styles.Text1}>Sign up with</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: Platform.OS=="ios"?'space-between':"center",
-                      marginTop: 24,
-                    }}>
-                    {Platform.OS=="ios"&&<TouchableOpacity style={styles.LoginIcon}
-                    onPress={() => this.onAppleButtonPress()}
-                    >
-                      <Icon
-                        name="apple"
-                        type="fontisto"
-                        size={20}
-                        color={Colors.white}
-                      />
-                    </TouchableOpacity>}
-                    <TouchableOpacity
-                      style={styles.LoginIcon}
-                      onPress={() => this.GoogleLogin(this.props.navigation)}>
-                      <Image
-                        source={google_icon}
-                        style={{width: 22, height: 22}}
-                      />
-                    </TouchableOpacity>
+                <View
+                  style={{
+                    height: 80,
+                    borderWidth: 1,
+                    borderColor: Colors.white,
+                    marginTop: -50,
+                    marginHorizontal: 20,
+                  }}
+                />
+                <View style={{ alignItems: 'center', marginHorizontal: 20 }}>
+                  <TouchableOpacity
+                    onPress={() => this.props.navigation.navigate('SignUp')}>
+                    <Text style={styles.Text1}>Sign Up ?</Text>
+                  </TouchableOpacity>
+                  <View style={styles.OR}>
+                    <Text
+                      style={{
+                        fontFamily: FontFamily.bold,
+                        color: Colors.orange,
+                        fontSize: 10,
+                      }}>
+                      OR
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={styles.Text1}>Sign up with</Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: Platform.OS == "ios" ? 'space-between' : "center",
+                        marginTop: 24,
+                      }}>
+                      {Platform.OS == "ios" && <TouchableOpacity style={styles.LoginIcon}
+                        onPress={() => this.onAppleButtonPress()}
+                      >
+                        <Icon
+                          name="apple"
+                          type="fontisto"
+                          size={20}
+                          color={Colors.white}
+                        />
+                      </TouchableOpacity>}
+                      <TouchableOpacity
+                        style={styles.LoginIcon}
+                        onPress={() => this.GoogleLogin(this.props.navigation)}>
+                        <Image
+                          source={google_icon}
+                          style={{ width: 22, height: 22 }}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
+              {/* </ScrollView> */}
             </View>
-            {/* </ScrollView> */}
-          </View>
-        </ScrollView>
-          
+          </ScrollView>
+
         </ImageBackground>
       </View>
     );

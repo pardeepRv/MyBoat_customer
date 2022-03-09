@@ -15,6 +15,7 @@ import {
 } from '../../Constants/Constants';
 import { config } from '../../Provider/configProvider';
 import { firebaseprovider } from '../../Provider/FirebaseProvider';
+import socketServices from '../../Provider/socketServices';
 
 export default class Login extends Component {
   constructor(props) {
@@ -52,6 +53,30 @@ export default class Login extends Component {
     // this.backHandler.remove();
     this._unsubscribe();
   }
+  componentDidMount()  {
+    if (!socketServices.socket) {
+      //connect socket
+      socketServices.initializeSocket(206);
+    }
+    if (!socketServices.socket.connected) {
+      //connect socket
+      socketServices.socket.connect();
+    }
+  }
+
+   socketintial = async () => {
+    const value = await AsyncStorage.getItem('user_arr');
+    console.log('value :>> ', value);
+    const arrayData = JSON.parse(value);
+    if (!socketServices.socket) {
+      //connect socket
+      socketServices.initializeSocket(arrayData.user_id);
+    }
+    if (!socketServices.socket.connected) {
+      //connect socket
+      socketServices.socket.connect();
+    }
+  };
 
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
@@ -61,22 +86,19 @@ export default class Login extends Component {
       //firebaseprovider.getAllUsers();
       //firebaseprovider.messagecountforfooter();
       console.log('des', this.state.trips_arr)
-
       this.getData('user_arr');
+      // this.socketintial();
     });
 
-    // this.backHandler = BackHandler.addEventListener(
-    //   "hardwareBackPress",
-    //   this.backAction
-    // );
-    // this.Promotion();
-    // this.getUsers();
-    // //firebaseprovider.getAllUsers();
-    // //firebaseprovider.messagecountforfooter();
-    // console.log('des', this.state.trips_arr)
-
-    // this.getData('user_arr');
-
+    if (!socketServices.socket) {
+      //connect socket
+      socketServices.initializeSocket(209);
+    }
+    if (!socketServices.socket.connected) {
+      //connect socket
+      socketServices.socket.connect();
+    }
+    
   }
 
   getData = async key => {
@@ -357,7 +379,7 @@ export default class Login extends Component {
               <TouchableOpacity>
                 <Text
                   style={{
-                    textDecorationStyle: 'dashed',
+                    // textDecorationStyle: 'dashed',
                     textDecorationLine: 'underline',
                     fontFamily: FontFamily.default,
                     color: Colors.orange,
@@ -425,7 +447,7 @@ export default class Login extends Component {
               <TouchableOpacity>
                 <Text
                   style={{
-                    textDecorationStyle: 'dashed',
+                    // textDecorationStyle: 'dashed',
                     textDecorationLine: 'underline',
                     fontFamily: FontFamily.default,
                     color: Colors.orange,
