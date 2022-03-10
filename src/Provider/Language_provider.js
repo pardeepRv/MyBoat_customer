@@ -17,7 +17,7 @@ class Language_provider {
   }
 
   language_set = (value) => {
-    config.language = value;
+    // config.language = value;
     localStorage.setItemObject('language', value)
   }
 
@@ -121,10 +121,12 @@ class Language_provider {
   Save = ['Save', 'حفظ ']
   Skip = ['Skip', 'تخطي ']
   Clear = ['Clear', 'إزالة ']
+  clrall = ['Clear All', 'امسح الكل']
   titleexitapp = ['Exip App', 'الخروج من التطبيق ']
   exitappmessage = ['Do you want to exit app', 'هل تريد الخروج من التطبيق ', 'Você quer sair do aplicativo']
   msgConfirmTextLogoutMsg = ['Are you sure you want to Logout?', 'هل تريد فعلا تسجيل الخروج من التطبيق ؟ ']
   msgLoginError = ['Please login first?', 'الرجاء تسجيل الدخول اولا ؟ ']
+  mesage =['Messages' ,'رسائل']
   //===========static text change
   loginName = ['Enter Name', 'ادخل الاسم ']
   loginEmail = ['Email', 'البريد الالكتروني ']
@@ -136,12 +138,14 @@ class Language_provider {
   loginterm4 = [' privacy policy', ' سياسة الخصوصية ']
   Signup_txt = ['Signup', 'التسجيل ']
   Login_txt = ['Login', 'تسجيل دخول ']
+  Guesr_txt = ['Guest' , 'ضيف']
   do_you1 = ['Do you have an account?', 'هل لديك حساب ؟ ']
   html_Privacy_Policy = [' Privacy Policy ', ' سياسة الخصوصية  ']
   text_About_Us = [' About Us', ' معلومات عنا  ']
   text_Terms_And_Conditions = [' Terms And Conditions ', ' احكام وشروط  ']
   contact_to_ad_text = ["Contact To Admin", 'تواصل مع المسئول ']
-
+  Myboattextlogin =['My Boat', 'قاربي']
+  welcomeMyboat =['WELCOME', 'أهلا بك']
   //=========signup=======
   text_sign_in = ['Sign in', 'تسجيل الدخول ']
   text_sign_in1 = ['Sign in your social media account', 'قم بتسجيل الدخول بحساب الوسائط الاجتماعية الخاص بك ']
@@ -150,6 +154,10 @@ class Language_provider {
   dont_have_acc = ['Don’t have an account?', 'ليس لديك حساب ؟ ']
   txt_signup = ['Sign up', 'تسجيل ']
   txt_phone_number = ['Mobile Number', 'رقم الهاتف المحمول ']
+  signuphere = ['Sign Up ?', 'اشتراك ؟']
+  contactadminhere = ['Contact admin ?', 'اتصل بالمسؤول؟']
+  Signupwith = ['Sign up with', 'سجل مع']
+
   //============Otp===========
   otp_verification = ['Verification', 'تحقق ']
   otp_verification1 = ['Otp verification code sent on', 'تم ارسال رمز التحقق ']
@@ -211,6 +219,8 @@ class Language_provider {
   txt_view_all = ['View All', "عرض الجميع "]
   txt_Popular_Boats = ['Popular Boats', "القوارب المفضلة "]
   txt_pff = ['OFF', "OFF"]
+  popolardes = ['Popular Destination', "الوجهات المشهورة"]
+  Promotion = ['Promotion' , 'ترقية وظيفية']
 
   // inbox//
   tittleinbox = ['Inbox', 'الرسائل ']

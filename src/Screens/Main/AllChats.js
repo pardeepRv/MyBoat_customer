@@ -24,6 +24,7 @@ import {
 import { Colors, FontFamily, Sizes } from "../../Constants/Constants";
 import { Lang_chg } from "../../Provider/Language_provider";
 import { config } from "../../Provider/configProvider";
+import { UserContext } from "./UserContext";
 
 const { width, height } = Dimensions.get("window");
 
@@ -49,6 +50,7 @@ const dummyChat = [
 ];
 
 class AllChats extends PureComponent {
+  static contextType = UserContext
     constructor(props) {
         super(props);
         this.state = {
@@ -99,6 +101,7 @@ class AllChats extends PureComponent {
     render() {
         // const { userData } = this.props;
         const { isLoading, allChatMember } = this.state;
+        const user = this.context
 
         return (
             <View style={{ backgroundColor: '#fff', flex: 1 }}>
@@ -108,7 +111,7 @@ class AllChats extends PureComponent {
                     notiBtn={false}
                     searchBtn={this.state?.inboxmessage?.length > 0 ? true : false}
                     headerHeight={200}
-                    name={'Messages'}
+                    name={user.value == 1 ? Lang_chg.mesage[1] : Lang_chg.mesage[0]}
                     backImgSource={require('../../Images/backgroundImg.png')}
                 />
                 {allChatMember.length > 0 ? (

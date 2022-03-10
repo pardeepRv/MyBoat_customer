@@ -20,6 +20,7 @@ import { localStorage } from '../../Provider/localStorageProvider';
 import { renderNode } from 'react-native-elements/dist/helpers';
 import AsyncStorage from '@react-native-community/async-storage';
 import { config } from '../../Provider/configProvider';
+// import { UserContext } from "./UserContext";
 
 const CustomHeader = ({ name }) => {
   const nav = useNavigation();

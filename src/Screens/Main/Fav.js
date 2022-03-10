@@ -27,15 +27,11 @@ import { apifuntion } from '../../Provider/apiProvider';
 import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
 import AsyncStorage from "@react-native-community/async-storage";
 import { config } from '../../Provider/configProvider';
-
-
-
-
-
+import { Lang_chg } from '../../Provider/Language_provider';
+import { UserContext } from "./UserContext";
 
 export default class Fav extends Component {
-
-
+  static contextType = UserContext
   constructor(props) {
     super(props)
     this.state = {
@@ -149,16 +145,18 @@ export default class Fav extends Component {
 
   render() {
     console.log('this.state.fav_arr :>> ', this.state.fav_arr);
+    const user = this.context
+    console.log('context in home', user);
     return (
       <View style={{ flex: 1 }}>
         <Header
           imgBack={true}
-          name="Favourites"
+          name={user.value == 1 ? Lang_chg.text_favourites[1] : Lang_chg.text_favourites[0]}
           headerHeight={270}
           backImgSource={require('../../Images/back1.jpg')}
         />
         <TouchableOpacity style={{ backgroundColor:Colors.orange , borderRadius:20  ,  position: 'absolute', top: 35, right: 20 }} onPress={() => this.clearAll()}>
-          <Text style={{ color: Colors.white, fontFamily: FontFamily.default , fontWeight:'bold' }}>Clear All</Text>
+          <Text style={{ color: Colors.white, fontFamily: FontFamily.default , fontWeight:'bold' }}>{user.value == 1 ? Lang_chg.clrall[1] : Lang_chg.clrall[0]}</Text>
         </TouchableOpacity>
         <View style={s.SEC2}>
           <FlatList

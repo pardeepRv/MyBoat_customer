@@ -13,6 +13,7 @@ import {
   Platform,
   BackHandler, Alert, I18nManager
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Input, SocialIcon } from 'react-native-elements';
 import messaging from '@react-native-firebase/messaging';
 import RNRestart from "react-native-restart";
@@ -39,6 +40,7 @@ import { Picker } from '@react-native-community/picker';
 import AsyncStorage from "@react-native-community/async-storage";
 import { Lang_chg } from '../../Provider/Language_provider';
 import { firebaseprovider } from '../../Provider/FirebaseProvider';
+import { UserContext } from '../Main/UserContext';
 
 export default class Login extends Component {
   //  WelComeNote=()=>{
@@ -53,6 +55,7 @@ export default class Login extends Component {
   //         </View>
   //     )
   // }
+  static contextType = UserContext;
 
   constructor(props) {
     super(props);
@@ -77,8 +80,10 @@ export default class Login extends Component {
       admin_email: '',
       template: [{ lang: 'Eng' }, { lang: 'Arb' }],
       branch: [],
+      lng: null,
     };
-    this.lng = null;
+    // this.lng = null;
+
   }
 
   backAction = () => {
@@ -99,8 +104,10 @@ export default class Login extends Component {
 
   async componentDidMount() {
 
-    this.lng = await AsyncStorage.getItem('language');
-    console.log('LANG option on login', this.lng)
+    let lng = await AsyncStorage.getItem('language');
+    console.log('LANG option on login', lng)
+
+    this.setState({ lng: lng })
 
     // if (this.lng == 1) {
     //   I18nManager.forceRTL(true);
@@ -328,193 +335,209 @@ export default class Login extends Component {
 
 
   render() {
+    const user = this.context
+    console.log('context in login', user);
     const template = this.state.template;
     const { width, height } = Dimensions.get('window');
-
-    console.log(template, 'eng arb');
-
     return (
       <View>
         <ImageBackground
           style={styles.ImageBackground}
           source={backgd}
           imageStyle={styles.ImageBackground_Img}>
-          <ScrollView>
-
-            <TouchableOpacity style={styles.lang}
-              onPress={() => {
-                Lang_chg.language_set(1)
-                this.restartApp();
-              }}
-            >
-              <Icon name="globe" color="#fff" size={20} style={{ marginTop: 12 }} />
-              <Text style={{ color: '#fff', marginTop: 12, margin: 5 }}>AR</Text>
-              <Icon
-                name="caret-down"
-                color="#fff"
-                size={20}
-                style={{ marginTop: 12 }}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.lang}
-              onPress={() => {
-                Lang_chg.language_set(0)
-                this.restartApp();
-              }}
-            >
-              <Icon name="globe" color="#fff" size={20} style={{ marginTop: 12 }} />
-              <Text style={{ color: '#fff', marginTop: 12, margin: 5 }}>Eng</Text>
-              <Icon
-                name="caret-down"
-                color="#fff"
-                size={20}
-                style={{ marginTop: 12 }}
-              />
-            </TouchableOpacity>
-
-
-            <View
-              style={{
-                flex: 1,
-                marginTop: height / 3,
-                // position: 'absolute',               
-                paddingHorizontal: 20,
-                marginBottom: 10
-              }}>
-
-
-              <View >
-                <Text style={styles.myboat}>My Boat</Text>
-                <Text style={styles.Wlcome}>Welcome</Text>
-              </View>
-              <Text style={styles.Login}>Login</Text>
-              <Input
-                placeholder="Email"
-                containerStyle={styles.Input}
-                inputContainerStyle={styles.Input}
-                placeholderTextColor={Colors.white}
-                inputStyle={{ color: Colors.white }}
-                textAlign={this.lng == 0 ? "left" : "right"}
-                returnKeyType="done"
-                onSubmitEditing={() => {
-                  Keyboard.dismiss();
+          <ScrollView style={{ flex: 1 }}>
+            <KeyboardAwareScrollView
+              // extraScrollHeight={10}
+              nestedScrollEnabled
+              enableOnAndroid={true}
+              style={styles.subContainer}
+              contentContainerStyle={styles.subContentContainer}
+              keyboardShouldPersistTaps={'always'}
+              showsVerticalScrollIndicator={false}>
+{user.value == 0 ? <TouchableOpacity style={styles.lang}
+                onPress={() => {
+                  Lang_chg.language_set(1)
+                  this.restartApp();
                 }}
-                onChangeText={txt => {
-                  this.setState({ email: txt });
+              >
+                <Icon name="globe" color="#fff" size={20} style={{ marginTop: 12 }} />
+                <Text style={{ color: '#fff', marginTop: 12, margin: 5 }}>AR</Text>
+                <Icon
+                  name="caret-down"
+                  color="#fff"
+                  size={20}
+                  style={{ marginTop: 12 }}
+                />
+              </TouchableOpacity> : <TouchableOpacity style={styles.lang}
+                onPress={() => {
+                  Lang_chg.language_set(0)
+                  this.restartApp();
                 }}
-                maxLength={50}
-                minLength={6}
-                value={this.state.email}
-              />
+              >
+                <Icon name="globe" color="#fff" size={20} style={{ marginTop: 12 }} />
+                <Text style={{ color: '#fff', marginTop: 12, margin: 5 }}>eng</Text>
+                <Icon
+                  name="caret-down"
+                  color="#fff"
+                  size={20}
+                  style={{ marginTop: 12 }}
+                />
+              </TouchableOpacity>}
+             
 
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+              
+
+
+              <View
+                style={{
+                  flex: 1,
+                  marginTop: height / 3,
+                  // position: 'absolute',               
+                  paddingHorizontal: 20,
+                  marginBottom: 10
+                }}>
+
+
+                <View style={{ alignItems: 'flex-start' }} >
+                  
+                  <Text style={styles.myboat}>{ user.value == 1 ? Lang_chg.Myboattextlogin[1] : Lang_chg.Myboattextlogin[0]}</Text>
+                  <Text style={styles.Wlcome}>{ user.value == 1 ? Lang_chg.welcomeMyboat[1] : Lang_chg.welcomeMyboat[0]}</Text>
+                </View>
+                <View style={{ alignItems: 'flex-start' }}>
+                  <Text style={styles.Login}>{user.value == 1 ? Lang_chg.Login_txt[1] :Lang_chg.Login_txt[0]}</Text>
+                </View>
                 <Input
-                  placeholder="Password"
+                  placeholder="Email"
                   containerStyle={styles.Input}
                   inputContainerStyle={styles.Input}
                   placeholderTextColor={Colors.white}
                   inputStyle={{ color: Colors.white }}
-                  textAlign={this.lng == 0 ? "left" : "right"}
-                  secureTextEntry
+                  textAlign={user.value == 1 ? "right" : "left"}
+                  returnKeyType="done"
                   onSubmitEditing={() => {
                     Keyboard.dismiss();
                   }}
                   onChangeText={txt => {
-                    this.setState({ password: txt });
+                    this.setState({ email: txt });
                   }}
-                  maxLength={16}
+                  maxLength={50}
                   minLength={6}
-                  value={this.state.password}
-                  keyboardType="default"
-                // secureTextEntry={this.state.HidePassword}
+                  value={this.state.email}
                 />
-                <TouchableOpacity
-                  style={{ marginLeft: -100, marginTop: -13 }}
-                  onPress={() => this.props.navigation.navigate('Forgot')}>
-                  <Text style={styles.FGPASS}>Forgot Password ?</Text>
-                </TouchableOpacity>
-              </View>
 
-              <View style={styles.SEC3}>
-                <View style={{ alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+                <Input
+                    placeholder="Password"
+                    containerStyle={styles.Input}
+                    inputContainerStyle={styles.Input}
+                    placeholderTextColor={Colors.white}
+                    inputStyle={{ color: Colors.white }}
+                    textAlign={user.value == 1 ? "right" : 'left'}
+                    secureTextEntry
+                    onSubmitEditing={() => {
+                      Keyboard.dismiss();
+                    }}
+                    onChangeText={txt => {
+                      this.setState({ password: txt });
+                    }}
+                    maxLength={16}
+                    minLength={6}
+                    value={this.state.password}
+                    keyboardType="default"
+                  // secureTextEntry={this.state.HidePassword}
+                  />
                   <TouchableOpacity
-                    style={styles.Btn1}
-                    onPress={() => this._btnSubmiLogin()}>
-                    {
-                      this.lng == 1 ?
-                        <Text style={styles.Btn1Text}>{Lang_chg.Login_txt[1]}</Text> :
-                        <Text style={styles.Btn1Text}>{Lang_chg.Login_txt[0]}</Text>
-                    }
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.Btn1}
-                    onPress={() => this.loginAsGuest()}
-                  >
-                    <Text style={styles.Btn1Text}>Guest</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{ marginTop: 25 }}
-                    onPress={() => Linking.openURL('mailto:myboat667@gmail.com')}>
-                    <Text style={styles.contact_admin}>Contact admin ?</Text>
+                    style={{ marginLeft: -100, marginTop: -13 }}
+                    onPress={() => this.props.navigation.navigate('Forgot')}>
+                    <Text style={styles.FGPASS}>{user.value == 1 ? Lang_chg.txt_Forgot_Pass1[1] : Lang_chg.txt_Forgot_Pass1[0]}</Text>
                   </TouchableOpacity>
                 </View>
-                <View
-                  style={{
-                    height: 80,
-                    borderWidth: 1,
-                    borderColor: Colors.white,
-                    marginTop: -50,
-                    marginHorizontal: 20,
-                  }}
-                />
-                <View style={{ alignItems: 'center', marginHorizontal: 20 }}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('SignUp')}>
-                    <Text style={styles.Text1}>Sign Up ?</Text>
-                  </TouchableOpacity>
-                  <View style={styles.OR}>
-                    <Text
-                      style={{
-                        fontFamily: FontFamily.bold,
-                        color: Colors.orange,
-                        fontSize: 10,
-                      }}>
-                      OR
-                    </Text>
+
+                <View style={styles.SEC3}>
+                  <View style={{ alignItems: 'center' }}>
+                    <TouchableOpacity
+                      style={styles.Btn1}
+                      onPress={() => this._btnSubmiLogin()}>
+                      {
+                        user.value == 1 ?
+                          <Text style={styles.Btn1Text}>{Lang_chg.Login_txt[1]}</Text> :
+                          <Text style={styles.Btn1Text}>{Lang_chg.Login_txt[0]}</Text>
+                      }
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.Btn1}
+                      onPress={() => this.loginAsGuest()}
+                    >
+                      {
+                        user.value == 1 ?
+                          <Text style={styles.Btn1Text}>{Lang_chg.Guesr_txt[1]}</Text> :
+                          <Text style={styles.Btn1Text}>{Lang_chg.Guesr_txt[0]}</Text>
+                      }
+                      {/* <Text style={styles.Btn1Text}>Guest</Text> */}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{ marginTop: 25 }}
+                      onPress={() => Linking.openURL('mailto:myboat667@gmail.com')}>
+                      <Text style={styles.contact_admin}>{user.value == 1 ? Lang_chg.contactadminhere[1] : Lang_chg.contactadminhere[0]}</Text>
+                    </TouchableOpacity>
                   </View>
-                  <View>
-                    <Text style={styles.Text1}>Sign up with</Text>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: Platform.OS == "ios" ? 'space-between' : "center",
-                        marginTop: 24,
-                      }}>
-                      {Platform.OS == "ios" && <TouchableOpacity style={styles.LoginIcon}
-                        onPress={() => this.onAppleButtonPress()}
-                      >
-                        <Icon
-                          name="apple"
-                          type="fontisto"
-                          size={20}
-                          color={Colors.white}
-                        />
-                      </TouchableOpacity>}
-                      <TouchableOpacity
-                        style={styles.LoginIcon}
-                        onPress={() => this.GoogleLogin(this.props.navigation)}>
-                        <Image
-                          source={google_icon}
-                          style={{ width: 22, height: 22 }}
-                        />
-                      </TouchableOpacity>
+                  <View
+                    style={{
+                      height: 80,
+                      borderWidth: 1,
+                      borderColor: Colors.white,
+                      marginTop: -50,
+                      marginHorizontal: 20,
+                    }}
+                  />
+                  <View style={{ alignItems: 'center', marginHorizontal: 20 }}>
+                    <TouchableOpacity
+                      onPress={() => this.props.navigation.navigate('SignUp')}>
+                      <Text style={styles.Text1}>{user.value == 1 ? Lang_chg.signuphere[1] : Lang_chg.signuphere[0]}</Text>
+                    </TouchableOpacity>
+                    <View style={styles.OR}>
+                      <Text
+                        style={{
+                          fontFamily: FontFamily.bold,
+                          color: Colors.orange,
+                          fontSize: 10,
+                        }}>
+                        OR
+                      </Text>
+                    </View>
+                    <View>
+                      <Text style={styles.Text1}>{user.value == 1 ? Lang_chg.Signupwith[1] : Lang_chg.Signupwith[0]}</Text>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: Platform.OS == "ios" ? 'space-between' : "center",
+                          marginTop: 24,
+                        }}>
+                        {Platform.OS == "ios" && <TouchableOpacity style={styles.LoginIcon}
+                          onPress={() => this.onAppleButtonPress()}
+                        >
+                          <Icon
+                            name="apple"
+                            type="fontisto"
+                            size={20}
+                            color={Colors.white}
+                          />
+                        </TouchableOpacity>}
+                        <TouchableOpacity
+                          style={styles.LoginIcon}
+                          onPress={() => this.GoogleLogin(this.props.navigation)}>
+                          <Image
+                            source={google_icon}
+                            style={{ width: 22, height: 22 }}
+                          />
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
                 </View>
+                {/* </ScrollView> */}
               </View>
-              {/* </ScrollView> */}
-            </View>
+            </KeyboardAwareScrollView>
           </ScrollView>
 
         </ImageBackground>
@@ -633,6 +656,14 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     shadowOpacity: 1,
     // box-shadow: 0px 0px 10px 2px ;
+  },
+  subContainer: {
+    // height: layout.size.height ,
+    flex: 1,
+    // backgroundColor:colors.secondry
+  },
+  subContentContainer: {
+    paddingBottom: 12,
   },
 });
 

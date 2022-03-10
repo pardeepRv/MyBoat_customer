@@ -13,12 +13,16 @@ import {
   Colors,
   FontFamily
 } from '../../Constants/Constants';
+import { UserContext } from "./UserContext";
 import { config } from '../../Provider/configProvider';
 import { firebaseprovider } from '../../Provider/FirebaseProvider';
 import socketServices from '../../Provider/socketServices';
+import { Lang_chg } from '../../Provider/Language_provider';
 
 export default class Login extends Component {
+  static contextType = UserContext
   constructor(props) {
+    console.log('props :>> ', props);
     super(props);
     this.state = {
       destinations: [],
@@ -53,30 +57,7 @@ export default class Login extends Component {
     // this.backHandler.remove();
     this._unsubscribe();
   }
-  componentDidMount()  {
-    if (!socketServices.socket) {
-      //connect socket
-      socketServices.initializeSocket(206);
-    }
-    if (!socketServices.socket.connected) {
-      //connect socket
-      socketServices.socket.connect();
-    }
-  }
 
-   socketintial = async () => {
-    const value = await AsyncStorage.getItem('user_arr');
-    console.log('value :>> ', value);
-    const arrayData = JSON.parse(value);
-    if (!socketServices.socket) {
-      //connect socket
-      socketServices.initializeSocket(arrayData.user_id);
-    }
-    if (!socketServices.socket.connected) {
-      //connect socket
-      socketServices.socket.connect();
-    }
-  };
 
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
@@ -98,7 +79,7 @@ export default class Login extends Component {
       //connect socket
       socketServices.socket.connect();
     }
-    
+
   }
 
   getData = async key => {
@@ -259,9 +240,11 @@ export default class Login extends Component {
   }
 
   render() {
+    const user = this.context
+    console.log('context in home', user);
     const destinations = this.state.destinations.image;
     console.log('render>>>>>>>>>>>>>', this.state.trips_arr)
-    console.log('render>>>>>>>>>>>>>',this.state.destinations)
+    console.log('render>>>>>>>>>>>>>', this.state.destinations)
 
     var images = [
       require('../../Images/boat.jpg'),
@@ -279,19 +262,21 @@ export default class Login extends Component {
           notiBtn={true}
           searchBtn={false}
           headerHeight={300}
-          name="Explore"
+          name={user.value == 1 ? Lang_chg.txt_explore[1] : Lang_chg.txt_explore[0]}
           backImgSource={require('../../Images/backgd2.jpg')}
         />
         {/* Buttons */}
         <View style={{ position: 'absolute', width: '100%', top: 135 }}>
-          <TouchableOpacity onPress={() => this.ModalClick()}>
+          <TouchableOpacity onPress={() => this.ModalClick()}
+            style={{ alignItems: 'flex-start' }}
+          >
             <Text
               style={{
                 marginLeft: 17,
                 color: Colors.white,
                 textDecorationLine: 'underline',
               }}>
-              View All
+              {user.value == 1 ? Lang_chg.txt_view_all[1] : Lang_chg.txt_view_all[0]}
             </Text>
           </TouchableOpacity>
 
@@ -351,7 +336,7 @@ export default class Login extends Component {
                             fontWeight: 'bold',
                           },
                         ]}>
-                        {item.trip_type_name}
+                        { user.value == 1 ? item.trip_type_name_arabic :item.trip_type_name}
                       </Text>
                       <Text style={{ color: '#b6b6b6', fontSize: 10 }}>
                         {' '}
@@ -376,7 +361,9 @@ export default class Login extends Component {
                 width: '95%',
                 alignSelf: 'center',
               }}>
-              <TouchableOpacity>
+              <TouchableOpacity
+              // onPress={user.updateValue}
+              >
                 <Text
                   style={{
                     // textDecorationStyle: 'dashed',
@@ -386,7 +373,7 @@ export default class Login extends Component {
                     marginLeft: 10,
                     fontWeight: 'bold',
                   }}>
-                  Promotion
+                  {user.value == 1 ? Lang_chg.Promotion[1] : Lang_chg.Promotion[0]}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -454,7 +441,10 @@ export default class Login extends Component {
                     marginLeft: 10,
                     fontWeight: 'bold',
                   }}>
-                  Popular Destination
+                  {
+                    user.value == 1 ?
+                      Lang_chg.popolardes[1] : Lang_chg.popolardes[0]
+                  }
                 </Text>
               </TouchableOpacity>
             </View>
@@ -509,7 +499,7 @@ export default class Login extends Component {
                         {/*  */}
                         <View style={s.SEC3}>
                           <View style={{}}>
-                            <Text style={s.title}>{item.destination_name}</Text>
+                            <Text style={s.title}>{user.value == 1 ? item.destination_name_arabic :item.destination_name}</Text>
                             {/*  <View style={{flexDirection:"row",alignItems:"center",marginTop:5}}>
                         <Image style={{
                           height:40,

@@ -30,8 +30,11 @@ import Ad from '../../Data/Ad';
 import Outgoing from '../../Data/Outgoing';
 import AsyncStorage from '@react-native-community/async-storage';
 import { config } from '../../Provider/configProvider';
+import { UserContext } from "./UserContext";
+import { Lang_chg } from '../../Provider/Language_provider';
 
 export class MyTrip extends PureComponent {
+  static contextType = UserContext
   constructor(props) {
     super(props);
     this.state = {
@@ -108,13 +111,13 @@ export class MyTrip extends PureComponent {
               marginLeft: 8,
               justifyContent: 'space-between',
             }}>
-            <View style={{ width: Sizes.width / 2.2 }}>
+            <View style={{ width: Sizes.width / 2.2  , alignItems:'flex-start'}}>
               <Text style={s.name}>{item.booking_no}</Text>
               <Text style={s.type}>{item.boat_name}</Text>
               <Text style={s.id}>{item.id}</Text>
               <Text style={s.type}>{item.time}</Text>
             </View>
-            <View style={{ justifyContent: 'space-around', marginLeft: -6 }}>
+            <View style={{ justifyContent: 'space-around', marginLeft: -6  }}>
               <Text style={[s.type, { textAlign: 'right' }]}>
                 {item.status_time}
               </Text>
@@ -183,9 +186,11 @@ export class MyTrip extends PureComponent {
 
   render() {
     console.log('object :>> ', this.state.myTrips);
+    const user = this.context
+    console.log('context in home', user);
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
-        <Header name="My Trip" searchBtn={true} imgBack={true} headerHeight={250} />
+        <Header name={user.value == 1 ? Lang_chg.text_my_trip[1] : Lang_chg.text_my_trip[0]} searchBtn={true} imgBack={true} headerHeight={250} />
         {/* View */}
         <View style={s.SEC2}>
           <View>
