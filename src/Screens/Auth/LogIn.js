@@ -62,7 +62,7 @@ export default class Login extends Component {
     this.state = {
       // language_id: config.language,
       // password: 'Shai@0417',
-      password: 'qwerty123',
+      password: 'qwerty1234',
       HidePassword: false,
       // email: 'Myboat667@gmail.com',
       email: 'customer@yopmail.com',
@@ -103,11 +103,6 @@ export default class Login extends Component {
   }
 
   async componentDidMount() {
-
-    let lng = await AsyncStorage.getItem('language');
-    console.log('LANG option on login', lng)
-
-    this.setState({ lng: lng })
 
     // if (this.lng == 1) {
     //   I18nManager.forceRTL(true);
@@ -191,8 +186,10 @@ export default class Login extends Component {
     this.props.navigation.navigate('Home')
   }
   _btnSubmiLogin = async () => {
+    const user = this.context
+    console.log('context in login', user);
     console.log('login');
-    fcmToken = await messaging().getToken();
+    const fcmToken = await messaging().getToken();
     console.log('object :>> ', fcmToken);
     console.log('this.state.player_id', this.state.player_id);
     // return false;
@@ -242,7 +239,7 @@ export default class Login extends Component {
       data.append('player_id', this.state.player_id);
       data.append('user_login_type', 0);
       data.append('action_type', 'normal_login');
-      data.append('language_id', config.language);
+      data.append('language_id', user.value);
       data.append('country_code', 965);
       data.append('user_type', 1);
       this.setState({ loading: true });
@@ -354,7 +351,7 @@ export default class Login extends Component {
               contentContainerStyle={styles.subContentContainer}
               keyboardShouldPersistTaps={'always'}
               showsVerticalScrollIndicator={false}>
-{user.value == 0 ? <TouchableOpacity style={styles.lang}
+              {user.value == 0 ? <TouchableOpacity style={styles.lang}
                 onPress={() => {
                   Lang_chg.language_set(1)
                   this.restartApp();
@@ -383,11 +380,6 @@ export default class Login extends Component {
                   style={{ marginTop: 12 }}
                 />
               </TouchableOpacity>}
-             
-
-              
-
-
               <View
                 style={{
                   flex: 1,
@@ -399,12 +391,12 @@ export default class Login extends Component {
 
 
                 <View style={{ alignItems: 'flex-start' }} >
-                  
-                  <Text style={styles.myboat}>{ user.value == 1 ? Lang_chg.Myboattextlogin[1] : Lang_chg.Myboattextlogin[0]}</Text>
-                  <Text style={styles.Wlcome}>{ user.value == 1 ? Lang_chg.welcomeMyboat[1] : Lang_chg.welcomeMyboat[0]}</Text>
+
+                  <Text style={styles.myboat}>{user.value == 1 ? Lang_chg.Myboattextlogin[1] : Lang_chg.Myboattextlogin[0]}</Text>
+                  <Text style={styles.Wlcome}>{user.value == 1 ? Lang_chg.welcomeMyboat[1] : Lang_chg.welcomeMyboat[0]}</Text>
                 </View>
                 <View style={{ alignItems: 'flex-start' }}>
-                  <Text style={styles.Login}>{user.value == 1 ? Lang_chg.Login_txt[1] :Lang_chg.Login_txt[0]}</Text>
+                  <Text style={styles.Login}>{user.value == 1 ? Lang_chg.Login_txt[1] : Lang_chg.Login_txt[0]}</Text>
                 </View>
                 <Input
                   placeholder="Email"
@@ -426,7 +418,7 @@ export default class Login extends Component {
                 />
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-                <Input
+                  <Input
                     placeholder="Password"
                     containerStyle={styles.Input}
                     inputContainerStyle={styles.Input}

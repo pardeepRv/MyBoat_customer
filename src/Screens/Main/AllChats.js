@@ -25,6 +25,11 @@ import { Colors, FontFamily, Sizes } from "../../Constants/Constants";
 import { Lang_chg } from "../../Provider/Language_provider";
 import { config } from "../../Provider/configProvider";
 import { UserContext } from "./UserContext";
+import AsyncStorage from "@react-native-community/async-storage";
+import { apifuntion } from "../../Provider/apiProvider";
+import Loader from "../../Provider/Loader";
+import TimeAgo from "react-native-timeago";
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -50,17 +55,66 @@ const dummyChat = [
 ];
 
 class AllChats extends PureComponent {
-  static contextType = UserContext
+    static contextType = UserContext
     constructor(props) {
         super(props);
         this.state = {
             isLoading: false,
-            allChatMember: dummyChat,
+            allChatMember: [],
         };
     }
 
+    componentDidMount() {
+        this.onFocusSubscribe = this.props.navigation.addListener("focus", () => {
+            this.getAllChatMembers();
+        });
+    }
+
+    componentWillUnmount() {
+        this.onFocusSubscribe();
+    }
+
+    getAllChatMembers = async () => {
+        this.setState({
+            isLoading: true,
+        });
+        const value = await AsyncStorage.getItem('user_arr');
+        console.log('value :>> ', value);
+        const arrayData = JSON.parse(value);
+        console.log('arrayData :>> ', arrayData);
+        let url = config.baseURL + "chat_list.php";
+
+        let data = new FormData();
+        data.append("user_id", arrayData.user_id);
+
+        apifuntion
+            .postApi(url, data)
+            .then(obj => {
+                return obj.json();
+            })
+            .then(obj => {
+                console.log(obj, "get all chats");
+                if (obj?.data) {
+                    this.setState({
+                        allChatMember: obj?.data,
+                        isLoading: false,
+                    });
+                } else {
+                    this.setState({
+                        isLoading: false,
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                this.setState({
+                    isLoading: false,
+                });
+            });
+    };
+
     renderChats = ({ item }) => {
-        let data = {};
+        // let data = {};
 
         return (
             <Card containerStyle={{
@@ -69,27 +123,49 @@ class AllChats extends PureComponent {
                 // marginHorizontal: 10,
                 // marginTop: 14,
                 marginBottom: 15,
-                // padding: 10,
+                // padding: 10,s
                 backgroundColor: colors.orange,
                 margin: 5,
                 width: Sizes.width * 0.95,
             }}>
                 <TouchableOpacity
                     onPress={() => {
-                        this.props.navigation.navigate("OneToOneChat", { data: data || {} });
+                        this.props.navigation.navigate("OneToOneChat", { data: item });
                     }}
                 >
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                         <TouchableOpacity
                             style={{ backgroundColor: Colors.orange, alignSelf: 'center', alignItems: 'center', marginRight: 14, justifyContent: 'center', height: 40, width: 40, borderRadius: 50 }}>
-                            <Image source={require('../../../assets/icons/inbox_not_found.png')} style={{ height: 40, width: 40, resizeMode: 'contain' }} />
+                            <Image
+                                // source={require('../../../assets/icons/inbox_not_found.png')} 
+                                // source={{
+                                //     uri:
+                                //       config.image_url4 +
+                                //     item.image
+                                //   }}
+                                source={
+                                    item?.image
+                                        ? {
+                                            uri:
+                                                config.image_url4 +
+                                                item.image
+                                        }
+                                        : require('../../../assets/icons/inbox_not_found.png')
+                                }
+                                style={{ height: 50, width: 50, resizeMode: 'cover', borderRadius: 50 }}
+                            />
                         </TouchableOpacity>
                         <View style={{ flexDirection: 'column', marginRight: 15, width: '50%' }}>
-                            <Text numberOfLines={1} style={{ textAlign: 'left', fontSize: 16, bottom: 2, right: 35, fontFamily: FontFamily.bold, }} > {item.name}</Text>
-                            <Text numberOfLines={1} style={{ textAlign: 'left', fontSize: 12, right: 33 }}> {item.lastMsg} </Text>
+                            <Text numberOfLines={1} style={{ textAlign: 'left', fontSize: 16, bottom: 2, fontFamily: FontFamily.bold, }} >
+                                {item.name}
+                            </Text>
+                            <Text numberOfLines={1} style={{ textAlign: 'left', fontSize: 8 }}>
+                                {item.last_message}
+                            </Text>
                         </View>
                         <View style={{ flexDirection: 'column' }}>
-                            <Text style={{ fontSize: 12, marginTop: -14 }}>{item.time}</Text>
+                        <TimeAgo time={item?.last_message_time} />
+
 
                         </View>
                     </View>
@@ -102,7 +178,7 @@ class AllChats extends PureComponent {
         // const { userData } = this.props;
         const { isLoading, allChatMember } = this.state;
         const user = this.context
-
+        console.log('allChatMember :>> ', allChatMember);
         return (
             <View style={{ backgroundColor: '#fff', flex: 1 }}>
 
@@ -114,6 +190,7 @@ class AllChats extends PureComponent {
                     name={user.value == 1 ? Lang_chg.mesage[1] : Lang_chg.mesage[0]}
                     backImgSource={require('../../Images/backgroundImg.png')}
                 />
+                {isLoading && <Loader />}
                 {allChatMember.length > 0 ? (
                     <FlatList
                         keyboardShouldPersistTaps={"handled"}
@@ -133,11 +210,11 @@ class AllChats extends PureComponent {
                     >
                         {/* <Text style={{}}>No chat yet</Text> */}
                         <TouchableOpacity activeOpacity={0.7} onPress={() => { this.props.navigation.navigate('Home') }} style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', height: 600, width: 400 }}>
-                <Image source={require('../../../assets/icons/inbox_not_found.png')} style={{ height: 100, width: 100, resizeMode: 'contain' }} />
-                <View style={{ borderBottomColor: '#000', borderBottomWidth: 1 }}><Text style={{ color: "#000000" }}>{Lang_chg.inbox_not_found[config.language]}</Text></View>
-              </TouchableOpacity>
+                            <Image source={require('../../../assets/icons/inbox_not_found.png')} style={{ height: 100, width: 100, resizeMode: 'contain' }} />
+                            <View style={{ borderBottomColor: '#000', borderBottomWidth: 1 }}><Text style={{ color: "#000000" }}>{Lang_chg.inbox_not_found[config.language]}</Text></View>
+                        </TouchableOpacity>
                     </View>
-                   
+
                 )}
             </View>
         );

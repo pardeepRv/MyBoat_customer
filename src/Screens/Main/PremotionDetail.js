@@ -28,9 +28,14 @@ import FastImage from 'react-native-fast-image';
 import {renderNode} from 'react-native-elements/dist/helpers';
 import {apifuntion} from '../../Provider/apiProvider';
 import {config} from '../../Provider/configProvider';
+import { UserContext } from "./UserContext";
+import { Lang_chg } from '../../Provider/Language_provider';
+
 //import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 export default class PremotionDetail extends Component {
+  static contextType = UserContext
+
   constructor(props) {
     super(props);
     this.state = {
@@ -48,6 +53,8 @@ export default class PremotionDetail extends Component {
   }
 
   render() {
+    const user = this.context
+    console.log('context in home', user);
     return (
       <SafeAreaView style={{flex:1}}>
         <TouchableOpacity
@@ -78,7 +85,7 @@ marginTop:10,
           imageStyle={s.ImageBackground_Img}
         >
              <Text style={{marginTop: 25,fontFamily:FontFamily.semi_bold,color:Colors.white,textAlign:"center"}}>
-                        {"Promotion"}
+               {user.value == 1 ? Lang_chg.Promotion[1]: Lang_chg.Promotion[0]}
                     </Text>
             </ImageBackground>
             </View>
@@ -97,10 +104,10 @@ marginTop:10,
               marginTop: 20,
               fontFamily: FontFamily.semi_bold,
             }}>
-            Discription :
+               {user.value == 1 ? Lang_chg.Discription[1]: Lang_chg.Discription[0]}
           </Text>
           <Text style={{fontSize: 12,top:15,  fontFamily: FontFamily.default}}>
-            {this.state.promotion.description}
+            {  user.value == 1 ?    this.state.promotion.description_arabic :  this.state.promotion.description  }
           </Text>
           {/* <Text style={{textAlign:'justify',marginTop:10}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </Text> */}
         </View>

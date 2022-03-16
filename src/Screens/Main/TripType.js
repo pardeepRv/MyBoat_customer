@@ -34,9 +34,12 @@ import { apifuntion } from '../../Provider/apiProvider';
 import { config } from '../../Provider/configProvider';
 // import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import {  Icon } from 'react-native-elements';
+import { UserContext } from "./UserContext";
+import { Lang_chg } from '../../Provider/Language_provider';
 
 
 export default class TripType extends Component {
+  static contextType = UserContext
   constructor(props) {
     super(props);
     this.state = {
@@ -402,7 +405,8 @@ this.cityarr=  json.selected_City_Array ;
 
   render() {
 console.log('this.state.des :>> ', this.state.destinations_arr);
-
+const user = this.context
+console.log('context in home', user);
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
         <Header2
@@ -411,7 +415,7 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
           backImgSource={
             config.baseURL + 'images/' + this.state.trip_type.cover_image
           }
-          name={this.state.trip_type.trip_type_name}
+          name={ user.value == 1 ?  this.state.trip_type.trip_type_name_arabic :this.state.trip_type.trip_type_name}
           searchBtn={false}
           headerHeight={300}
         />
@@ -446,7 +450,7 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                 fontFamily: 'Montserrat-Regular',
               }}>
               {' '}
-              Sort By{' '}
+             {user.value ==1 ? Lang_chg.Sortby[1] :Lang_chg.Sortby[0] }{' '}
             </Text>
           </TouchableOpacity  >
           <TouchableOpacity style={s.col} onPress={() => this.filtertrip()}>
@@ -462,7 +466,7 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                 color: '#0A8481',
                 fontFamily: 'Montserrat-Regular',
               }}>
-              Filter
+             {user.value ==1 ? Lang_chg.text_filter[1] :Lang_chg.text_filter[0] }{' '}
             </Text>
           </TouchableOpacity>
 
@@ -487,7 +491,7 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                 fontFamily: 'Montserrat-Regular',
               }}>
               {' '}
-              Map
+             {user.value == 1 ? Lang_chg.map[1] : Lang_chg.map[0]}
             </Text>
           </TouchableOpacity>
         </View>
@@ -508,7 +512,7 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
             shadowRadius: 0,
             elevation: 5,
           }}>
-          <Text style={s.select_date}> Choose Trip Date</Text>
+          <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choosedate[1] : Lang_chg.Choosedate[0]}</Text>
         </TouchableOpacity>
 
         <View
@@ -569,7 +573,7 @@ console.log('this.state.des :>> ', this.state.destinations_arr);
                       {/*  */}
                       <View style={s.SEC3}>
                         <View style={{}}>
-                          <Text style={s.title}>{item.destination_name}</Text>
+                          <Text style={s.title}>{user.value == 1 ? item.destination_name_arabic :item.destination_name}</Text>
                           <View
                             style={{
                               flexDirection: 'row',

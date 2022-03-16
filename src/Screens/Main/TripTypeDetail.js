@@ -34,10 +34,12 @@ import RNFetchBlob from "rn-fetch-blob";
 import Share from "react-native-share";
 import { CheckBox } from "react-native-elements";
 import { msgProvider } from "../../Provider/messageProvider";
+import { UserContext } from "./UserContext";
 
 //import {SliderBox} from 'react-native-image-slider-box';
 const { width } = Dimensions.get("window");
 export default class TripTypeDetail extends Component {
+  static contextType = UserContext
   constructor(props) {
     super(props);
     this.state = {
@@ -57,7 +59,10 @@ export default class TripTypeDetail extends Component {
       isSelected: false,
       selectedMethod: 0,
       list: this.props.route.params.list,
-      loader:false
+      loader:false,
+      other_user_id: null,
+      other_user_img: "",
+      mobile: "",
     };
   }
 
@@ -139,13 +144,16 @@ export default class TripTypeDetail extends Component {
     try {
       const response = await fetch(url);
       const json = await response.json();
-      console.log("json  ", json);
+       console.log("json  ", json);
 
       this.setState({
         ratingscreen: json,
         adver_arr: json.adver_arr,
         img_arr: json.adver_arr.img_arr,
         booking_arr: json.booking_arr != "NA" ? json.booking_arr : [],
+        other_user_id: json.adver_arr?.user_id,
+        other_user_img: json.adver_arr?.other_user_img,
+        mobile: json.adver_arr?.mobile,
       });
 
       // console.log('add ',json.adver_arr.addon_arr)
@@ -244,7 +252,13 @@ export default class TripTypeDetail extends Component {
 
 
   render() {
+    const user = this.context
+console.log('context in home', user);
+    console.log('advertisement :>> ', this.state.adver_arr);
     console.log('advertisement :>> ', this.state.advertisement);
+    let item = {};
+    item["other_user_id"] = this.state.other_user_id;
+    item["image"] = this.state.other_user_img;
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
         <View
@@ -543,8 +557,9 @@ export default class TripTypeDetail extends Component {
                 </ImageBackground>
                 <Text style={s.text}>Equipment</Text>
                 <Text style={{ fontWeight: "bold", fontSize: 12 }}>
-                  {this.state.adver_arr?.addon_arr &&
-                    this.state.adver_arr?.addon_arr[2]?.count}{" "}
+                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted 
+                   && this.state.adver_arr?.addon_arr_formatted.equipment && this.state.adver_arr?.addon_arr_formatted.equipment.length > 0
+                   && this.state.adver_arr?.addon_arr_formatted.equipment.length}
                 </Text>
               </View>
 
@@ -562,9 +577,9 @@ export default class TripTypeDetail extends Component {
                 </ImageBackground>
                 <Text style={s.text}> Entertainment </Text>
                 <Text style={{ fontWeight: "bold", fontSize: 12 }}>
-                  {" "}
-                  {this.state.adver_arr?.addon_arr &&
-                    this.state.adver_arr?.addon_arr[1]?.count}{" "}
+                {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted 
+                   && this.state.adver_arr?.addon_arr_formatted.entertainment && this.state.adver_arr?.addon_arr_formatted.entertainment.length > 0
+                   && this.state.adver_arr?.addon_arr_formatted.entertainment.length}
                 </Text>
               </View>
 
@@ -582,8 +597,9 @@ export default class TripTypeDetail extends Component {
                 </ImageBackground>
                 <Text style={s.text}> Food </Text>
                 <Text style={{ fontWeight: "bold", fontSize: 12 }}>
-                  {this.state.adver_arr?.addon_arr &&
-                    this.state.adver_arr?.addon_arr[0]?.count}{" "}
+                {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted 
+                   && this.state.adver_arr?.addon_arr_formatted.food && this.state.adver_arr?.addon_arr_formatted.food.length > 0
+                   && this.state.adver_arr?.addon_arr_formatted.food.length}
                 </Text>
               </View>
             </View>
@@ -801,10 +817,10 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr.addon_arr &&
-                    this.state.adver_arr?.addon_arr[2]?.count
-                    ? "Available"
-                    : "Not available"}{" "}
+                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted 
+                   && this.state.adver_arr?.addon_arr_formatted.equipment && this.state.adver_arr?.addon_arr_formatted.equipment.length > 0
+                   && this.state.adver_arr?.addon_arr_formatted.equipment ? "Available"
+                    : "Not available"}
                 </Text>
               </View>
             </View>
@@ -816,9 +832,9 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr.addon_arr &&
-                    this.state.adver_arr.addon_arr[1].count
-                    ? "Available"
+                {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted 
+                   && this.state.adver_arr?.addon_arr_formatted.food && this.state.adver_arr?.addon_arr_formatted.food.length > 0
+                   && this.state.adver_arr?.addon_arr_formatted.food ? "Available"
                     : "Not available"}
                 </Text>
               </View>
@@ -831,10 +847,10 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr.addon_arr &&
-                    this.state.adver_arr.addon_arr[0].count
-                    ? "Available"
-                    : "Not available"}{" "}
+                {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted 
+                   && this.state.adver_arr?.addon_arr_formatted.entertainment && this.state.adver_arr?.addon_arr_formatted.entertainment.length > 0
+                   && this.state.adver_arr?.addon_arr_formatted.entertainment ? "Available"
+                    : "Not available"}
                 </Text>
               </View>
             </View>
@@ -903,7 +919,10 @@ export default class TripTypeDetail extends Component {
                   </TouchableOpacity>
                 </View>
                 <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                  <TouchableOpacity style={s.Btn2}>
+                  <TouchableOpacity style={s.Btn2} 
+                  onPress={() => {
+                    this.props.navigation.navigate("OneToOneChat", { data: item });
+                  }} >
                     <Text style={s.Btn1Text2}>Chat Now</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={s.Btn2} onPress={() => this.cancelbooking()}>

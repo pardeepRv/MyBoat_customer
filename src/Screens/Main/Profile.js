@@ -20,10 +20,16 @@ import { localStorage } from '../../Provider/localStorageProvider';
 import { renderNode } from 'react-native-elements/dist/helpers';
 import AsyncStorage from '@react-native-community/async-storage';
 import { config } from '../../Provider/configProvider';
+import { UserContext } from "./UserContext";
+import { Lang_chg } from '../../Provider/Language_provider';
+
 // import { UserContext } from "./UserContext";
 
 const CustomHeader = ({ name }) => {
   const nav = useNavigation();
+
+  const user = React.useContext(UserContext);
+  // console.log('value :>> ', value);
 
   return (
     <ImageBackground
@@ -33,14 +39,14 @@ const CustomHeader = ({ name }) => {
       <View
         style={{
           // width: '90%',
-          width:80,
+          width: 80,
           marginTop: 30,
           alignSelf: 'center',
           backgroundColor: 'transparent',
           alignItems: 'center',
-          backgroundColor:Colors.orange,
-          borderRadius:20 
-          
+          backgroundColor: Colors.orange,
+          borderRadius: 20
+
         }}>
         <Text
           style={{
@@ -48,7 +54,7 @@ const CustomHeader = ({ name }) => {
             color: Colors.white,
             textAlign: 'center',
           }}>
-          {name}
+          {user.value == 1  ? Lang_chg.txt_Profile[1] : Lang_chg.txt_Profile[0]}
         </Text>
       </View>
     </ImageBackground>
@@ -56,6 +62,7 @@ const CustomHeader = ({ name }) => {
 };
 
 export default class Login extends Component {
+  static contextType = UserContext
   constructor(props) {
     super(props);
 
@@ -105,7 +112,15 @@ export default class Login extends Component {
     AsyncStorage.getAllKeys()
       .then(keys => {
         console.log(keys, 'getting in Async');
-        AsyncStorage.multiRemove(keys)
+        let updatedKeys = keys.filter((v, i) => {
+          console.log(v,'v at 109');
+          if (v != 'language') {
+            return v
+          }
+        })
+        console.log(updatedKeys, 'getting in updatedKeys');
+
+        AsyncStorage.multiRemove(updatedKeys)
       })
       .then((data) => {
         console.log(data, 'data in 104');
@@ -118,7 +133,9 @@ export default class Login extends Component {
 
   render() {
     const localData = this.state.localData;
+    const user = this.context
 
+    console.log(user) 
     // let v= localData.localData;
     //  console.log('v ',email)
     return (
@@ -184,7 +201,7 @@ export default class Login extends Component {
                             fontFamily: FontFamily.semi_bold,
                             marginHorizontal: 15,
                           }}>
-                          Edit Profile
+                          {user.value == 1 ? Lang_chg.Edit_Profile_txt[1] : Lang_chg.Edit_Profile_txt[0]}
                         </Text>
                       </View>
                       <Icon name="arrow-right" type="evilicon" />
@@ -219,7 +236,7 @@ export default class Login extends Component {
                             fontFamily: FontFamily.semi_bold,
                             marginHorizontal: 15,
                           }}>
-                          Settings
+                         {user.value == 1 ? Lang_chg.settings_txt[1] : Lang_chg.settings_txt[0]}
                         </Text>
                       </View>
                       <Icon name="arrow-right" type="evilicon" />
@@ -270,7 +287,7 @@ export default class Login extends Component {
                             fontFamily: FontFamily.semi_bold,
                             marginHorizontal: 15,
                           }}>
-                          Log Out
+                          {user.value == 1 ? Lang_chg.logout_txt[1] : Lang_chg.logout_txt[0]}
                         </Text>
                       </View>
                       <Icon name="arrow-right" type="evilicon" />
@@ -310,7 +327,7 @@ export default class Login extends Component {
                           fontFamily: FontFamily.semi_bold,
                           marginHorizontal: 15,
                         }}>
-                        Login
+                        {user.value == 1 ? Lang_chg.Login_txt[1] : Lang_chg.Login_txt[0]}
                       </Text>
                     </View>
                     <Icon name="arrow-right" type="evilicon" />

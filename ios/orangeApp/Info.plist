@@ -21,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -50,18 +50,20 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Granting access will allow you to take photos and add them to attachment fields.</string>
-	<key>NSDocumentsFolderUsageDescription</key>
-	<string>Lokahi Fishing wants to access your Documents Folder to upload the documents.</string>
-	<key>NSDownloadsFolderUsageDescription</key>
-	<string>Lokahi Fishing wants to access your documents directory to save map overlay.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Granting access will allow you to take photos from Gallery and add them to attachment fields..</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Granting access will allow you to take photos from Gallery and add them to attachment fields..</string>
+  <key>NSCameraUsageDescription</key>
+    <string> $(PRODUCT_NAME) Upload image</string>
+    <key>NSLocationAlwaysAndWhenInUsageDescription</key>
+    <string>$(PRODUCT_NAME) wants to access your location for saving your Lat and long in database.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>$(PRODUCT_NAME) wants to access your location for saving your Lat and long in database.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>$(PRODUCT_NAME) wants to access your location for saving your Lat and long in database.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>$(PRODUCT_NAME) to upload boat stories</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>$(PRODUCT_NAME)  needs to access your gallery for uploading photos.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>$(PRODUCT_NAME) Allow users to access gallery for upload image for showing details to other</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Black.ttf</string>

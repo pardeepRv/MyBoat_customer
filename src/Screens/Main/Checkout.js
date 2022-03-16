@@ -56,6 +56,7 @@ export default class Checkout extends Component {
       pay_amount: '',
       booking_id: '',
       createTime: '',
+      food: [],
       isConnected: true,
       isSuccess: false,
       isfailure: false,
@@ -86,9 +87,10 @@ export default class Checkout extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state.adver_arr);
+    console.log(this.state.adv, 'hhhhhhhh');
     // alert(JSON.stringify(this.props.route.params.extra_rent_amt))
-    
+    console.log('props in html :>> ', this.props.route.params);
+
   }
 
   gotoBack = () => {
@@ -155,18 +157,18 @@ export default class Checkout extends Component {
     form_data.append('extraHours', this.props.route.params.extraHours)
     form_data.append('extra_rent_amt', this.props.route.params.extra_rent_amt)
     form_data.append('rent_amount', this.state.totalPrice) //aa
-       console.log('Form data', form_data);
+    console.log('Form data', form_data);
 
     // return;
     apifuntion
       .postApi(url, form_data)
       .then(obj => {
-         console.log(obj, 'obj in heckout ....')
+        console.log(obj, 'obj in heckout ....')
         this.setState({ loading: false });
         return obj.json();
       })
       .then(obj => {
-         console.log(obj);
+        console.log(obj);
 
         if (obj.success == 'true') {
           this.setState({
@@ -216,6 +218,8 @@ export default class Checkout extends Component {
         .postApi(url, data)
         .then(obj => {
           this.setState({ loading: false });
+          console.log("obj****", data);
+
           return obj.json();
         })
         .then(obj => {
@@ -473,7 +477,7 @@ export default class Checkout extends Component {
 
               <View style={s.item}>
                 <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                  {/* {this.state.adver_arr.boat_capacity}{' '} */}
+                {this.props.route.params.adv.user_name}
                 </Text>
               </View>
             </View>
@@ -532,7 +536,7 @@ export default class Checkout extends Component {
 
               <View style={s.item}>
                 <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                  {this.props.route.params.extraHours}
+                  {this.props.route.params.extraHours ? this.props.route.params.extraHours  : '0'}
                   {/* {this.state.data?.extraHours}{' '} */}
                 </Text>
               </View>
@@ -543,12 +547,23 @@ export default class Checkout extends Component {
                 <Text style={[s.text1]}> Equipment :</Text>
               </View>
 
-              <View style={s.item}>
-                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                  {/* {this.state.adver_arr?.addon_arr &&
-                  this.state.adver_arr?.addon_arr[2]?.addon_products[0]
-                    ?.addon_product_name}{' '} */}
-                </Text>
+              <View style={{
+                width: 200,
+                height: 18,
+                flexDirection: 'row',
+              }}>
+                {this.state.adv.map((item) => {
+                  return (
+                    <View style={{}}>
+                      <Text style={[{ fontFamily: FontFamily.default }]}>
+                        {item.add_On_name == "Equipment " &&
+                          item.isChecked == true ?
+                          `${item.addon_product_name[0]},` :
+                          null}
+                      </Text>
+                    </View>
+                  );
+                })}
               </View>
             </View>
 
@@ -556,26 +571,48 @@ export default class Checkout extends Component {
               <View style={s.item}>
                 <Text style={[s.text1]}> Entertainment :</Text>
               </View>
-
-              <View style={s.item}>
-                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                  {/* {this.state.adver_arr.addon_arr &&
-                  this.state.adver_arr.addon_arr[1].addon_products[0]
-                    ?.addon_product_name}{' '} */}
-                </Text>
+              <View style={{
+                width: 200,
+                height: 18,
+                flexDirection: 'row',
+              }}>
+                {this.state.adv.map((item) => {
+                  return (
+                    <View style={{}}>
+                      <Text style={[{ fontFamily: FontFamily.default }]}>
+                        {item.add_On_name == "entertainment" &&
+                          item.isChecked == true ?
+                          `${item.addon_product_name[0]},` :
+                          null}
+                      </Text>
+                    </View>
+                  );
+                })}
               </View>
+
             </View>
             <View style={s.container}>
               <View style={s.item}>
                 <Text style={[s.text1]}> Food :</Text>
               </View>
 
-              <View style={s.item}>
-                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                  {/* {this.state.adver_arr.addon_arr &&
-                  this.state.adver_arr.addon_arr[0].addon_products[0]
-                    ?.addon_product_name}{' '} */}
-                </Text>
+              <View style={{
+                width: 200,
+                height: 18,
+                flexDirection: 'row',
+              }}>
+                {this.state.adv.map((item) => {
+                  return (
+                    <View style={{}}>
+                      <Text style={[{ fontFamily: FontFamily.default }]}>
+                        {item.add_On_name == "Food" &&
+                          item.isChecked == true ?
+                          `${item.addon_product_name[0]},` :
+                          null}
+                      </Text>
+                    </View>
+                  );
+                })}
               </View>
             </View>
 
@@ -668,7 +705,8 @@ export default class Checkout extends Component {
 
               <View style={s.item}>
                 <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                  {this.state.adver_arr.location_address}{' '}
+                {this.props.route.params.adv.trip_type_name[0]}
+
                 </Text>
               </View>
             </View>
@@ -719,14 +757,15 @@ export default class Checkout extends Component {
 
         <View
           style={{
-            position: 'absolute',
+            // position: 'absolute',
             bottom: 25,
             height: 60,
-            width: '100%',
+            // width: '100%',
             flexDirection: 'row',
             alignItems: 'center',
             borderTopColor: Colors.orange,
-            borderTopWidth: 2
+            borderTopWidth: 2,
+            justifyContent: 'space-evenly'
           }}>
           <TouchableOpacity style={s.Btn1} onPress={() => this.payment()}>
             <Text style={s.Btn1Text}>Checkout</Text>

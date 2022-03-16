@@ -12,10 +12,14 @@ import {
   FontFamily
 } from '../../Constants/Constants';
 import { config } from '../../Provider/configProvider';
+import { Lang_chg } from '../../Provider/Language_provider';
 import { msgProvider } from '../../Provider/messageProvider';
 //import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import { UserContext } from "./UserContext";
 
 export default class DestinationList extends Component {
+  static contextType = UserContext
+
   constructor(props) {
     super(props);
     this.state = {
@@ -529,9 +533,9 @@ this.cityarr=  json.selected_City_Array ;
       }
     } catch (error) {
       console.log(error);
-      // this.setState({ modalVisible: false });
-      // this.setState({ modalVisible2: false });
-      // this.setState({ modalVisible3: false });
+      this.setState({ modalVisible: false });
+      this.setState({ modalVisible2: false });
+      this.setState({ modalVisible3: false });
     } finally {
       this.setState({ isLoading: false });
     }
@@ -546,6 +550,9 @@ this.cityarr=  json.selected_City_Array ;
     console.log('entertainmentslected :>> ', this.state.entertainmentselected);
     console.log('rating :>> ', this.state.rating);
     console.log('cabin :>> ', this.state.cabin);
+
+    const user = this.context
+console.log('context in home', user);
 
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
@@ -589,8 +596,7 @@ this.cityarr=  json.selected_City_Array ;
                 color: '#0A8481',
                 fontFamily: 'Montserrat-Regular',
               }}>
-              {' '}
-              Sort By{' '}
+                         {user.value ==1 ? Lang_chg.Sortby[1] :Lang_chg.Sortby[0] }
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={s.col} onPress={() => this.Filter()}>
@@ -606,7 +612,7 @@ this.cityarr=  json.selected_City_Array ;
                 color: '#0A8481',
                 fontFamily: 'Montserrat-Regular',
               }}>
-              Filter
+                          {user.value ==1 ? Lang_chg.text_filter[1] :Lang_chg.text_filter[0] }{' '}
             </Text>
           </TouchableOpacity>
 
@@ -630,8 +636,7 @@ this.cityarr=  json.selected_City_Array ;
                 color: '#0A8481',
                 fontFamily: 'Montserrat-Regular',
               }}>
-              {' '}
-              Map
+                          {user.value == 1 ? Lang_chg.map[1] : Lang_chg.map[0]}
             </Text>
           </TouchableOpacity>
         </View>
@@ -652,7 +657,7 @@ this.cityarr=  json.selected_City_Array ;
             shadowRadius: 0,
             elevation: 5,
           }}>
-          <Text style={s.select_date}> Choose Trip Date</Text>
+          <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choosedate[1] : Lang_chg.Choosedate[0]}</Text>
         </TouchableOpacity>
 
         <View

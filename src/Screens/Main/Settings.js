@@ -17,8 +17,12 @@ import {
 import Header from '../../Components/Header';
 import { back_img3, boat_img1, Colors, FontFamily, Sizes } from '../../Constants/Constants';
 import { useNavigation } from '@react-navigation/core';
+import { UserContext } from "./UserContext";
+import { Lang_chg } from '../../Provider/Language_provider';
 
 const Settings=()=>{
+    const user = React.useContext(UserContext);
+
     const navigation=useNavigation()
     const gotoNoti_Settings=()=>{
         navigation.navigate("Noti_Setting");
@@ -52,7 +56,7 @@ const Settings=()=>{
         <View style={{flex:1,backgroundColor:Colors.white}}>
             <Header
              backBtn={true}
-             name="Settings" />
+             name={user.value ==1 ? Lang_chg.settings_txt[1] : Lang_chg.settings_txt[0]} />
              
              <View style={sb.SEC2}>
                  <ScrollView style={{marginTop:30}} showsVerticalScrollIndicator={false}>
@@ -64,7 +68,7 @@ const Settings=()=>{
                             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
                             <View style={{flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{fontSize:14,fontFamily:FontFamily.semi_bold,marginHorizontal:7}}>
-                                Notification Settings
+                                {user.value == 1  ? Lang_chg.text_Notification_Setting[1] : Lang_chg.text_Notification_Setting[0]}
                                 </Text>
                             </View>
                             <Icon name="arrow-right" type="evilicon"  />
@@ -90,7 +94,7 @@ const Settings=()=>{
                             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
                             <View style={{flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{fontSize:14,fontFamily:FontFamily.semi_bold,marginHorizontal:7}}>
-                                Change Password
+                                {user.value == 1 ? Lang_chg.change_language_txt[1] : Lang_chg.change_language_txt[0]}
                                 </Text>
                             </View>
                             <Icon name="arrow-right" type="evilicon"  />
@@ -103,7 +107,8 @@ const Settings=()=>{
                             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
                             <View style={{flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{fontSize:14,fontFamily:FontFamily.semi_bold,marginHorizontal:7}}>
-                                Change Language
+                                {user.value == 1 ? Lang_chg.text_Change_Language[1] : Lang_chg.text_Change_Language[0]}
+
                                 </Text>
                             </View>
                             <Icon name="arrow-right" type="evilicon"  />
@@ -118,7 +123,8 @@ const Settings=()=>{
                             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
                             <View style={{flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{fontSize:14,fontFamily:FontFamily.semi_bold,marginHorizontal:7}}>
-                                Terms & Conditions
+                                {user.value == 1 ? Lang_chg.text_Terms_And_Conditions[1] : Lang_chg.text_Terms_And_Conditions[0]}
+
                                 </Text>
                             </View>
                             <Icon name="arrow-right" type="evilicon"  />
@@ -131,7 +137,7 @@ const Settings=()=>{
                             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
                             <View style={{flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{fontSize:14,fontFamily:FontFamily.semi_bold,marginHorizontal:7}}>
-                                Privacy Policy
+                                {user.value == 1 ? Lang_chg.loginterm4[1] : Lang_chg.loginterm4[0]}
                                 </Text>
                             </View>
                             <Icon name="arrow-right" type="evilicon"  />
@@ -144,7 +150,7 @@ const Settings=()=>{
                             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
                             <View style={{flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{fontSize:14,fontFamily:FontFamily.semi_bold,marginHorizontal:7}}>
-                                About Us
+                                {user.value == 1 ? Lang_chg.text_About_Us[1] : Lang_chg.text_About_Us[0]}
                                 </Text>
                             </View>
                             <Icon name="arrow-right" type="evilicon"  />
@@ -157,7 +163,8 @@ const Settings=()=>{
                             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
                             <View style={{flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{fontSize:14,fontFamily:FontFamily.semi_bold,marginHorizontal:7}}>
-                                Contact Us
+                                {user.value == 1 ? Lang_chg.contact_to_ad_text[1] : Lang_chg.contact_to_ad_text[0]}
+
                                 </Text>
                             </View>
                             <Icon name="arrow-right" type="evilicon"  />

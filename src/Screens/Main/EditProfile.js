@@ -30,10 +30,11 @@ import {Picker} from '@react-native-community/picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
-
+import { UserContext } from "./UserContext";
 
 
 export default class EditProfile extends Component {
+  static contextType = UserContext
   //  const [date, setDate] = useState(new Date());
 
   // const onChange = (event, selectedDate) => {
@@ -387,6 +388,9 @@ export default class EditProfile extends Component {
   };
 
   render() {
+    const user = this.context
+
+    console.log(user) 
     return (
       <View style={{flex: 1, backgroundColor: Colors.white}}>
         <Header
@@ -394,7 +398,7 @@ export default class EditProfile extends Component {
           headerHeight={300}
           imgBack={true}
           backBtn={true}
-          name="Edit Profile"
+          name={user.value == 1 ? Lang_chg.Edit_Profile_txt[1] : Lang_chg.Edit_Profile_txt[0]}
         />
 
         <Modal
@@ -718,7 +722,7 @@ export default class EditProfile extends Component {
               <ActivityIndicator size={30} color={Colors.orange} style={{alignSelf:"center"}} />
             }
           <TouchableOpacity style={[s.btn1, {flexDirection:'row'}]} onPress={() => this.UpdateProfile()}>
-            <Text style={s.btn1Text}>Update</Text>
+            <Text style={s.btn1Text}>{user.value == 1 ? Lang_chg.update[1] : Lang_chg.update[0]}</Text>
           </TouchableOpacity>
         </View>
         <ActionSheet
@@ -741,9 +745,10 @@ const s = StyleSheet.create({
     flex: 1,
   },
   main_view_flag: {
-    height: 35,
+    height: 50,
     width: '100%',
-    marginLeft: '5%',
+    // marginLeft: 50,
+padding:15
   },
   search_bar: {
     flexDirection: 'row',
@@ -783,6 +788,7 @@ const s = StyleSheet.create({
     borderRadius: 25,
     marginVertical: 10,
     elevation: 5,
+    bottom:20
   },
   btn1Text: {
     fontSize: 18,

@@ -663,6 +663,7 @@ export default class RequestPayment extends Component {
         '&user_id=' +
         this.state.user_id_post.user_id,
     );
+    console.log('this.state.adver_arr.addon_arr :>> ', this.state.adver_arr.addon_arr);
     return (
       
         <View style={{backgroundColor: '#fff'}}>

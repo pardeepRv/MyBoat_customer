@@ -19,7 +19,7 @@ import { firebaseprovider } from '../../Provider/FirebaseProvider';
 import socketServices from '../../Provider/socketServices';
 import { Lang_chg } from '../../Provider/Language_provider';
 
-export default class Login extends Component {
+export default class Home extends Component {
   static contextType = UserContext
   constructor(props) {
     console.log('props :>> ', props);
@@ -35,6 +35,7 @@ export default class Login extends Component {
       isLoading: false,
       err: false
     };
+    
   }
 
   backAction = () => {
@@ -57,9 +58,23 @@ export default class Login extends Component {
     // this.backHandler.remove();
     this._unsubscribe();
   }
+   socketintial = async () => {
+     const value = await AsyncStorage.getItem('user_arr');
+    console.log('value :>> ', value);
+    const arrayData = JSON.parse(value);
+    console.log('arrayData :>> ', arrayData);
+    if (!socketServices.socket) {
+      //connect socket
+      socketServices.initializeSocket(arrayData.user_id);
+    }
+    if (!socketServices.socket.connected) {
+      //connect socket
+      socketServices.socket.connect();
+    }
+  };
 
-
-  componentDidMount() {
+   componentDidMount() {
+    this.socketintial();
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       console.log('focus :>> ');
       this.getUsers();
@@ -68,18 +83,15 @@ export default class Login extends Component {
       //firebaseprovider.messagecountforfooter();
       console.log('des', this.state.trips_arr)
       this.getData('user_arr');
-      // this.socketintial();
     });
-
-    if (!socketServices.socket) {
-      //connect socket
-      socketServices.initializeSocket(209);
-    }
-    if (!socketServices.socket.connected) {
-      //connect socket
-      socketServices.socket.connect();
-    }
-
+    // if (!socketServices.socket) {
+    //   //connect socket
+    //   socketServices.initializeSocket(209);
+    // }
+    // if (!socketServices.socket.connected) {
+    //   //connect socket
+    //   socketServices.socket.connect();
+    // }
   }
 
   getData = async key => {
@@ -336,7 +348,7 @@ export default class Login extends Component {
                             fontWeight: 'bold',
                           },
                         ]}>
-                        { user.value == 1 ? item.trip_type_name_arabic :item.trip_type_name}
+                        {user.value == 1 ? item.trip_type_name_arabic : item.trip_type_name}
                       </Text>
                       <Text style={{ color: '#b6b6b6', fontSize: 10 }}>
                         {' '}
@@ -499,7 +511,7 @@ export default class Login extends Component {
                         {/*  */}
                         <View style={s.SEC3}>
                           <View style={{}}>
-                            <Text style={s.title}>{user.value == 1 ? item.destination_name_arabic :item.destination_name}</Text>
+                            <Text style={s.title}>{user.value == 1 ? item.destination_name_arabic : item.destination_name}</Text>
                             {/*  <View style={{flexDirection:"row",alignItems:"center",marginTop:5}}>
                         <Image style={{
                           height:40,
@@ -584,7 +596,7 @@ export default class Login extends Component {
                 fontWeight: 'bold',
                 padding: 8,
               }}>
-              Type Of Trip
+              {user.value == 1 ? Lang_chg.txt_type_of_trips[1] :Lang_chg.txt_type_of_trips[0]}
             </Text>
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
 
@@ -642,20 +654,23 @@ export default class Login extends Component {
                       onPress={
                         () => item.no_of_boat > 0 ? this.ChangeColor(index, item) : null
                         //  this.handleClick(item)
-                      }>
+                      }
+                      style={{width:100 , padding:2}}
+                      >
                       <Image
                         source={{
                           uri: config.baseURL + 'images/' + item.icon_green,
                         }}
-                        style={{ height: 40, width: 40, resizeMode: 'contain' }}
+                        style={{ height: 40, width: 100, resizeMode: 'cover' }}
                       />
                       <Text
                         style={{
                           color: Colors.orange,
                           fontWeight: 'bold',
                           fontSize: 16,
+                          textAlign:'center', 
                         }}>
-                        {item.trip_type_name.slice(0, 8)}
+                        {user.value == 1  ? item.trip_type_name_arabic : item.trip_type_name}
                       </Text>
 
                       <Text style={{ color: '#b6b6b6' }}>

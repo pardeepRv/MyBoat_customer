@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { CheckBox, Icon, Input, Card, AirbnbRating } from 'react-native-elements';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import Header from '../../Components/Header';
 import {
@@ -165,6 +166,14 @@ export default class ExtraRequest extends Component {
         />
 
         <ScrollView style={{flex:1}}>
+        <KeyboardAwareScrollView
+              // extraScrollHeight={10}
+              nestedScrollEnabled
+              enableOnAndroid={true}
+              style={s.subContainer}
+              contentContainerStyle={s.subContentContainer}
+              keyboardShouldPersistTaps={'always'}
+              showsVerticalScrollIndicator={false}>
           <View
             style={{ backgroundColor: '#fff', borderRadius: 20 }}>
             {this.state.adver_arr.map((item, id, index) => {
@@ -354,7 +363,7 @@ export default class ExtraRequest extends Component {
         </View>
         <Text>{'\n'}</Text>
         <Text>{'\n'}</Text>
-        
+        </KeyboardAwareScrollView>
         </ScrollView>
       </View>
 
@@ -489,5 +498,13 @@ const s = StyleSheet.create({
     fontSize: 20,
     fontFamily: FontFamily.semi_bold,
     color: Colors.white,
+  },
+  subContainer: {
+    // height: layout.size.height ,
+    flex: 1,
+    // backgroundColor:colors.secondry
+  },
+  subContentContainer: {
+    paddingBottom: 12,
   },
 });

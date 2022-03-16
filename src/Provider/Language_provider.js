@@ -16,9 +16,16 @@ class Language_provider {
     console.log('language_key123', config.language)
   }
 
-  language_set = (value) => {
+  language_set = async (value) => {
     // config.language = value;
-    localStorage.setItemObject('language', value)
+    if ( value == 1){
+       await I18nManager.forceRTL(true);
+      localStorage.setItemObject('language', value)
+    } else{
+      await I18nManager.forceRTL(false);
+      localStorage.setItemObject('language', value)
+    }
+   
   }
 
   // last name====================
@@ -143,7 +150,7 @@ class Language_provider {
   html_Privacy_Policy = [' Privacy Policy ', ' سياسة الخصوصية  ']
   text_About_Us = [' About Us', ' معلومات عنا  ']
   text_Terms_And_Conditions = [' Terms And Conditions ', ' احكام وشروط  ']
-  contact_to_ad_text = ["Contact To Admin", 'تواصل مع المسئول ']
+  contact_to_ad_text = ["Contact Us", 'تواصل مع المسئول ']
   Myboattextlogin =['My Boat', 'قاربي']
   welcomeMyboat =['WELCOME', 'أهلا بك']
   //=========signup=======
@@ -175,7 +182,7 @@ class Language_provider {
   female_txt = ['Female', 'انثى ']
   male_txt = ['Male', 'ذكر ']
   Edit_Profile_txt = ['Edit Profile', 'تعديل الملف ']
-  txt_Profile = ['Profile', 'الملف الشخصي']
+  txt_Profile = ['Profile', 'حساب تعريفي']
   dob_txt = ['Date of birth', 'تاريخ الميلاد ']
   Gender_txt = ['Gender', 'الجنس ']
   about_txt = ['About', 'نبذه عن ']
@@ -187,6 +194,7 @@ class Language_provider {
   Address_txt = ["Address", "العنوان "]
   Optional_txt = ["Optional", "إختياري "]
   logout_txt = ['Logout', 'تسجيل الخروج ']
+  update = ['Update','تحديث']
   //change pass================
   change_language_txt = ["Change Password", 'تغيير كلمة المرور ']
   old_pass_txt = ["Old Password", 'كلمة المرور القديمة ']
@@ -210,17 +218,20 @@ class Language_provider {
   txt_message = ["Message", "سالة "]
   contact_us_txt = ["Contact Us", "تواصل معنا "]
   Send_txt = ["Send", "Send"]
-
+  Sortby = ['Sort By', 'صنف حسب']
   data_not_found = ['Data not found', "التاريخ غير موجود "]
 
   //home===========
-  txt_explore = ['Explore', "استكشف "]
+  txt_explore = ['Explore', "وصف:"]
   txt_type_of_trips = ['Type Of Trip', "نوع الرحلة "]
   txt_view_all = ['View All', "عرض الجميع "]
   txt_Popular_Boats = ['Popular Boats', "القوارب المفضلة "]
   txt_pff = ['OFF', "OFF"]
   popolardes = ['Popular Destination', "الوجهات المشهورة"]
   Promotion = ['Promotion' , 'ترقية وظيفية']
+  Discription = ['Discription :', "وصف:"]
+  map = ['Map', "خريطة"]
+  Choosedate = ['Choose from library', 'اختر تاريخ الرحلة']
 
   // inbox//
   tittleinbox = ['Inbox', 'الرسائل ']

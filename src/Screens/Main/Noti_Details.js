@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Text,
     View,
@@ -21,9 +21,15 @@ import Header, { s } from '../../Components/Header';
 import { back_img4, Colors, FontFamily, Sizes } from '../../Constants/Constants';
 import { useNavigation } from '@react-navigation/core';
 import {Switch} from 'react-native-elements'
+import { config } from '../../Provider/configProvider';
 
 
-const Notifications_Details=()=>{
+const Notifications_Details=(props)=>{
+    console.log('props :>> ', props);
+    const [data , setData] = useState(props.route.params.data)
+useEffect(() => {
+    console.log('data :>> ', data);
+}, []);
     return(
         <View style={{flex:1,backgroundColor:Colors.white}}>
             <Header
@@ -36,17 +42,17 @@ const Notifications_Details=()=>{
                      <ScrollView>
                         <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                             <View style={{flexDirection:"row",alignItems:"center"}}>
-                                <Image style={{height:50,width:50,borderRadius:10}} source={{uri:'https://source.unsplash.com/weekly?face'}} />
-                                <Text style={{fontFamily:FontFamily.semi_bold,fontSize:16,marginLeft:7}}>Name</Text>
+                                <Image style={{height:50,width:50,borderRadius:10}} source={{ uri: config.image_url4+data.user_image }} />
+                                <Text style={{fontFamily:FontFamily.semi_bold,fontSize:16,marginLeft:7}}>{data.user_name}</Text>
                             </View>
                             <Text style={{fontSize:10,fontFamily:FontFamily.default,color:"rgba(153, 153, 153, 1)"}}>
-                                5m ago
+                                {data.createtime_ago}
                             </Text>
                         </View>
                         {/*  */}
                         <View style={{marginVertical:20}}>
                             <Text style={{fontFamily:FontFamily.default,fontSize:12,color:"rgba(0, 0, 0, 0.58)"}}>
-                            You have recieved booking #7451250556561
+                           {data.message[0]}
                             </Text>
                         </View>
                         {/* DIVIDER */}
@@ -258,7 +264,12 @@ const Notifications_Details=()=>{
                  </TouchableOpacity>
                  <TouchableOpacity
                   style={[sb.btn1,{borderColor:Colors.orange,backgroundColor:Colors.orange}]}
-                //   onPress={()=>UpcomingBtn()}
+                  onPress={() =>
+              props.navigation.navigate('TripTypeDetail', {
+                      item: data,
+                    
+                    })
+                  }
                   activeOpacity={0.8}
                   >
                      <Text style={[sb.btn1Text,{color:Colors.white}]}>
@@ -321,7 +332,8 @@ const sb = StyleSheet.create({
       btn_1:{
         flexDirection:"row",
         justifyContent:"space-around",
-        width:"100%"
+width:'100%',
+bottom:20
     },
 })
 export default Notifications_Details;
