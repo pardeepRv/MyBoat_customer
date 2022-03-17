@@ -550,6 +550,8 @@ this.cityarr=  json.selected_City_Array ;
     console.log('entertainmentslected :>> ', this.state.entertainmentselected);
     console.log('rating :>> ', this.state.rating);
     console.log('cabin :>> ', this.state.cabin);
+    console.log('destiation :>> ', this.state.destination);
+
 
     const user = this.context
 console.log('context in home', user);
@@ -563,7 +565,7 @@ console.log('context in home', user);
           backImgSource={
             config.baseURL + 'images/' + this.state.destination.image
           }
-          name={this.state.destination.destination_name}
+          name={ user.value == 1 ? this.state.destination.destination_name_arabic :this.state.destination.destination_name}
           searchBtn={false}
           headerHeight={300}
         />
@@ -657,7 +659,7 @@ console.log('context in home', user);
             shadowRadius: 0,
             elevation: 5,
           }}>
-          <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choosedate[1] : Lang_chg.Choosedate[0]}</Text>
+          <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choose_from_library_txt[1] : Lang_chg.Choose_from_library_txt[0]}</Text>
         </TouchableOpacity>
 
         <View

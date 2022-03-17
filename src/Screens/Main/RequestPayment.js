@@ -32,8 +32,11 @@ import {WebView} from 'react-native-webview';
 import {msgProvider, msgTitle, msgText} from '../../Provider/messageProvider';
 import moment from 'moment';
 import Timeslots from '../../Data/Timeslots';
+import { UserContext } from "./UserContext";
+
 const {height} = Dimensions.get('window');
 export default class RequestPayment extends Component {
+  static contextType = UserContext
   constructor(props) {
     super(props);
     this.state = {
@@ -340,7 +343,9 @@ export default class RequestPayment extends Component {
     });
   };
 
-  selectTimeModal = () => {
+  selectTimeModal = (val) => {
+  // const user = React.useContext(UserContext);
+
     return (
       <Modal
         transparent={true}
@@ -364,9 +369,11 @@ export default class RequestPayment extends Component {
               borderTopLeftRadius: 20,
               borderTopRightRadius: 25,
             }}>
+              <View style={{alignItems: 'flex-start' , left:20  }}>
             <Text
               style={{
-                marginLeft: 30,
+                // marginLeft: 50,
+
                 lineHeight: 40,
                 color: Colors.black,
                 fontSize: 16,
@@ -374,6 +381,7 @@ export default class RequestPayment extends Component {
               }}>
               {'Select Time'}
             </Text>
+            </View>
             <View
               style={{
                 height: 0.8,
@@ -397,6 +405,7 @@ export default class RequestPayment extends Component {
                       borderBottomWidth: 0.6,
                       flexDirection: 'row',
                       alignItems: 'center',
+                      bottom:3
                     }}>
                     {item.index == this.state.selectedIndex ? (
                       <View
@@ -437,7 +446,7 @@ export default class RequestPayment extends Component {
                 <TouchableOpacity
                   style={s.Btn1}
                   onPress={() => this.ExtraRequest()}>
-                  <Text style={s.Btn1Text}>Selected</Text>
+                  <Text style={s.Btn1Text}>{val == 1 ? Lang_chg.select7edtrip[1] : Lang_chg.select7edtrip[0]}</Text>
                 </TouchableOpacity>
               )}
             />
@@ -652,6 +661,8 @@ export default class RequestPayment extends Component {
   };
 
   render() {
+    const user = this.context
+    console.log('context in home', user);
     console.log(
       'URL------',
       'https://myboatonline.com/app/webservice/paymentgateway/bookeey_library/buy.php?amt=' +
@@ -674,7 +685,7 @@ export default class RequestPayment extends Component {
             searchBtn={false}
             headerHeight={120}
             backImgSource={require('../../Images/backgd2.jpg')}
-            name="Request"
+            name={user.value == 1 ? Lang_chg.text_request[1] : Lang_chg.text_request[0]}
           />
 <KeyboardAvoidingView behavior="position">
           <View style={{marginTop: -20, height: 'auto', borderTopLeftRadius: 20, borderTopRightRadius: 25, backgroundColor: '#fff'}}>
@@ -775,7 +786,7 @@ export default class RequestPayment extends Component {
           <View
             style={{alignItems: 'center', alignSelf: 'center', width: '100%'}}>
             <TouchableOpacity style={s.Btn1} onPress={() => this.Payment()}>
-              <Text style={s.Btn1Text}>Proceed</Text>
+              <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.Proceedtrip[1] : Lang_chg.Proceedtrip[0]}</Text>
             </TouchableOpacity>
            
           </View>
@@ -851,7 +862,7 @@ export default class RequestPayment extends Component {
           onCancel={this.hideDatePicker}
         /> */}
          
-        {this.state.isShowDatePicker && this.selectTimeModal()}
+        {this.state.isShowDatePicker && this.selectTimeModal(user.value)}
         </View>
     );
   }
@@ -875,7 +886,7 @@ const s = StyleSheet.create({
   },
   Btn1: {
     height: 48,
-    width: '88%',
+    width: '85%',
     alignSelf: 'center',
     backgroundColor: Colors.orange,
     margin: 5,
@@ -887,6 +898,7 @@ const s = StyleSheet.create({
     shadowColor: '#fff',
     shadowRadius: 10,
     shadowOpacity: 1,
+    bottom:3
   },
   Btn1Text: {
     fontSize: 18,

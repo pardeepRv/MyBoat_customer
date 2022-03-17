@@ -57,7 +57,7 @@ export default class PremotionDetail extends Component {
     console.log('context in home', user);
     return (
       <SafeAreaView style={{flex:1}}>
-        <TouchableOpacity
+        {user.value == 1 ? <TouchableOpacity
           onPress={() => this.props.navigation.goBack()}
           style={{
             marginBottom: -50,
@@ -65,6 +65,10 @@ export default class PremotionDetail extends Component {
             alignItems: 'flex-start',
 marginTop:10,
             marginLeft: 20,
+            borderRadius:25,
+            backgroundColor:Colors.orange,
+            width:25,
+            transform: [{ rotate: '180deg'}],
           }}>
           <Icon
             name="arrow-back"
@@ -72,7 +76,27 @@ marginTop:10,
             size={26}
             color={Colors.white}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> : <TouchableOpacity
+          onPress={() => this.props.navigation.goBack()}
+          style={{
+            marginBottom: -50,
+            zIndex: 1,
+            alignItems: 'flex-start',
+marginTop:10,
+            marginLeft: 20,
+            borderRadius:25,
+            backgroundColor:Colors.orange,
+            width:25,
+
+          }}>
+          <Icon
+            name="arrow-back"
+            type="ionicons"
+            size={26}
+            color={Colors.white}
+          />
+        </TouchableOpacity>}
+        
 
        <View>
         <ImageBackground
@@ -84,9 +108,11 @@ marginTop:10,
           }}
           imageStyle={s.ImageBackground_Img}
         >
-             <Text style={{marginTop: 25,fontFamily:FontFamily.semi_bold,color:Colors.white,textAlign:"center"}}>
+          <View style={{alignItems:'center' , width:'100%'  }}>
+             <Text style={{ backgroundColor:Colors.orange,borderRadius:20, marginTop: 25,fontFamily:FontFamily.semi_bold,color:Colors.white,textAlign:"center"}}>
                {user.value == 1 ? Lang_chg.Promotion[1]: Lang_chg.Promotion[0]}
                     </Text>
+                    </View>
             </ImageBackground>
             </View>
         <View

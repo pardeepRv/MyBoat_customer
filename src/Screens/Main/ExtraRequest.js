@@ -39,8 +39,10 @@ import { Lang_chg } from '../../Provider/Language_provider';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { WebView } from 'react-native-webview';
 import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
+import { UserContext } from './UserContext';
 
 export default class ExtraRequest extends Component {
+  static contextType = UserContext
   constructor(props) {
     super(props);
     this.state = {
@@ -150,6 +152,8 @@ export default class ExtraRequest extends Component {
 
   render() {
     // alert(Number(this.state.extraHours) * Number(this.state.adver_arr.addon_product_price));
+    const user = this.context
+    console.log('context in home', user);
     console.log('this.state.adver_arr :>> ', this.state.adver_arr);
     return (
 
@@ -161,7 +165,7 @@ export default class ExtraRequest extends Component {
           backBtn
           searchBtn={false}
           headerHeight={120}
-          name="Extra Request"
+          name={user.value == 1 ? Lang_chg.extrarequesttrip[1] : Lang_chg.extrarequesttrip[0]}
           backImgSource={require('../../Images/backgd2.jpg')}
         />
 
@@ -186,7 +190,7 @@ export default class ExtraRequest extends Component {
                     <View style={{ width: '10%' }} />
                     <View style={{ width: '35%' }}>
                       <Text style={{ textAlign: 'left' }}>
-                        {item.addon_product_name[0]}{' '}
+                        { user.value ==1 ? item.addon_product_name[1] :  item.addon_product_name[0]}{' '}
                       </Text>
                     </View>
 
@@ -246,7 +250,7 @@ export default class ExtraRequest extends Component {
                 color: Colors.black,
                 fontSize: 18,
               }}>
-              Extra Hours
+             {user.value == 1 ?  Lang_chg.extraHourtrip[1] : Lang_chg.extraHourtrip[0]}
             </Text>
             <Text
               style={{
@@ -301,7 +305,7 @@ export default class ExtraRequest extends Component {
                 color: Colors.black,
                 fontSize: 18,
               }}>
-              Discount coupon
+              {user.value == 1  ? Lang_chg.txt_discount[1] : Lang_chg.txt_discount[0]}
             </Text>
             <Text
               style={{
@@ -340,9 +344,6 @@ export default class ExtraRequest extends Component {
 
             }}
           />
-          
-        
-       
           <View
           style={{
             alignContent: 'center',
@@ -355,10 +356,10 @@ export default class ExtraRequest extends Component {
 
           }}>
           <TouchableOpacity style={s.Btn2} onPress={() => this.ExtraRequest()}>
-            <Text style={[s.Btn1Text, { color: Colors.orange, }]}>SKIP</Text>
+            <Text style={[s.Btn1Text, { color: Colors.orange, }]}>{user.value == 1  ? Lang_chg.Skip[1] : Lang_chg.Skip[0]}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={s.Btn1} onPress={() => this.ExtraRequest()}>
-            <Text style={s.Btn1Text}>Proceed</Text>
+            <Text style={s.Btn1Text}>{user.value == 1  ? Lang_chg.Proceedtrip[1] : Lang_chg.Proceedtrip[0]}</Text>
           </TouchableOpacity>
         </View>
         <Text>{'\n'}</Text>

@@ -1,5 +1,7 @@
 import messaging from '@react-native-firebase/messaging';
 import {useNavigation} from '@react-navigation/native';
+import {showMessage} from "react-native-flash-message";
+import { Colors, FontFamily } from '../Constants/Constants';
 
 export const createNotificationListener = async () => {
   const {navigation} = useNavigation;
@@ -27,6 +29,16 @@ export const createNotificationListener = async () => {
 
   messaging().onMessage(async remoteMessage => {
     console.log('recived in foreground', remoteMessage);
+    showMessage({
+      description: remoteMessage?.notification?.title,
+      message:remoteMessage?.notification?.body,
+      type: "info",
+      floating: true,
+      duration: 4000,
+      style: { backgroundColor:Colors.orange,marginTop: Platform.OS == "ios" ? 0 : 20 },
+      textStyle: { fontFamily: FontFamily.default },
+      titleStyle: { fontFamily: FontFamily.default },
+    });
   });
 
   // Check whether an initial notification is available

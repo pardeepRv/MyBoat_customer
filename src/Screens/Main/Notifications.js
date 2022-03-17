@@ -23,8 +23,12 @@ import { useNavigation } from '@react-navigation/core';
 import { config } from '../../Provider/configProvider';
 import AsyncStorage from '@react-native-community/async-storage';
 import Loader from '../../Provider/Loader';
+import { UserContext } from './UserContext';
+import { Lang_chg } from '../../Provider/Language_provider';
 
 const NotificationsPage = () => {
+  const user = React.useContext(UserContext);
+
     const navigation = useNavigation();
     const [data, setData] = useState([]);
     const [loader, setLoader] = useState(false);
@@ -70,7 +74,7 @@ const NotificationsPage = () => {
         <View style={{ flex: 1, backgroundColor: Colors.white }}>
             <Header
                 backBtn={true}
-                name="Notifications"
+                name={user.value == 1 ? Lang_chg.text_notification[1]: Lang_chg.text_notification[0]}
             />
             {/* Clear */}
             <View style={{ position: "absolute", right: 30, top: 32 }}>

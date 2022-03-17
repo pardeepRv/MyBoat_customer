@@ -41,8 +41,11 @@ import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
 import moment from 'moment';
 import { CheckBox } from 'react-native-elements';
 import Header2 from '../../Components/Header2';
+import { UserContext } from './UserContext';
 
 export default class Checkout extends Component {
+  static contextType = UserContext
+
   constructor(props) {
     super(props);
 
@@ -168,7 +171,7 @@ export default class Checkout extends Component {
         return obj.json();
       })
       .then(obj => {
-        console.log(obj);
+       return  console.log(obj);
 
         if (obj.success == 'true') {
           this.setState({
@@ -436,6 +439,8 @@ export default class Checkout extends Component {
   };
 
   render() {
+    const user = this.context
+    console.log('context in home', user);
     return (
       <View style={{ backgroundColor: '#fff', height: '100%' }}>
         <Header
@@ -443,7 +448,7 @@ export default class Checkout extends Component {
           notiBtn={false}
           backBtn
           searchBtn={false}
-          name="Checkout"
+          name={user.value ==1 ? Lang_chg.text_checkout[1] : Lang_chg.text_checkout[0]}
           headerHeight={120}
           backImgSource={require('../../Images/back1.jpg')}
         />
@@ -472,7 +477,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.text1}> Customer name :</Text>
+                <Text style={s.text1}> {user.value == 1 ? Lang_chg.Customername[1] : Lang_chg.Customername[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -484,7 +489,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.text1}> Book date :</Text>
+                <Text style={s.text1}>{user.value == 1 ? Lang_chg.Bookdatetrip[1] : Lang_chg.Bookdatetrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -496,7 +501,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Trip time :</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.TripTimetrip[1] : Lang_chg.TripTimetrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -508,7 +513,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Number of guests :</Text>
+                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.noogguesttriptour[1] : Lang_chg.noogguesttriptour[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -520,7 +525,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Trip Hour :</Text>
+                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.triphourcheckout[1] : Lang_chg.triphourcheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -531,7 +536,7 @@ export default class Checkout extends Component {
             </View>
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Extra hours :</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.extrahourcheckout[1] : Lang_chg.extrahourcheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -542,20 +547,21 @@ export default class Checkout extends Component {
               </View>
             </View>
 
-            <View style={s.container}>
+            <View style={s.container2}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Equipment :</Text>
+                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.equpmenttrip[1] : Lang_chg.equpmenttrip[0]}</Text>
               </View>
 
               <View style={{
                 width: 200,
                 height: 18,
                 flexDirection: 'row',
+                alignItems: 'flex-start'
               }}>
                 {this.state.adv.map((item) => {
                   return (
                     <View style={{}}>
-                      <Text style={[{ fontFamily: FontFamily.default }]}>
+                      <Text style={[{ fontFamily: FontFamily.default , fontSize: 12 }]}>
                         {item.add_On_name == "Equipment " &&
                           item.isChecked == true ?
                           `${item.addon_product_name[0]},` :
@@ -567,9 +573,9 @@ export default class Checkout extends Component {
               </View>
             </View>
 
-            <View style={s.container}>
+            <View style={s.container2}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Entertainment :</Text>
+                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.entertainmenttrip[1] : Lang_chg.entertainmenttrip[0]}</Text>
               </View>
               <View style={{
                 width: 200,
@@ -579,7 +585,7 @@ export default class Checkout extends Component {
                 {this.state.adv.map((item) => {
                   return (
                     <View style={{}}>
-                      <Text style={[{ fontFamily: FontFamily.default }]}>
+                      <Text style={[{ fontFamily: FontFamily.default  , fontSize:12}]}>
                         {item.add_On_name == "entertainment" &&
                           item.isChecked == true ?
                           `${item.addon_product_name[0]},` :
@@ -591,20 +597,22 @@ export default class Checkout extends Component {
               </View>
 
             </View>
-            <View style={s.container}>
+            <View style={s.container2}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Food :</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.foodtrip[1] : Lang_chg.foodtrip[0]}</Text>
               </View>
 
               <View style={{
                 width: 200,
                 height: 18,
                 flexDirection: 'row',
+                // justifyContent:'space-around',
+                alignItems:'flex-start'
               }}>
                 {this.state.adv.map((item) => {
                   return (
                     <View style={{}}>
-                      <Text style={[{ fontFamily: FontFamily.default }]}>
+                      <Text style={[{ fontFamily: FontFamily.default , fontSize:12 }]}>
                         {item.add_On_name == "Food" &&
                           item.isChecked == true ?
                           `${item.addon_product_name[0]},` :
@@ -618,7 +626,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Boat place :</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.Boatplacetrip[1] : Lang_chg.Boatplacetrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -630,7 +638,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Trip destination :</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.tripdestinationcheckout[1] : Lang_chg.tripdestinationcheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -642,7 +650,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Trip type :</Text>
+                <Text style={[s.text1]}>  {user.value == 1 ? Lang_chg.triptypetrip[1] : Lang_chg.triptypetrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -653,7 +661,7 @@ export default class Checkout extends Component {
             </View>
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Discount :</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.coupendiscountcheckout[1] : Lang_chg.coupendiscountcheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -664,7 +672,7 @@ export default class Checkout extends Component {
             </View>
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Coupon discount :</Text>
+                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.coupendiscountcheckout[1] : Lang_chg.coupendiscountcheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -676,7 +684,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Total price :</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.toatalpricecheckout[1] : Lang_chg.toatalpricecheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -688,7 +696,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Extra requests :</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.advertismenttypecheckout[1] : Lang_chg.advertismenttypecheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -700,7 +708,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> Advertisment type :</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.advertismenttypecheckout[1] : Lang_chg.advertismenttypecheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -710,7 +718,8 @@ export default class Checkout extends Component {
                 </Text>
               </View>
             </View>
-            {/* <View style={{flex:1, marginBottom:40}}>
+            <View></View>
+            <View style={{flex:1, marginBottom:40}}>
               <Text
                 style={{
                   lineHeight: 27,
@@ -750,7 +759,7 @@ export default class Checkout extends Component {
               </View>               
               ))}
               
-          </View> */}
+          </View>
           </ScrollView>
         </View>
 
@@ -768,7 +777,7 @@ export default class Checkout extends Component {
             justifyContent: 'space-evenly'
           }}>
           <TouchableOpacity style={s.Btn1} onPress={() => this.payment()}>
-            <Text style={s.Btn1Text}>Checkout</Text>
+            <Text style={s.Btn1Text}>{user.value ==1 ? Lang_chg.text_checkout[1] : Lang_chg.text_checkout[0]}</Text>
           </TouchableOpacity>
           <Text
             style={{
@@ -953,6 +962,15 @@ const s = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'flex-start', // if you want to fill rows left to right
   },
+  container2: {
+    marginLeft: '5%',
+    height: 25,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    justifyContent:'space-between'
+     // if you want to fill rows left to right
+  },
   item: {
     width: '45%', // is 50% of container width
   },
@@ -1105,9 +1123,11 @@ const s = StyleSheet.create({
     height: 50
   },
   paymentText: {
-    fontSize: 18,
+    fontSize: 14,
     justifyContent: 'center',
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
+    top:20,
+    fontFamily:FontFamily.semi_bold
   },
   checkbox: {
     color: '#fff',

@@ -29,11 +29,11 @@ import {Picker} from '@react-native-community/picker';
 //import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
 import AsyncStorage  from "@react-native-community/async-storage";
 import { Lang_chg } from '../../Provider/Language_provider'
+import { UserContext } from '../Main/UserContext';
 
 
 export default class Change_Password extends Component{
-
-
+    static contextType = UserContext
     constructor(props) {
         super(props);
          this.state = {
@@ -45,21 +45,12 @@ export default class Change_Password extends Component{
            
          }
         }
-
-
     componentDidMount(){
-
-   
-
         //console.log('user ',v);
      
         this.getData('user_arr');
      
          }
-     
-      
-     
-     
          getData = async (key) => {
             
              console.log('local '+key)
@@ -75,17 +66,12 @@ export default class Change_Password extends Component{
 
                  console.log(arrayData)
                  this.setState({local_data:arrayData})
-                //this.ProfileDetail(arrayData.user_id)
-               
+                //this.ProfileDetail(arrayData.user_id)       
                }
              } catch(e) {
                // error reading value
              }
            }
-
-
-
-
 
     Change_Pass(){
 
@@ -160,18 +146,12 @@ if (confirm_password !== password) {
     });
 }
 
-
-
-
-
-
-
-
-
   render(){
+    const user = this.context
+    console.log('context in home', user);
     return(
         <View style={{flex:1,backgroundColor:Colors.white}}>
-            <Header backBtn={true} name="Change Password" />
+            <Header backBtn={true} name= {user.value == 1 ? Lang_chg.change_language_txt[1] : Lang_chg.change_language_txt[0]}/>
             <View style={sb.SEC2}>
                 <View style={{marginTop:30,paddingHorizontal:20}}>
                 <Input
@@ -180,7 +160,7 @@ if (confirm_password !== password) {
                  inputContainerStyle={sb.Input}
                  selectionColor={'green'}
                //  secureTextEntry={true} 
-                 placeholderTextColor={Colors.inputFieldEditProfile}
+                //  placeholderTextColor={Colors.inputFieldEditProfile}
                  inputStyle={{color:Colors.inputFieldEditProfile}}
                  placeholderTextColor={Colors.gray}
                   viewPass
@@ -250,7 +230,7 @@ const sb =StyleSheet.create({
     },
     btn1:{
         height:48,
-        width:"95%",
+        width:"85%",
         backgroundColor:Colors.orange,
         alignSelf:"center",
         alignItems:"center",
@@ -259,7 +239,7 @@ const sb =StyleSheet.create({
         marginVertical:10,
         elevation:5,
         position:"absolute",
-        bottom:0
+        bottom:10
         
     },
     btn1Text:{

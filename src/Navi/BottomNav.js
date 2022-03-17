@@ -16,8 +16,11 @@ import FavList from '../Screens/Main/Fav';
 import MyTrip from '../Screens/Main/MyTrip';
 import DestinationList from '../Screens/Main/DestinationList';
 import AllChats from '../Screens/Main/AllChats';
+import { UserContext } from '../Screens/Main/UserContext';
+import { Lang_chg } from '../Provider/Language_provider';
 
 const Stacks=()=>{
+  
   return(
       <Stack.Navigator
        initialRouteName="Home"
@@ -30,6 +33,8 @@ const Stacks=()=>{
   )
 }
 function TabNav() {
+  const user = React.useContext(UserContext);
+
 
   return (
     <Tab.Navigator
@@ -52,7 +57,7 @@ function TabNav() {
         name="Home"
         component={Stacks}
         options={{
-          tabBarLabel:"Explore",
+          tabBarLabel:user.value == 1 ? Lang_chg.txt_explore[1] : Lang_chg.txt_explore[0],
           tabBarIcon: ({ focused,color}) => (
             // <Icon name="sait-boat" color={color} size={20} type="fontisto" />
             focused ? (
@@ -67,7 +72,7 @@ function TabNav() {
         name="Trip"
         component={MyTrip}
         options={{
-          tabBarLabel: 'My Trip',
+          tabBarLabel: user.value == 1 ? Lang_chg.text_my_trip[1] : Lang_chg.text_my_trip[0],
           tabBarIcon: ({ focused,color}) => (
             // <Icon name="sait-boat" color={color} size={20} type="fontisto" />
             focused ? (
@@ -82,7 +87,7 @@ function TabNav() {
         name="Inbox"
         component={AllChats}
         options={{
-          tabBarLabel: 'Inbox',
+          tabBarLabel:  user.value == 1 ? Lang_chg.tittleinbox[1] : Lang_chg.tittleinbox[0],
           tabBarIcon: ({ focused,color}) => (
             // <Icon name="sait-boat" color={color} size={20} type="fontisto" />
             focused ? (
@@ -98,7 +103,7 @@ function TabNav() {
         name="Favourites"
         component={FavList}
         options={{
-          tabBarLabel: 'Favourites',
+          tabBarLabel: user.value == 1 ? Lang_chg.text_favourites[1] : Lang_chg.text_favourites[0],
           tabBarIcon: ({ focused,color}) => (
             // <Icon name="sait-boat" color={color} size={20} type="fontisto" />
             focused ? (
@@ -113,7 +118,7 @@ function TabNav() {
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: user.value == 1 ? Lang_chg.txt_Profile[1] : Lang_chg.txt_Profile[0],
           tabBarIcon: ({ focused }) => (
             focused ? (
               <Image style={{height:25,width:30,resizeMode:"contain"}} source={require('../../assets/icons/active_profile.png')} />

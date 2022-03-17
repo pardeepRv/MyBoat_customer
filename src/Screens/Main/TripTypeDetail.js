@@ -35,6 +35,7 @@ import Share from "react-native-share";
 import { CheckBox } from "react-native-elements";
 import { msgProvider } from "../../Provider/messageProvider";
 import { UserContext } from "./UserContext";
+import { Lang_chg } from "../../Provider/Language_provider";
 
 //import {SliderBox} from 'react-native-image-slider-box';
 const { width } = Dimensions.get("window");
@@ -268,24 +269,47 @@ console.log('context in home', user);
             justifyContent: "space-between",
           }}
         >
+          {user.value ==1? 
+              <TouchableOpacity
+              style={{
+                marginBottom: -50,
+                alignItems: "flex-start",
+                marginTop: 20,
+                marginLeft: 20,
+                backgroundColor: Colors.orange,
+                borderRadius: 25,
+                transform: [{ rotate: '180deg'}]
+              }}
+            >
+              <Icon
+                onPress={() => this.gotoBack()}
+                name="arrow-back"
+                type="ionicons"
+                size={28}
+                color={Colors.white}
+              />
+            </TouchableOpacity>
+          :
           <TouchableOpacity
-            style={{
-              marginBottom: -50,
-              alignItems: "flex-start",
-              marginTop: 20,
-              marginLeft: 20,
-              backgroundColor: Colors.orange,
-              borderRadius: 25,
-            }}
-          >
-            <Icon
-              onPress={() => this.gotoBack()}
-              name="arrow-back"
-              type="ionicons"
-              size={26}
-              color={Colors.white}
-            />
-          </TouchableOpacity>
+          style={{
+            marginBottom: -50,
+            alignItems: "flex-start",
+            marginTop: 20,
+            marginLeft: 20,
+            backgroundColor: Colors.orange,
+            borderRadius: 25,
+          }}
+        >
+          <Icon
+            onPress={() => this.gotoBack()}
+            name="arrow-back"
+            type="ionicons"
+            size={28}
+            color={Colors.white}
+          />
+        </TouchableOpacity>
+          }
+          
 
           <TouchableOpacity
             style={{
@@ -682,7 +706,7 @@ console.log('context in home', user);
           <View style={{ flex: 1, bottom: 15 }}>
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> Advertisment type:</Text>
+                <Text style={s.leftText}> {user.value == 1 ? Lang_chg.advertisementtrip[1] : Lang_chg.advertisementtrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -694,7 +718,7 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> Discount :</Text>
+                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Discounttrip[1] : Lang_chg.Discounttrip[0]} </Text>
               </View>
 
               <View style={s.item}>
@@ -705,7 +729,7 @@ console.log('context in home', user);
             </View>
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> Trip Type :</Text>
+                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.triptypetrip[1] : Lang_chg.triptypetrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -717,7 +741,7 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> Destination :</Text>
+                <Text style={s.leftText}> {user.value == 1 ? Lang_chg.Destinationtrip[1] : Lang_chg.Destinationtrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -735,7 +759,7 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> Boat place :</Text>
+                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Boatplacetrip[1] : Lang_chg.Boatplacetrip[0]} </Text>
               </View>
 
               <View style={s.item}>
@@ -748,7 +772,7 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> Trip price :</Text>
+                <Text style={s.leftText}> {user.value == 1 ? Lang_chg.Triptypeprice[1] : Lang_chg.Triptypeprice[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -758,7 +782,7 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> Extra per hour :</Text>
+                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.extraperhourtrip[1] : Lang_chg.extraperhourtrip[0]} </Text>
               </View>
 
               <View style={s.item}>
@@ -778,7 +802,7 @@ console.log('context in home', user);
           </View> */}
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> Max number of guests :</Text>
+                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.noogguesttrip[1] : Lang_chg.noogguesttrip[0]} </Text>
               </View>
 
               <View style={s.item}>
@@ -790,7 +814,7 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> Trip hours :</Text>
+                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.triphourstrip[1] : Lang_chg.triphourstrip[0]} </Text>
               </View>
 
               <View style={s.item}>
@@ -812,7 +836,7 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> Equipment :</Text>
+                <Text style={s.leftText}> {user.value == 1 ? Lang_chg.equpmenttrip[1] : Lang_chg.equpmenttrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -827,7 +851,7 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> Entertainment:</Text>
+                <Text style={s.leftText}> {user.value == 1 ? Lang_chg.entertainmenttrip[1] : Lang_chg.entertainmenttrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -842,7 +866,7 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> Food:</Text>
+                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.foodtrip[1] : Lang_chg.foodtrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -861,7 +885,8 @@ console.log('context in home', user);
                 backgroundColor: Colors.orange,
                 flexDirection: "row",
                 padding: 10,
-                marginTop: 20,
+                marginTop: 5,
+                // bottom:10
               }}
             >
               <View>
@@ -869,11 +894,11 @@ console.log('context in home', user);
                   style={s.Btnbook}
                   onPress={() => this.BookNow()}
                 >
-                  <Text style={s.Btn1Textbook}>Book Now</Text>
+                  <Text style={s.Btn1Textbook}>{user.value == 1 ? Lang_chg.book_now_txt[1]: Lang_chg.book_now_txt[0]}</Text>
                 </TouchableOpacity>
               </View>
               <View style={{ justifyContent: "center", marginLeft: "20%" }}>
-                <Text style={s.rent}>Rental Amount</Text>
+                <Text style={s.rent}>{user.value == 1 ? Lang_chg.rental_amt_txt[1]: Lang_chg.rental_amt_txt[0]}</Text>
                 <Text style={s.rent}>
                   KWD {this.state.advertisement?.price}
                 </Text>
@@ -897,7 +922,7 @@ console.log('context in home', user);
                   :<TouchableOpacity style={s.Btn1}
                   onPress={() => this.ratings()}
                 >
-                  <Text style={s.Btn1Text}>Rate Now</Text>
+                  <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.rate_now[1]: Lang_chg.rate_now[0]}</Text>
                 </TouchableOpacity> }
                 </View>
 
@@ -915,7 +940,7 @@ console.log('context in home', user);
                   <TouchableOpacity style={s.Btn1}
                     onPress={() => this.Goto()}
                   >
-                    <Text style={s.Btn1Text}>Location</Text>
+                    <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.Loactiontrip[1]: Lang_chg.Loactiontrip[0]}</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={{ justifyContent: "center", flexDirection: "row" }}>
@@ -923,10 +948,10 @@ console.log('context in home', user);
                   onPress={() => {
                     this.props.navigation.navigate("OneToOneChat", { data: item });
                   }} >
-                    <Text style={s.Btn1Text2}>Chat Now</Text>
+                    <Text style={s.Btn1Text2}>{user.value == 1 ? Lang_chg.chatnowtrip[1]: Lang_chg.chatnowtrip[0]}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={s.Btn2} onPress={() => this.cancelbooking()}>
-                    <Text style={s.Btn1Text2}>Cancel</Text>
+                    <Text style={s.Btn1Text2}>{user.value == 1 ? Lang_chg.chatcancel[1]: Lang_chg.chatcancel[0]}</Text>
                   </TouchableOpacity>
                 </View>
               </View>}

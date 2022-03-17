@@ -512,7 +512,7 @@ console.log('context in home', user);
             shadowRadius: 0,
             elevation: 5,
           }}>
-          <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choosedate[1] : Lang_chg.Choosedate[0]}</Text>
+          <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choose_from_library_txt[1] : Lang_chg.Choose_from_library_txt[0]}</Text>
         </TouchableOpacity>
 
         <View

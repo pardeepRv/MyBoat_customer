@@ -255,7 +255,7 @@ useEffect(() => {
              <View style={sb.btn_1}>
                  <TouchableOpacity
                   style={[sb.btn1,{borderColor:Colors.orange,backgroundColor:Colors.white}]}
-                //   onPress={()=>OutgoingBtn()}
+                  onPress={()=>props.navigation.goBack()}
                   activeOpacity={0.8}
                   >
                      <Text style={[sb.btn1Text,{color:Colors.orange}]}>

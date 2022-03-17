@@ -9,9 +9,12 @@ import {
 import { Icon } from 'react-native-elements';
 import { back_img,backgd2, Colors, FontFamily } from '../Constants/Constants';
 import { useNavigation } from '@react-navigation/core';
+import { UserContext } from '../Screens/Main/UserContext';
 
 
 const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,backImgSource}) =>{
+  const user = React.useContext(UserContext);
+
     const navigation=useNavigation();
     const [state,setState]=useState({
         backBtn: false || backBtn ,
@@ -36,43 +39,73 @@ const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,
             <ImageBackground
                 style={[s.ImageBackground,{height:state.headerHeight}]}
                 source={state.back_img_source2}
-                source={{uri:state.back_img_source2}}
+                // source={{uri:state.back_img_source2}}
                imageStyle={s.ImageBackground_Img}
                 >
-                <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:30,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
-                    {
-                        state.backBtn ? (
-                            <TouchableOpacity onPress={()=>gotoBack()}  style={{backgroundColor:Colors.orange , borderRadius:20}} >
-                                <Icon name="arrow-back" type="ionicons" size={24} color={Colors.white} />
-                            </TouchableOpacity>
-                        ) : state.notiBtn ? (
-                            <TouchableOpacity onPress={()=>gotoNotification()}>
-                                <Icon name="bell" type="simple-line-icon" size={24} color={Colors.white} />
-                            </TouchableOpacity>
-                        ) : <View style={{height:25,width:25}} />
-                    }
-                    <View style={{backgroundColor:Colors.orange , borderRadius:20}} >
-                    <Text style={{fontFamily:FontFamily.semi_bold,color:Colors.white,textAlign:"center" ,}}>
-                        {name}
-                    </Text>
+                    {user.value == 1 ? (
+                        <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:30,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
+                        {
+                            state.backBtn ? (
+                                <TouchableOpacity onPress={()=>gotoBack()}  style={{transform: [{ rotate: '180deg'}] ,backgroundColor:Colors.orange , borderRadius:20}} >
+                                    <Icon name="arrow-back" type="ionicons" size={24} color={Colors.white} />
+                                </TouchableOpacity>
+                            ) : state.notiBtn ? (
+                                <TouchableOpacity onPress={()=>gotoNotification()}>
+                                    <Icon name="bell" type="simple-line-icon" size={24} color={Colors.white} />
+                                </TouchableOpacity>
+                            ) : <View style={{height:25,width:25}} />
+                        }
+                        <View style={{backgroundColor:Colors.orange , borderRadius:20}} >
+                        <Text style={{fontFamily:FontFamily.semi_bold,color:Colors.white,textAlign:"center" ,}}>
+                            {name}
+                        </Text>
+                        </View>
+                        {
+                            state.searchBtn ? (
+                                <TouchableOpacity >
+                                    <Icon name="search1" type="antdesign" size={25} color={Colors.white} />
+                                </TouchableOpacity>
+                            ) : <View style={{height:25,width:25}} />
+                        }
                     </View>
-                    {
-                        state.searchBtn ? (
-                            <TouchableOpacity >
-                                <Icon name="search1" type="antdesign" size={25} color={Colors.white} />
-                            </TouchableOpacity>
-                        ) : <View style={{height:25,width:25}} />
-                    }
-                </View>
+                    ): (
+                        <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:30,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
+                        {
+                            state.backBtn ? (
+                                <TouchableOpacity onPress={()=>gotoBack()}  style={{backgroundColor:Colors.orange , borderRadius:20}} >
+                                    <Icon name="arrow-back" type="ionicons" size={24} color={Colors.white} />
+                                </TouchableOpacity>
+                            ) : state.notiBtn ? (
+                                <TouchableOpacity onPress={()=>gotoNotification()}>
+                                    <Icon name="bell" type="simple-line-icon" size={24} color={Colors.white} />
+                                </TouchableOpacity>
+                            ) : <View style={{height:25,width:25}} />
+                        }
+                        <View style={{backgroundColor:Colors.orange , borderRadius:20}} >
+                        <Text style={{fontFamily:FontFamily.semi_bold,color:Colors.white,textAlign:"center" ,}}>
+                            {name}
+                        </Text>
+                        </View>
+                        {
+                            state.searchBtn ? (
+                                <TouchableOpacity >
+                                    <Icon name="search1" type="antdesign" size={25} color={Colors.white} />
+                                </TouchableOpacity>
+                            ) : <View style={{height:25,width:25}} />
+                        }
+                    </View>
+                    )}
+               
             </ImageBackground>
         ) : (
             <View
                 style={[s.ImageBackground,{backgroundColor:state.backColor,height:state.headerHeight}]}
                 >
-                <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:30,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
+                    {user.value == 1 ? (
+                    <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:30,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
                     {
                         state.backBtn ? (
-                            <TouchableOpacity onPress={()=>gotoBack()}>
+                            <TouchableOpacity onPress={()=>gotoBack()} style={{transform: [{ rotate: '180deg'}] ,backgroundColor:Colors.orange , borderRadius:20}}>
                                 <Icon name="arrow-back" type="ionicons" size={24} color={Colors.white} />
                             </TouchableOpacity>
                         ) : state.notiBtn ? (
@@ -92,6 +125,32 @@ const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,
                         ) : <View style={{height:25,width:25}} />
                     }
                 </View>
+                    ):(
+                        <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:30,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
+                        {
+                            state.backBtn ? (
+                                <TouchableOpacity onPress={()=>gotoBack()} style={{backgroundColor:Colors.orange , borderRadius:20}}>
+                                    <Icon name="arrow-back" type="ionicons" size={24} color={Colors.white} />
+                                </TouchableOpacity>
+                            ) : state.notiBtn ? (
+                                <TouchableOpacity onPress={()=>gotoNotification()}>
+                                    <Icon name="bell" type="simple-line-icon" size={24} color={Colors.white} />
+                                </TouchableOpacity>
+                            ) : <View style={{height:25,width:25}} />
+                        }
+                        <Text style={{fontFamily:FontFamily.semi_bold,color:Colors.white,textAlign:"center"}}>
+                            {name}
+                        </Text>
+                        {
+                            state.searchBtn ? (
+                                <TouchableOpacity>
+                                    <Icon name="search1" type="antdesign" size={25} color={Colors.white} />
+                                </TouchableOpacity>
+                            ) : <View style={{height:25,width:25}} />
+                        }
+                    </View>
+                    )}
+                
             </View>
         )
         
