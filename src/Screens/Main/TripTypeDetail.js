@@ -89,15 +89,7 @@ export default class TripTypeDetail extends Component {
 
   onShare = async () => {
     let shareMessage =
-      "Advertisement Details \n Trip Type : " +
-      this.state?.adver_arr?.trip_type_name +
-      "\n Destination :" +
-      this.state?.adver_arr?.destination +
-      "\n Trip price :" +
-      this.state?.adver_arr?.price +
-      "\n Max number of guests :" +
-      this.state?.adver_arr?.no_of_people +
-      "\n\n You can donwload the application - https://myboatonline.com/";
+      "https://myboatonline.com/";
     const options = {
       title: "Advertim",
       // url:'https://myboatonline.com/app/webservice/images/2BqiM20wtjxOdlJ1366903610.jpeg',

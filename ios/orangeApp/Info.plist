@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>MyBoat Customer</string>
+	<string>MyBoat</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIcons</key>
@@ -36,7 +36,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -50,20 +50,20 @@
 			</dict>
 		</dict>
 	</dict>
-  <key>NSCameraUsageDescription</key>
-    <string> $(PRODUCT_NAME) Upload image</string>
-    <key>NSLocationAlwaysAndWhenInUsageDescription</key>
-    <string>$(PRODUCT_NAME) wants to access your location for saving your Lat and long in database.</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>$(PRODUCT_NAME) wants to access your location for saving your Lat and long in database.</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>$(PRODUCT_NAME) wants to access your location for saving your Lat and long in database.</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>$(PRODUCT_NAME) to upload boat stories</string>
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>$(PRODUCT_NAME)  needs to access your gallery for uploading photos.</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>$(PRODUCT_NAME) Allow users to access gallery for upload image for showing details to other</string>
+	<key>NSCameraUsageDescription</key>
+	<string> $(PRODUCT_NAME) Upload image</string>
+	<key>NSLocationAlwaysAndWhenInUsageDescription</key>
+	<string>$(PRODUCT_NAME) wants to access your location for saving your Lat and long in database.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>$(PRODUCT_NAME) wants to access your location for saving your Lat and long in database.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>$(PRODUCT_NAME) wants to access your location for saving your Lat and long in database.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>$(PRODUCT_NAME) to upload boat stories</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>$(PRODUCT_NAME)  needs to access your gallery for uploading photos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) Allow users to access gallery for upload image for showing details to other</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Black.ttf</string>

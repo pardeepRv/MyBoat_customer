@@ -425,13 +425,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3926A70AC28C04CF78FAF0F1 /* Pods-blueApp.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = blueApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Mahmoud Albandar (4J2NC63459)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = MTG47X9M92;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/orangeApp/Info.plist";
@@ -458,13 +458,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D74084EBB3467FD3D33FF42E /* Pods-blueApp.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = blueAppRelease.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Mahmoud Albandar (MTG47X9M92)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = MTG47X9M92;
 				INFOPLIST_FILE = "$(SRCROOT)/orangeApp/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

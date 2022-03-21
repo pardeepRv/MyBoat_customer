@@ -56,11 +56,11 @@ export default class ExtraRequest extends Component {
       isChecked: false,
       couponCode: '',
       extraHours: "",
-      rentam:this.props.route.params.adv.extra_price,
+      rentam: this.props.route.params.adv.extra_price,
       totalPrice:
-        Number(this.props.route.params.data.rent_amount) 
-        // +
-        // Number(this.props.route.params.data.extra_rent_amt),
+        Number(this.props.route.params.data.rent_amount)
+      // +
+      // Number(this.props.route.params.data.extra_rent_amt),
     };
   }
 
@@ -75,7 +75,7 @@ export default class ExtraRequest extends Component {
   onChangeCheck = (item, index, id) => {
     console.log(item.addon_product_price, 'item.addon_product_price');
     console.log(index, 'index');
-     console.log(id, 'id');
+    console.log(id, 'id');
 
     const tempArray = [...this.state.adver_arr];
 
@@ -94,7 +94,7 @@ export default class ExtraRequest extends Component {
       this.state.totalPrice =
         this.state.totalPrice - Number(item.addon_product_price);
     }
-     console.log('Total Price', this.state.totalPrice);
+    console.log('Total Price', this.state.totalPrice);
 
     console.log(array[id], 'array[index]');
     array[id].isChecked = !array[id].isChecked;
@@ -103,23 +103,23 @@ export default class ExtraRequest extends Component {
     });
   };
 
-//   onChangeCheck = (select, index, id) => {
-//     console.log(index, id, 'ITEEEEEEE', select.addon_product_price);
-//  const tempArray = [...this.state.adver_arr];
-//  if (!select.isChecked) {
-//    this.state.totalPrice =
-//      this.state.totalPrice + Number(select.addon_product_price);
-//  } else {
-//    this.state.totalPrice =
-//      this.state.totalPrice - Number(select.addon_product_price);
-//  }
-//   console.log('Total Price', this.state.totalPrice);
-//  return   console.log('object :>> ', tempArray);
-//  tempArray[id].addon_product_name[index].isChecked = !select.isChecked;
-//  this.setState({
-//    adver_arr: tempArray,
-//  });
-// };
+  //   onChangeCheck = (select, index, id) => {
+  //     console.log(index, id, 'ITEEEEEEE', select.addon_product_price);
+  //  const tempArray = [...this.state.adver_arr];
+  //  if (!select.isChecked) {
+  //    this.state.totalPrice =
+  //      this.state.totalPrice + Number(select.addon_product_price);
+  //  } else {
+  //    this.state.totalPrice =
+  //      this.state.totalPrice - Number(select.addon_product_price);
+  //  }
+  //   console.log('Total Price', this.state.totalPrice);
+  //  return   console.log('object :>> ', tempArray);
+  //  tempArray[id].addon_product_name[index].isChecked = !select.isChecked;
+  //  this.setState({
+  //    adver_arr: tempArray,
+  //  });
+  // };
 
 
   ExtraRequest() {
@@ -169,202 +169,202 @@ export default class ExtraRequest extends Component {
           backImgSource={require('../../Images/backgd2.jpg')}
         />
 
-        <ScrollView style={{flex:1}}>
-        <KeyboardAwareScrollView
-              // extraScrollHeight={10}
-              nestedScrollEnabled
-              enableOnAndroid={true}
-              style={s.subContainer}
-              contentContainerStyle={s.subContentContainer}
-              keyboardShouldPersistTaps={'always'}
-              showsVerticalScrollIndicator={false}>
-          <View
-            style={{ backgroundColor: '#fff', borderRadius: 20 }}>
-            {this.state.adver_arr.map((item, id, index) => {
+        <ScrollView style={{ flex: 1 }}>
+          <KeyboardAwareScrollView
+            // extraScrollHeight={10}
+            nestedScrollEnabled
+            enableOnAndroid={true}
+            style={s.subContainer}
+            contentContainerStyle={s.subContentContainer}
+            keyboardShouldPersistTaps={'always'}
+            showsVerticalScrollIndicator={false}>
+            <View
+              style={{ backgroundColor: '#fff', borderRadius: 20 }}>
+              {this.state.adver_arr && this.state.adver_arr.length > 0 && this.state.adver_arr.map((item, id, index) => {
 
-              console.log(')))))200', item);
-              return (
-                <TouchableOpacity
-                  activeOpacity={0.8}>
-                  <View style={{ flexDirection: 'row', top: 12 }}>
-                    <View style={{ width: '10%' }} />
-                    <View style={{ width: '35%' }}>
-                      <Text style={{ textAlign: 'left' }}>
-                        { user.value ==1 ? item.addon_product_name[1] :  item.addon_product_name[0]}{' '}
-                      </Text>
+                console.log(')))))200', item);
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.8}>
+                    <View style={{ flexDirection: 'row', top: 12 }}>
+                      <View style={{ width: '10%' }} />
+                      <View style={{ width: '35%' }}>
+                        <Text style={{ textAlign: 'left' }}>
+                          {user.value == 1 ? item.addon_product_name[1] : item.addon_product_name[0]}{' '}
+                        </Text>
+                      </View>
+
+                      <View style={{ width: '35%', textAlign: 'right' }}>
+                        <Text
+                          style={{
+                            textAlign: 'right',
+                            marginLeft: '20%',
+                            fontFamily: FontFamily.default,
+                          }}>
+                          {' $'}
+                          {item.addon_product_price}
+                        </Text>
+                      </View>
+                      <View style={{ width: '10%', padding: 0, top: -15 }}>
+
+                        <CheckBox
+                          // value={this.state.isChecked}
+                          // onValueChange={setSelection}
+                          checked={item && item.isChecked}
+                          key={index}
+                          onPress={() => this.onChangeCheck(item, index, id)}
+                          style={s.checkbox}
+                        />
+
+                      </View>
+
                     </View>
 
-                    <View style={{ width: '35%', textAlign: 'right' }}>
-                      <Text
-                        style={{
-                          textAlign: 'right',
-                          marginLeft: '20%',
-                          fontFamily: FontFamily.default,
-                        }}>
-                        {' $'}
-                        {item.addon_product_price}
-                      </Text>
-                    </View>
-                    <View style={{ width: '10%', padding: 0, top: -15 }}>
+                  </TouchableOpacity>
+                );
+              })}
 
-                      <CheckBox
-                        // value={this.state.isChecked}
-                        // onValueChange={setSelection}
-                        checked={item && item.isChecked}
-                        key={index}
-                        onPress={() => this.onChangeCheck(item, index, id)}
-                        style={s.checkbox}
-                      />
+            </View>
 
-                    </View>
-
-                  </View>
-
-                </TouchableOpacity>
-              );
-            })}
-          
-          </View>
-         
-          <View
-            style={{
-              height: 0.5,
-              width: '89%',
-              backgroundColor: Colors.black,
-              alignSelf: 'center',
-            }}
-          />
-          <View
-            style={{
-              height: 60,
-              width: '89%',
-              alignSelf: 'center',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Text
+            <View
               style={{
-                marginLeft: 10,
-                fontFamily: FontFamily.semi_bold,
-                color: Colors.black,
-                fontSize: 18,
-              }}>
-             {user.value == 1 ?  Lang_chg.extraHourtrip[1] : Lang_chg.extraHourtrip[0]}
-            </Text>
-            <Text
-              style={{
-                marginLeft: 10,
-                fontFamily: FontFamily.semi_bold,
-                color: Colors.black,
-                fontSize: 18,
-              }}>
-              {' '}
-              #
-            </Text>
-            <Input
-
-              inputContainerStyle={{
-                marginTop: 20,
-                height: 40,
-                width: 120,
-                right: 0,
-              }}
-              inputStyle={{
-                fontSize: 14,
-                width: 100,
-                fontFamily: FontFamily.default,
-                color: Colors.black,
-              }}
-              onSubmitEditing={() => {
-                Keyboard.dismiss();
-              }}
-              keyboardType="numeric"
-              maxLength={50}
-              minLength={6}
-              defaultValue={this.state.extraHours}
-              // onChangeText={val => this.setState({couponCode: val})}
-              onChangeText={txt => {
-                this.setState({ extraHours: txt });
+                height: 0.5,
+                width: '89%',
+                backgroundColor: Colors.black,
+                alignSelf: 'center',
               }}
             />
-          </View>
-          <View
-            style={{
-              height: 60,
-              width: '89%',
-              alignSelf: 'center',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Text
+            <View
               style={{
-                marginLeft: 10,
-                fontFamily: FontFamily.semi_bold,
-                color: Colors.black,
-                fontSize: 18,
+                height: 60,
+                width: '89%',
+                alignSelf: 'center',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
               }}>
-              {user.value == 1  ? Lang_chg.txt_discount[1] : Lang_chg.txt_discount[0]}
-            </Text>
-            <Text
+              <Text
+                style={{
+                  marginLeft: 10,
+                  fontFamily: FontFamily.semi_bold,
+                  color: Colors.black,
+                  fontSize: 18,
+                }}>
+                {user.value == 1 ? Lang_chg.extraHourtrip[1] : Lang_chg.extraHourtrip[0]}
+              </Text>
+              <Text
+                style={{
+                  marginLeft: 10,
+                  fontFamily: FontFamily.semi_bold,
+                  color: Colors.black,
+                  fontSize: 18,
+                }}>
+                {' '}
+                #
+              </Text>
+              <Input
+
+                inputContainerStyle={{
+                  marginTop: 20,
+                  height: 40,
+                  width: 120,
+                  right: 0,
+                }}
+                inputStyle={{
+                  fontSize: 14,
+                  width: 100,
+                  fontFamily: FontFamily.default,
+                  color: Colors.black,
+                }}
+                onSubmitEditing={() => {
+                  Keyboard.dismiss();
+                }}
+                keyboardType="numeric"
+                maxLength={50}
+                minLength={6}
+                defaultValue={this.state.extraHours}
+                // onChangeText={val => this.setState({couponCode: val})}
+                onChangeText={txt => {
+                  this.setState({ extraHours: txt });
+                }}
+              />
+            </View>
+            <View
               style={{
-                marginLeft: 10,
-                fontFamily: FontFamily.semi_bold,
-                color: Colors.black,
-                fontSize: 18,
-
+                height: 60,
+                width: '89%',
+                alignSelf: 'center',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
               }}>
-              {' '}
-              #
-            </Text>
-            <Input
+              <Text
+                style={{
+                  marginLeft: 10,
+                  fontFamily: FontFamily.semi_bold,
+                  color: Colors.black,
+                  fontSize: 18,
+                }}>
+                {user.value == 1 ? Lang_chg.txt_discount[1] : Lang_chg.txt_discount[0]}
+              </Text>
+              <Text
+                style={{
+                  marginLeft: 10,
+                  fontFamily: FontFamily.semi_bold,
+                  color: Colors.black,
+                  fontSize: 18,
 
-              inputContainerStyle={{
-                height: 40,
-                width: 120,
-                right: 0,
+                }}>
+                {' '}
+                #
+              </Text>
+              <Input
+
+                inputContainerStyle={{
+                  height: 40,
+                  width: 120,
+                  right: 0,
+                }}
+                inputStyle={{
+                  fontSize: 14,
+                  width: 100,
+                  fontFamily: FontFamily.default,
+                  color: Colors.black,
+                }}
+                defaultValue={this.state.couponCode}
+                onChangeText={val => this.setState({ couponCode: val })}
+              />
+            </View>
+            <View
+              style={{
+                height: 0.7,
+                width: '89%',
+                backgroundColor: Colors.black,
+                alignSelf: 'center',
+
               }}
-              inputStyle={{
-                fontSize: 14,
-                width: 100,
-                fontFamily: FontFamily.default,
-                color: Colors.black,
-              }}
-              defaultValue={this.state.couponCode}
-              onChangeText={val => this.setState({ couponCode: val })}
             />
-          </View>
-          <View
-            style={{
-              height: 0.7,
-              width: '89%',
-              backgroundColor: Colors.black,
-              alignSelf: 'center',
+            <View
+              style={{
+                alignContent: 'center',
+                alignSelf: 'center',
+                // position: 'absolute',
+                // bottom: 40,
+                width: '100%',
+                alignItems: 'center',
+                backgroundColor: 'white'
 
-            }}
-          />
-          <View
-          style={{
-            alignContent: 'center',
-            alignSelf: 'center',
-            // position: 'absolute',
-            // bottom: 40,
-            width: '100%',
-            alignItems: 'center',
-            backgroundColor:'white'
-
-          }}>
-          <TouchableOpacity style={s.Btn2} onPress={() => this.ExtraRequest()}>
-            <Text style={[s.Btn1Text, { color: Colors.orange, }]}>{user.value == 1  ? Lang_chg.Skip[1] : Lang_chg.Skip[0]}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={s.Btn1} onPress={() => this.ExtraRequest()}>
-            <Text style={s.Btn1Text}>{user.value == 1  ? Lang_chg.Proceedtrip[1] : Lang_chg.Proceedtrip[0]}</Text>
-          </TouchableOpacity>
-        </View>
-        <Text>{'\n'}</Text>
-        <Text>{'\n'}</Text>
-        </KeyboardAwareScrollView>
+              }}>
+              <TouchableOpacity style={s.Btn2} onPress={() => this.ExtraRequest()}>
+                <Text style={[s.Btn1Text, { color: Colors.orange, }]}>{user.value == 1 ? Lang_chg.Skip[1] : Lang_chg.Skip[0]}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={s.Btn1} onPress={() => this.ExtraRequest()}>
+                <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.Proceedtrip[1] : Lang_chg.Proceedtrip[0]}</Text>
+              </TouchableOpacity>
+            </View>
+            <Text>{'\n'}</Text>
+            <Text>{'\n'}</Text>
+          </KeyboardAwareScrollView>
         </ScrollView>
       </View>
 

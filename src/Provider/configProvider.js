@@ -31,7 +31,7 @@ class configProvider {
 	img_url2 = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/700X700/';
 	img_url3 = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/';
 	image_url4 = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/';
-	appUrl = 'https://play.google.com/store/apps/details?id=com.whatsapp.w4b';
+	appUrl = 'https://apps.apple.com/us/app/myboat/id1570418310';
 
 
 

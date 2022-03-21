@@ -9,7 +9,7 @@ import {
   FlatList,
   Image,
   ActivityIndicator,
-  Modal
+  Modal,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Input, Card, AirbnbRating } from 'react-native-elements';
@@ -33,9 +33,10 @@ import { renderNode } from 'react-native-elements/dist/helpers';
 import { apifuntion } from '../../Provider/apiProvider';
 import { config } from '../../Provider/configProvider';
 // import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import {  Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import { UserContext } from "./UserContext";
 import { Lang_chg } from '../../Provider/Language_provider';
+var moment = require('moment');
 
 
 export default class TripType extends Component {
@@ -54,10 +55,10 @@ export default class TripType extends Component {
       type_gear: [],
       entertainment: [],
       food: [],
-      triphours:'',
-      rating:'',
+      triphours: '',
+      rating: '',
       advertisment: '',
-      Guests:'',
+      Guests: '',
       foodselected: null,
       entertainmentselected: null,
       citylistselected: null,
@@ -69,19 +70,20 @@ export default class TripType extends Component {
       modalVisible3: false,
       descending: false,
       short: 'none',
-      userid:'',
+      userid: '',
+      dob: '',
     };
     this.foodArr = [];
-    this.enterarr =[];
-    this.equipmearr=[];
-    this.cityarr =[];
+    this.enterarr = [];
+    this.equipmearr = [];
+    this.cityarr = [];
 
     // console.log(this.props.navigation.state.params.item)
   }
 
   componentDidMount() {
     // const text = this.props.navigation.getParams('item');
-     console.log('did ', this.state.trip_type);
+    console.log('did ', this.state.trip_type);
     this.getData('user_arr');
   }
 
@@ -99,12 +101,12 @@ export default class TripType extends Component {
       if (value !== null) {
         const arrayData = JSON.parse(value);
 
-         console.log(arrayData);
+        console.log(arrayData);
         this.setState({ localData: arrayData, isLoading: false });
         // this.ProfileDetail(arrayData.user_id);
         this.TripType();
         this.filterdata(arrayData.user_id);
-        this.setState({userid:arrayData.user_id});
+        this.setState({ userid: arrayData.user_id });
       } else {
         // this.ProfileDetail(null);
         this.TripType(null);
@@ -133,23 +135,23 @@ export default class TripType extends Component {
 
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
 
-     console.log(url, 'user details url in filter array');
+    console.log(url, 'user details url in filter array');
     try {
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-       console.log('json  ', json);
+      console.log('json  ', json);
 
       if (json.success == 'true') {
         this.setState({ addon_arr: json.addon_arr != 'NA' ? json.addon_arr : [] });
-        this.equipmearr =json.addon_arr[2].addon_products;
+        this.equipmearr = json.addon_arr[2].addon_products;
         this.setState({ type_gear: json.addon_arr[2].addon_products })
 
         this.foodArr = json.addon_arr[0].addon_products;
         this.setState({ food: json.addon_arr[0].addon_products })
-        this.enterarr =json.addon_arr[1].addon_products ;
+        this.enterarr = json.addon_arr[1].addon_products;
         this.setState({ entertainment: json.addon_arr[1].addon_products })
-this.cityarr=  json.selected_City_Array ;
+        this.cityarr = json.selected_City_Array;
         this.setState({ citylist: json.selected_City_Array != 'NA' ? json.selected_City_Array : [] })
 
         // console.log('typearr :>> ', this.state.type_gear);
@@ -266,7 +268,7 @@ this.cityarr=  json.selected_City_Array ;
       rating: '',
       advertisment: '',
       entertainment: this.enterarr,
-      Guests:'',
+      Guests: '',
     });
   }
   async TripType() {
@@ -311,16 +313,21 @@ this.cityarr=  json.selected_City_Array ;
   };
   handleConfirm = date => {
     console.warn('A date has been picked: ', date);
-    // this.setState({
-    //   dob: moment(date).format('YYYY-MM-DD'),
-    // });
+    var now = moment(date).format('YYYY-MM-DD');
+    console.log('now :>> ', now);
+    this.setState({
+      dob: now,
+    }, () => {
+      this.ShowResult();
+    });
     this.hideDatePicker();
+
   };
 
   Price = () => {
     this.setState({ modalVisible2: true });
   };
-  filtertrip =() => {
+  filtertrip = () => {
     this.setState({ modalVisible: true });
   }
 
@@ -330,7 +337,7 @@ this.cityarr=  json.selected_City_Array ;
     const sortedAds = this.sortAdsByPrice(this.state.destinations_arr, descending);
 
     this.setState({
-      destinations_arr:sortedAds
+      destinations_arr: sortedAds
     })
   }
 
@@ -350,29 +357,29 @@ this.cityarr=  json.selected_City_Array ;
     console.log('goto');
     this.props.navigation.navigate('GoogleMap', {
       destinations_arr: this.state.destinations_arr,
-      type:3
+      type: 3
     });
   }
 
   async ShowResult() {
-        this.setState({ modalVisible: false });
-   
+    this.setState({ modalVisible: false });
+
     let url =
       config.baseURL +
       'adver_filter_island.php?user_id_post=' +
       this.state.userid +
       '&latitude=29.3117&longitude=47.4818&find_key=NA&trip_type=all&trip_type_id_send=' +
-      this.state.trip_type.trip_id + 
+      this.state.trip_type.trip_id +
       '&filter_guest=' + this.state.Guests + '&filter_triphours=' +
       this.state.triphours
       + '&filter_food=' +
       this.state.foodselected + '&filter_entertainment=' + this.state.entertainmentselected +
       '&filter_citylist=' + this.state.citylistselected + '&filter_advertisement=' + this.state.advertisment +
-      '&filter_equipement=' + this.state.type_gearslected 
+      '&filter_equipement=' + this.state.type_gearslected + '&choose_Date=' + this.state.dob
       ;
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
 
-     console.log(url);
+    console.log(url);
     try {
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
@@ -384,7 +391,7 @@ this.cityarr=  json.selected_City_Array ;
         this.setState({ modalVisible2: false });
         this.setState({ modalVisible3: false });
         if (json && json.destinations_arr != "NA") {
-          this.setState({ destinations_arr:  json.destinations_arr != 'NA' ? json.destinations_arr : [], });
+          this.setState({ destinations_arr: json.destinations_arr != 'NA' ? json.destinations_arr : [], });
         } else {
           this.setState({ destinations_arr: [] });
         }
@@ -395,8 +402,8 @@ this.cityarr=  json.selected_City_Array ;
     } catch (error) {
       console.log(error);
       this.setState({ modalVisible: false });
-        this.setState({ modalVisible2: false });
-        this.setState({ modalVisible3: false });
+      this.setState({ modalVisible2: false });
+      this.setState({ modalVisible3: false });
     } finally {
       this.setState({ isLoading: false });
     }
@@ -404,9 +411,11 @@ this.cityarr=  json.selected_City_Array ;
 
 
   render() {
-console.log('this.state.des :>> ', this.state.destinations_arr);
-const user = this.context
-console.log('context in home', user);
+    console.log('this.state.des :>> ', this.state.destinations_arr);
+    console.log('this.state.des :>> ', this.state.dob);
+
+    const user = this.context
+    console.log('context in home', user);
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
         <Header2
@@ -415,7 +424,7 @@ console.log('context in home', user);
           backImgSource={
             config.baseURL + 'images/' + this.state.trip_type.cover_image
           }
-          name={ user.value == 1 ?  this.state.trip_type.trip_type_name_arabic :this.state.trip_type.trip_type_name}
+          name={user.value == 1 ? this.state.trip_type.trip_type_name_arabic : this.state.trip_type.trip_type_name}
           searchBtn={false}
           headerHeight={300}
         />
@@ -450,7 +459,7 @@ console.log('context in home', user);
                 fontFamily: 'Montserrat-Regular',
               }}>
               {' '}
-             {user.value ==1 ? Lang_chg.Sortby[1] :Lang_chg.Sortby[0] }{' '}
+              {user.value == 1 ? Lang_chg.Sortby[1] : Lang_chg.Sortby[0]}{' '}
             </Text>
           </TouchableOpacity  >
           <TouchableOpacity style={s.col} onPress={() => this.filtertrip()}>
@@ -466,7 +475,7 @@ console.log('context in home', user);
                 color: '#0A8481',
                 fontFamily: 'Montserrat-Regular',
               }}>
-             {user.value ==1 ? Lang_chg.text_filter[1] :Lang_chg.text_filter[0] }{' '}
+              {user.value == 1 ? Lang_chg.text_filter[1] : Lang_chg.text_filter[0]}{' '}
             </Text>
           </TouchableOpacity>
 
@@ -491,7 +500,7 @@ console.log('context in home', user);
                 fontFamily: 'Montserrat-Regular',
               }}>
               {' '}
-             {user.value == 1 ? Lang_chg.map[1] : Lang_chg.map[0]}
+              {user.value == 1 ? Lang_chg.map[1] : Lang_chg.map[0]}
             </Text>
           </TouchableOpacity>
         </View>
@@ -528,7 +537,7 @@ console.log('context in home', user);
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => {
               return (
-                <View style={{ }}>
+                <View style={{}}>
                   <TouchableOpacity
                     onPress={() =>
                       this.props.navigation.navigate('DestinationList', {
@@ -573,7 +582,7 @@ console.log('context in home', user);
                       {/*  */}
                       <View style={s.SEC3}>
                         <View style={{}}>
-                          <Text style={s.title}>{user.value == 1 ? item.destination_name_arabic :item.destination_name}</Text>
+                          <Text style={s.title}>{user.value == 1 ? item.destination_name_arabic : item.destination_name}</Text>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -630,6 +639,7 @@ console.log('context in home', user);
         <DateTimePickerModal
           isVisible={this.state.isShowDatePicker}
           mode="date"
+          minimumDate={new Date()}
           onConfirm={this.handleConfirm}
           onCancel={this.hideDatePicker}
         />
@@ -1245,7 +1255,7 @@ console.log('context in home', user);
                           color:
                             this.state.Guests != '7_9' ? Colors.orange : '#fff',
                         }}>
-                       7 - 9
+                        7 - 9
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -1357,7 +1367,7 @@ console.log('context in home', user);
                         alignSelf: 'center',
                         color: this.state.triphours != '5_6' ? Colors.orange : '#fff',
                       }}>
-                     5-6hr
+                      5-6hr
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -1403,7 +1413,7 @@ console.log('context in home', user);
                         alignSelf: 'center',
                         color: this.state.triphours != '9_10' ? Colors.orange : '#fff',
                       }}>
-                    9-10h
+                      9-10h
                     </Text>
                   </View>
                 </TouchableOpacity>

@@ -16,15 +16,12 @@ export const createNotificationListener = async () => {
   messaging().onNotificationOpenedApp(async remoteMessage => {
     // setTimeout(() => {
     //   console.log(
-    //     NavigationService,
+    //     navigation,
     //     'hte +++++++++++++++++++++++++++++++++++++++++++',
     //   );
-    //   remoteMessage.data?.type == '1'
-    //     ? NavigationService.navigate('FriendRequests')
-    //     : remoteMessage.data?.type == '2'
-    //     ? NavigationService.navigate('Like')
-    //     : NavigationService.navigate('Home');
-    // }, 3000);
+    //   remoteMessage.data?.type == "chat_message"
+    //    &&  navigation.navigate('SignUp')
+    // }, 1000);
   });
 
   messaging().onMessage(async remoteMessage => {

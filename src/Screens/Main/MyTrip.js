@@ -32,6 +32,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { config } from '../../Provider/configProvider';
 import { UserContext } from "./UserContext";
 import { Lang_chg } from '../../Provider/Language_provider';
+import TimeAgo from "react-native-timeago";
+
 
 export class MyTrip extends PureComponent {
   static contextType = UserContext
@@ -112,15 +114,19 @@ export class MyTrip extends PureComponent {
               justifyContent: 'space-between',
             }}>
             <View style={{ width: Sizes.width / 2.2  , alignItems:'flex-start'}}>
-              <Text style={s.name}>{item.booking_no}</Text>
+              <Text style={s.name}>{item.captain_name[0]}</Text>
               <Text style={s.type}>{item.boat_name}</Text>
-              <Text style={s.id}>{item.id}</Text>
-              <Text style={s.type}>{item.time}</Text>
+              <Text style={s.name}>#{item.booking_no}</Text>
+              {/* <Text style={s.id}>{item.id}</Text>/ */}
+              <Text style={s.type}>{item.date}</Text>
             </View>
             <View style={{ justifyContent: 'space-around', marginLeft: -6  }}>
               <Text style={[s.type, { textAlign: 'right' }]}>
-                {item.status_time}
+              {/* <TimeAgo time={item?.createtime} /> */}
+{item.createtime}
               </Text>
+             
+
               <Text style={s.price}>{item.total_amt}</Text>
               { item.booking_status === 0 ? 
               <Text

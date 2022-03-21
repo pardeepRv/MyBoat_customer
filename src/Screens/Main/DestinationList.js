@@ -461,11 +461,11 @@ this.cityarr=  json.selected_City_Array ;
 
 
   onShare = async (imgUrl) => {
-    console.log(imgUrl, 'link');
+     console.log(imgUrl, 'link');
+
     try {
       const result = await Share.share({
-        title: 'Lokahi fishing',
-        // message: 'Sharing from lokahi',
+        title: 'My Boat',
         url: imgUrl
       });
       console.log(result, 'result on share >>>>>>>>>>>>>>>>>');
@@ -508,7 +508,7 @@ this.cityarr=  json.selected_City_Array ;
       '&filter_price=0&filter_toilet=0' + '&filter_food=' +
       this.state.foodselected + '&filter_entertainment=' + this.state.entertainmentselected +
       '&filter_citylist=' + this.state.citylistselected + '&filter_advertisement=' + this.state.advertisment +
-      '&filter_equipement=' + this.state.type_gearslected +
+      '&filter_equipement=' + this.state.type_gearslected + "&choose_date=" + this.state.calender_arr.date  +
       '&sort_key=' +
       this.state.short;
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
@@ -551,6 +551,7 @@ this.cityarr=  json.selected_City_Array ;
     console.log('rating :>> ', this.state.rating);
     console.log('cabin :>> ', this.state.cabin);
     console.log('destiation :>> ', this.state.destination);
+    console.log('destiation :>> ', this.state.calender_arr);
 
 
     const user = this.context

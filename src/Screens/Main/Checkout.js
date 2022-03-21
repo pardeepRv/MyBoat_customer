@@ -66,22 +66,22 @@ export default class Checkout extends Component {
       selectedPaymentMethod: 0,
       paymentMethod: [
         {
-          title: 'KNET',
+          title: 'knet',
           image: require('../../../assets/icons/payment1.png'),
           checked: false
         },
         {
-          title: 'Credit Card',
+          title: 'credit',
           image: require('../../../assets/icons/payment2.png'),
           checked: false
         },
         {
-          title: 'Bookeey PG',
+          title: 'Bookeey',
           image: require('../../../assets/icons/payment3.png'),
           checked: false
         },
         {
-          title: 'AMEX',
+          title: 'amex',
           image: require('../../../assets/icons/payment4.png'),
           checked: false
         }
@@ -171,7 +171,7 @@ export default class Checkout extends Component {
         return obj.json();
       })
       .then(obj => {
-       return  console.log(obj);
+        console.log(obj);
 
         if (obj.success == 'true') {
           this.setState({
@@ -439,6 +439,7 @@ export default class Checkout extends Component {
   };
 
   render() {
+    console.log('this.state. :>> ', this.state.selectedPaymentMethod);
     const user = this.context
     console.log('context in home', user);
     return (
@@ -448,7 +449,7 @@ export default class Checkout extends Component {
           notiBtn={false}
           backBtn
           searchBtn={false}
-          name={user.value ==1 ? Lang_chg.text_checkout[1] : Lang_chg.text_checkout[0]}
+          name={user.value == 1 ? Lang_chg.text_checkout[1] : Lang_chg.text_checkout[0]}
           headerHeight={120}
           backImgSource={require('../../Images/back1.jpg')}
         />
@@ -482,7 +483,7 @@ export default class Checkout extends Component {
 
               <View style={s.item}>
                 <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                {this.props.route.params.adv.user_name}
+                  {this.props.route.params.adv.user_name}
                 </Text>
               </View>
             </View>
@@ -541,7 +542,7 @@ export default class Checkout extends Component {
 
               <View style={s.item}>
                 <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                  {this.props.route.params.extraHours ? this.props.route.params.extraHours  : '0'}
+                  {this.props.route.params.extraHours ? this.props.route.params.extraHours : '0'}
                   {/* {this.state.data?.extraHours}{' '} */}
                 </Text>
               </View>
@@ -558,10 +559,10 @@ export default class Checkout extends Component {
                 flexDirection: 'row',
                 alignItems: 'flex-start'
               }}>
-                {this.state.adv.map((item) => {
+                {this.state.adv && this.state.adv.length > 0 && this.state.adv.map((item) => {
                   return (
                     <View style={{}}>
-                      <Text style={[{ fontFamily: FontFamily.default , fontSize: 12 }]}>
+                      <Text style={[{ fontFamily: FontFamily.default, fontSize: 12 }]}>
                         {item.add_On_name == "Equipment " &&
                           item.isChecked == true ?
                           `${item.addon_product_name[0]},` :
@@ -582,10 +583,10 @@ export default class Checkout extends Component {
                 height: 18,
                 flexDirection: 'row',
               }}>
-                {this.state.adv.map((item) => {
+                {this.state.adv && this.state.adv.length > 0 && this.state.adv.map((item) => {
                   return (
                     <View style={{}}>
-                      <Text style={[{ fontFamily: FontFamily.default  , fontSize:12}]}>
+                      <Text style={[{ fontFamily: FontFamily.default, fontSize: 12 }]}>
                         {item.add_On_name == "entertainment" &&
                           item.isChecked == true ?
                           `${item.addon_product_name[0]},` :
@@ -607,12 +608,12 @@ export default class Checkout extends Component {
                 height: 18,
                 flexDirection: 'row',
                 // justifyContent:'space-around',
-                alignItems:'flex-start'
+                alignItems: 'flex-start'
               }}>
-                {this.state.adv.map((item) => {
+                {this.state.adv && this.state.adv.length > 0 && this.state.adv.map((item) => {
                   return (
                     <View style={{}}>
-                      <Text style={[{ fontFamily: FontFamily.default , fontSize:12 }]}>
+                      <Text style={[{ fontFamily: FontFamily.default, fontSize: 12 }]}>
                         {item.add_On_name == "Food" &&
                           item.isChecked == true ?
                           `${item.addon_product_name[0]},` :
@@ -713,13 +714,13 @@ export default class Checkout extends Component {
 
               <View style={s.item}>
                 <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                {this.props.route.params.adv.trip_type_name[0]}
+                  {this.props.route.params.adv.trip_type_name[0]}
 
                 </Text>
               </View>
             </View>
-            <View></View>
-            <View style={{flex:1, marginBottom:40}}>
+            <View style={{ height: 2, backgroundColor: 'grey' }}></View>
+            <View style={{ flex: 1, marginBottom: 40 }}>
               <Text
                 style={{
                   lineHeight: 27,
@@ -731,35 +732,36 @@ export default class Checkout extends Component {
                 Payment Method:
               </Text>
               {this.state.paymentMethod.map(opt => (
-                <View  key={opt.title} style={{flexDirection:'row', justifyContent:'flex-start'}}>
+                <View key={opt.title} style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                   <CheckBox
-                   
-                    checked={ opt.title == this.state.selectedPaymentMethod? true:false}
+                    checkedIcon='dot-circle-o'
+                    uncheckedIcon='circle-o'
+                    checked={opt.title == this.state.selectedPaymentMethod ? true : false}
                     key={opt.title}
                     style={s.checkbox}
-                  
+
                     onPress={(value) => {
                       opt.checked = !opt.checked;
-                      this.setState({ 
-                        selectedPaymentMethod:opt.title, 
-                            paymentMethod: [
-                                ...this.state.paymentMethod
-                            ]
-                        })
+                      this.setState({
+                        selectedPaymentMethod: opt.title,
+                        paymentMethod: [
+                          ...this.state.paymentMethod
+                        ]
+                      })
                     }}
-                   />
+                  />
 
                   <Image
                     source={opt.image}
                     style={s.paymnetImage}
                     resizeMode='contain'
                   />
-                <Text style={s.paymentText}> {opt.title}</Text>
+                  <Text style={s.paymentText}> {opt.title}</Text>
 
-              </View>               
+                </View>
               ))}
-              
-          </View>
+
+            </View>
           </ScrollView>
         </View>
 
@@ -777,7 +779,7 @@ export default class Checkout extends Component {
             justifyContent: 'space-evenly'
           }}>
           <TouchableOpacity style={s.Btn1} onPress={() => this.payment()}>
-            <Text style={s.Btn1Text}>{user.value ==1 ? Lang_chg.text_checkout[1] : Lang_chg.text_checkout[0]}</Text>
+            <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.text_checkout[1] : Lang_chg.text_checkout[0]}</Text>
           </TouchableOpacity>
           <Text
             style={{
@@ -842,7 +844,9 @@ export default class Checkout extends Component {
               <WebView
                 source={{
                   uri:
-                    'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/paymentgateway/bookeey_library/buy.php?amt=' +
+                    'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/paymentgateway/bookeey_library/buy.php?selectedPaymentOption=' +
+                    this.state.selectedPaymentMethod
+                    + '&amt=' +
                     this.state.pay_amount +
                     '&oid=' +
                     this.state.booking_no +
@@ -968,8 +972,8 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
-    justifyContent:'space-between'
-     // if you want to fill rows left to right
+    justifyContent: 'space-between'
+    // if you want to fill rows left to right
   },
   item: {
     width: '45%', // is 50% of container width
@@ -1126,8 +1130,8 @@ const s = StyleSheet.create({
     fontSize: 14,
     justifyContent: 'center',
     textAlignVertical: 'center',
-    top:20,
-    fontFamily:FontFamily.semi_bold
+    top: 20,
+    fontFamily: FontFamily.semi_bold
   },
   checkbox: {
     color: '#fff',
