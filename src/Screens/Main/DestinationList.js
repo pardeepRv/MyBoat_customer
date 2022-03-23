@@ -96,7 +96,7 @@ Guests:'',
 
     this.setState({ getdate: date });
 
-    console.log(this.state.destination);
+    console.log(this.state.destination , 'destination images ');
 
     this.getData('user_arr');
   }
@@ -441,7 +441,7 @@ this.cityarr=  json.selected_City_Array ;
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-      console.log('json  ', json);
+       console.log('json  in addfav/*', json);
 
       if (json.success == 'true') {
         msgProvider.toast(json.msg[config.language], 'center');

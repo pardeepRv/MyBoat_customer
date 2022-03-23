@@ -254,6 +254,7 @@ console.log('context in home', user);
     item["image"] = this.state.other_user_img;
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
+        <View>
         <View
           style={{
             flexDirection: "row",
@@ -264,9 +265,9 @@ console.log('context in home', user);
           {user.value ==1? 
               <TouchableOpacity
               style={{
-                marginBottom: -50,
+
                 alignItems: "flex-start",
-                marginTop: 20,
+                marginTop: 50,
                 marginLeft: 20,
                 backgroundColor: Colors.orange,
                 borderRadius: 25,
@@ -284,9 +285,9 @@ console.log('context in home', user);
           :
           <TouchableOpacity
           style={{
-            marginBottom: -50,
+
             alignItems: "flex-start",
-            marginTop: 20,
+            marginTop: 50,
             marginLeft: 20,
             backgroundColor: Colors.orange,
             borderRadius: 25,
@@ -305,9 +306,9 @@ console.log('context in home', user);
 
           <TouchableOpacity
             style={{
-              marginBottom: -50,
+            zIndex:1,
               alignItems: "flex-end",
-              marginTop: 20,
+              marginTop: 50,
               marginRight: 20,
               backgroundColor: Colors.orange,
               borderRadius: 20,
@@ -321,9 +322,7 @@ console.log('context in home', user);
               onPress={this.onShare}
             />
           </TouchableOpacity>
-        </View>
-
-        <ScrollView style={{ flex: 1 }}>
+          </View> 
           <SliderBox
             ImageComponent={FastImage}
             images={this.state.img}
@@ -366,8 +365,13 @@ console.log('context in home', user);
               marginTop: 0,
             }}
             imageLoadingColor="#2196F3"
-          />
 
+          />
+          
+        </View>
+
+        <ScrollView style={{ flex: 1 }}>
+          
           <View style={s.SEC3}>
             <View style={{}}>
               <View

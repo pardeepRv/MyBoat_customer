@@ -478,7 +478,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.text1}> {user.value == 1 ? Lang_chg.Customername[1] : Lang_chg.Customername[0]}</Text>
+                <Text style={s.text1}> {user.value == 1 ? Lang_chg.Customername[0] : Lang_chg.Customername[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -490,7 +490,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.text1}>{user.value == 1 ? Lang_chg.Bookdatetrip[1] : Lang_chg.Bookdatetrip[0]}</Text>
+                <Text style={s.text1}>{user.value == 1 ? Lang_chg.Bookdatetrip[0] : Lang_chg.Bookdatetrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -502,7 +502,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.TripTimetrip[1] : Lang_chg.TripTimetrip[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.TripTimetrip[0] : Lang_chg.TripTimetrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -514,7 +514,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.noogguesttriptour[1] : Lang_chg.noogguesttriptour[0]}</Text>
+                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.noogguesttriptour[0] : Lang_chg.noogguesttriptour[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -526,7 +526,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.triphourcheckout[1] : Lang_chg.triphourcheckout[0]}</Text>
+                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.triphourcheckout[0] : Lang_chg.triphourcheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -537,7 +537,7 @@ export default class Checkout extends Component {
             </View>
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.extrahourcheckout[1] : Lang_chg.extrahourcheckout[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.extrahourcheckout[0] : Lang_chg.extrahourcheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -550,7 +550,7 @@ export default class Checkout extends Component {
 
             <View style={s.container2}>
               <View style={s.item}>
-                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.equpmenttrip[1] : Lang_chg.equpmenttrip[0]}</Text>
+                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.equpmenttrip[0] : Lang_chg.equpmenttrip[0]}</Text>
               </View>
 
               <View style={{
@@ -576,7 +576,7 @@ export default class Checkout extends Component {
 
             <View style={s.container2}>
               <View style={s.item}>
-                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.entertainmenttrip[1] : Lang_chg.entertainmenttrip[0]}</Text>
+                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.entertainmenttrip[0] : Lang_chg.entertainmenttrip[0]}</Text>
               </View>
               <View style={{
                 width: 200,
@@ -600,7 +600,7 @@ export default class Checkout extends Component {
             </View>
             <View style={s.container2}>
               <View style={s.item}>
-                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.foodtrip[1] : Lang_chg.foodtrip[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.foodtrip[0] : Lang_chg.foodtrip[0]}</Text>
               </View>
 
               <View style={{
@@ -627,7 +627,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.Boatplacetrip[1] : Lang_chg.Boatplacetrip[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.Boatplacetrip[0] : Lang_chg.Boatplacetrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -639,7 +639,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.tripdestinationcheckout[1] : Lang_chg.tripdestinationcheckout[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.tripdestinationcheckout[0] : Lang_chg.tripdestinationcheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -651,7 +651,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}>  {user.value == 1 ? Lang_chg.triptypetrip[1] : Lang_chg.triptypetrip[0]}</Text>
+                <Text style={[s.text1]}>  {user.value == 1 ? Lang_chg.triptypetrip[0] : Lang_chg.triptypetrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -662,7 +662,7 @@ export default class Checkout extends Component {
             </View>
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.coupendiscountcheckout[1] : Lang_chg.coupendiscountcheckout[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.coupendiscountcheckout[0] : Lang_chg.coupendiscountcheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -673,7 +673,7 @@ export default class Checkout extends Component {
             </View>
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.coupendiscountcheckout[1] : Lang_chg.coupendiscountcheckout[0]}</Text>
+                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.coupendiscountcheckout[0] : Lang_chg.coupendiscountcheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -685,7 +685,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.toatalpricecheckout[1] : Lang_chg.toatalpricecheckout[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.toatalpricecheckout[0] : Lang_chg.toatalpricecheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -697,7 +697,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.advertismenttypecheckout[1] : Lang_chg.advertismenttypecheckout[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.advertismenttypecheckout[0] : Lang_chg.advertismenttypecheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -709,7 +709,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.advertismenttypecheckout[1] : Lang_chg.advertismenttypecheckout[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.advertismenttypecheckout[0] : Lang_chg.advertismenttypecheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -719,8 +719,8 @@ export default class Checkout extends Component {
                 </Text>
               </View>
             </View>
-            <View style={{ height: 2, backgroundColor: 'grey' }}></View>
-            <View style={{ flex: 1, marginBottom: 40 }}>
+            <View style={{ top :5 , height: 0.5, backgroundColor: 'lightgrey' }}></View>
+            <View style={{ flex: 1,marginTop:20, marginBottom: 40 }}>
               <Text
                 style={{
                   lineHeight: 27,
@@ -736,6 +736,7 @@ export default class Checkout extends Component {
                   <CheckBox
                     checkedIcon='dot-circle-o'
                     uncheckedIcon='circle-o'
+                    checkedColor={Colors.orange}
                     checked={opt.title == this.state.selectedPaymentMethod ? true : false}
                     key={opt.title}
                     style={s.checkbox}

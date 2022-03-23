@@ -28,6 +28,8 @@ import { localStorage } from '../../Provider/localStorageProvider';
 import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Lang_chg } from '../../Provider/Language_provider';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 //import CheckBox from '@react-native-community/checkbox';
 
 export default class SignUp extends Component {
@@ -45,6 +47,7 @@ export default class SignUp extends Component {
       email: props?.route?.params?.google_data?.email ? props?.route?.params?.google_data?.email : '',
       name: props?.route?.params?.google_data?.name ? props?.route?.params?.google_data?.name : '',
       user_name: '',
+      last_name:'',
       login_type: 0,
       user_type_post: 1,
       device_type: config.device_type,
@@ -203,7 +206,7 @@ export default class SignUp extends Component {
     console.log(this.state);
 
     //Keyboard.dismiss()
-    let { name, email, password, confirm_password, phone_number } = this.state;
+    let { name,last_name, email, password, confirm_password, phone_number } = this.state;
 
     if (name.length <= 0) {
       msgProvider.toast(Lang_chg.emptyName[config.language], 'center');
@@ -217,7 +220,18 @@ export default class SignUp extends Component {
       msgProvider.toast(Lang_chg.NameMaxLength[config.language], 'center');
       return false;
     }
-
+    if (last_name.length <= 0) {
+      msgProvider.toast(Lang_chg.emptyName[config.language], 'center');
+      return false;
+    }
+    if (last_name.length <= 2) {
+      msgProvider.toast(Lang_chg.NameMinLength[config.language], 'center');
+      return false;
+    }
+    if (last_name.length > 50) {
+      msgProvider.toast(Lang_chg.NameMaxLength[config.language], 'center');
+      return false;
+    }
     if (email.length <= 0) {
       msgProvider.toast(Lang_chg.emptyEmail[config.language], 'center');
       return false;
@@ -290,7 +304,8 @@ export default class SignUp extends Component {
 
     var data = new FormData();
 
-    data.append('user_name', name);
+    data.append('user_name', name + last_name);
+    // data.append('last_name' , last_name)
     data.append('email', email);
     data.append('country_code', 965);
     data.append('phone_number', phone_number);
@@ -301,7 +316,7 @@ export default class SignUp extends Component {
     data.append('user_type_post', 1);
     data.append('language_id', config.language);
 
-    console.log(data, 'sending to signup api');
+     console.log(data, 'sending to signup api');
     this.setState({ loading: true });
     let url = config.baseURL + 'signup.php';
     apifuntion
@@ -323,7 +338,7 @@ export default class SignUp extends Component {
           localStorage.setItemString('password', password);
           localStorage.setItemString('email', this.state.email);
 
-          console.log('user data===', obj);
+           console.log('user data===', obj);
           var user_arr = obj.user_details;
           var email_arr = obj.email_arr;
           let user_type = user_arr.user_type;
@@ -351,7 +366,7 @@ export default class SignUp extends Component {
               localStorage.setItemString('remember_me', 'no');
               //  firebaseprovider.firebaseUserCreate();
               // firebaseprovider.getMyInboxAllData();
-              //  this.goHomePage()
+               this.goHomePage()
             }
 
             // for mail send
@@ -401,7 +416,7 @@ export default class SignUp extends Component {
           {this.state.inputform || (
             <View>
               <View style={s.lang}>
-                <Icon
+                {/* <Icon
                   name="globe"
                   color="#fff"
                   size={20}
@@ -417,7 +432,7 @@ export default class SignUp extends Component {
                   color="#fff"
                   size={20}
                   style={{ marginTop: 12 }}
-                />
+                /> */}
                 {/* <Picker
             selectedValue={this.state.branch}
             style={{color:'#fff',flex: 0,width: 100 }}
@@ -439,14 +454,21 @@ export default class SignUp extends Component {
 
           </Picker> */}
               </View>
-              <ScrollView>
+              <KeyboardAwareScrollView
+              extraScrollHeight={50}
+              nestedScrollEnabled
+              enableOnAndroid={true}
+              style={s.subContainer}
+              contentContainerStyle={s.subContentContainer}
+              keyboardShouldPersistTaps={'always'}
+              showsVerticalScrollIndicator={false}>
                 <View style={s.Logo1}>
                   <Image source={require('../../Images/appicon.png')} style={s.Logo} />
                 </View>
                 {/* <Text style={s.Text1}>Boat Owner</Text> */}
                 <View style={{ marginVertical: 10 }}>
                   <Input
-                    placeholder="Name"
+                    placeholder="First Name"
                     // containerStyle={s.Input}
                     // inputContainerStyle={s.Input}
                     placeholderTextColor={Colors.white}
@@ -455,6 +477,17 @@ export default class SignUp extends Component {
                       this.setState({ name: txt });
                     }}
                     defaultValue={this.state.name}
+                  />
+                  <Input
+                    placeholder="Last Name"
+                    // containerStyle={s.Input}
+                    // inputContainerStyle={s.Input}
+                    placeholderTextColor={Colors.white}
+                    inputStyle={{ color: Colors.white }}
+                    onChangeText={txt => {
+                      this.setState({ last_name: txt });
+                    }}
+                    defaultValue={this.state.last_name}
                   />
                   <Input
                     placeholder="Email"
@@ -509,6 +542,7 @@ export default class SignUp extends Component {
                     onChange={() => this.onChangeCheck()}
                     onPress={() => this.onChangeCheck(this.state.isSelected)}
                     style={s.checkbox}
+                    checkedColor={Colors.orange}
                   />
                   <Text style={s.Text1}>
                     By sign up, you agree to our <Text> </Text>
@@ -566,7 +600,8 @@ export default class SignUp extends Component {
                     </Text>
                   </Text>
                 </View>
-              </ScrollView>
+              
+                </KeyboardAwareScrollView>
             </View>
           )}
 
@@ -776,6 +811,14 @@ const s = StyleSheet.create({
     fontSize: 20,
     fontFamily: FontFamily.semi_bold,
     color: Colors.white,
+  },
+  subContainer: {
+    // height: layout.size.height ,
+    // flex: 1,
+    // backgroundColor:colors.secondry
+  },
+  subContentContainer: {
+    paddingBottom: 12,
   },
 });
 //export default SignUp;

@@ -35,7 +35,7 @@ export default class Home extends Component {
       isLoading: false,
       err: false
     };
-    
+
   }
 
   backAction = () => {
@@ -58,8 +58,8 @@ export default class Home extends Component {
     // this.backHandler.remove();
     this._unsubscribe();
   }
-   socketintial = async () => {
-     const value = await AsyncStorage.getItem('user_arr');
+  socketintial = async () => {
+    const value = await AsyncStorage.getItem('user_arr');
     console.log('value :>> ', value);
     const arrayData = JSON.parse(value);
     console.log('arrayData :>> ', arrayData);
@@ -73,7 +73,7 @@ export default class Home extends Component {
     }
   };
 
-   componentDidMount() {
+  componentDidMount() {
     this.socketintial();
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       console.log('focus :>> ');
@@ -269,6 +269,8 @@ export default class Home extends Component {
 
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
+            {/* <View style={{height:25}}></View> */}
+        
         <Header
           imgBack={true}
           notiBtn={true}
@@ -596,7 +598,7 @@ export default class Home extends Component {
                 fontWeight: 'bold',
                 padding: 8,
               }}>
-              {user.value == 1 ? Lang_chg.txt_type_of_trips[1] :Lang_chg.txt_type_of_trips[0]}
+              {user.value == 1 ? Lang_chg.txt_type_of_trips[1] : Lang_chg.txt_type_of_trips[0]}
             </Text>
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
 
@@ -634,12 +636,13 @@ export default class Home extends Component {
                   <View
                     style={{
                       flex: 1,
+                      height: 120,
                       alignSelf: 'center',
                       alignItems: 'center',
                       alignContent: 'center',
                       backgroundColor: item.no_of_boat > 0 ? Colors.white : Colors.gray,
                       margin: 15,
-                      borderRadius: 8,
+                      borderRadius: 22,
                       padding: 10,
                       shadowColor: '#000',
                       // width:90,
@@ -648,29 +651,46 @@ export default class Home extends Component {
                       shadowOpacity: 0.8,
                       shadowRadius: 2,
                       elevation: 5,
-                    }}>
+                    }}
+                  >
 
                     <TouchableOpacity
                       onPress={
                         () => item.no_of_boat > 0 ? this.ChangeColor(index, item) : null
                         //  this.handleClick(item)
                       }
-                      style={{width:100 , padding:2}}
-                      >
+                      activeOpacity={0.8}
+
+                      style={
+                        {
+                          top: -12,
+                          borderRadius: 20,
+                          alignItems: 'center',
+                          alignSelf: 'center',
+                          alignContent: 'center',
+                          height: 90,
+                          width: 110,
+                          borderRadius: 7,
+                          elevation: 5,
+                          margin: 7,
+                          // backgroundColor:Colors.orange
+                        }
+                      }
+                    >
                       <Image
                         source={{
                           uri: config.baseURL + 'images/' + item.icon_green,
                         }}
-                        style={{ height: 40, width: 100, resizeMode: 'cover' }}
+                        style={{ height: 50, width: 50, resizeMode: 'contain' }}
                       />
                       <Text
                         style={{
                           color: Colors.orange,
                           fontWeight: 'bold',
                           fontSize: 16,
-                          textAlign:'center', 
+                          textAlign: 'center',
                         }}>
-                        {user.value == 1  ? item.trip_type_name_arabic : item.trip_type_name}
+                        {user.value == 1 ? item.trip_type_name_arabic : item.trip_type_name}
                       </Text>
 
                       <Text style={{ color: '#b6b6b6' }}>

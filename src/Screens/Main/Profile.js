@@ -40,7 +40,7 @@ const CustomHeader = ({ name }) => {
         style={{
           // width: '90%',
           width: 80,
-          marginTop: 30,
+          marginTop: 50,
           alignSelf: 'center',
           backgroundColor: 'transparent',
           alignItems: 'center',

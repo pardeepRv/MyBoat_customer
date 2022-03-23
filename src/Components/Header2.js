@@ -43,7 +43,7 @@ const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,
                imageStyle={s.ImageBackground_Img}
                 >
                     {user.value == 1 ? (
-                        <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:30,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
+                        <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:50,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
                         {
                             state.backBtn ? (
                                 <TouchableOpacity onPress={()=>gotoBack()}  style={{transform: [{ rotate: '180deg'}] ,backgroundColor:Colors.orange , borderRadius:20}} >
@@ -69,7 +69,7 @@ const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,
                         }
                     </View>
                     ): (
-                        <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:30,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
+                        <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:50,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
                         {
                             state.backBtn ? (
                                 <TouchableOpacity onPress={()=>gotoBack()}  style={{backgroundColor:Colors.orange , borderRadius:20}} >
@@ -102,7 +102,7 @@ const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,
                 style={[s.ImageBackground,{backgroundColor:state.backColor,height:state.headerHeight}]}
                 >
                     {user.value == 1 ? (
-                    <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:30,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
+                    <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:50,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
                     {
                         state.backBtn ? (
                             <TouchableOpacity onPress={()=>gotoBack()} style={{transform: [{ rotate: '180deg'}] ,backgroundColor:Colors.orange , borderRadius:20}}>
@@ -126,7 +126,7 @@ const Header2 = ({backBtn,notiBtn,searchBtn,name,imgBack,backColor,headerHeight,
                     }
                 </View>
                     ):(
-                        <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:30,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
+                        <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%",marginTop:50,alignSelf:"center",backgroundColor:"transparent",alignItems:"center"}}>
                         {
                             state.backBtn ? (
                                 <TouchableOpacity onPress={()=>gotoBack()} style={{backgroundColor:Colors.orange , borderRadius:20}}>

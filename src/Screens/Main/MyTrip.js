@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
-  ActivityIndicator,
+  ActivityIndicator, Alert
 } from 'react-native';
 import {
   Icon,
@@ -33,6 +33,7 @@ import { config } from '../../Provider/configProvider';
 import { UserContext } from "./UserContext";
 import { Lang_chg } from '../../Provider/Language_provider';
 import TimeAgo from "react-native-timeago";
+import { msgProvider } from '../../Provider/messageProvider';
 
 
 export class MyTrip extends PureComponent {
@@ -64,15 +65,22 @@ export class MyTrip extends PureComponent {
         'booking_list_user.php?user_id_post=' + arrayData.user_id,
       );
       //https://myboatonline.com/app/webservice/booking_list_user.php?user_id_post=115
-//https://server3.rvtechnologies.in/My-Boat/app/app/webservice/booking_list_user.php?user_id_post=209
+      //https://server3.rvtechnologies.in/My-Boat/app/app/webservice/booking_list_user.php?user_id_post=209
       const json = await response.json();
 
       console.log('______', json);
+      if (json.booking_arr != 'NA') {
+        this.setState({
+          myTrips: json.booking_arr
+        });
+        this.setState({ loading: false });
+      } else {
+        this.setState({
+          myTrips: []
+        });
+        this.setState({ loading: false });
+      }
 
-      this.setState({
-        myTrips: json.booking_arr
-      });
-      this.setState({ loading: false });
     } catch (error) {
       console.log(error);
     } finally {
@@ -113,76 +121,76 @@ export class MyTrip extends PureComponent {
               marginLeft: 8,
               justifyContent: 'space-between',
             }}>
-            <View style={{ width: Sizes.width / 2.2  , alignItems:'flex-start'}}>
+            <View style={{ width: Sizes.width / 2.2, alignItems: 'flex-start' }}>
               <Text style={s.name}>{item.captain_name[0]}</Text>
               <Text style={s.type}>{item.boat_name}</Text>
               <Text style={s.name}>#{item.booking_no}</Text>
               {/* <Text style={s.id}>{item.id}</Text>/ */}
               <Text style={s.type}>{item.date}</Text>
             </View>
-            <View style={{ justifyContent: 'space-around', marginLeft: -6  }}>
+            <View style={{ justifyContent: 'space-around', marginLeft: -6 }}>
               <Text style={[s.type, { textAlign: 'right' }]}>
-              {/* <TimeAgo time={item?.createtime} /> */}
-{item.createtime}
+                {/* <TimeAgo time={item?.createtime} /> */}
+                {item.createtime}
               </Text>
-             
+
 
               <Text style={s.price}>{item.total_amt}</Text>
-              { item.booking_status === 0 ? 
-              <Text
-              style={[
-                s.status,
-                {
-                  color:Colors.confirmed
-                },
-              ]}>
-                
-              Pending
-                
-            </Text>: null }
-            { item.booking_status === 1 ? 
-              <Text
-              style={[
-                s.status,
-                {
-                  color:Colors.orange
-                },
-              ]}>     
-              Confirmed  
-            </Text>: null }
-            { item.booking_status === 4 ? 
-              <Text
-              style={[
-                s.status,
-                {
-                  color:Colors.red
-                },
-              ]}>              
-              Cancelled
-            </Text>: null }
-            { item.booking_status === 3 ? 
-              <Text
-              style={[
-                s.status,
-                {
-                  textAlign:'center',
-                  color:Colors.red
-                },
-              ]}>              
-              Cancelled
-            </Text>: null }
-            { item.booking_status === 2 ? 
-              <Text
-              style={[
-                s.status,
-                {
-                  textAlign:'center',
-                  color:Colors.orange
-                },
-              ]}>              
-              Completed
-            </Text>: null }
-            
+              {item.booking_status === 0 ?
+                <Text
+                  style={[
+                    s.status,
+                    {
+                      color: Colors.confirmed
+                    },
+                  ]}>
+
+                  Pending
+
+                </Text> : null}
+              {item.booking_status === 1 ?
+                <Text
+                  style={[
+                    s.status,
+                    {
+                      color: Colors.orange
+                    },
+                  ]}>
+                  Confirmed
+                </Text> : null}
+              {item.booking_status === 4 ?
+                <Text
+                  style={[
+                    s.status,
+                    {
+                      color: Colors.red
+                    },
+                  ]}>
+                  Cancelled
+                </Text> : null}
+              {item.booking_status === 3 ?
+                <Text
+                  style={[
+                    s.status,
+                    {
+                      textAlign: 'center',
+                      color: Colors.red
+                    },
+                  ]}>
+                  Cancelled
+                </Text> : null}
+              {item.booking_status === 2 ?
+                <Text
+                  style={[
+                    s.status,
+                    {
+                      textAlign: 'center',
+                      color: Colors.orange
+                    },
+                  ]}>
+                  Completed
+                </Text> : null}
+
             </View>
           </View>
         </View>
@@ -216,6 +224,11 @@ export class MyTrip extends PureComponent {
                 paddingBottom: 10,
                 //    height:"100%"
               }}
+              ListEmptyComponent={() =>
+                this.state.myTrips >= 0 && (
+                  <Text style={s.nomatch}>No Booking found</Text>
+                )
+              }
             />
           </View>
         </View>
@@ -359,6 +372,12 @@ const s = StyleSheet.create({
     fontWeight: '500',
     fontSize: 14,
     textAlign: 'right',
+  },
+  nomatch: {
+    alignSelf: 'center',
+    marginTop: 20,
+    color: Colors.black,
+    fontFamily: FontFamily.semi_bold,
   },
 });
 

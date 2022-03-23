@@ -66,15 +66,29 @@ export default class PremotionDetail extends Component {
     const user = this.context
     console.log('context in home', user);
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView>
-          {user.value == 1 ? <TouchableOpacity
+      <View style={{ flex: 1 }}>
+        
+         
+
+          <View>
+            <ImageBackground
+              style={{ height: 300 }}
+              source={{
+                uri:
+                  config.image_url4 +
+                  this.state.promotion.image,
+              }}
+              imageStyle={s.ImageBackground_Img}
+            >
+              <View style={{ alignItems: 'center', width: '100%' , flexDirection:'row' ,   }}>
+               
+                {user.value == 1 ? <TouchableOpacity
             onPress={() => this.props.navigation.goBack()}
             style={{
-              marginBottom: -50,
-              zIndex: 1,
+              // marginBottom: -10,
+              // zIndex: 1,
               alignItems: 'flex-start',
-              marginTop: 10,
+              marginTop: 50,
               marginLeft: 20,
               borderRadius: 25,
               backgroundColor: Colors.orange,
@@ -90,10 +104,10 @@ export default class PremotionDetail extends Component {
           </TouchableOpacity> : <TouchableOpacity
             onPress={() => this.props.navigation.goBack()}
             style={{
-              marginBottom: -50,
-              zIndex: 1,
+              // marginBottom: -50,
+              // zIndex: 1,
               alignItems: 'flex-start',
-              marginTop: 10,
+              marginTop: 50,
               marginLeft: 20,
               borderRadius: 25,
               backgroundColor: Colors.orange,
@@ -107,30 +121,32 @@ export default class PremotionDetail extends Component {
               color={Colors.white}
             />
           </TouchableOpacity>}
+<View  style={{ left:130 ,}}>
 
 
-          <View>
-            <ImageBackground
-              style={{ height: 300 }}
-              source={{
-                uri:
-                  config.image_url4 +
-                  this.state.promotion.image,
-              }}
-              imageStyle={s.ImageBackground_Img}
-            >
-              <View style={{ alignItems: 'center', width: '100%' }}>
-                <Text style={{ backgroundColor: Colors.orange, borderRadius: 20, marginTop: 25, fontFamily: FontFamily.semi_bold, color: Colors.white, textAlign: "center" }}>
+          <Text style={{ backgroundColor: Colors.orange, borderRadius: 20, marginTop: 45, fontFamily: FontFamily.semi_bold, color: Colors.white, textAlign: "center" }}>
                   {user.value == 1 ? Lang_chg.Promotion[1] : Lang_chg.Promotion[0]}
                 </Text>
+
+                </View>
+
               </View>
+
+
             </ImageBackground>
           </View>
+          
           <View
             style={{
               backgroundColor: Colors.white,
-              height: 500,
+              height: 700,
               marginTop: -30,
+              borderRadius: 30,
+              padding: 10,
+            }}>
+              <View style={{
+              backgroundColor: Colors.white,
+              height: 500,
               borderRadius: 30,
               padding: 10,
             }}>
@@ -147,16 +163,17 @@ export default class PremotionDetail extends Component {
               {user.value == 1 ? this.state.promotion.description_arabic : this.state.promotion.description}
             </Text>
             {/* <Text style={{textAlign:'justify',marginTop:10}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </Text> */}
-          </View>
-          <View>
+            </View>
+            <View style={{alignItems:'flex-end' , backgroundColor:Colors.orange}}>
             <TouchableOpacity style={s.btn1} onPress={() => this.openUrl()}>
               <Text style={s.btn1Text}>
-                Submit
+                Let's see
               </Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
-      </SafeAreaView>
+          </View>
+        
+      </View>
     );
   }
 }
@@ -180,6 +197,7 @@ export const s = StyleSheet.create({
     marginVertical: 10,
     elevation: 5,
     position: "absolute",
+    borderRadius:25,
     // bottom:10
 
   },

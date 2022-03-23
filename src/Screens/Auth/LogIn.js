@@ -337,20 +337,13 @@ export default class Login extends Component {
     const template = this.state.template;
     const { width, height } = Dimensions.get('window');
     return (
-      <View>
+      <View style={{flex:1}}>
         <ImageBackground
           style={styles.ImageBackground}
           source={backgd}
           imageStyle={styles.ImageBackground_Img}>
-          <ScrollView style={{ flex: 1 }}>
-            <KeyboardAwareScrollView
-              // extraScrollHeight={10}
-              nestedScrollEnabled
-              enableOnAndroid={true}
-              style={styles.subContainer}
-              contentContainerStyle={styles.subContentContainer}
-              keyboardShouldPersistTaps={'always'}
-              showsVerticalScrollIndicator={false}>
+          {/* <ScrollView style={{flex}}> */}
+            <View style={{height:25}}></View>
               {user.value == 0 ? <TouchableOpacity style={styles.lang}
                 onPress={() => {
                   Lang_chg.language_set(1)
@@ -380,6 +373,14 @@ export default class Login extends Component {
                   style={{ marginTop: 12 }}
                 />
               </TouchableOpacity>}
+              <KeyboardAwareScrollView
+              extraScrollHeight={50}
+              nestedScrollEnabled
+              enableOnAndroid={true}
+              style={styles.subContainer}
+              contentContainerStyle={styles.subContentContainer}
+              keyboardShouldPersistTaps={'always'}
+              showsVerticalScrollIndicator={false}>
               <View
                 style={{
                   flex: 1,
@@ -530,7 +531,7 @@ export default class Login extends Component {
                 {/* </ScrollView> */}
               </View>
             </KeyboardAwareScrollView>
-          </ScrollView>
+          {/* </ScrollView> */}
 
         </ImageBackground>
       </View>
@@ -651,7 +652,7 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     // height: layout.size.height ,
-    flex: 1,
+    // flex: 1,
     // backgroundColor:colors.secondry
   },
   subContentContainer: {

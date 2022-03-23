@@ -56,10 +56,12 @@ const Noti_Setting = () => {
           },
         );
         const json = await response.json();
+        console.log('json :>> ', json);
         console.log('______', json.success, json?.msg&&json?.msg[0]);
         if(json.success){
           console.log('______', json.success);
           msgProvider.toast(json?.msg&&json?.msg[0], 'bottom');
+          // setOnGoingNotification(json.notification_status)
         }
       }
       // console.log(this.state.img)

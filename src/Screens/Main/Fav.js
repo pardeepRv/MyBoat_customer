@@ -155,7 +155,7 @@ export default class Fav extends Component {
           headerHeight={270}
           backImgSource={require('../../Images/back1.jpg')}
         />
-        <TouchableOpacity style={{ backgroundColor:Colors.orange , borderRadius:20  ,  position: 'absolute', top: 35, right: 20 }} onPress={() => this.clearAll()}>
+        <TouchableOpacity style={{ backgroundColor:Colors.orange , borderRadius:20  ,  position: 'absolute', top: 55, right: 20 }} onPress={() => this.clearAll()}>
           <Text style={{ color: Colors.white, fontFamily: FontFamily.default , fontWeight:'bold' }}>{user.value == 1 ? Lang_chg.clrall[1] : Lang_chg.clrall[0]}</Text>
         </TouchableOpacity>
         <View style={s.SEC2}>
@@ -180,7 +180,7 @@ export default class Fav extends Component {
                       source={{ uri: config.baseURL + 'images/' + item.image }}
                     >
                       {/* Discount */}
-                      <View style={[{
+                      {item.discount  != "0.00" ? <View style={[{
                         justifyContent: 'center'
                       }, s.trapezoid_discount]}>
                         <Text style={{
@@ -192,7 +192,8 @@ export default class Fav extends Component {
                         }}>
                           {item.discount} OFF
                         </Text>
-                      </View>
+                      </View> : null }
+                      
                       {/* Three dots */}
                       <TouchableOpacity style={{ position: "absolute", right: 10, top: 10, borderRadius: 20, backgroundColor: Colors.orange }}>
                         <Icon name="heart" type="entypo" color={item.like_status == 1 ? Colors.red : Colors.white} />

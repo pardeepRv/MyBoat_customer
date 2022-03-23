@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, { Component, useState } from 'react';
 import {
   Text,
   View,
@@ -12,7 +12,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import {Input, Card, AirbnbRating} from 'react-native-elements';
+import { Input, Card, AirbnbRating } from 'react-native-elements';
 import Header from '../../Components/Header';
 import {
   back_img3,
@@ -22,8 +22,8 @@ import {
   FontFamily,
   Sizes,
 } from '../../Constants/Constants';
-import {localStorage} from '../../Provider/localStorageProvider';
-import {firebaseprovider} from '../../Provider/FirebaseProvider';
+import { localStorage } from '../../Provider/localStorageProvider';
+import { firebaseprovider } from '../../Provider/FirebaseProvider';
 
 export default class Splash extends Component {
   constructor(props) {
@@ -55,26 +55,24 @@ export default class Splash extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{flex: 1, backgroundColor: Colors.white}}>
-        <View style={styles.container}>
-          <StatusBar
-            hidden={true}
-            backgroundColor={Colors.white}
-            translucent={false}
-            networkActivityIndicatorVisible={true}
+      <View style={styles.container}>
+        <StatusBar
+          hidden={true}
+          backgroundColor={Colors.white}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />
+        <ImageBackground
+          style={styles.logo}
+          source={backgd}
+          imageStyle={styles.ImageBackground_Img}>
+          <Image
+            style={{ height: 130, width: 130 }}
+            source={require('../../Images/appicon.png')}
           />
-          <ImageBackground
-            style={styles.logo}
-            source={backgd}
-            imageStyle={styles.ImageBackground_Img}>
-            <Image
-              style={{height: 130, width: 130}}
-              source={require('../../Images/appicon.png')}
-            />
-            <Text style={{marginTop: 30, fontSize: 26, color: Colors.white, fontFamily: FontFamily.bold}}>My Boat</Text>
-          </ImageBackground>
-        </View>
-      </SafeAreaView>
+          <Text style={{ marginTop: 30, fontSize: 26, color: Colors.white, fontFamily: FontFamily.bold }}>My Boat</Text>
+        </ImageBackground>
+      </View>
     );
   }
 }

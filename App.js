@@ -42,7 +42,7 @@ const App = () => {
       setname(1)
       setisrtl(true)
       I18nManager.allowRTL(true);
-        I18nManager.allowRTL(true);  
+      I18nManager.allowRTL(true);
       I18nManager.allowRTL(true);
       return await I18nManager.forceRTL(true);
     }
@@ -86,13 +86,13 @@ const App = () => {
   return (
     <NavigationContainer>
 
-      <SafeAreaView
+      {/* <SafeAreaView
         style={{
           backgroundColor: Colors.black,
 
         }}
-      />
-{/* { Platform.OS == "ios" ?<StatusBar backgroundColor="#5E8D48" barStyle="light-content" /> : <StatusBar barStyle="light-content" backgroundColor="#000" /> } */}
+      /> */}
+      {/* { Platform.OS == "ios" ?<StatusBar backgroundColor="#5E8D48" barStyle="light-content" /> : <StatusBar barStyle="light-content" backgroundColor="#000" /> } */}
       <StatusBar backgroundColor="#5E8D48" barStyle="light-content" />
       <UserContext.Provider
         value={{
