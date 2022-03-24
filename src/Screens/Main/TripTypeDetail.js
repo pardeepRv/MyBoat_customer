@@ -60,7 +60,7 @@ export default class TripTypeDetail extends Component {
       isSelected: false,
       selectedMethod: 0,
       list: this.props.route.params.list,
-      loader:false,
+      loader: false,
       other_user_id: null,
       other_user_img: "",
       mobile: "",
@@ -137,13 +137,15 @@ export default class TripTypeDetail extends Component {
     try {
       const response = await fetch(url);
       const json = await response.json();
-       console.log("json  ", json);
+      console.log("json  ", json);
 
       this.setState({
         ratingscreen: json,
         adver_arr: json.adver_arr,
         img_arr: json.adver_arr.img_arr,
-        booking_arr: json.booking_arr != "NA" ? json.booking_arr : [],
+        // booking_arr: json.booking_arr != "NA" ? json.booking_arr : [],
+        booking_arr: json?.combine_unavailable_dates,
+
         other_user_id: json.adver_arr?.user_id,
         other_user_img: json.adver_arr?.other_user_img,
         mobile: json.adver_arr?.mobile,
@@ -179,22 +181,21 @@ export default class TripTypeDetail extends Component {
       this.state.user,
       this.state.booking_arr
     );
+
     this.props.navigation.navigate("RequestPayment", {
       user_id_post: this.state.user,
       adver_arr: this.state.adver_arr,
       advertisement: this.state.advertisement,
-      // booking_arr: this.state.booking_arr,
+      booking_arr: this.state.booking_arr,
     });
   }
-
   ratings = () => {
     // this.props.navigation.navigate('Ratings');
-    this.props.navigation.navigate("DetailsRating", { item: this.state.ratingscreen , data: this.state.advertisement });
+    this.props.navigation.navigate("DetailsRating", { item: this.state.ratingscreen, data: this.state.advertisement });
   };
   gotoBack = () => {
     this.props.navigation.goBack();
   };
-
   Goto() {
     console.log('goto');
     this.props.navigation.navigate('GoogleMap', {
@@ -203,19 +204,16 @@ export default class TripTypeDetail extends Component {
 
     });
   }
-
   cancelbooking() {
-    this.setState({loader: true});
+    this.setState({ loader: true });
     let url = config.baseURL + "customer_booking_status.php";
 
     var formData = new FormData();
     formData.append("booking_id", this.state.advertisement.booking_id);
     formData.append("customer_id", this.state.advertisement.user_id);
-   console.log('url :>> ', url);
-
-     console.log(formData);
-
-     apifuntion
+    console.log('url :>> ', url);
+    console.log(formData);
+    apifuntion
       // .postApi(url, formData)
       // .then((res) => {
       //    console.log("res from cancelation ", res);
@@ -231,22 +229,20 @@ export default class TripTypeDetail extends Component {
         return obj.json();
       })
       .then(obj => {
-        this.setState({loader: false});
-         console.log("Update Response", obj);
-       
+        this.setState({ loader: false });
+        console.log("Update Response", obj);
+
         if (obj.success == 'true') {
           this.gotoBack()
-        }else{
+        } else {
           msgProvider.toast(obj?.msg, 'center');
         }
       })
       .catch((err) => console.log(err));
   };
-
-
   render() {
     const user = this.context
-console.log('context in home', user);
+    console.log('context in home', user);
     console.log('advertisement :>> ', this.state.adver_arr);
     console.log('advertisement :>> ', this.state.advertisement);
     let item = {};
@@ -254,7 +250,6 @@ console.log('context in home', user);
     item["image"] = this.state.other_user_img;
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
-        <View>
         <View
           style={{
             flexDirection: "row",
@@ -262,53 +257,52 @@ console.log('context in home', user);
             justifyContent: "space-between",
           }}
         >
-          {user.value ==1? 
-              <TouchableOpacity
-              style={{
+          {user.value == 1 ?
 
+            <TouchableOpacity
+              style={{
+                marginBottom: -65,
                 alignItems: "flex-start",
-                marginTop: 50,
+                marginTop: 40,
                 marginLeft: 20,
                 backgroundColor: Colors.orange,
                 borderRadius: 25,
-                transform: [{ rotate: '180deg'}]
+                transform: [{ rotate: '180deg' }]
               }}
             >
               <Icon
                 onPress={() => this.gotoBack()}
                 name="arrow-back"
                 type="ionicons"
-                size={28}
+                size={26}
                 color={Colors.white}
               />
             </TouchableOpacity>
-          :
-          <TouchableOpacity
-          style={{
-
-            alignItems: "flex-start",
-            marginTop: 50,
-            marginLeft: 20,
-            backgroundColor: Colors.orange,
-            borderRadius: 25,
-          }}
-        >
-          <Icon
-            onPress={() => this.gotoBack()}
-            name="arrow-back"
-            type="ionicons"
-            size={28}
-            color={Colors.white}
-          />
-        </TouchableOpacity>
+            :
+            <TouchableOpacity
+              style={{
+                marginBottom: -65,
+                alignItems: "flex-start",
+                marginTop: 40,
+                marginLeft: 20,
+                backgroundColor: Colors.orange,
+                borderRadius: 25,
+              }}
+            >
+              <Icon
+                onPress={() => this.gotoBack()}
+                name="arrow-back"
+                type="ionicons"
+                size={26}
+                color={Colors.white}
+              />
+            </TouchableOpacity>
           }
-          
-
           <TouchableOpacity
             style={{
-            zIndex:1,
+              marginBottom: -65,
               alignItems: "flex-end",
-              marginTop: 50,
+              marginTop: 40,
               marginRight: 20,
               backgroundColor: Colors.orange,
               borderRadius: 20,
@@ -322,7 +316,9 @@ console.log('context in home', user);
               onPress={this.onShare}
             />
           </TouchableOpacity>
-          </View> 
+        </View>
+
+        <ScrollView style={{ flex: 1 }}>
           <SliderBox
             ImageComponent={FastImage}
             images={this.state.img}
@@ -365,13 +361,11 @@ console.log('context in home', user);
               marginTop: 0,
             }}
             imageLoadingColor="#2196F3"
-
           />
-          
-        </View>
 
-        <ScrollView style={{ flex: 1 }}>
-          
+
+
+
           <View style={s.SEC3}>
             <View style={{}}>
               <View
@@ -381,8 +375,8 @@ console.log('context in home', user);
                   marginTop: 5,
                 }}
               >
-                <View   
-                 >
+                <View
+                >
                   <Image
                     style={{
                       height: 40,
@@ -577,9 +571,9 @@ console.log('context in home', user);
                 </ImageBackground>
                 <Text style={s.text}>Equipment</Text>
                 <Text style={{ fontWeight: "bold", fontSize: 12 }}>
-                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted 
-                   && this.state.adver_arr?.addon_arr_formatted.equipment && this.state.adver_arr?.addon_arr_formatted.equipment.length > 0
-                   && this.state.adver_arr?.addon_arr_formatted.equipment.length}
+                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
+                    && this.state.adver_arr?.addon_arr_formatted.equipment && this.state.adver_arr?.addon_arr_formatted.equipment.length > 0
+                    && this.state.adver_arr?.addon_arr_formatted.equipment.length}
                 </Text>
               </View>
 
@@ -597,9 +591,9 @@ console.log('context in home', user);
                 </ImageBackground>
                 <Text style={s.text}> Entertainment </Text>
                 <Text style={{ fontWeight: "bold", fontSize: 12 }}>
-                {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted 
-                   && this.state.adver_arr?.addon_arr_formatted.entertainment && this.state.adver_arr?.addon_arr_formatted.entertainment.length > 0
-                   && this.state.adver_arr?.addon_arr_formatted.entertainment.length}
+                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
+                    && this.state.adver_arr?.addon_arr_formatted.entertainment && this.state.adver_arr?.addon_arr_formatted.entertainment.length > 0
+                    && this.state.adver_arr?.addon_arr_formatted.entertainment.length}
                 </Text>
               </View>
 
@@ -617,9 +611,9 @@ console.log('context in home', user);
                 </ImageBackground>
                 <Text style={s.text}> Food </Text>
                 <Text style={{ fontWeight: "bold", fontSize: 12 }}>
-                {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted 
-                   && this.state.adver_arr?.addon_arr_formatted.food && this.state.adver_arr?.addon_arr_formatted.food.length > 0
-                   && this.state.adver_arr?.addon_arr_formatted.food.length}
+                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
+                    && this.state.adver_arr?.addon_arr_formatted.food && this.state.adver_arr?.addon_arr_formatted.food.length > 0
+                    && this.state.adver_arr?.addon_arr_formatted.food.length}
                 </Text>
               </View>
             </View>
@@ -699,10 +693,10 @@ console.log('context in home', user);
             {" "}
             Booking details:
           </Text>
-          <View style={{ flex: 1, bottom: 15 }}>
+          <View style={{ flex: 1, top: 7, }}>
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> {user.value == 1 ? Lang_chg.advertisementtrip[1] : Lang_chg.advertisementtrip[0]}</Text>
+                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.advertisementtrip[1] : Lang_chg.advertisementtrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -737,7 +731,7 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> {user.value == 1 ? Lang_chg.Destinationtrip[1] : Lang_chg.Destinationtrip[0]}</Text>
+                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Destinationtrip[1] : Lang_chg.Destinationtrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -768,7 +762,7 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> {user.value == 1 ? Lang_chg.Triptypeprice[1] : Lang_chg.Triptypeprice[0]}</Text>
+                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Triptypeprice[1] : Lang_chg.Triptypeprice[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -832,14 +826,14 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> {user.value == 1 ? Lang_chg.equpmenttrip[1] : Lang_chg.equpmenttrip[0]}</Text>
+                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.equpmenttrip[1] : Lang_chg.equpmenttrip[0]}</Text>
               </View>
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted 
-                   && this.state.adver_arr?.addon_arr_formatted.equipment && this.state.adver_arr?.addon_arr_formatted.equipment.length > 0
-                   && this.state.adver_arr?.addon_arr_formatted.equipment ? "Available"
+                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
+                    && this.state.adver_arr?.addon_arr_formatted.equipment && this.state.adver_arr?.addon_arr_formatted.equipment.length > 0
+                    && this.state.adver_arr?.addon_arr_formatted.equipment ? "Available"
                     : "Not available"}
                 </Text>
               </View>
@@ -847,14 +841,14 @@ console.log('context in home', user);
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}> {user.value == 1 ? Lang_chg.entertainmenttrip[1] : Lang_chg.entertainmenttrip[0]}</Text>
+                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.entertainmenttrip[1] : Lang_chg.entertainmenttrip[0]}</Text>
               </View>
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted 
-                   && this.state.adver_arr?.addon_arr_formatted.food && this.state.adver_arr?.addon_arr_formatted.food.length > 0
-                   && this.state.adver_arr?.addon_arr_formatted.food ? "Available"
+                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
+                    && this.state.adver_arr?.addon_arr_formatted.food && this.state.adver_arr?.addon_arr_formatted.food.length > 0
+                    && this.state.adver_arr?.addon_arr_formatted.food ? "Available"
                     : "Not available"}
                 </Text>
               </View>
@@ -867,9 +861,9 @@ console.log('context in home', user);
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted 
-                   && this.state.adver_arr?.addon_arr_formatted.entertainment && this.state.adver_arr?.addon_arr_formatted.entertainment.length > 0
-                   && this.state.adver_arr?.addon_arr_formatted.entertainment ? "Available"
+                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
+                    && this.state.adver_arr?.addon_arr_formatted.entertainment && this.state.adver_arr?.addon_arr_formatted.entertainment.length > 0
+                    && this.state.adver_arr?.addon_arr_formatted.entertainment ? "Available"
                     : "Not available"}
                 </Text>
               </View>
@@ -881,7 +875,7 @@ console.log('context in home', user);
                 backgroundColor: Colors.orange,
                 flexDirection: "row",
                 padding: 10,
-                marginTop: 5,
+                marginTop: 25,
                 // bottom:10
               }}
             >
@@ -890,18 +884,18 @@ console.log('context in home', user);
                   style={s.Btnbook}
                   onPress={() => this.BookNow()}
                 >
-                  <Text style={s.Btn1Textbook}>{user.value == 1 ? Lang_chg.book_now_txt[1]: Lang_chg.book_now_txt[0]}</Text>
+                  <Text style={s.Btn1Textbook}>{user.value == 1 ? Lang_chg.book_now_txt[1] : Lang_chg.book_now_txt[0]}</Text>
                 </TouchableOpacity>
               </View>
               <View style={{ justifyContent: "center", marginLeft: "20%" }}>
-                <Text style={s.rent}>{user.value == 1 ? Lang_chg.rental_amt_txt[1]: Lang_chg.rental_amt_txt[0]}</Text>
+                <Text style={s.rent}>{user.value == 1 ? Lang_chg.rental_amt_txt[1] : Lang_chg.rental_amt_txt[0]}</Text>
                 <Text style={s.rent}>
                   KWD {this.state.advertisement?.price}
                 </Text>
               </View>
             </View>
           ) : <View>
-            {this.state.advertisement.booking_status == 4 || this.state.advertisement.booking_status == 3  || this.state.advertisement.review_status == 1 ? null : <View>
+            {this.state.advertisement.booking_status == 4 || this.state.advertisement.booking_status == 3 || this.state.advertisement.review_status == 1 ? null : <View>
               {this.state.advertisement.booking_status == 2 ? <View
                 style={{
                   // backgroundColor: Colors.orange,
@@ -914,12 +908,12 @@ console.log('context in home', user);
                 // style={{backgroundColor: Colors.orange,}}
                 >
                   {this.state.advertisement.review_status == 1 ?
-                  null
-                  :<TouchableOpacity style={s.Btn1}
-                  onPress={() => this.ratings()}
-                >
-                  <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.rate_now[1]: Lang_chg.rate_now[0]}</Text>
-                </TouchableOpacity> }
+                    null
+                    : <TouchableOpacity style={s.Btn1}
+                      onPress={() => this.ratings()}
+                    >
+                      <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.rate_now[1] : Lang_chg.rate_now[0]}</Text>
+                    </TouchableOpacity>}
                 </View>
 
               </View> : <View
@@ -936,18 +930,18 @@ console.log('context in home', user);
                   <TouchableOpacity style={s.Btn1}
                     onPress={() => this.Goto()}
                   >
-                    <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.Loactiontrip[1]: Lang_chg.Loactiontrip[0]}</Text>
+                    <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.Loactiontrip[1] : Lang_chg.Loactiontrip[0]}</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                  <TouchableOpacity style={s.Btn2} 
-                  onPress={() => {
-                    this.props.navigation.navigate("OneToOneChat", { data: item });
-                  }} >
-                    <Text style={s.Btn1Text2}>{user.value == 1 ? Lang_chg.chatnowtrip[1]: Lang_chg.chatnowtrip[0]}</Text>
+                  <TouchableOpacity style={s.Btn2}
+                    onPress={() => {
+                      this.props.navigation.navigate("OneToOneChat", { data: item });
+                    }} >
+                    <Text style={s.Btn1Text2}>{user.value == 1 ? Lang_chg.chatnowtrip[1] : Lang_chg.chatnowtrip[0]}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={s.Btn2} onPress={() => this.cancelbooking()}>
-                    <Text style={s.Btn1Text2}>{user.value == 1 ? Lang_chg.chatcancel[1]: Lang_chg.chatcancel[0]}</Text>
+                    <Text style={s.Btn1Text2}>{user.value == 1 ? Lang_chg.chatcancel[1] : Lang_chg.chatcancel[0]}</Text>
                   </TouchableOpacity>
                 </View>
               </View>}
@@ -1087,14 +1081,12 @@ const s = StyleSheet.create({
     top: 15,
     height: 20,
     flexDirection: "row",
-    flexWrap: "wrap",
     alignItems: "flex-start", // if you want to fill rows left to right
-
-    margin: 4,
+    margin: 8,
   },
   item: {
     width: "45%", // is 50% of container width
-    marginLeft: "3%",
+    marginLeft: "4%",
     fontSize: 10,
   },
   leftText: {
@@ -1109,7 +1101,7 @@ const s = StyleSheet.create({
   },
   disc: {
     marginTop: 10,
-    marginLeft: 20,
+    marginLeft: 19,
     fontSize: 18,
     textAlign: "justify",
     fontFamily: FontFamily.semi_bold,

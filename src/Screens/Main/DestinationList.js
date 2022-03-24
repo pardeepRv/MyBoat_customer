@@ -709,7 +709,19 @@ console.log('context in home', user);
                         imageStyle={s.imgStyle}
                         source={{ uri: config.image_url4 + item.image }}
                         >
-
+{item.discount  != "0.00" ? <View style={[{
+                        justifyContent: 'center'
+                      }, s.trapezoid_discount]}>
+                        <Text style={{
+                          position: "absolute",
+                          fontFamily: FontFamily.semi_bold,
+                          fontSize: 11,
+                          alignSelf: "center",
+                          color: Colors.white
+                        }}>
+                          {item.discount} OFF
+                        </Text>
+                      </View> : null }
                         <TouchableOpacity
                           style={{ position: 'absolute', right: 10, padding: 3, top: 7, backgroundColor: Colors.orange, borderRadius: 20 }}
                           onPress={() => this.addFavorite(item)}
@@ -2229,5 +2241,21 @@ const s = StyleSheet.create({
     padding: 9,
     fontWeight: '900',
     fontFamily: 'Montserrat-SemiBold',
+  },
+  trapezoid_discount: {
+    width: 115,
+    height: 0,
+    borderBottomWidth: 25,
+    borderBottomColor: Colors.orange,
+    borderLeftWidth: 25,
+    borderLeftColor: "transparent",
+    borderRightWidth: 25,
+    borderRightColor: "transparent",
+    borderStyle: "solid",
+    backgroundColor: 'transparent',
+    alignItems: "center",
+    transform: [{ rotate: "-45deg" }],
+    marginTop: 19.2,
+    marginLeft: -26
   },
 });

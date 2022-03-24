@@ -1,40 +1,24 @@
-import React, {Component, useState} from 'react';
+import moment from 'moment';
+import React, { Component } from 'react';
 import {
-  Text,
-  View,
-  StyleSheet,
-  ImageBackground,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Modal,
-  Keyboard,
-  ScrollView,
-  FlatList,
-  Image,
-  ActivityIndicator,
-  Dimensions
+  Dimensions, FlatList, Keyboard, KeyboardAvoidingView, Modal, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
-import {Icon, Input, Card, AirbnbRating} from 'react-native-elements';
+import { Calendar } from 'react-native-calendars';
+import { Icon, Input } from 'react-native-elements';
+import { WebView } from 'react-native-webview';
 import Header from '../../Components/Header';
 import {
-  back_img3,
-  boat_img1,
   Colors,
-  FontFamily,
-  Sizes,
+  FontFamily
 } from '../../Constants/Constants';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {apifuntion} from '../../Provider/apiProvider';
-import {config} from '../../Provider/configProvider';
-import {Calendar} from 'react-native-calendars';
-import {Lang_chg} from '../../Provider/Language_provider';
-import {WebView} from 'react-native-webview';
-import {msgProvider, msgTitle, msgText} from '../../Provider/messageProvider';
-import moment from 'moment';
 import Timeslots from '../../Data/Timeslots';
+import { apifuntion } from '../../Provider/apiProvider';
+import { config } from '../../Provider/configProvider';
+import { Lang_chg } from '../../Provider/Language_provider';
+import { msgProvider, msgText, msgTitle } from '../../Provider/messageProvider';
 import { UserContext } from "./UserContext";
 
-const {height} = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 export default class RequestPayment extends Component {
   static contextType = UserContext
   constructor(props) {
@@ -43,7 +27,7 @@ export default class RequestPayment extends Component {
       user_id_post: this.props.route.params.user_id_post,
       adver_arr: this.props.route.params.adver_arr,
       advertisement: this.props.route.params.advertisement,
-      // booking_arr: this.props.route.params.booking_arr,
+      booking_arr: this.props.route.params.booking_arr,
       webviewshow: false,
       TimeSlot: Timeslots,
       time: '',
@@ -60,35 +44,35 @@ export default class RequestPayment extends Component {
       hour: '',
       selected_date: '',
       booking_id: '',
-      unavailabe_arr: 'NA',
+      unavailabe_arr:'NA',
       bookingDateTimeStart: '',
       bookingDateTimeEnd: '',
       selectedIndex: null,
       hoursData: [
-        {hours: 1, status: false},
-        {hours: 2, status: false},
-        {hours: 3, status: false},
-        {hours: 4, status: false},
-        {hours: 5, status: false},
-        {hours: 6, status: false},
-        {hours: 7, status: false},
-        {hours: 8, status: false},
-        {hours: 9, status: false},
-        {hours: 10, status: false},
-        {hours: 11, status: false},
-        {hours: 12, status: false},
-        {hours: 13, status: false},
-        {hours: 14, status: false},
-        {hours: 15, status: false},
-        {hours: 16, status: false},
-        {hours: 17, status: false},
-        {hours: 18, status: false},
-        {hours: 19, status: false},
-        {hours: 20, status: false},
-        {hours: 21, status: false},
-        {hours: 22, status: false},
-        {hours: 23, status: false},
-        {hours: 24, status: false},
+        { hours: 1, status: false },
+        { hours: 2, status: false },
+        { hours: 3, status: false },
+        { hours: 4, status: false },
+        { hours: 5, status: false },
+        { hours: 6, status: false },
+        { hours: 7, status: false },
+        { hours: 8, status: false },
+        { hours: 9, status: false },
+        { hours: 10, status: false },
+        { hours: 11, status: false },
+        { hours: 12, status: false },
+        { hours: 13, status: false },
+        { hours: 14, status: false },
+        { hours: 15, status: false },
+        { hours: 16, status: false },
+        { hours: 17, status: false },
+        { hours: 18, status: false },
+        { hours: 19, status: false },
+        { hours: 20, status: false },
+        { hours: 21, status: false },
+        { hours: 22, status: false },
+        { hours: 23, status: false },
+        { hours: 24, status: false },
       ],
     };
   }
@@ -97,21 +81,31 @@ export default class RequestPayment extends Component {
   componentDidMount() {
     // alert(this.state.adver_arr.extra_price)
     let date = new Date('2020-06-12T14:42:42');
-
     console.log('date ', date);
+    this.setState({ getdate: date });
 
-    this.setState({getdate: date});
+    console.log('adv_arr', this.state.adver_arr);
+    console.log('booking_arr', this.state.booking_arr);
 
-    console.log('adv_arr', this.state.booking_arr);
+    let markedDay = {};
+    this.state.booking_arr.map(item => {
 
-    // let markedDay = {};
-    // this.state.booking_arr.map(item => {
-    //   this.state.calender_arr[item.date] = {
-    //     selected: true,
-    //     marked: true,
-    //     selectedColor: 'purple',
-    //   };
-    // });
+      this.state.calender_arr[item.date] = {
+        selected: true,
+        // marked: true,
+        selectedColor: 'grey',
+        disabled: true,
+        disableTouchEvent: true,
+      };
+    });
+
+    // for (const property in this.state.booking_arr) {
+    //   console.log(property,'pros');
+    //   this.state.booking_arr['disabled']=true;
+    //   this.state.booking_arr['disableTouchEvent']=true;
+    // }
+    // console.log('booking_arr after', this.state.booking_arr);
+
 
     console.log('markdate2', this.state.test_arr);
   }
@@ -137,10 +131,10 @@ export default class RequestPayment extends Component {
   };
 
   Payment() {
-   
-      console.log('*******', this.state.adver_arr);
+
+    console.log('*******', this.state.adver_arr);
     Keyboard.dismiss();
-    let {selected_date, guest, time} = this.state;
+    let { selected_date, guest, time } = this.state;
 
     if (selected_date.length <= 0) {
       msgProvider.toast(Lang_chg.select_date[config.language], 'center');
@@ -170,7 +164,7 @@ export default class RequestPayment extends Component {
     data.append(
       'extra_rent_amt',
       this.state.hour &&
-        Number(this.state.hour) * Number(this.state.adver_arr.extra_price),
+      Number(this.state.hour) * Number(this.state.adver_arr.extra_price),
     );
     data.append('payment_type', 1);
     data.append('other_user_id', this.state.adver_arr.user_id);
@@ -178,7 +172,7 @@ export default class RequestPayment extends Component {
     this.props.navigation.navigate('ExtraRequest', {
       adver_arr: this.state.adver_arr.addon_arr,
       adv: this.state.adver_arr,
-      data:{
+      data: {
         'user_id_post': this.state.user_id_post.user_id,
         'advertisement_id': this.state.advertisement.advertisement_id,
         'boat_id': this.state.adver_arr.boat_id,
@@ -186,7 +180,7 @@ export default class RequestPayment extends Component {
         'date': this.state.selected_date,
         'time': this.state.time,
         'idle_time': this.state.adver_arr.idle_time,
-        'rent_amount': this.state.advertisement?.price, 
+        'rent_amount': this.state.advertisement?.price,
         'minimum_hours': this.state.adver_arr.minimum_hours,
         'discount': this.state.adver_arr.discount,
         // 'extra_rent_amt': Number(this.state.hour) * Number(this.state.adver_arr.extra_price), //aa
@@ -205,13 +199,13 @@ export default class RequestPayment extends Component {
     console.log('_____________', data);
     return;
 
-    this.setState({loading: true});
+    this.setState({ loading: true });
     let url = config.baseURL + 'booking_add.php';
     apifuntion
       .postApi(url, data)
       .then(obj => {
         // console.log(obj)
-        this.setState({loading: false});
+        this.setState({ loading: false });
         return obj.json();
       })
       .then(obj => {
@@ -240,7 +234,7 @@ export default class RequestPayment extends Component {
       })
       .catch(error => {
         console.log('-------- error ------- ' + error);
-        this.setState({loading: false});
+        this.setState({ loading: false });
       });
   }
 
@@ -264,7 +258,7 @@ export default class RequestPayment extends Component {
   _selectDate = async date => {
     console.log('date ', date);
 
-    this.setState({selected_date: date});
+    this.setState({ selected_date: date });
     if (this.state.unavailabe_arr != 'NA') {
       var i = this.state.unavailabe_arr.findIndex(x => x.date == date);
       if (i >= 0) {
@@ -274,11 +268,11 @@ export default class RequestPayment extends Component {
         delete this.state.calender_arr[this.state.date];
         this.state.calender_arr[date] = {
           selected: true,
-          selectedColor: "#0A8481",
+          selectedColor: Colors.orange,
         };
         this.setState({
           date: date,
-          calender_arr: {...this.state.calender_arr, date: date},
+          calender_arr: { ...this.state.calender_arr, date: date },
         });
         console.log(this.state.calender_arr);
 
@@ -299,10 +293,10 @@ export default class RequestPayment extends Component {
       }
     } else {
       delete this.state.calender_arr[this.state.date];
-      this.state.calender_arr[date] = {selected: true, selectedColor: "#0A8481"};
+      this.state.calender_arr[date] = { selected: true, selectedColor: Colors.orange };
       this.setState({
         date: date,
-        calender_arr: {...this.state.calender_arr, date: date},
+        calender_arr: { ...this.state.calender_arr, date: date },
       });
 
       console.log(this.state.calender_arr);
@@ -331,30 +325,54 @@ export default class RequestPayment extends Component {
   ExtraRequest() {
     this.hideDatePicker();
   }
-
   selectTimeslot = item => {
+    let startInd = null;
+    let endInd = null;
+    console.log(item, 'item');
     const tempArray = [...this.state.TimeSlot];
-    console.log('ITTTTTT', item);
-    // tempArray[item?.index].selected = !item?.item?.selected
+    const array = tempArray.map(v => {
+      const newItem = Object.assign({}, v);
+      newItem.selected = false;
+      return newItem;
+    });
+    // array[item?.index].selected = !array[item?.index].selected;
+    console.log(array, 'array');
+    let loopV = item?.index + Number(this.state.adver_arr.minimum_hours)
+    console.log(item?.index, 'item?.index ');
+    console.log(loopV, 'loopV');
+
+    for (let i = 0; i < array.length; i++) {
+      const ind = i;
+      if (ind == item?.index) {
+        startInd = ind == 0 ? 1 : ind;
+        array[item?.index].selected = !array[item?.index].selected;
+      }
+      if (ind == loopV) {
+        endInd = ind;
+        array[ind].selected = true;
+      }
+      if (startInd > endInd) {
+        array[ind].selected = true;
+      }
+    }
     this.setState({
-      // TimeSlot: tempArray,
+      TimeSlot: array,
       selectedIndex: item?.index,
       time: moment(item.item.title, 'hh:mm A').format('HH:mm:ss'),
     });
   };
 
-  selectTimeModal = (val) => {
-  // const user = React.useContext(UserContext);
 
+  selectTimeModal = (val) => {
+    console.log('val :>> ', val);
     return (
       <Modal
         transparent={true}
         visible
         onRequestClose={() => {
-          this.setState({isShowDatePicker: false});
+          this.setState({ isShowDatePicker: false });
         }}>
         <View
-          // onPress={() => this.hideDatePicker()}
           activeOpacity={1}
           style={{
             flex: 1,
@@ -363,24 +381,24 @@ export default class RequestPayment extends Component {
           }}>
           <View
             style={{
-              height: height-100,
+              height: height - 100,
               width: '100%',
               backgroundColor: Colors.white,
               borderTopLeftRadius: 20,
               borderTopRightRadius: 25,
             }}>
-              <View style={{alignItems: 'flex-start' , left:20  }}>
-            <Text
-              style={{
-                // marginLeft: 50,
+            <View style={{ alignItems: 'flex-start', left: 20 }}>
+              <Text
+                style={{
+                  // marginLeft: 50,
 
-                lineHeight: 40,
-                color: Colors.black,
-                fontSize: 16,
-                FontFamily: FontFamily.default,
-              }}>
-              {'Select Time'}
-            </Text>
+                  lineHeight: 40,
+                  color: Colors.black,
+                  fontSize: 16,
+                  FontFamily: FontFamily.default,
+                }}>
+                {'Select Time'}
+              </Text>
             </View>
             <View
               style={{
@@ -393,7 +411,7 @@ export default class RequestPayment extends Component {
             <FlatList
               data={this.state.TimeSlot}
               extraData={this.state}
-              renderItem={item => {
+              renderItem={(item, index) => {
                 return (
                   <TouchableOpacity
                     onPress={() => this.selectTimeslot(item)}
@@ -405,9 +423,10 @@ export default class RequestPayment extends Component {
                       borderBottomWidth: 0.6,
                       flexDirection: 'row',
                       alignItems: 'center',
-                      bottom:3
+                      bottom: 3
                     }}>
-                    {item.index == this.state.selectedIndex ? (
+                    {/* {item.index == this.state.selectedIndex ? ( */}
+                    {item.item.selected ? (
                       <View
                         style={{
                           marginLeft: 5,
@@ -415,7 +434,7 @@ export default class RequestPayment extends Component {
                           width: 12,
 
                           borderRadius: 6,
-                          backgroundColor: '#39DCE5',
+                          backgroundColor: Colors.orange,
                         }}
                       />
                     ) : (
@@ -426,7 +445,7 @@ export default class RequestPayment extends Component {
                           width: 12,
                           borderRadius: 6,
                           borderWidth: 1.2,
-                          borderColor: '#39DCE5',
+                          borderColor: Colors.orange,
                         }}
                       />
                     )}
@@ -485,7 +504,7 @@ export default class RequestPayment extends Component {
           this._submitForPayment(txnId, merchantTxnId, this.state.booking_id);
         } else if (t == 'failure.php') {
           msgProvider.toast(Lang_chg.payment_failed[config.language], 'center');
-          this.setState({webviewshow: false});
+          this.setState({ webviewshow: false });
           // this.props.navigation.navigate('Explore');
           return false;
         }
@@ -494,7 +513,7 @@ export default class RequestPayment extends Component {
   }
 
   _submitForPayment = async (txnId, merchantTxnId, booking_id) => {
-    this.setState({webviewshow: false});
+    this.setState({ webviewshow: false });
     // let result = await localStorage.getItemObject('user_arr')
     // let user_id_post = 0;
     // if (result != null) {
@@ -507,11 +526,11 @@ export default class RequestPayment extends Component {
       data.append('merchantTxnId', merchantTxnId);
       data.append('booking_id', booking_id);
       let url = config.baseURL + 'booking_add_pay.php';
-      this.setState({loading: true});
+      this.setState({ loading: true });
       apifuntion
         .postApi(url, data)
         .then(obj => {
-          this.setState({loading: false});
+          this.setState({ loading: false });
           return obj.json();
         })
         .then(obj => {
@@ -551,7 +570,7 @@ export default class RequestPayment extends Component {
         })
         .catch(error => {
           console.log('-------- error ------- ' + error);
-          this.setState({loading: false});
+          this.setState({ loading: false });
         });
     } else {
       msgProvider.alert(
@@ -569,17 +588,17 @@ export default class RequestPayment extends Component {
     booking_date1,
     email_arr,
   ) => {
-    this.setState({webviewshow: false});
+    this.setState({ webviewshow: false });
     if (this.state.isConnected === true) {
       var data = new FormData();
       data.append('other_user_id', this.state.adver_arr.user_id);
       data.append('txnId', txnId);
       let url = config.baseURL + 'withdraw_request.php';
-      this.setState({loading: true});
+      this.setState({ loading: true });
       apifuntion
         .postApi(url, data)
         .then(obj => {
-          this.setState({loading: false});
+          this.setState({ loading: false });
           return obj.json();
         })
         .then(obj => {
@@ -592,7 +611,7 @@ export default class RequestPayment extends Component {
             if (email_arr != 'NA') {
               this.mailsendfunction(email_arr);
             }
-            this.setState({loading: false});
+            this.setState({ loading: false });
             this.props.navigation.navigate('Success_booking', {
               booking_no: booking_no,
               booking_date: booking_date1,
@@ -613,7 +632,7 @@ export default class RequestPayment extends Component {
         })
         .catch(error => {
           console.log('-------- error ------- ' + error);
-          this.setState({loading: false});
+          this.setState({ loading: false });
         });
     } else {
       msgProvider.alert(
@@ -662,52 +681,62 @@ export default class RequestPayment extends Component {
 
   render() {
     const user = this.context
-    console.log('context in home', user);
-    console.log(
-      'URL------',
-      'https://myboatonline.com/app/webservice/paymentgateway/bookeey_library/buy.php?amt=' +
-        this.state.pay_amount +
-        '&oid=' +
-        this.state.booking_no +
-        '&other_user_id=' +
-        this.state.adver_arr.user_id +
-        '&user_id=' +
-        this.state.user_id_post.user_id,
-    );
-    console.log('this.state.adver_arr.addon_arr :>> ', this.state.adver_arr.addon_arr);
+    // console.log('context in home', user);
+    // console.log(
+    //   'URL------',
+    //   'https://myboatonline.com/app/webservice/paymentgateway/bookeey_library/buy.php?amt=' +
+    //   this.state.pay_amount +
+    //   '&oid=' +
+    //   this.state.booking_no +
+    //   '&other_user_id=' +
+    //   this.state.adver_arr.user_id +
+    //   '&user_id=' +
+    //   this.state.user_id_post.user_id,
+    // );
+    // console.log('this.state.adver_arr.addon_arr :>> ', this.state.adver_arr.addon_arr);
     return (
-      
-        <View style={{backgroundColor: '#fff'}}>
-          <Header
-            imgBack={true}
-            backBtn
-            notiBtn={false}
-            searchBtn={false}
-            headerHeight={120}
-            backImgSource={require('../../Images/backgd2.jpg')}
-            name={user.value == 1 ? Lang_chg.text_request[1] : Lang_chg.text_request[0]}
-          />
-<KeyboardAvoidingView behavior="position">
-          <View style={{marginTop: -20, height: 'auto', borderTopLeftRadius: 20, borderTopRightRadius: 25, backgroundColor: '#fff'}}>
-            <TouchableOpacity style={{marginTop: 15, borderTopLeftRadius: 20, borderTopRightRadius: 25,}}>
+
+      <View style={{ backgroundColor: '#fff' }}>
+        <Header
+          imgBack={true}
+          backBtn
+          notiBtn={false}
+          searchBtn={false}
+          headerHeight={120}
+          backImgSource={require('../../Images/backgd2.jpg')}
+          name={user.value == 1 ? Lang_chg.text_request[1] : Lang_chg.text_request[0]}
+        />
+        <KeyboardAvoidingView behavior="position">
+          <View style={{ marginTop: -20, height: 'auto', borderTopLeftRadius: 20, borderTopRightRadius: 25, backgroundColor: '#fff' }}>
+            <View style={{ marginTop: 15, borderTopLeftRadius: 20, borderTopRightRadius: 25, }}>
               <Calendar
                 minDate={new Date()}
-                markedDates={this.state.calender_arr}
+                markedDates={this.state.calender_arr }
+                // disabledDaysIndexes={this.state.booking_arr}
+                // disabled={this.state.booking_arr}
+                // markedDates={this.state.booking_arr}
+                // markedDates={{
+                //   '2022-03-25': { selected: true, marked: true, selectedColor: 'blue' },
+                //   '2022-03-26': { selected: true, marked: true, selectedColor: 'blue' },
+                //   '2022-03-28': { disabled: true, disableTouchEvent: true, selectedColor: 'blue' }
+                // }}
                 onDayPress={day => {
                   this._selectDate(day.dateString);
                 }}
+
+
               />
-            </TouchableOpacity>
+            </View>
           </View>
 
           <TouchableOpacity
-            style={{marginTop: 10}}
+            style={{ marginTop: 10 }}
             onPress={() => this.showDatePicker()}>
             <Input
               editable={false}
               placeholder="Choose Time"
               placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
-              inputStyle={{color: Colors.black, fontFamily: FontFamily.default}}
+              inputStyle={{ color: Colors.black, fontFamily: FontFamily.default }}
               autoCapitalize={false}
               returnKeyType="done"
               rightIcon={
@@ -722,7 +751,7 @@ export default class RequestPayment extends Component {
                 Keyboard.dismiss();
               }}
               onChangeText={txt => {
-                this.setState({time: txt});
+                this.setState({ time: txt });
               }}
               maxLength={50}
               minLength={6}
@@ -735,7 +764,7 @@ export default class RequestPayment extends Component {
             />
           </TouchableOpacity>
 
-          <View style={{width: '100%', alignItems: 'center'}}>
+          <View style={{ width: '100%', alignItems: 'center' }}>
             {/* <Input
               placeholder="Extra Hour"
               placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
@@ -762,7 +791,7 @@ export default class RequestPayment extends Component {
             <Input
               placeholder="How Many Guest"
               placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
-              inputStyle={{color: Colors.black, fontFamily: FontFamily.default}}
+              inputStyle={{ color: Colors.black, fontFamily: FontFamily.default }}
               returnKeyLabel="done"
               autoCapitalize={false}
               keyboardType="numeric"
@@ -771,7 +800,7 @@ export default class RequestPayment extends Component {
                 Keyboard.dismiss();
               }}
               onChangeText={txt => {
-                this.setState({guest: txt});
+                this.setState({ guest: txt });
               }}
               maxLength={50}
               minLength={6}
@@ -784,86 +813,86 @@ export default class RequestPayment extends Component {
             />
           </View>
           <View
-            style={{alignItems: 'center', alignSelf: 'center', width: '100%'}}>
+            style={{ alignItems: 'center', alignSelf: 'center', width: '100%' }}>
             <TouchableOpacity style={s.Btn1} onPress={() => this.Payment()}>
               <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.Proceedtrip[1] : Lang_chg.Proceedtrip[0]}</Text>
             </TouchableOpacity>
-           
+
           </View>
-          </KeyboardAvoidingView>
-          <Modal
-            animationType="slide"
-            transparent
-            visible={this.state.webviewshow}
-            onRequestClose={() => {
-              this.setState({webviewshow: false});
-            }}>
-            {/* <SafeAreaView style={{ flex: 0, backgroundColor: color1.white_color }} />
+        </KeyboardAvoidingView>
+        <Modal
+          animationType="slide"
+          transparent
+          visible={this.state.webviewshow}
+          onRequestClose={() => {
+            this.setState({ webviewshow: false });
+          }}>
+          {/* <SafeAreaView style={{ flex: 0, backgroundColor: color1.white_color }} />
           <StatusBar barStyle='default' hidden={false} backgroundColor={color1.white_color} translucent={true}
             networkActivityIndicatorVisible={true} /> */}
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'white',
+              paddingLeft: 20,
+              paddingRight: 20,
+            }}>
             <View
               style={{
-                flex: 1,
-                backgroundColor: 'white',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 paddingLeft: 20,
                 paddingRight: 20,
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  backgroundColor: '#ffffff',
-                  paddingBottom: 10,
-                  paddingTop: 10,
+                backgroundColor: '#ffffff',
+                paddingBottom: 10,
+                paddingTop: 10,
+              }}
+            />
+            {this.state.webviewshow == true && (
+              <WebView
+                source={{
+                  uri:
+                    'https://myboatonline.com/app/webservice/paymentgateway/bookeey_library/buy.php?amt=' +
+                    this.state.pay_amount +
+                    '&oid=' +
+                    this.state.booking_no +
+                    '&other_user_id=' +
+                    this.state.adver_arr.user_id +
+                    '&user_id=' +
+                    this.state.user_id_post.user_id,
                 }}
+                onNavigationStateChange={this._onNavigationStateChange.bind(
+                  this,
+                )}
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+                // injectedJavaScript = {this.state.cookie}
+                startInLoadingState={false}
+                containerStyle={{ marginTop: 20, flex: 1 }}
+                // injectedJavaScript={runFirst}
+                // androidHardwareAccelerationDisabled={true}
+                // allowUniversalAccessFromFileURLs={true}
+                // allowingReadAccessToURL={true}
+                // keyboardDisplayRequiresUserAction={false}
+                // allowFileAccess={true}
+                textZoom={100}
+              // onMessage={this.onMessage}
+              // onNavigationStateChange={(navEvent)=> console.log(navEvent.jsEvaluationValue)}
+              // onMessage={(event)=> console.log(event.nativeEvent.data)}
               />
-              {this.state.webviewshow == true && (
-                <WebView
-                  source={{
-                    uri:
-                      'https://myboatonline.com/app/webservice/paymentgateway/bookeey_library/buy.php?amt=' +
-                      this.state.pay_amount +
-                      '&oid=' +
-                      this.state.booking_no +
-                      '&other_user_id=' +
-                      this.state.adver_arr.user_id +
-                      '&user_id=' +
-                      this.state.user_id_post.user_id,
-                  }}
-                  onNavigationStateChange={this._onNavigationStateChange.bind(
-                    this,
-                  )}
-                  javaScriptEnabled={true}
-                  domStorageEnabled={true}
-                  // injectedJavaScript = {this.state.cookie}
-                  startInLoadingState={false}
-                  containerStyle={{marginTop: 20, flex: 1}}
-                  // injectedJavaScript={runFirst}
-                  // androidHardwareAccelerationDisabled={true}
-                  // allowUniversalAccessFromFileURLs={true}
-                  // allowingReadAccessToURL={true}
-                  // keyboardDisplayRequiresUserAction={false}
-                  // allowFileAccess={true}
-                  textZoom={100}
-                  // onMessage={this.onMessage}
-                  // onNavigationStateChange={(navEvent)=> console.log(navEvent.jsEvaluationValue)}
-                  // onMessage={(event)=> console.log(event.nativeEvent.data)}
-                />
-              )}
-            </View>
-          </Modal>
-       
+            )}
+          </View>
+        </Modal>
+
         {/* <DateTimePickerModal
           isVisible={this.state.isShowDatePicker}
           mode="time"
           onConfirm={this.handleConfirm}
           onCancel={this.hideDatePicker}
         /> */}
-         
+
         {this.state.isShowDatePicker && this.selectTimeModal(user.value)}
-        </View>
+      </View>
     );
   }
 }
@@ -898,7 +927,7 @@ const s = StyleSheet.create({
     shadowColor: '#fff',
     shadowRadius: 10,
     shadowOpacity: 1,
-    bottom:3
+    bottom: 3
   },
   Btn1Text: {
     fontSize: 18,
@@ -1060,7 +1089,7 @@ const s = StyleSheet.create({
     borderStyle: 'solid',
     backgroundColor: 'transparent',
     alignItems: 'center',
-    transform: [{rotate: '-45deg'}],
+    transform: [{ rotate: '-45deg' }],
     marginTop: 19.2,
     marginLeft: -26,
   },

@@ -475,7 +475,7 @@ export default class Checkout extends Component {
             </Text>
 
             <Text />
-
+            <View style={{ Flex:1 }}>
             <View style={s.container}>
               <View style={s.item}>
                 <Text style={s.text1}> {user.value == 1 ? Lang_chg.Customername[0] : Lang_chg.Customername[0]}</Text>
@@ -543,7 +543,7 @@ export default class Checkout extends Component {
               <View style={s.item}>
                 <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
                   {this.props.route.params.extraHours ? this.props.route.params.extraHours : '0'}
-                  {/* {this.state.data?.extraHours}{' '} */}
+
                 </Text>
               </View>
             </View>
@@ -600,7 +600,7 @@ export default class Checkout extends Component {
             </View>
             <View style={s.container2}>
               <View style={s.item}>
-                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.foodtrip[0] : Lang_chg.foodtrip[0]}</Text>
+                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.foodtrip[0] : Lang_chg.foodtrip[0]}</Text>
               </View>
 
               <View style={{
@@ -651,7 +651,7 @@ export default class Checkout extends Component {
 
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}>  {user.value == 1 ? Lang_chg.triptypetrip[0] : Lang_chg.triptypetrip[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.triptypetrip[0] : Lang_chg.triptypetrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -662,7 +662,7 @@ export default class Checkout extends Component {
             </View>
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.coupendiscountcheckout[0] : Lang_chg.coupendiscountcheckout[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.discount_per_txt[0] : Lang_chg.discount_per_txt[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -673,7 +673,7 @@ export default class Checkout extends Component {
             </View>
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.coupendiscountcheckout[0] : Lang_chg.coupendiscountcheckout[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.coupendiscountcheckout[0] : Lang_chg.coupendiscountcheckout[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -695,9 +695,9 @@ export default class Checkout extends Component {
               </View>
             </View>
 
-            <View style={s.container}>
+            {/* <View style={s.container}>
               <View style={s.item}>
-                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.advertismenttypecheckout[0] : Lang_chg.advertismenttypecheckout[0]}</Text>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.extrarequesttrip[0] : Lang_chg.extrarequesttrip[0]}</Text>
               </View>
 
               <View style={s.item}>
@@ -718,7 +718,9 @@ export default class Checkout extends Component {
 
                 </Text>
               </View>
+            </View> */}
             </View>
+
             <View style={{ top :5 , height: 0.5, backgroundColor: 'lightgrey' }}></View>
             <View style={{ flex: 1,marginTop:20, marginBottom: 40 }}>
               <Text
@@ -900,6 +902,7 @@ const s = StyleSheet.create({
   text1: {
     fontSize: 12,
     fontFamily: FontFamily.semi_bold,
+    left:1,
   },
   borders: {
     borderBottomColor: '#000',
@@ -961,23 +964,29 @@ const s = StyleSheet.create({
     margin: '7%',
   },
   container: {
-    marginLeft: '5%',
-    height: 25,
+    // marginLeft: '2%',
+    margin:5,
+    height: 20,
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start', // if you want to fill rows left to right
+    justifyContent:'space-evenly',
+    // flexWrap: 'wrap',
+    // alignItems: 'flex-start',
+    // backgroundColor:'red'
+    // if you want to fill rows left to right
   },
   container2: {
     marginLeft: '5%',
+    margin:5,
     height: 25,
     flexDirection: 'row',
-    flexWrap: 'wrap',
     alignItems: 'flex-start',
     justifyContent: 'space-between'
     // if you want to fill rows left to right
   },
   item: {
-    width: '45%', // is 50% of container width
+    width: '45%',
+    alignItems:"flex-start" ,// is 50% of container width
+    // backgroundColor:'white'
   },
   disc: {
     marginLeft: 20,
