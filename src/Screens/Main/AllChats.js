@@ -186,11 +186,19 @@ class AllChats extends PureComponent {
                     imgBack={true}
                     notiBtn={false}
                     searchBtn={this.state?.inboxmessage?.length > 0 ? true : false}
-                    headerHeight={200}
+                    headerHeight={250}
                     name={user.value == 1 ? Lang_chg.mesage[1] : Lang_chg.mesage[0]}
                     backImgSource={require('../../Images/backgroundImg.png')}
                 />
                 {isLoading && <Loader />}
+                <View style={{
+          backgroundColor: Colors.white,
+          borderTopLeftRadius: 25,
+          borderTopEndRadius: 25,
+          marginTop: -30,
+          flex: 1
+        }}
+        >
                 {allChatMember.length > 0 ? (
                     <FlatList
                         keyboardShouldPersistTaps={"handled"}
@@ -216,6 +224,7 @@ class AllChats extends PureComponent {
                     </View>
 
                 )}
+                </View>
             </View>
         );
     }

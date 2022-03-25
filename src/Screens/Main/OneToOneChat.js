@@ -201,7 +201,7 @@ class OneToOneChat extends PureComponent {
         message_type: "Text",
         message: messages[0].text,
         timestamp: new Date(),
-        avatar: "AjaqBYec1XSsbl3130153809.jpg",
+        avatar: this.messageinfo.image,
       });
 
       // this.setState((previousState) => ({
@@ -270,11 +270,11 @@ class OneToOneChat extends PureComponent {
           </View>
           <TouchableOpacity
             style={{ top: 13, backgroundColor: Colors.orange, alignItems: 'center', marginRight: 14, justifyContent: 'center', height: 40, width: 40, borderRadius: 50 }}>
-            <Icon
+            {/* <Icon
               name="dots-three-vertical"
               type="entypo"
               color={"#fff"}
-            />
+            /> */}
           </TouchableOpacity>
         </View>
         <View style={{

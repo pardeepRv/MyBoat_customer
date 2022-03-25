@@ -1,41 +1,23 @@
-import React, { Component, useState } from "react";
+import AsyncStorage from "@react-native-community/async-storage";
+import React, { Component } from "react";
 import {
-  Text,
-  View,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
-  Image,
   ActivityIndicator,
-  Dimensions,
+  Dimensions, Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View
 } from "react-native";
-import { Icon, Input, Card, AirbnbRating } from "react-native-elements";
-import Header from "../../Components/Header";
-import {
-  back_img3,
-  boat_img1,
-  Colors,
-  FontFamily,
-  Sizes,
-} from "../../Constants/Constants";
-import Ad from "../../Data/Ad";
-import Outgoing from "../../Data/Outgoing";
-import Upcoming from "../../Data/Upcoming";
-import { SliderBox } from "react-native-image-slider-box";
+import { AirbnbRating, Icon } from "react-native-elements";
 import FastImage from "react-native-fast-image";
-import { renderNode } from "react-native-elements/dist/helpers";
+import { SliderBox } from "react-native-image-slider-box";
+import Share from "react-native-share";
+import RNFetchBlob from "rn-fetch-blob";
+import {
+  Colors,
+  FontFamily
+} from "../../Constants/Constants";
 import { apifuntion } from "../../Provider/apiProvider";
 import { config } from "../../Provider/configProvider";
-import AsyncStorage from "@react-native-community/async-storage";
-import { Calendar } from "react-native-calendars";
-import RNFetchBlob from "rn-fetch-blob";
-import Share from "react-native-share";
-import { CheckBox } from "react-native-elements";
+import { Lang_chg } from "../../Provider/Language_provider";
 import { msgProvider } from "../../Provider/messageProvider";
 import { UserContext } from "./UserContext";
-import { Lang_chg } from "../../Provider/Language_provider";
 
 //import {SliderBox} from 'react-native-image-slider-box';
 const { width } = Dimensions.get("window");
@@ -63,6 +45,7 @@ export default class TripTypeDetail extends Component {
       loader: false,
       other_user_id: null,
       other_user_img: "",
+      other_user_name: '',
       mobile: "",
     };
   }
@@ -148,6 +131,7 @@ export default class TripTypeDetail extends Component {
 
         other_user_id: json.adver_arr?.user_id,
         other_user_img: json.adver_arr?.other_user_img,
+        other_user_name:json.adver_arr?.other_user_name,
         mobile: json.adver_arr?.mobile,
       });
 
@@ -248,6 +232,8 @@ export default class TripTypeDetail extends Component {
     let item = {};
     item["other_user_id"] = this.state.other_user_id;
     item["image"] = this.state.other_user_img;
+    item["name"] = this.state.other_user_name;
+
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
         <View
@@ -318,7 +304,10 @@ export default class TripTypeDetail extends Component {
           </TouchableOpacity>
         </View>
 
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentInset={{ bottom: 40 }}
+        >
           <SliderBox
             ImageComponent={FastImage}
             images={this.state.img}
@@ -693,7 +682,7 @@ export default class TripTypeDetail extends Component {
             {" "}
             Booking details:
           </Text>
-          <View style={{ flex: 1, top: 7, }}>
+          <View style={{ flex: 1, top: 7}}>
             <View style={s.container}>
               <View style={s.item}>
                 <Text style={s.leftText}>{user.value == 1 ? Lang_chg.advertisementtrip[1] : Lang_chg.advertisementtrip[0]}</Text>
@@ -890,7 +879,7 @@ export default class TripTypeDetail extends Component {
               <View style={{ justifyContent: "center", marginLeft: "20%" }}>
                 <Text style={s.rent}>{user.value == 1 ? Lang_chg.rental_amt_txt[1] : Lang_chg.rental_amt_txt[0]}</Text>
                 <Text style={s.rent}>
-                  KWD {this.state.advertisement?.price}
+                  KD {this.state.advertisement?.price}
                 </Text>
               </View>
             </View>

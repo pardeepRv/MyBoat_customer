@@ -93,7 +93,9 @@ export class MyTrip extends PureComponent {
       this.getMyTrips();
     });
   }
-
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
   CardView = ({ item }) => {
     console.log(item)
     return <Card containerStyle={s.Card}>

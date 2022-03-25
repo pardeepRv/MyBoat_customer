@@ -830,7 +830,7 @@ console.log('context in home', user);
                                   resizeMode: 'cover',
                                 }}
                                 source={{
-                                  uri: `https://${item.userimage}`,
+                                  uri: config.image_url4 + item.image,
                                 }}
                                 PlaceholderContent={
                                   <ActivityIndicator

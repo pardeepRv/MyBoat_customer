@@ -131,7 +131,7 @@ export default class GoogleMap extends Component {
             <Header
               imgBack={true}
               backBtn
-              searchBtn
+              // searchBtn
               name="Map"
               headerHeight={270}
               backImgSource={require('../../Images/back6.jpg')}
