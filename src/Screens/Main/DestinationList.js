@@ -98,7 +98,17 @@ Guests:'',
 
     console.log(this.state.destination , 'destination images ');
 
-    this.getData('user_arr');
+    // this.getData('user_arr');
+
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      console.log('focus :>> ');
+      this.setState({ isLoading: true });
+      this.getData('user_arr')
+    });
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   async filterdata(user_id) {
@@ -275,6 +285,7 @@ this.cityarr=  json.selected_City_Array ;
     console.log('goto');
     this.props.navigation.navigate('GoogleMap', {
       adver_arr: this.state.adver_arr,
+      arry : this.state.destination,
       type: 1
     });
   }
@@ -563,9 +574,10 @@ console.log('context in home', user);
           imgBack={true}
           backBtn={true}
 
-          backImgSource={
-            config.baseURL + 'images/' + this.state.destination.image
-          }
+          backImgSource={{
+            uri:
+            config.image_url4 + this.state.destination.image
+          }}
           name={ user.value == 1 ? this.state.destination.destination_name_arabic :this.state.destination.destination_name}
           searchBtn={false}
           headerHeight={300}

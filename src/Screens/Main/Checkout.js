@@ -157,10 +157,11 @@ export default class Checkout extends Component {
         form_data.append(key, this.state.data[key]);
       }
     }
+    // form_data.append('food_ent_eqip' , this.state.adv)
     form_data.append('extraHours', this.props.route.params.extraHours)
     form_data.append('extra_rent_amt', this.props.route.params.extra_rent_amt)
     form_data.append('rent_amount', this.state.totalPrice) //aa
-    console.log('Form data', form_data);
+     console.log('Form data', form_data);
 
     // return;
     apifuntion

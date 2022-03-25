@@ -56,12 +56,12 @@ export default class Splash extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar
-          hidden={true}
-          backgroundColor={Colors.white}
+        {/* <StatusBar
+          // hidden={true}
+          // backgroundColor={Colors.white}
           translucent={false}
           networkActivityIndicatorVisible={true}
-        />
+        /> */}
         <ImageBackground
           style={styles.logo}
           source={backgd}

@@ -28,6 +28,7 @@
     "firebase": "^9.5.0",
     "galio-framework": "^0.8.0",
     "moment": "^2.29.1",
+    "native-base": "^2.15.2",
     "radio-buttons-react-native": "^1.0.4",
     "react": "17.0.1",
     "react-native": "0.64.2",

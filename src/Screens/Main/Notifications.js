@@ -25,9 +25,11 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Loader from '../../Provider/Loader';
 import { UserContext } from './UserContext';
 import { Lang_chg } from '../../Provider/Language_provider';
+import { apifuntion } from '../../Provider/apiProvider';
+import { msgProvider } from '../../Provider/messageProvider';
 
 const NotificationsPage = () => {
-  const user = React.useContext(UserContext);
+    const user = React.useContext(UserContext);
 
     const navigation = useNavigation();
     const [data, setData] = useState([]);
@@ -66,19 +68,65 @@ const NotificationsPage = () => {
         }
     }
 
-    const deleteNotification = () => {
-        alert("delete");
-      };
+    // const deleteNotification = () => {
+    //     alert("delete");
+    // };
+
+    const deleteNotification = async (type , id) => {
+         console.log('type :>> ', type , id);
+         let notification_id = '';
+         let status ='';
+       if (type == 1 ){
+        notification_id =id ; 
+        status ="single";
+       }else {
+        notification_id = null ; 
+        status ="all";
+       }
+       setLoader(true);
+        const value = await AsyncStorage.getItem('user_arr');
+        console.log('value :>> ', value);
+        const arrayData = JSON.parse(value);
+         console.log('arrayData :>> ', arrayData);
+
+        let url =
+        config.baseURL +
+        'notificationDelete.php?user_id_post=' +
+        arrayData.user_id +
+        '&notification_message_id=' +  notification_id   +  "&delete_type="  + status  ;
+      console.log(url, "url gere");
+      apifuntion
+        .getApi(url)
+        .then(res => {
+          return res.json();
+        })
+        .then((res) => {
+           console.log(res, "res in notificatuon delted  ");
+          setLoader(false);
+          if (res && res.success) {
+            //Initalizing the chat history
+           alert(res?.msg[0])
+            // msgProvider.toast(res?.msg[0], 'bottom');
+            getNotificationList();
+          }
+        })
+        .catch((err) => {
+            setLoader(false)
+          console.log(err);
+        });
+      }
 
     return (
         <View style={{ flex: 1, backgroundColor: Colors.white }}>
             <Header
                 backBtn={true}
-                name={user.value == 1 ? Lang_chg.text_notification[1]: Lang_chg.text_notification[0]}
+                name={user.value == 1 ? Lang_chg.text_notification[1] : Lang_chg.text_notification[0]}
             />
             {/* Clear */}
-            <View style={{ position: "absolute", right: 30, top: 32 }}>
-                <TouchableOpacity>
+            <View style={{ position: "absolute", right: 30, top: 42 }}>
+                <TouchableOpacity
+                onPress={()=>deleteNotification(2)}
+                >
                     <Text style={{
                         textDecorationStyle: "solid",
                         textDecorationLine: "underline",
@@ -99,10 +147,7 @@ const NotificationsPage = () => {
                         <View style={{ marginTop: 30 }}>
                             {data === "NA" ? (
                                 <View style={{ alignItems: "center", marginTop: "10%" }}>
-                                    <Text
-                                        style={{ fontSize: 20, fontWeight: "bold", color: "#ccc" }}
-                                    >
-                                        "No Notification"                </Text>
+                                    <Text style={{textAlign:'center', fontSize: 20, fontWeight: "bold", color: "#ccc" }}>"No Notification" </Text>
                                 </View>
                             ) : (
                                 <FlatList
@@ -115,7 +160,7 @@ const NotificationsPage = () => {
                                         return (
                                             <TouchableOpacity
                                                 onPress={() =>
-                                                    gotoNotifications_Details({ data: item.item})
+                                                    gotoNotifications_Details({ data: item.item })
                                                 }
                                             >
                                                 <Card containerStyle={{ borderRadius: 12, padding: 5 }}>
@@ -139,7 +184,7 @@ const NotificationsPage = () => {
                                                                     width: 60,
                                                                     borderRadius: 12,
                                                                 }}
-                                                                source={{ uri: config.image_url4+item.item.user_image }}
+                                                                source={{ uri: config.image_url4 + item.item.user_image }}
                                                             />
                                                             <View style={{ marginLeft: 7 }}>
                                                                 <Text
@@ -173,19 +218,23 @@ const NotificationsPage = () => {
                                                             >
                                                                 {item.item.createtime_ago}
                                                             </Text>
-                                                            <TouchableOpacity 
-                                                            onPress={deleteNotification}
+                                                            <TouchableOpacity
+                                                                onPress={()=>deleteNotification(1 , item.item.notification_message_id)}
                                                             >
                                                                 <Card
                                                                     containerStyle={{
-                                                                        height: 30,
-                                                                        width: 30,
+                                                                        height: 27,
+                                                                        width: 27,
                                                                         padding: 0,
                                                                         alignItems: "center",
                                                                         justifyContent: "center",
                                                                     }}
                                                                 >
-                                                                    <Icon name="cross" type="entypo" />
+                                                                    <Icon
+                                                                        name="trash-outline"
+                                                                        type="ionicon"
+                                                                        color={Colors.orange}
+                                                                    />
                                                                 </Card>
                                                             </TouchableOpacity>
                                                         </View>

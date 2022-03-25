@@ -22,6 +22,7 @@ LogBox.ignoreAllLogs();
 
 const App = () => {
   const [name, setname] = useState(0)
+  const [barStyle, setBarStyle] = useState('light-content');
   const [isrtl, setisrtl] = useState(false)
   useEffect(async () => {
     // getLang();
@@ -85,27 +86,24 @@ const App = () => {
 
   return (
     <NavigationContainer>
-
-      {/* <SafeAreaView
-        style={{
-          backgroundColor: Colors.black,
-
-        }}
-      /> */}
-      {/* { Platform.OS == "ios" ?<StatusBar backgroundColor="#5E8D48" barStyle="light-content" /> : <StatusBar barStyle="light-content" backgroundColor="#000" /> } */}
-      <StatusBar backgroundColor="#5E8D48" barStyle="light-content" />
-      <UserContext.Provider
-        value={{
-          value: name,
-          isrtl: isrtl,
-          //  updateValue: setData 
-        }}
-      >
-        <FlashMessage position="top" />
-
-        <Stacks />
-      </UserContext.Provider>
-
+      <Root>
+        {/* { Platform.OS == "ios" ?<StatusBar backgroundColor="#5E8D48" barStyle="light-content" /> : <StatusBar barStyle="light-content" backgroundColor="#000" /> } */}
+        <StatusBar barStyle={"light-content"}
+              backgroundColor={"transparent"}
+              translucent 
+              hidden={false}
+              />
+        <UserContext.Provider
+          value={{
+            value: name,
+            isrtl: isrtl,
+            //  updateValue: setData 
+          }}
+        >
+          <FlashMessage position="top" />
+          <Stacks />
+        </UserContext.Provider>
+      </Root>
     </NavigationContainer>
   );
 };

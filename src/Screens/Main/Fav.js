@@ -59,31 +59,37 @@ export default class Fav extends Component {
   }
   clearAll = async () => {
     this.setState({ isLoading: true });
-    let userId = 115
-    let deleteType = 'all'
-    let advId = 0
-    let url = config.baseURL + 'add_rm_fav.php?user_id_post=' + userId + '&type=' + deleteType + '&advertisement_id=' + advId;
-    console.log(url)
-    try {
-      const response = await fetch(url);
-      const json = await response.json();
-      console.log('json  ', json)
-
-      if (json.success == 'true') {
-        this.setState({ fav_arr: [] })
-        this.setState({ isLoading: false });
+    const value = await AsyncStorage.getItem('user_arr');
+    console.log('value :>> ', value);
+    const arrayData = JSON.parse(value);
+     console.log('arrayData :>> ', arrayData);
+    let url =
+    config.baseURL +
+    `clear_all_favourite.php?user_id_post=${arrayData.user_id}` ;
+  console.log(url, "url gere");
+  apifuntion
+    .getApi(url)
+    .then(res => {
+      return res.json();
+    })
+    .then((res) => {
+       console.log(res, "res in fav cler all ");
+      this.setState({
+        isLoading: false,
+      });
+      if (res && res.success) {
+        //Initalizing the chat history
+       
+        msgProvider.toast(res?.msg, 'bottom');
         this.getData('user_arr')
-      } else {
-
-
       }
-
-    } catch (error) {
-      this.setState({ isLoading: false });
-      console.log(error);
-    } finally {
-      this.setState({ isLoading: false });
-    }
+    })
+    .catch((err) => {
+      this.setState({
+        isLoading: false,
+      });
+      console.log(err);
+    });
   }
 
   getData = async (key) => {

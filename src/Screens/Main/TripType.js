@@ -421,9 +421,12 @@ export default class TripType extends Component {
         <Header2
           imgBack={true}
           backBtn={true}
-          backImgSource={
-            config.baseURL + 'images/' + this.state.trip_type.cover_image
-          }
+          backImgSource={{
+            uri:
+            config.image_url4 + this.state.trip_type.cover_image
+          }}
+            
+          
           name={user.value == 1 ? this.state.trip_type.trip_type_name_arabic : this.state.trip_type.trip_type_name}
           searchBtn={false}
           headerHeight={300}

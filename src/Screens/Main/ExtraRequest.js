@@ -195,12 +195,22 @@ export default class ExtraRequest extends Component {
                       </View>
 
                       <View style={{ width: '35%', textAlign: 'right' }}>
-                        <Text
-                          style={{
-                            textAlign: 'right',
-                            marginLeft: '20%',
-                            fontFamily: FontFamily.default,
-                          }}>KD {item.addon_product_price}</Text>
+                        {
+                          item?.addon_product_price == 0 ?
+                            <Text
+                              style={{
+                                textAlign: 'right',
+                                marginLeft: '20%',
+                                fontFamily: FontFamily.default,
+                              }}>Free</Text> :
+                            <Text
+                              style={{
+                                textAlign: 'right',
+                                marginLeft: '20%',
+                                fontFamily: FontFamily.default,
+                              }}>KD {item.addon_product_price}</Text>
+                        }
+
                       </View>
                       <View style={{ width: '10%', padding: 0, top: -15 }}>
 

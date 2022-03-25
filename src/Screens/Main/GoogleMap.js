@@ -54,6 +54,7 @@ export default class GoogleMap extends Component {
       adver_arr: this?.props?.route?.params?.adver_arr
         ? this?.props?.route?.params?.adver_arr
         : [],
+        arry : this?.props?.route?.params?.arry,
       mapRegion: {
         latitude: parseFloat(city_lat),
         longitude: parseFloat(city_long),
@@ -119,6 +120,7 @@ export default class GoogleMap extends Component {
   };
   render() {
     console.log("$$$$$", this.state.adver_arr);
+    console.log('this.state.de :>> ', this.state.destination);
     return (
       <View style={{flex: 1}}>
         {/* <StatusBar backgroundColor="#ffffff25" ></StatusBar> */}
@@ -248,13 +250,13 @@ export default class GoogleMap extends Component {
                         }}>
                         <View
                           style={{
-                            backgroundColor: '#0A8481',
+                            // backgroundColor: '#0A8481',
                             justifyContent: 'flex-start',
                             alignItems: 'center',
                             borderRadius: 1,
                             paddingRight:10
                           }}>
-                          <Text
+                          <View
                             style={{
                               height: 30,
                               width: 30,
@@ -262,17 +264,18 @@ export default class GoogleMap extends Component {
                               alignItems: 'center',
                             }}>
                             <Image
-                              resizeMode="contain"
+                              resizeMode="cover"
                               style={{
-                                bottom: -15,
-                                width: 25,
-                                position: 'absolute',
-                                height: 25,
-                                tintColor: '#fff',
+                                bottom: 2,
+                                width: 37,
+                                // position: 'absolute',
+                                height: 30,
+                                left:5
+                                // tintColor: '#fff',
                               }}
-                              source={require('../../../assets/icons/active-1.png')}
+                              source={{uri : config.image_url4 + this.state.arry.image}}
                             />
-                          </Text>
+                          </View>
                         </View>
                         <Text style={styles.map_kwd}>
                           {Lang_chg.KWD_txt[config.language]} {item.price}
@@ -385,7 +388,7 @@ export default class GoogleMap extends Component {
                     longitude: parseFloat(item.lng),
                   }}
                   isPreselected={true}
-                  description={'Your Destination  location'}>
+                  description={'Your island  location'}>
                   <View
                     style={{
                       height: 40,
@@ -423,6 +426,55 @@ export default class GoogleMap extends Component {
                       </Text>
                     </View>
                   </TouchableOpacity> */}
+                  <Callout
+                      // onPress={() =>
+                      //   this.props.navigation.navigate('TripTypeDetail', {
+                      //     item: item,list: '1'
+                      //   })
+                      // }
+                      >
+                      <TouchableOpacity
+                        style={{
+                          height: 40,
+                          width: 120,
+                          borderRadius: 10,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}>
+                        <View
+                          style={{
+                            // backgroundColor: '#0A8481',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            borderRadius: 1,
+                            paddingRight:10
+                          }}>
+                          <View
+                            style={{
+                              height: 30,
+                              width: 30,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <Image
+                              resizeMode="cover"
+                              style={{
+                                bottom: 2,
+                                width: 37,
+                                // position: 'absolute',
+                                height: 30,
+                                left:5
+                                // tintColor: '#fff',
+                              }}
+                              source={{uri : config.image_url4 + item.image}}
+                            />
+                          </View>
+                        </View>
+                        <Text style={styles.map_kwd}>
+                          {Lang_chg.KWD_txt[config.language]} {item.min_price}
+                        </Text>
+                      </TouchableOpacity>
+                    </Callout>
                 </Marker.Animated>
               ) : null,
             )}

@@ -70,7 +70,7 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        Test Test
+                                        {data?.booking_details?.booking_arr?.user_name}
                                     </Text>
                                 </View>
                             </View>
@@ -82,7 +82,8 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        28-02-2021
+                                    {data?.booking_details?.booking_arr?.date}
+
                                     </Text>
                                 </View>
                             </View>
@@ -94,7 +95,7 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        8:00 PM
+                                    {data?.booking_details?.booking_arr?.time}
                                     </Text>
                                 </View>
                             </View>
@@ -106,7 +107,7 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        123456
+                                    {data?.booking_details?.booking_arr?.no_of_guest}
                                     </Text>
                                 </View>
                             </View>
@@ -118,7 +119,7 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        2hr
+                                    {data?.booking_details?.booking_arr?.minimum_hours} hr
                                     </Text>
                                 </View>
                             </View>
@@ -130,7 +131,7 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        1hr
+                                    {data?.booking_details?.booking_arr?.extra_time} hr
                                     </Text>
                                 </View>
                             </View>
@@ -141,7 +142,7 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        Cupidatat reprehenderit
+                                    Equipment
                                     </Text>
                                 </View>
                             </View>
@@ -152,7 +153,7 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        Ipsum officia amet
+                                    Entertainment
                                     </Text>
                                 </View>
                             </View>
@@ -174,7 +175,7 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        Kuwait
+                                    {data?.booking_details?.booking_arr?.location_address}
                                     </Text>
                                 </View>
                             </View>
@@ -185,7 +186,7 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        Ea amet non aliquip 
+                                    {data?.booking_details?.booking_arr?.location_address}
                                     </Text>
                                 </View>
                             </View>
@@ -196,7 +197,8 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        Ex sint in cupidata
+                                    {data?.booking_details?.booking_arr?.trip_name[0]}
+
                                     </Text>
                                 </View>
                             </View>
@@ -207,7 +209,8 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        50%
+                                    {data?.booking_details?.booking_arr?.discount} %
+
                                     </Text>
                                 </View>
                             </View>
@@ -218,7 +221,7 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        30%
+                                        {/* 30% */}
                                     </Text>
                                 </View>
                             </View>
@@ -229,7 +232,7 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        3000
+                                   kD {data?.booking_details?.booking_arr?.total_amt}
                                     </Text>
                                 </View>
                             </View>
@@ -240,7 +243,7 @@ useEffect(() => {
                                 </Text>
                                 <View style={sb.style2}>
                                     <Text style={sb.values}>
-                                        Velit cillum aute eiusmod
+                                      No Request
                                     </Text>
                                 </View>
                             </View>
