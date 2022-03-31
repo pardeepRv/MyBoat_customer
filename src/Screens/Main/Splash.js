@@ -32,13 +32,20 @@ export default class Splash extends Component {
   }
 
   componentDidMount() {
-    firebaseprovider.getAllUsers();
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      console.log('focus :>> ');
+      firebaseprovider.getAllUsers();
     const timer = setTimeout(() => {
       this.NavigateTo();
     }, 2000);
     return () => clearTimeout(timer);
+    });
+    
   }
-
+  componentWillUnmount() {
+    // this.backHandler.remove();
+    this._unsubscribe();
+  }
   NavigateTo = async () => {
     //let userdata = await localStorage.getItemObject('user_arr');
 

@@ -62,12 +62,12 @@ export default class Login extends Component {
     this.state = {
       // language_id: config.language,
       // password: 'Shai@0417',
-      // password: 'qwerty1234',
-      password: '',
+      password: 'qwerty1234',
+      // password: '',
       HidePassword: false,
       // email: 'Myboat667@gmail.com',
-      // email: 'customer@yopmail.com',
-      email: '',
+      email: 'customer@yopmail.com',
+      // email: '',
       loading: false,
       isConnected: true,
       checked: false,
@@ -344,7 +344,7 @@ export default class Login extends Component {
           style={styles.ImageBackground}
           source={backgd}
           imageStyle={styles.ImageBackground_Img}>
-          {/* <ScrollView style={{flex}}> */}
+       
           <View style={{ height: 25 }}></View>
           {user.value == 0 ? <TouchableOpacity style={styles.lang}
             onPress={() => {
@@ -530,10 +530,10 @@ export default class Login extends Component {
                   </View>
                 </View>
               </View>
-              {/* </ScrollView> */}
+             
             </View>
           </KeyboardAwareScrollView>
-          {/* </ScrollView> */}
+        
 
         </ImageBackground>
       </View>
@@ -656,6 +656,7 @@ const styles = StyleSheet.create({
     // height: layout.size.height ,
     // flex: 1,
     // backgroundColor:colors.secondry
+    flexGrow:1
   },
   subContentContainer: {
     paddingBottom: 12,

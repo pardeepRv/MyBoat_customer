@@ -60,6 +60,9 @@ class Language_provider {
   MobileMinLength = ['Mobile number must be of minimum 8 digits', "رقم الهاتف المحمول يجب ان لا يقل عن 8 ارقام "]
   MobileMaxLength = ['Mobile number cannot be more than 8 digits', 'رقم الهاتف المحمول يجب ان لا يزيد عن 8 ارقام ']
   validMobile = ["Please enter valid mobile number ", "الرجاء ادخال رقم هاتف صحيح "]
+  adddate = ['please fill date of birh' , 'الرجاء ملء dob']
+  selectcity =['please selecty the city' , 'الرجاء تحديد المدينة']
+  slectpaymentmethod = ['Please select the payment method' , 'الرجاء تحديد طريقة الدفع']
   //boat add=============
   //boat name=====
   emptyBoatName = ['Please enter boat name', 'الرجاء ادخال اسم القارب  ']
@@ -174,6 +177,7 @@ class Language_provider {
   txt_VERIFY = ['VERIFY', 'تحقق ']
   //==========forgot================
   txt_Forgot_Pass1 = ['Forgot Password ?', 'نسيت كلمة المرور ؟']
+  forgot =['Forgot Password', 'هل نسيت كلمة السر']
   txt_Forgot_Pass2 = ['Please enter your email for reset account', 'الرجاء ادخال البريد الالكتروني لإعادة الحساب ']
   txt_Forgot_Pass3 = ['Submit', 'ارسال ']
   //edit profile=================

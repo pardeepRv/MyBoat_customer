@@ -93,7 +93,7 @@ const DetailsRatings = ({ route }) => {
              console.log("Update Response", obj);
            
             if (obj.success == 'true') {
-                navigate.navigate('MyTrip');
+                navigate.navigate('Home');
                 msgProvider.toast(obj?.msg[0], 'center');
             }else{
               msgProvider.toast(obj?.msg[0], 'center');
@@ -161,7 +161,7 @@ const DetailsRatings = ({ route }) => {
                             {/*  */}
                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                 <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                                    <Image style={{ height: 40, width: 40 }} source={{ uri: `https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/${item.user_image}` }} />
+                                    <Image style={{ height: 40, width: 40 }} source={{ uri: `https://myboatonline.com/app/webservice/images/${item.user_image}` }} />
                                     <Text style={{ marginLeft: 5, fontFamily: FontFamily.semi_bold, fontSize: 16 }}>{item.user_name}</Text>
                                 </View>
                                 <Text style={{ fontSize: 10, fontFamily: FontFamily.default, color: "#999" }}>10:30 PM</Text>

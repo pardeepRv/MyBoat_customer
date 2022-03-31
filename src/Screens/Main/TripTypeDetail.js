@@ -125,7 +125,7 @@ export default class TripTypeDetail extends Component {
       this.setState({
         ratingscreen: json,
         adver_arr: json.adver_arr,
-        img_arr: json.adver_arr.img_arr,
+        img_arr: json.adver_arr && json.adver_arr.img_arr.length > 0 && json.adver_arr.img_arr ,
         // booking_arr: json.booking_arr != "NA" ? json.booking_arr : [],
         booking_arr: json?.combine_unavailable_dates,
 
@@ -246,6 +246,7 @@ export default class TripTypeDetail extends Component {
           {user.value == 1 ?
 
             <TouchableOpacity
+            onPress={() => this.props.navigation.goBack()}
               style={{
                 marginBottom: -65,
                 alignItems: "flex-start",
@@ -257,7 +258,6 @@ export default class TripTypeDetail extends Component {
               }}
             >
               <Icon
-                onPress={() => this.gotoBack()}
                 name="arrow-back"
                 type="ionicons"
                 size={26}
@@ -266,6 +266,7 @@ export default class TripTypeDetail extends Component {
             </TouchableOpacity>
             :
             <TouchableOpacity
+            onPress={() => this.props.navigation.goBack()}
               style={{
                 marginBottom: -65,
                 alignItems: "flex-start",
@@ -276,7 +277,6 @@ export default class TripTypeDetail extends Component {
               }}
             >
               <Icon
-                onPress={() => this.gotoBack()}
                 name="arrow-back"
                 type="ionicons"
                 size={26}
@@ -351,10 +351,6 @@ export default class TripTypeDetail extends Component {
             }}
             imageLoadingColor="#2196F3"
           />
-
-
-
-
           <View style={s.SEC3}>
             <View style={{}}>
               <View
@@ -506,7 +502,7 @@ export default class TripTypeDetail extends Component {
                   />
                 </ImageBackground>
                 <Text style={s.text}>Boat size</Text>
-                <Text style={s.text}>{this.state.adver_arr.boat_capacity}</Text>
+                <Text style={s.text}>{this.state.adver_arr ? this.state.adver_arr.boat_capacity : ''}</Text>
               </View>
 
               <View style={{ flex: 1, alignItems: "center" }}>
@@ -522,7 +518,7 @@ export default class TripTypeDetail extends Component {
                   />
                 </ImageBackground>
                 <Text style={s.text}> Boat brand </Text>
-                <Text style={s.text}> {this.state.adver_arr.boat_brand} </Text>
+                <Text style={s.text}> {this.state.adver_arr ? this.state.adver_arr.boat_brand : ''} </Text>
               </View>
 
               <View style={{ flex: 1, alignItems: "center" }}>
@@ -540,7 +536,7 @@ export default class TripTypeDetail extends Component {
                 <Text style={s.text}> Trip Hours </Text>
                 <Text style={s.text}>
                   {" "}
-                  {this.state.adver_arr?.minimum_hours}{" "}
+                  {this.state.adver_arr ? this.state.adver_arr?.minimum_hours : ''}{" "}
                 </Text>
               </View>
             </View>
@@ -623,7 +619,7 @@ export default class TripTypeDetail extends Component {
                 <Text style={s.text}>Cabin </Text>
                 <Text style={s.text}>
                   {" "}
-                  {this.state.adver_arr?.boat_cabins}{" "}
+                  {this.state.adver_arr ? this.state.adver_arr?.boat_cabins : ''}{" "}
                 </Text>
               </View>
 
@@ -641,7 +637,7 @@ export default class TripTypeDetail extends Component {
                 </ImageBackground>
                 <Text style={s.text}>No. of guest</Text>
                 <Text style={s.text}>
-                  {this.state.adver_arr?.no_of_people}{" "}
+                  {this.state.adver_arr ? this.state.adver_arr?.no_of_people : ''}{" "}
                 </Text>
               </View>
 
@@ -658,14 +654,14 @@ export default class TripTypeDetail extends Component {
                   />
                 </ImageBackground>
                 <Text style={s.text}>Toilet</Text>
-                <Text style={s.text}>{this.state.adver_arr.idle_time}</Text>
+                <Text style={s.text}>{this.state.adver_arr ? this.state.adver_arr.idle_time : ''}</Text>
               </View>
             </View>
           </View>
           <View style={{ flex: 1, top: 8 }}>
             <Text style={s.disc}>Discription :</Text>
             <Text style={[s.detail, { lineHeight: 27 }]}>
-              {this.state.adver_arr.discription_arr &&
+              {this.state.adver_arr && this.state.adver_arr.discription_arr &&
                 this.state.adver_arr.discription_arr[0]}
             </Text>
           </View>
@@ -690,7 +686,7 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr.boat_type}{" "}
+                  {this.state.adver_arr ? this.state.adver_arr.boat_type : ''}{" "}
                 </Text>
               </View>
             </View>
@@ -702,7 +698,7 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr.discount}{" "}
+                  {this.state.adver_arr ? this.state.adver_arr.discount : ''}{" "}
                 </Text>
               </View>
             </View>
@@ -713,7 +709,7 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr.trip_type_name}{" "}
+                  { this.state.adver_arr ? this.state.adver_arr.trip_type_name : ''}{" "}
                 </Text>
               </View>
             </View>
@@ -743,7 +739,7 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr.city_name &&
+                  {this.state.adver_arr && this.state.adver_arr.city_name &&
                     this.state.adver_arr.city_name[0]}{" "}
                 </Text>
               </View>
@@ -755,7 +751,7 @@ export default class TripTypeDetail extends Component {
               </View>
 
               <View style={s.item}>
-                <Text style={s.rightText}>{this.state.adver_arr.price} </Text>
+                <Text style={s.rightText}>{this.state.adver_arr ? this.state.adver_arr.price : ''} </Text>
               </View>
             </View>
 
@@ -766,7 +762,7 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr.extra_price}{" "}
+                  {this.state.adver_arr ? this.state.adver_arr.extra_price : ''}{" "}
                 </Text>
               </View>
             </View>
@@ -786,7 +782,7 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr.no_of_people}{" "}
+                  {this.state.adver_arr ? this.state.adver_arr.no_of_people : ''}{" "}
                 </Text>
               </View>
             </View>
@@ -798,7 +794,7 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr?.minimum_hours}{" "}
+                  {this.state.adver_arr ? this.state.adver_arr?.minimum_hours : ''}{" "}
                 </Text>
               </View>
             </View>
@@ -879,7 +875,7 @@ export default class TripTypeDetail extends Component {
               <View style={{ justifyContent: "center", marginLeft: "20%" }}>
                 <Text style={s.rent}>{user.value == 1 ? Lang_chg.rental_amt_txt[1] : Lang_chg.rental_amt_txt[0]}</Text>
                 <Text style={s.rent}>
-                  KD {this.state.advertisement?.price}
+                  KD {this.state.adver_arr ? this.state.advertisement?.price :''}
                 </Text>
               </View>
             </View>

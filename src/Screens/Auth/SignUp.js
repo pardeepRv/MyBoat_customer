@@ -9,8 +9,9 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Platform
 } from 'react-native';
-import { CheckBox, Input } from 'react-native-elements';
+import { CheckBox, Input , Icon } from 'react-native-elements';
 import {
   backgd,
   back_img,
@@ -21,7 +22,6 @@ import {
 } from '../../Constants/Constants';
 import { useNavigation } from '@react-navigation/core';
 import { Picker } from '@react-native-community/picker';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { config } from '../../Provider/configProvider';
 import { apifuntion } from '../../Provider/apiProvider';
 import { localStorage } from '../../Provider/localStorageProvider';
@@ -29,11 +29,13 @@ import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Lang_chg } from '../../Provider/Language_provider';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { UserContext } from '../Main/UserContext';
 
 //import CheckBox from '@react-native-community/checkbox';
 
 export default class SignUp extends Component {
   // }
+  static contextType = UserContext;
 
   constructor(props) {
     super(props);
@@ -407,6 +409,8 @@ export default class SignUp extends Component {
 
   render() {
     const ref = this.state;
+    const user = this.context
+    console.log('context in login', user);
     return (
       <View>
         <ImageBackground
@@ -415,7 +419,8 @@ export default class SignUp extends Component {
           imageStyle={s.ImageBackground_Img}>
           {this.state.inputform || (
             <View>
-              <View style={s.lang}>
+             
+              {/* <View style={s.lang}> */}
                 {/* <Icon
                   name="globe"
                   color="#fff"
@@ -453,7 +458,8 @@ export default class SignUp extends Component {
 
 
           </Picker> */}
-              </View>
+              {/* </View> */}
+
               <KeyboardAwareScrollView
               extraScrollHeight={50}
               nestedScrollEnabled
@@ -462,6 +468,48 @@ export default class SignUp extends Component {
               contentContainerStyle={s.subContentContainer}
               keyboardShouldPersistTaps={'always'}
               showsVerticalScrollIndicator={false}>
+                 {Platform.OS == "ios" ? null : <View>
+                        {user.value == 1 ?
+
+                            <TouchableOpacity
+                            onPress={() => this.props.navigation.goBack()}
+                                style={{
+                                    marginBottom: -65,
+                                    alignItems: "flex-start",
+                                    marginTop: 40,
+                                    marginLeft: 20,
+                                    borderRadius: 25,
+                                    transform: [{ rotate: '180deg' }]
+                                }}
+                            >
+                                <Icon
+                                    name="arrow-back"
+                                    type="ionicons"
+                                    size={26}
+                                    color={Colors.white}
+                                />
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity
+                            onPress={() => this.props.navigation.goBack()}
+                                style={{
+                                    marginBottom: -65,
+                                    alignItems: "flex-start",
+                                    marginTop: 40,
+                                    marginLeft: 20,
+                                    borderRadius: 25,
+                                }}
+                            >
+                                <Icon
+                                    
+                                    name="arrow-back"
+                                    type="ionicons"
+                                    size={26}
+                                    color={Colors.white}
+                                />
+                            </TouchableOpacity>
+                        }
+                    </View>}
                 <View style={s.Logo1}>
                   <Image source={require('../../Images/appicon.png')} style={s.Logo} />
                 </View>
@@ -769,7 +817,7 @@ const s = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 60,
+    marginTop: 80,
   },
   Text1: {
     textAlign: 'center',

@@ -202,6 +202,17 @@ export default class EditProfile extends Component {
       msgProvider.toast(Lang_chg.MobileMaxLength[config.language], 'center');
       return false;
     }
+    if (dob.length <= 0) {
+      msgProvider.toast(Lang_chg.adddate[config.language], 'center');
+      return false;
+    }if (!gender ) {
+      msgProvider.toast(Lang_chg.adddate[config.language], 'center');
+      return false;
+    }if (city_name == 'N' ) {
+      msgProvider.toast(Lang_chg.selectcity[config.language], 'center');
+      return false;
+    }
+  //  console.log('dob :>> ', city_name);
 
     var data = new FormData();
     if(this.state.imageObj?.path){

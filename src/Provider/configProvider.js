@@ -16,22 +16,22 @@ global.social_login_data = 'NA';
 class configProvider {
 
 	//commented by pardeep
-	// baseURL 	= 'https://myboatonline.com/app/webservice/';
-	// img_url 	= 'https://myboatonline.com/app/webservice/images/200X200/';
-	// img_url1 	= 'https://myboatonline.com/app/webservice/images/400X400/';
-	// img_url2 	= 'https://myboatonline.com/app/webservice/images/700X700/';
-	// img_url3 	= 'https://myboatonline.com/app/webservice/images/';
-	// image_url4= 'https://myboatonline.com/app/webservice/images/';
-	// appUrl= 'https://play.google.com/store/apps/details?id=com.whatsapp.w4b';
+	baseURL 	= 'https://myboatonline.com/app/webservice/';
+	img_url 	= 'https://myboatonline.com/app/webservice/images/200X200/';
+	img_url1 	= 'https://myboatonline.com/app/webservice/images/400X400/';
+	img_url2 	= 'https://myboatonline.com/app/webservice/images/700X700/';
+	img_url3 	= 'https://myboatonline.com/app/webservice/images/';
+	image_url4= 'https://myboatonline.com/app/webservice/images/';
+	appUrl= 'https://play.google.com/store/apps/details?id=com.whatsapp.w4b';
 
 
-	baseURL = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/';
-	img_url = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/200X200/';
-	img_url1 = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/400X400/';
-	img_url2 = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/700X700/';
-	img_url3 = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/';
-	image_url4 = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/';
-	appUrl = 'https://apps.apple.com/us/app/myboat/id1570418310';
+	// baseURL = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/';
+	// img_url = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/200X200/';
+	// img_url1 = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/400X400/';
+	// img_url2 = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/700X700/';
+	// img_url3 = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/';
+	// image_url4 = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/';
+	// appUrl = 'https://apps.apple.com/us/app/myboat/id1570418310';
 
 
 

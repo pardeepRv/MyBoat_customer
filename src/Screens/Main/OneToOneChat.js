@@ -213,13 +213,12 @@ class OneToOneChat extends PureComponent {
   render() {
     const { messages } = this.state;
     const { data } = this.props.route?.params;
+    console.log('data :>> ', data);
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: Colors.orange, }}>
-        {/* <Header
-          headerHeight={30}
-        /> */}
         <View
           style={{
+            top:15,
             backgroundColor: Colors.orange,
             height: 100,
             alignItems: "flex-start",

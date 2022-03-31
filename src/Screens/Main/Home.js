@@ -183,7 +183,7 @@ export default class Home extends Component {
       })
 
       json.promotions_arr.forEach(item => {
-        item.serverImg = 'https://server3.rvtechnologies.in/My-Boat/app/app/webservice/images/' + item.image;
+        item.serverImg = 'https://myboatonline.com/app/webservice/images/' + item.image;
 
       });
 
