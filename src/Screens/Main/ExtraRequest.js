@@ -221,6 +221,8 @@ export default class ExtraRequest extends Component {
                           key={index}
                           onPress={() => this.onChangeCheck(item, index, id)}
                           style={s.checkbox}
+                    checkedColor={Colors.orange}
+
                         />
 
                       </View>

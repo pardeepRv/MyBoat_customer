@@ -327,7 +327,7 @@ this.cityarr=  json.selected_City_Array ;
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-       console.log('json', json);
+       console.log('json123', json);
 
       if (json.success == 'true') {
         this.setState({ adver_arr: json.adver_arr != 'NA' ? json.adver_arr : [] });
@@ -553,7 +553,7 @@ this.cityarr=  json.selected_City_Array ;
   }
 
   render() {
-    console.log('this.state.adver_arr :>> ', this.state.adver_arr);
+    console.log('this.state.adver_arrin destibnation:>> ', this.state.adver_arr);
     console.log('this.state.advertisment :>> ', this.state.advertisment);
     console.log('cityselected :>> ', this.state.citylistselected);
     console.log('typegearslected :>> ', this.state.type_gearslected);
@@ -703,7 +703,6 @@ console.log('context in home', user);
                         list: '1'
                       })
                     }
-
                     }
                   >
                     <Card

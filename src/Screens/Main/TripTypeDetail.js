@@ -227,7 +227,7 @@ export default class TripTypeDetail extends Component {
   render() {
     const user = this.context
     console.log('context in home', user);
-    console.log('advertisement :>> ', this.state.adver_arr);
+    console.log('advertisement in :>> ', this.state.adver_arr);
     console.log('advertisement :>> ', this.state.advertisement);
     let item = {};
     item["other_user_id"] = this.state.other_user_id;

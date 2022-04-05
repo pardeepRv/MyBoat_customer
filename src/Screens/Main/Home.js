@@ -255,7 +255,7 @@ export default class Home extends Component {
     const user = this.context
     console.log('context in home', user);
     const destinations = this.state.destinations.image;
-    console.log('render>>>>>>>>>>>>>', this.state.trips_arr)
+    console.log('render>>>>>>>>>>>>> im  trip arr', this.state.trips_arr)
     console.log('render>>>>>>>>>>>>>', this.state.destinations)
 
     var images = [

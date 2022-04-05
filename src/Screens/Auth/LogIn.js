@@ -125,26 +125,52 @@ export default class Login extends Component {
   }
 
 
-  restartApp = async () => {
-    Alert.alert(
-      "Restart app?",
-      "You have changed the app language. You need to restart the app for it to be effective.",
-      [
-        {
-          text: "Restart now",
-          onPress: () => {
-            RNRestart.Restart();
+  restartApp = async (value) => {
+     console.log('value :>> ', value);
+    if (value == 1 ){
+      Alert.alert(
+        "Restart app?",
+        "You have changed the app language. You need to restart the app for it to be effective.",
+        [
+          {
+            text: "Restart now",
+            onPress: () => {
+              Lang_chg.language_set(1)
+              RNRestart.Restart();
+            },
           },
-        },
-        {
-          text: "Cancel",
-          onPress: () => {
-            console.log('cancel');
+          {
+            text: "Cancel",
+            onPress: () => {
+              console.log('cancel');
+            },
           },
-        },
-      ],
-      { cancelable: true }
-    );
+        ],
+        { cancelable: true }
+      );
+    } else {
+      Alert.alert(
+        "Restart app?",
+        "You have changed the app language. You need to restart the app for it to be effective.",
+        [
+          {
+            text: "Restart now",
+            onPress: () => {
+              Lang_chg.language_set(0)
+              RNRestart.Restart();
+            },
+          },
+          {
+            text: "Cancel",
+            onPress: () => {
+              console.log('cancel');
+            },
+          },
+        ],
+        { cancelable: true }
+      );
+    }
+   
   };
 
   onAppleButtonPress = navigation => {
@@ -348,8 +374,7 @@ export default class Login extends Component {
           <View style={{ height: 25 }}></View>
           {user.value == 0 ? <TouchableOpacity style={styles.lang}
             onPress={() => {
-              Lang_chg.language_set(1)
-              this.restartApp();
+              this.restartApp(1);
             }}
           >
             <Icon name="globe" color="#fff" size={20} style={{ marginTop: 12 }} />
@@ -362,12 +387,11 @@ export default class Login extends Component {
             />
           </TouchableOpacity> : <TouchableOpacity style={styles.lang}
             onPress={() => {
-              Lang_chg.language_set(0)
-              this.restartApp();
+              this.restartApp(0);
             }}
           >
             <Icon name="globe" color="#fff" size={20} style={{ marginTop: 12 }} />
-            <Text style={{ color: '#fff', marginTop: 12, margin: 5 }}>eng</Text>
+            <Text style={{ color: '#fff', marginTop: 12, margin: 5 }}>EN</Text>
             <Icon
               name="caret-down"
               color="#fff"

@@ -48,6 +48,8 @@ export default class GoogleMap extends Component {
       addressselected: '',
       address_selected: '',
       input_search: '',
+      item: this?.props?.route?.params?.item 
+      ? this?.props?.route?.params?.destinationitems_arr :'',
       destination : this?.props?.route?.params?.destinations_arr 
       ? this?.props?.route?.params?.destinations_arr : [],
       type:this?.props?.route?.params?.type,
@@ -466,7 +468,7 @@ export default class GoogleMap extends Component {
                                 left:5
                                 // tintColor: '#fff',
                               }}
-                              source={{uri : config.image_url4 + item.image}}
+                              source={{uri : config.image_url4 + item.trip_icons[0].icon_green}}
                             />
                           </View>
                         </View>

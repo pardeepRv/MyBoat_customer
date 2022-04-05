@@ -125,9 +125,8 @@ export default class Forgot extends Component {
             <View activeOpacity={1} onPress={() => { Keyboard.dismiss() }} style={{ flex: 1, height: '100%', }}>
                 <ImageBackground style={{ width: '100%', height: '100%', backgroundColor: Colors.black, }} imageStyle={styles.ImageBackground_Img} source={backgd}  >
 
-                    {Platform.OS == "ios" ? null : <View>
+                    <View>
                         {user.value == 1 ?
-
                             <TouchableOpacity
                                 style={{
                                     marginBottom: -65,
@@ -167,7 +166,7 @@ export default class Forgot extends Component {
                                 />
                             </TouchableOpacity>
                         }
-                    </View>}
+                    </View>
                     <View style={styles.logo_forgot}>
                         <Text style={styles.forgot_title}>{Lang_chg.txt_Forgot_Pass1[config.language]}</Text>
                         <Text style={{ color: '#fff' }}>{Lang_chg.txt_Forgot_Pass2[config.language]}</Text>

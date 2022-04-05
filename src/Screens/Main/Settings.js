@@ -164,10 +164,9 @@ const Settings=()=>{
                             <View style={{flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{fontSize:14,fontFamily:FontFamily.semi_bold,marginHorizontal:7}}>
                                 {user.value == 1 ? Lang_chg.contact_to_ad_text[1] : Lang_chg.contact_to_ad_text[0]}
-
                                 </Text>
                             </View>
-                            <Icon name="arrow-right" type="evilicon"  />
+                            <Icon name="arrow-right" type="evilicon"/>
                             </View>
                         </Card>
                     </TouchableOpacity>
@@ -177,7 +176,7 @@ const Settings=()=>{
                             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
                             <View style={{flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{fontSize:14,fontFamily:FontFamily.semi_bold,marginHorizontal:7}}>
-                                Share App
+                                {user.value == 1 ? Lang_chg.text_share_app[1] : Lang_chg.text_share_app[0]}
                                 </Text>
                             </View>
                             <Icon name="arrow-right" type="evilicon"  />
@@ -190,7 +189,7 @@ const Settings=()=>{
                             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
                             <View style={{flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{fontSize:14,fontFamily:FontFamily.semi_bold,marginHorizontal:7}}>
-                                Rate App
+                                {user.value == 1 ? Lang_chg.text_rate_app[1] : Lang_chg.text_rate_app[0]}
                                 </Text>
                             </View>
                             <Icon name="arrow-right" type="evilicon"  />

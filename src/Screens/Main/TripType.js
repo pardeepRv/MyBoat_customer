@@ -357,6 +357,7 @@ export default class TripType extends Component {
     console.log('goto');
     this.props.navigation.navigate('GoogleMap', {
       destinations_arr: this.state.destinations_arr,
+      item: this.state.trip_type,
       type: 3
     });
   }
