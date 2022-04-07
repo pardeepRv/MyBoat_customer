@@ -556,7 +556,7 @@ export default class TripTypeDetail extends Component {
                 </ImageBackground>
                 <Text style={s.text}>Equipment</Text>
                 <Text style={{ fontWeight: "bold", fontSize: 12 }}>
-                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
+                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted && this.state.adver_arr.addon_arr_formatted != 'NA'
                     && this.state.adver_arr?.addon_arr_formatted.equipment && this.state.adver_arr?.addon_arr_formatted.equipment.length > 0
                     && this.state.adver_arr?.addon_arr_formatted.equipment.length}
                 </Text>
@@ -576,7 +576,7 @@ export default class TripTypeDetail extends Component {
                 </ImageBackground>
                 <Text style={s.text}> Entertainment </Text>
                 <Text style={{ fontWeight: "bold", fontSize: 12 }}>
-                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
+                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted && this.state.adver_arr.addon_arr_formatted != 'NA'
                     && this.state.adver_arr?.addon_arr_formatted.entertainment && this.state.adver_arr?.addon_arr_formatted.entertainment.length > 0
                     && this.state.adver_arr?.addon_arr_formatted.entertainment.length}
                 </Text>
@@ -596,7 +596,7 @@ export default class TripTypeDetail extends Component {
                 </ImageBackground>
                 <Text style={s.text}> Food </Text>
                 <Text style={{ fontWeight: "bold", fontSize: 12 }}>
-                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
+                  {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted && this.state.adver_arr.addon_arr_formatted != 'NA'
                     && this.state.adver_arr?.addon_arr_formatted.food && this.state.adver_arr?.addon_arr_formatted.food.length > 0
                     && this.state.adver_arr?.addon_arr_formatted.food.length}
                 </Text>
@@ -659,7 +659,9 @@ export default class TripTypeDetail extends Component {
             </View>
           </View>
           <View style={{ flex: 1, top: 8 }}>
-            <Text style={s.disc}>Discription :</Text>
+            <Text style={s.disc}>
+            {user.value == 1 ?  Lang_chg.Discription[1] : Lang_chg.Discription[0]}
+            </Text>
             <Text style={[s.detail, { lineHeight: 27 }]}>
               {this.state.adver_arr && this.state.adver_arr.discription_arr &&
                 this.state.adver_arr.discription_arr[0]}
@@ -676,12 +678,13 @@ export default class TripTypeDetail extends Component {
             }}
           >
             {" "}
-            Booking details:
+           {user.value == 1 ?  Lang_chg.text_booking_details[1] : Lang_chg.text_booking_details[0]}
           </Text>
           <View style={{ flex: 1, top: 7}}>
             <View style={s.container}>
               <View style={s.item}>
-                <Text style={s.leftText}>{user.value == 1 ? Lang_chg.advertisementtrip[1] : Lang_chg.advertisementtrip[0]}</Text>
+                <Text style={s.leftText}>
+                  {user.value == 1 ? Lang_chg.advertisementtrip[1] : Lang_chg.advertisementtrip[0]}</Text>
               </View>
 
               <View style={s.item}>

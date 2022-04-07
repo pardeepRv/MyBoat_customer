@@ -44,7 +44,7 @@ export default class Change_Language extends Component {
         if (user.value == 1) {
             this.setState({ backgroundColor: Colors.white, backgroundColor2: Colors.orange });
         } else {
-            this.setState({ backgroundColor: Colors.orange, backgroundColor2: Colors.white });
+            this.setState({ backgroundColor: Colors.orange, backgroundColor2: Colors.white  });
 
         }
 
@@ -99,13 +99,21 @@ export default class Change_Language extends Component {
     };
 
     changeColor = () => {
-        if (!this.state.pressed) {
-            // setSelected(true)
-
-            this.setState({ pressed: true, backgroundColor: Colors.orange, backgroundColor2: 'white' });
-        } else {
-            this.setState({ pressed: false, backgroundColor: 'white', backgroundColor2: Colors.orange });
-        }
+        const user = this.context
+// for simple chnge color code 
+        // if (!this.state.pressed) {
+        //     // setSelected(true)
+        //     this.setState({ pressed: true, backgroundColor: Colors.orange, backgroundColor2: 'white' });
+        // } else {
+        //     this.setState({ pressed: false, backgroundColor: 'white', backgroundColor2: Colors.orange });
+        // }
+// for functionaity way code 
+        // if (user.value==0) {
+        //     // setSelected(true)
+        //     this.setState({ pressed: true, backgroundColor: Colors.orange, backgroundColor2: 'white' });
+        // } else  if (user.value==1){
+        //     this.setState({ pressed: true, backgroundColor: Colors.orange, backgroundColor2: 'white'});
+        // }
     }
     render() {
         const user = this.context
@@ -124,8 +132,9 @@ export default class Change_Language extends Component {
                         <TouchableOpacity
                             onPress={() => {
                                 this.restartApp(0);
-                                this.changeColor()
+                                this.changeColor(0)
                             }}
+                            disabled={ user.value == 0 ? true :  false}
                         >
                             <Card
                                 containerStyle={{
@@ -146,8 +155,9 @@ export default class Change_Language extends Component {
                         <TouchableOpacity
                             onPress={() => {
                                 this.restartApp(1);
-                                this.changeColor()
+                                this.changeColor(1)
                             }}
+                            disabled={ user.value == 1 ? true :  false}
                         >
                             <Card
                                 //  color={selected ==2 ? btn2Style.backColor : btn1Style.backColor}

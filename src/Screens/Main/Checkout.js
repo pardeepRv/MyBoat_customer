@@ -363,6 +363,8 @@ export default class Checkout extends Component {
 
 
   renderSuccessModal = () => {
+    const user = this.context
+    console.log('context in home', user);
     return (
       <Modal
         transparent={true}
@@ -387,15 +389,15 @@ export default class Checkout extends Component {
               alignItems: 'center'
             }}>
             <Image style={{ height: 55, width: 55 }} source={require('../../../assets/icons/success.png')} resizeMode='contain' />
-            <Text style={{ fontSize: 15, fontFamily: FontFamily.semi_bold, color: Colors.black, lineHeight: 40 }}>SUCCESS</Text>
-            <Text style={{ fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 20 }}>You have successfully created Booking</Text>
+            <Text style={{ fontSize: 15, fontFamily: FontFamily.semi_bold, color: Colors.black, lineHeight: 40 }}>{user.value == 1 ? Lang_chg.text_SUCCESS[1] : Lang_chg.text_SUCCESS[0]}</Text>
+            <Text style={{ fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 20 }}>{user.value == 1 ? Lang_chg.text_seccess_msg[1] : Lang_chg.text_seccess_msg[0]}</Text>
             <Text style={{ fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 30 }}>Booking ID :- #{this.state.booking_id}</Text>
             <Text style={{ fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 30 }}>{moment(this.state.createTime).format('DD-MM-YYYY, hh:mmA')}</Text>
             <TouchableOpacity style={[s.Btn1, { width: '90%' }]} onPress={() => {
               this.setState({ isSuccess: false })
               this.props.navigation.navigate('Trip')
             }}>
-              <Text style={[s.Btn1Text]}>Continue</Text>
+              <Text style={[s.Btn1Text]}>{user.value == 1 ? Lang_chg.text_Countibue[1] : Lang_chg.text_Countibue[0]}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -404,6 +406,8 @@ export default class Checkout extends Component {
   };
 
   renderFailureModal = () => {
+    const user = this.context
+    console.log('context in home', user);
     return (
       <Modal
         transparent={true}
@@ -428,15 +432,15 @@ export default class Checkout extends Component {
               alignItems: 'center'
             }}>
             <Image style={{ height: 55, width: 55 }} source={require('../../../assets/icons/Failure.png')} resizeMode='contain' />
-            <Text style={{ fontSize: 15, fontFamily: FontFamily.semi_bold, color: Colors.black, lineHeight: 40 }}>Failure</Text>
-            <Text style={{ textAlign: 'center', fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 20 }}>Wallet Balance is not available.Please Recharge your wallet</Text>
+            <Text style={{ fontSize: 15, fontFamily: FontFamily.semi_bold, color: Colors.black, lineHeight: 40 }}>{user.value == 1 ? Lang_chg.txt_Failure[1] : Lang_chg.txt_Failure[0]}</Text>
+            <Text style={{ textAlign: 'center', fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 20 }}>{user.value == 1 ? Lang_chg.text_failure_msg[1] : Lang_chg.text_failure_msg[0]}</Text>
             <Text style={{ fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 30 }}>Booking ID :- #{this.state.booking_id}</Text>
             {/* <Text style={{ fontSize: 14, fontFamily: FontFamily.default, color: Colors.black, lineHeight: 30 }}>{moment(this.state.createTime).format('DD-MM-YYYY, hh:mmA')}</Text> */}
             <TouchableOpacity style={[s.Btn1, { width: '90%' }]} onPress={() => {
               this.setState({ isfailure: false })
               this.props.navigation.navigate('Home')
             }}>
-              <Text style={[s.Btn1Text]}>Continue</Text>
+              <Text style={[s.Btn1Text]}>{user.value == 1 ? Lang_chg.text_Countibue[1] : Lang_chg.text_Countibue[0]}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -477,14 +481,14 @@ export default class Checkout extends Component {
                 fontSize: 18,
                 fontFamily: FontFamily.semi_bold,
               }}>
-              Booking details:
+{user.value == 1 ? Lang_chg.text_booking_details[1] : Lang_chg.text_booking_details[0]}
             </Text>
 
             <Text />
             <View style={{ Flex: 1 }}>
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={s.text1}> {user.value == 1 ? Lang_chg.Customername[0] : Lang_chg.Customername[0]}</Text>
+                  <Text style={s.text1}> {user.value == 1 ? Lang_chg.Customername[1] : Lang_chg.Customername[0]}</Text>
                 </View>
 
                 <View style={s.item}>
@@ -496,7 +500,7 @@ export default class Checkout extends Component {
 
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={s.text1}>{user.value == 1 ? Lang_chg.Bookdatetrip[0] : Lang_chg.Bookdatetrip[0]}</Text>
+                  <Text style={s.text1}>{user.value == 1 ? Lang_chg.Bookdatetrip[1] : Lang_chg.Bookdatetrip[0]}</Text>
                 </View>
 
                 <View style={s.item}>
@@ -508,7 +512,7 @@ export default class Checkout extends Component {
 
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.TripTimetrip[0] : Lang_chg.TripTimetrip[0]}</Text>
+                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.TripTimetrip[1] : Lang_chg.TripTimetrip[0]}</Text>
                 </View>
 
                 <View style={s.item}>
@@ -520,7 +524,7 @@ export default class Checkout extends Component {
 
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.noogguesttriptour[0] : Lang_chg.noogguesttriptour[0]}</Text>
+                  <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.noogguesttriptour[1] : Lang_chg.noogguesttriptour[0]}</Text>
                 </View>
 
                 <View style={s.item}>
@@ -532,7 +536,7 @@ export default class Checkout extends Component {
 
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.triphourcheckout[0] : Lang_chg.triphourcheckout[0]}</Text>
+                  <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.triphourcheckout[1] : Lang_chg.triphourcheckout[0]}</Text>
                 </View>
 
                 <View style={s.item}>
@@ -543,7 +547,7 @@ export default class Checkout extends Component {
               </View>
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.extrahourcheckout[0] : Lang_chg.extrahourcheckout[0]}</Text>
+                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.extrahourcheckout[1] : Lang_chg.extrahourcheckout[0]}</Text>
                 </View>
 
                 <View style={s.item}>
@@ -556,7 +560,7 @@ export default class Checkout extends Component {
 
               <View style={s.container2}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.equpmenttrip[0] : Lang_chg.equpmenttrip[0]}</Text>
+                  <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.equpmenttrip[1] : Lang_chg.equpmenttrip[0]}</Text>
                 </View>
 
                 <View style={{
@@ -565,7 +569,7 @@ export default class Checkout extends Component {
                   flexDirection: 'row',
                   alignItems: 'flex-start'
                 }}>
-                  {this.state.adv && this.state.adv.length > 0 && this.state.adv.map((item) => {
+                  {this.state.adv && this.state.adv!= 'NA' && this.state.adv.length > 0 && this.state.adv.map((item) => {
                     return (
                       <View style={{}}>
                         <Text style={[{ fontFamily: FontFamily.default, fontSize: 12 }]}>
@@ -582,14 +586,14 @@ export default class Checkout extends Component {
 
               <View style={s.container2}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.entertainmenttrip[0] : Lang_chg.entertainmenttrip[0]}</Text>
+                  <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.entertainmenttrip[1] : Lang_chg.entertainmenttrip[0]}</Text>
                 </View>
                 <View style={{
                   width: 200,
                   height: 18,
                   flexDirection: 'row',
                 }}>
-                  {this.state.adv && this.state.adv.length > 0 && this.state.adv.map((item) => {
+                  {this.state.adv && this.state.adv!= 'NA'&& this.state.adv.length > 0 && this.state.adv.map((item) => {
                     return (
                       <View style={{}}>
                         <Text style={[{ fontFamily: FontFamily.default, fontSize: 12 }]}>
@@ -606,7 +610,7 @@ export default class Checkout extends Component {
               </View>
               <View style={s.container2}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.foodtrip[0] : Lang_chg.foodtrip[0]}</Text>
+                  <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.foodtrip[1] : Lang_chg.foodtrip[0]}</Text>
                 </View>
 
                 <View style={{
@@ -616,7 +620,7 @@ export default class Checkout extends Component {
                   // justifyContent:'space-around',
                   alignItems: 'flex-start'
                 }}>
-                  {this.state.adv && this.state.adv.length > 0 && this.state.adv.map((item) => {
+                  {this.state.adv && this.state.adv!= 'NA' &&  this.state.adv.length > 0 && this.state.adv.map((item) => {
                     return (
                       <View style={{}}>
                         <Text style={[{ fontFamily: FontFamily.default, fontSize: 12 }]}>
@@ -633,23 +637,23 @@ export default class Checkout extends Component {
 
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.Boatplacetrip[0] : Lang_chg.Boatplacetrip[0]}</Text>
+                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.Boatplacetrip[1] : Lang_chg.Boatplacetrip[0]}</Text>
                 </View>
 
                 <View style={s.item}>
                   <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                    {this.state.adver_arr.city_name}{' '}
+                    { user.value == 1 ?  this.state.adver_arr.city_name[1] : this.state.adver_arr.city_name[0]}{' '}
                   </Text>
                 </View>
               </View>
 
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.tripdestinationcheckout[0] : Lang_chg.tripdestinationcheckout[0]}</Text>
+                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.tripdestinationcheckout[1] : Lang_chg.tripdestinationcheckout[0]}</Text>
                 </View>
 
                 <View style={s.item}>
-                  <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                  <Text numberOfLines={2} ellipsizeMode='tail'  style={[s.text1, {bottom:6, height:30 , fontFamily: FontFamily.default   }]}>
                     {this.state.adver_arr.location_address}{' '}
                   </Text>
                 </View>
@@ -657,18 +661,18 @@ export default class Checkout extends Component {
 
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.triptypetrip[0] : Lang_chg.triptypetrip[0]}</Text>
+                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.triptypetrip[1] : Lang_chg.triptypetrip[0]}</Text>
                 </View>
 
                 <View style={s.item}>
                   <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                    {this.state.adver_arr.trip_type_name}{' '}
+                    { user.value==1 ? this.state.adver_arr.trip_type_name[1] : this.state.adver_arr.trip_type_name[0]}{' '}
                   </Text>
                 </View>
               </View>
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.discount_per_txt[0] : Lang_chg.discount_per_txt[0]}</Text>
+                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.discount_per_txt[1] : Lang_chg.discount_per_txt[0]}</Text>
                 </View>
 
                 <View style={s.item}>
@@ -737,7 +741,7 @@ export default class Checkout extends Component {
                   fontFamily: FontFamily.semi_bold,
                 }}>
                 {' '}
-                Payment Method:
+                {user.value == 1 ? Lang_chg.payment_method_txt[1] :Lang_chg.payment_method_txt[0]}
               </Text>
               {this.state.paymentMethod.map(opt => (
                 <View key={opt.title} style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
@@ -785,7 +789,7 @@ export default class Checkout extends Component {
             alignItems: 'center',
             borderTopColor: Colors.orange,
             borderTopWidth: 2,
-            justifyContent: 'space-evenly'
+            justifyContent: 'space-evenly',
           }}>
           <TouchableOpacity style={s.Btn1} onPress={() => this.payment()}>
             <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.text_checkout[1] : Lang_chg.text_checkout[0]}</Text>
@@ -943,9 +947,7 @@ const s = StyleSheet.create({
   Btn1: {
     height: 48,
     width: '60%',
-    marginLeft: '5%',
     backgroundColor: Colors.orange,
-    margin: 5,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 30,
@@ -992,7 +994,7 @@ const s = StyleSheet.create({
   item: {
     width: '45%',
     alignItems: "flex-start",// is 50% of container width
-    // backgroundColor:'white'
+    // backgroundColor:'red'
   },
   disc: {
     marginLeft: 20,

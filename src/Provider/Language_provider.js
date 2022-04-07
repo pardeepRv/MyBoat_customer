@@ -63,6 +63,8 @@ class Language_provider {
   adddate = ['please fill date of birh' , 'الرجاء ملء dob']
   selectcity =['please selecty the city' , 'الرجاء تحديد المدينة']
   slectpaymentmethod = ['Please select the payment method' , 'الرجاء تحديد طريقة الدفع']
+  payment_method_txt = ['Payment Method :', 'طريقة الدفع او السداد:']
+choose_time_txt = ['Choose Time', 'اختر الوقت']
   //boat add=============
   //boat name=====
   emptyBoatName = ['Please enter boat name', 'الرجاء ادخال اسم القارب  ']
@@ -212,12 +214,12 @@ class Language_provider {
   text_support = ['Support', "الدعم "]
   text_share_app = ['Share App', "مشاركة التطبيق "]
   text_rate_app = ['Rate App', "تقييم التطبيق "]
+  free_text = ['Free' , 'مجانا']
   //change notification==============
   txt_Notification_Settings = ["Notification Settings", "إعدادات التنبيهات "]
   txt_Chat_Notifications = ["Chat Notifications", "تنبيهات المحادثة "]
   txt_Trip_Notifications = ["Trip Notifications", "تنبيهات الرحلة "]
   txt_Promotion_notification = ["Promotional Notifications", "تنبيهات العروض "]
-
   //contact us=============
   txt_message = ["Message", "سالة "]
   contact_us_txt = ["Contact Us", "تواصل معنا "]
@@ -313,7 +315,7 @@ class Language_provider {
   text_Cancel_By_User = ["Cancel By User", "إلغاء من العميل "]
   text_Cancel_By_Owner = ["Cancel By Owner", "إلغاء من مزود الرحلة "]
   text_Inprogress = ["Inprogress", "رحلات جارية "]
-  text_booking_details = ["Booking Detail", "تفاصيل الحجز "]
+  text_booking_details = ["Booking Detail :" , "تفاصيل الحجز:" ]
   text_select_hors = ["Select Hours", "إختيار الساعات "]
   text_request = ["Request", "طلب "]
   text_select_time = ["Select time", "إختيار الوقت "]
@@ -346,6 +348,9 @@ class Language_provider {
   text_filtered_data = ["Filtered Data", "تصفية حسب التاريخ "]
   text_search_data = ["Searched Data", "بحث حسب التاريخ "]
   text_seccess_msg = ["You have successfully created Booking", "تم انشاء حجز بنجاح "]
+  text_failure_msg = ["Wallet Balance is low Please Recharge your wallet" ," رصيد المحفظة منخفض ، يرجى إعادة شحن محفظتك"]
+  text_SUCCESS = ["SUCCESS" , "نجاح"]
+  txt_Failure = ["Failure" , "فشل"]
   text_Booking_id = ["Booking id", "رقم الحجز "]
   text_Countibue = ["Continue", "متابعة "]
   text_my_trip = ["My trip", "رحلتي"]

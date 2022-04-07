@@ -16,12 +16,12 @@ global.social_login_data = 'NA';
 class configProvider {
 
 	//commented by pardeep
-	baseURL 	= 'https://myboatonline.com/app/webservice/';
-	img_url 	= 'https://myboatonline.com/app/webservice/images/200X200/';
-	img_url1 	= 'https://myboatonline.com/app/webservice/images/400X400/';
-	img_url2 	= 'https://myboatonline.com/app/webservice/images/700X700/';
-	img_url3 	= 'https://myboatonline.com/app/webservice/images/';
-	image_url4= 'https://myboatonline.com/app/webservice/images/';
+	baseURL 	= 'http://webservice.myboatonline.com/';
+	img_url 	= 'http://webservice.myboatonline.com/images/200X200/';
+	img_url1 	= 'http://webservice.myboatonline.com/images/400X400/';
+	img_url2 	= 'http://webservice.myboatonline.com/images/700X700/';
+	img_url3 	= 'http://webservice.myboatonline.com/images/';
+	image_url4= 'http://webservice.myboatonline.com/images/';
 	appUrl= 'https://play.google.com/store/apps/details?id=com.whatsapp.w4b';
 
 

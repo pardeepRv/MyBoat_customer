@@ -4,7 +4,7 @@ import {
   Dimensions, FlatList, Keyboard, KeyboardAvoidingView, Modal, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import { Icon, Input } from 'react-native-elements';
+import { colors, Icon, Input } from 'react-native-elements';
 import { WebView } from 'react-native-webview';
 import Header from '../../Components/Header';
 import {
@@ -720,11 +720,17 @@ export default class RequestPayment extends Component {
                 //   '2022-03-26': { selected: true, marked: true, selectedColor: 'blue' },
                 //   '2022-03-28': { disabled: true, disableTouchEvent: true, selectedColor: 'blue' }
                 // }}
+
                 onDayPress={day => {
                   this._selectDate(day.dateString);
                 }}
+                renderArrow={direction => <Icon type="ionicon"
+color={Colors.orange}
 
-
+                                            name={direction === 'left'
+                                               ? (user.value==1  ? 'arrow-forward' : 'arrow-back')
+                                               : (user.value == 1 ? 'arrow-back' : 'arrow-forward')}
+                                               />}
               />
             </View>
           </View>
@@ -734,7 +740,7 @@ export default class RequestPayment extends Component {
             onPress={() => this.showDatePicker()}>
             <Input
               editable={false}
-              placeholder="Choose Time"
+              placeholder={user.value == 1 ? Lang_chg.choose_time_txt[1] : Lang_chg.choose_time_txt[0]}
               placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
               inputStyle={{ color: Colors.black, fontFamily: FontFamily.default }}
               autoCapitalize={false}
@@ -789,7 +795,7 @@ export default class RequestPayment extends Component {
             /> */}
 
             <Input
-              placeholder="How Many Guest"
+              placeholder={user.value ==1 ? Lang_chg.text_how_many_guest[1] : Lang_chg.text_how_many_guest[0]}
               placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
               inputStyle={{ color: Colors.black, fontFamily: FontFamily.default }}
               returnKeyLabel="done"

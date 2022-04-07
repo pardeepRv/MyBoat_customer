@@ -180,7 +180,7 @@ export default class ExtraRequest extends Component {
             showsVerticalScrollIndicator={false}>
             <View
               style={{ backgroundColor: '#fff', borderRadius: 20 }}>
-              {this.state.adver_arr && this.state.adver_arr.length > 0 && this.state.adver_arr.map((item, id, index) => {
+              {this.state.adver_arr && this.state.adver_arr!= 'NA' &&  this.state.adver_arr.length > 0 && this.state.adver_arr.map((item, id, index) => {
 
                 console.log(')))))200', item);
                 return (
@@ -202,7 +202,7 @@ export default class ExtraRequest extends Component {
                                 textAlign: 'right',
                                 marginLeft: '20%',
                                 fontFamily: FontFamily.default,
-                              }}>Free</Text> :
+                              }}>{user.value == 1 ? Lang_chg.free_text[1] : Lang_chg.free_text[0]}</Text> :
                             <Text
                               style={{
                                 textAlign: 'right',
