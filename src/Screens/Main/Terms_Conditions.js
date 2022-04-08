@@ -124,16 +124,10 @@ export default class Terms_Conditions extends Component {
 
           console.log('this.state.privacy :>> ', this.state.privacy);
         }
-
         else if (this.state.type == '1') {
-
           { user.value == 1 ? this.setState({ terms_cond: json.content_arr[2].content[1], terms: true }) : this.setState({ terms_cond: json.content_arr[2].content[0], terms: true }) }
-
           console.log('this.state.privacy :>> ', this.state.terms_cond);
-
-
         }
-
       } else {
       }
     } catch (error) {
@@ -185,7 +179,7 @@ export default class Terms_Conditions extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: Colors.white }}>
 
-        <ScrollView>
+        
 
           {this.state.terms &&
             <Header backBtn={true} imgBack={true} name={user.value == 1 ? Lang_chg.text_Terms_And_Conditions[1] : Lang_chg.text_Terms_And_Conditions[0] } />
@@ -249,7 +243,7 @@ export default class Terms_Conditions extends Component {
             }
 
           </View>
-        </ScrollView>
+
       </View>
     )
   }

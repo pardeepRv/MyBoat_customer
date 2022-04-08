@@ -502,7 +502,7 @@ export default class TripTypeDetail extends Component {
                   />
                 </ImageBackground>
                 <Text style={s.text}>Boat size</Text>
-                <Text style={s.text}>{this.state.adver_arr ? this.state.adver_arr.boat_capacity : ''}</Text>
+                <Text style={s.text}>{this.state.adver_arr ? this.state.adver_arr.boat_capacity : ''} ft</Text>
               </View>
 
               <View style={{ flex: 1, alignItems: "center" }}>
