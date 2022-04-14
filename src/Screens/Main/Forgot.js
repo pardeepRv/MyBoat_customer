@@ -125,7 +125,7 @@ export default class Forgot extends Component {
             <View activeOpacity={1} onPress={() => { Keyboard.dismiss() }} style={{ flex: 1, height: '100%', }}>
                 <ImageBackground style={{ width: '100%', height: '100%', backgroundColor: Colors.black, }} imageStyle={styles.ImageBackground_Img} source={backgd}  >
 
-                    <View>
+                    <View style={{alignItems:'flex-start'}}>
                         {user.value == 1 ?
                             <TouchableOpacity
                                 style={{
@@ -168,8 +168,8 @@ export default class Forgot extends Component {
                         }
                     </View>
                     <View style={styles.logo_forgot}>
-                        <Text style={styles.forgot_title}>{Lang_chg.txt_Forgot_Pass1[config.language]}</Text>
-                        <Text style={{ color: '#fff' }}>{Lang_chg.txt_Forgot_Pass2[config.language]}</Text>
+                        <Text style={styles.forgot_title}>{user.value == 1 ?  Lang_chg.txt_Forgot_Pass1[1] : Lang_chg.txt_Forgot_Pass1[0]}</Text>
+                        <Text style={{ color: '#fff' }}>{user.value == 1 ?  Lang_chg.txt_Forgot_Pass2[1] : Lang_chg.txt_Forgot_Pass2[0]}</Text>
                     </View>
 
                     <KeyboardAwareScrollView
@@ -189,7 +189,7 @@ export default class Forgot extends Component {
                                 marginBottom: 10
                             }}>
                             <Input
-                                placeholder="Email"
+                                placeholder={user.value == 1 ? Lang_chg.loginEmail[1] : Lang_chg.loginEmail[0]}
                                 containerStyle={styles.Input}
                                 inputContainerStyle={styles.Input}
                                 placeholderTextColor={Colors.white}
@@ -207,7 +207,7 @@ export default class Forgot extends Component {
                             <View style={{ alignItems: 'center' }}>
                                 <TouchableOpacity style={styles.Btn1} onPress={() => { this._btnSubmitForgot() }}>
                                     <Text style={styles.Btn1Text}>
-                                        {Lang_chg.txt_Forgot_Pass3[config.language]}
+                                        {user.value == 1 ?  Lang_chg.txt_Forgot_Pass3[1] : Lang_chg.txt_Forgot_Pass3[0]}
                                     </Text>
                                 </TouchableOpacity>
 

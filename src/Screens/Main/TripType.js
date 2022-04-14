@@ -540,6 +540,7 @@ export default class TripType extends Component {
             data={this.state.destinations_arr}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => {
+              console.log('item :>> in trip type', item);
               return (
                 <View style={{}}>
                   <TouchableOpacity
@@ -579,7 +580,7 @@ export default class TripType extends Component {
                             },
                           ]}>
                           <Text style={s.place}>
-                            starting{'\n'}KD {item.min_price}
+                          {user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}KD {item.min_price}
                           </Text>
                         </View>
                       </ImageBackground>

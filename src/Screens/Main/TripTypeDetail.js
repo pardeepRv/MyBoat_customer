@@ -418,7 +418,8 @@ export default class TripTypeDetail extends Component {
                     marginTop: -2,
                   }}
                 >
-                  {this.state?.adver_arr?.captain_name &&
+                  { user.value == 1 ? this.state?.adver_arr?.captain_name &&
+                    this.state?.adver_arr?.captain_name[1] :this.state?.adver_arr?.captain_name &&
                     this.state?.adver_arr?.captain_name[0]}
                 </Text>
               </View>
@@ -429,7 +430,7 @@ export default class TripTypeDetail extends Component {
             style={{
               flexDirection: "row",
               alignItems: "center",
-              alignSelf: "flex-end",
+              // alignSelf: "flex-end",
             }}
           >
             <View style={{ width: "50%", height: "50%", alignItems: "center" }}>
@@ -453,7 +454,8 @@ export default class TripTypeDetail extends Component {
                 />
               </View>
               <Text style={s.text}>
-                {this.state.adver_arr?.trip_type_name &&
+                {user.value== 1 ?  this.state.adver_arr?.trip_type_name &&
+                  this.state.adver_arr?.trip_type_name[1] : this.state.adver_arr?.trip_type_name &&
                   this.state.adver_arr?.trip_type_name[0]}
               </Text>
             </View>
@@ -476,8 +478,9 @@ export default class TripTypeDetail extends Component {
                 />
               </View>
               <Text style={s.text}>
-                {this.state.adver_arr?.city_name &&
-                  this.state.adver_arr?.city_name[0]}{" "}
+                {user.value==1 ?  this.state.adver_arr?.city_name &&
+                  this.state.adver_arr?.city_name[1] : this.state.adver_arr?.city_name &&
+                  this.state.adver_arr?.city_name[0] }{" "}
               </Text>
             </View>
 
@@ -501,7 +504,7 @@ export default class TripTypeDetail extends Component {
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}>Boat size</Text>
+                <Text style={s.text}>{user.value == 1 ? Lang_chg.text_Boat_size0[1] : Lang_chg.text_Boat_size0[0]}</Text>
                 <Text style={s.text}>{this.state.adver_arr ? this.state.adver_arr.boat_capacity : ''} ft</Text>
               </View>
 
@@ -517,7 +520,7 @@ export default class TripTypeDetail extends Component {
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}> Boat brand </Text>
+                <Text style={s.text}>{user.value==1 ? Lang_chg.txt_Boat_brand[1] : Lang_chg.txt_Boat_brand[0]}</Text>
                 <Text style={s.text}> {this.state.adver_arr ? this.state.adver_arr.boat_brand : ''} </Text>
               </View>
 
@@ -533,7 +536,7 @@ export default class TripTypeDetail extends Component {
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}> Trip Hours </Text>
+                <Text style={s.text}>{user.value == 1 ? Lang_chg.triphourstrip[1] : Lang_chg.triphourstrip[0]}</Text>
                 <Text style={s.text}>
                   {" "}
                   {this.state.adver_arr ? this.state.adver_arr?.minimum_hours : ''}{" "}
@@ -554,7 +557,7 @@ export default class TripTypeDetail extends Component {
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}>Equipment</Text>
+                <Text style={s.text}>{user.value == 1 ? Lang_chg.equpmenttrip[1] : Lang_chg.equpmenttrip[0]}</Text>
                 <Text style={{ fontWeight: "bold", fontSize: 12 }}>
                   {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted && this.state.adver_arr.addon_arr_formatted != 'NA'
                     && this.state.adver_arr?.addon_arr_formatted.equipment && this.state.adver_arr?.addon_arr_formatted.equipment.length > 0
@@ -574,7 +577,7 @@ export default class TripTypeDetail extends Component {
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}> Entertainment </Text>
+                <Text style={s.text}>{user.value == 1 ? Lang_chg.entertainmenttrip[1] : Lang_chg.entertainmenttrip[0]}</Text>
                 <Text style={{ fontWeight: "bold", fontSize: 12 }}>
                   {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted && this.state.adver_arr.addon_arr_formatted != 'NA'
                     && this.state.adver_arr?.addon_arr_formatted.entertainment && this.state.adver_arr?.addon_arr_formatted.entertainment.length > 0
@@ -594,7 +597,7 @@ export default class TripTypeDetail extends Component {
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}> Food </Text>
+                <Text style={s.text}>{user.value == 1 ? Lang_chg.foodtrip[1] : Lang_chg.foodtrip[0]}</Text>
                 <Text style={{ fontWeight: "bold", fontSize: 12 }}>
                   {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted && this.state.adver_arr.addon_arr_formatted != 'NA'
                     && this.state.adver_arr?.addon_arr_formatted.food && this.state.adver_arr?.addon_arr_formatted.food.length > 0
@@ -616,7 +619,7 @@ export default class TripTypeDetail extends Component {
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}>Cabin </Text>
+                <Text style={s.text}>{user.value == 1  ? Lang_chg.txt_Cabin[1] : Lang_chg.txt_Cabin[0]}</Text>
                 <Text style={s.text}>
                   {" "}
                   {this.state.adver_arr ? this.state.adver_arr?.boat_cabins : ''}{" "}
@@ -635,7 +638,7 @@ export default class TripTypeDetail extends Component {
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}>No. of guest</Text>
+                <Text style={s.text}>{user.value == 1  ? Lang_chg.noogguest[1] : Lang_chg.noogguest[0]}</Text>
                 <Text style={s.text}>
                   {this.state.adver_arr ? this.state.adver_arr?.no_of_people : ''}{" "}
                 </Text>
@@ -653,34 +656,37 @@ export default class TripTypeDetail extends Component {
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}>Toilet</Text>
+                <Text style={s.text}>{user.value==1 ? Lang_chg.toilets_txt[1] : Lang_chg.toilets_txt[0]}</Text>
                 <Text style={s.text}>{this.state.adver_arr ? this.state.adver_arr.idle_time : ''}</Text>
               </View>
             </View>
           </View>
-          <View style={{ flex: 1, top: 8 }}>
+          <View style={{ flex: 1, top: 8  ,alignItems:"flex-start"}}>
             <Text style={s.disc}>
             {user.value == 1 ?  Lang_chg.Discription[1] : Lang_chg.Discription[0]}
             </Text>
             <Text style={[s.detail, { lineHeight: 27 }]}>
-              {this.state.adver_arr && this.state.adver_arr.discription_arr &&
+              {  user.value == 1  ? this.state.adver_arr && this.state.adver_arr.discription_arr &&
+                this.state.adver_arr.discription_arr[1] : this.state.adver_arr && this.state.adver_arr.discription_arr &&
                 this.state.adver_arr.discription_arr[0]}
             </Text>
           </View>
           <Text style={s.borders} />
-
+<View style={{alignItems:"flex-start"}}>
           <Text
             style={{
               lineHeight: 27,
               marginLeft: "3%",
               fontSize: 18,
               fontFamily: FontFamily.semi_bold,
+              
             }}
           >
             {" "}
            {user.value == 1 ?  Lang_chg.text_booking_details[1] : Lang_chg.text_booking_details[0]}
           </Text>
-          <View style={{ flex: 1, top: 7}}>
+          </View>
+          <View style={{ flex: 1, top: 7 , alignItems:'flex-start'}}>
             <View style={s.container}>
               <View style={s.item}>
                 <Text style={s.leftText}>
@@ -712,7 +718,7 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  { this.state.adver_arr ? this.state.adver_arr.trip_type_name : ''}{" "}
+                  {user.value ==1 ? this.state.adver_arr && this.state.adver_arr.trip_type_name && this.state.adver_arr.trip_type_name.length > 0 &&  this.state.adver_arr.trip_type_name[1] : this.state.adver_arr && this.state.adver_arr.trip_type_name && this.state.adver_arr.trip_type_name.length > 0 &&  this.state.adver_arr.trip_type_name[0] }{" "}
                 </Text>
               </View>
             </View>
@@ -724,13 +730,16 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr &&
+                  {/* {this.state.adver_arr &&
                     this.state.adver_arr.destination_arr &&
                     this.state.adver_arr.destination_arr.length > 0 &&
                     this.state.adver_arr.destination_arr[0].destination &&
                     this.state.adver_arr.destination_arr[0].destination.length >
                     0 &&
-                    this.state.adver_arr.destination_arr[0].destination[0]}{" "}
+                    this.state.adver_arr.destination_arr[0].destination[0]} */}
+                    {user.value == 1 ?this.state.advertisement && this.state.advertisement.destination_name && this.state.advertisement.destination_name.length>0 && this.state.advertisement.destination_name[1] : 
+                    this.state.advertisement && this.state.advertisement.destination_name && this.state.advertisement.destination_name.length>0 && this.state.advertisement.destination_name[0]}
+                    {" "}
                 </Text>
               </View>
             </View>
@@ -742,8 +751,9 @@ export default class TripTypeDetail extends Component {
 
               <View style={s.item}>
                 <Text style={s.rightText}>
-                  {this.state.adver_arr && this.state.adver_arr.city_name &&
-                    this.state.adver_arr.city_name[0]}{" "}
+                  { user.value == 1 ?  this.state.adver_arr && this.state.adver_arr.city_name &&
+                    this.state.adver_arr.city_name[1] :this.state.adver_arr && this.state.adver_arr.city_name &&
+                    this.state.adver_arr.city_name[0] }{" "}
                 </Text>
               </View>
             </View>
@@ -754,7 +764,7 @@ export default class TripTypeDetail extends Component {
               </View>
 
               <View style={s.item}>
-                <Text style={s.rightText}>{this.state.adver_arr ? this.state.adver_arr.price : ''} </Text>
+                <Text style={s.rightText}>kD { this.state.advertisement.price == 'NA' ?user.value ==1 ?  'غير متوفر' : 'not available' : this.state.advertisement.price} </Text>
               </View>
             </View>
 
@@ -821,8 +831,8 @@ export default class TripTypeDetail extends Component {
                 <Text style={s.rightText}>
                   {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
                     && this.state.adver_arr?.addon_arr_formatted.equipment && this.state.adver_arr?.addon_arr_formatted.equipment.length > 0
-                    && this.state.adver_arr?.addon_arr_formatted.equipment ? "Available"
-                    : "Not available"}
+                    && this.state.adver_arr?.addon_arr_formatted.equipment ? user.value == 1 ? Lang_chg.avilable_text[1] : Lang_chg.avilable_text[0]
+                    : user.value == 1 ? Lang_chg.notavailable_text[1] : Lang_chg.notavailable_text[0]}
                 </Text>
               </View>
             </View>
@@ -836,8 +846,8 @@ export default class TripTypeDetail extends Component {
                 <Text style={s.rightText}>
                   {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
                     && this.state.adver_arr?.addon_arr_formatted.food && this.state.adver_arr?.addon_arr_formatted.food.length > 0
-                    && this.state.adver_arr?.addon_arr_formatted.food ? "Available"
-                    : "Not available"}
+                    && this.state.adver_arr?.addon_arr_formatted.food ?  user.value == 1 ? Lang_chg.avilable_text[1] : Lang_chg.avilable_text[0]
+                    : user.value == 1 ? Lang_chg.notavailable_text[1] : Lang_chg.notavailable_text[0]}
                 </Text>
               </View>
             </View>
@@ -851,8 +861,8 @@ export default class TripTypeDetail extends Component {
                 <Text style={s.rightText}>
                   {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
                     && this.state.adver_arr?.addon_arr_formatted.entertainment && this.state.adver_arr?.addon_arr_formatted.entertainment.length > 0
-                    && this.state.adver_arr?.addon_arr_formatted.entertainment ? "Available"
-                    : "Not available"}
+                    && this.state.adver_arr?.addon_arr_formatted.entertainment ?  user.value == 1 ? Lang_chg.avilable_text[1] : Lang_chg.avilable_text[0]
+                    : user.value == 1 ? Lang_chg.notavailable_text[1] : Lang_chg.notavailable_text[0]}
                 </Text>
               </View>
             </View>
@@ -1076,6 +1086,7 @@ const s = StyleSheet.create({
     width: "45%", // is 50% of container width
     marginLeft: "4%",
     fontSize: 10,
+    alignItems:'flex-start'
   },
   leftText: {
     color: Colors.black,

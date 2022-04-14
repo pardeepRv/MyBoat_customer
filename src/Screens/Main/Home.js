@@ -505,7 +505,7 @@ export default class Home extends Component {
                                 },
                               ]}>
                               <Text style={s.place}>
-                                starting{'\n'}KD {item.min_price}
+                                {user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}KD {item.min_price}
                               </Text>
                             </View>
                           </ImageBackground>
@@ -671,9 +671,7 @@ export default class Home extends Component {
                           height: 90,
                           width: 110,
                           borderRadius: 7,
-                          elevation: 5,
                           margin: 7,
-                          // backgroundColor:Colors.orange
                         }
                       }
                     >

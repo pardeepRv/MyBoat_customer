@@ -519,19 +519,19 @@ export default class EditProfile extends Component {
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
-                  this._selectGender(Lang_chg.male_txt[config.language]);
+                  this._selectGender(user.value == 1 ? Lang_chg.male_txt[1] : Lang_chg.male_txt[0]);
                 }}>
                 <Text style={[s.flag_text_detail,{marginLeft: 15, marginTop: 7}]}>
-                  {Lang_chg.male_txt[config.language]}
+               { user.value == 1 ? Lang_chg.male_txt[1] : Lang_chg.male_txt[0]}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
-                  this._selectGender(Lang_chg.female_txt[config.language]);
+                  this._selectGender(user.value == 1 ?  Lang_chg.female_txt[1] :Lang_chg.female_txt[0]);
                 }}>
                 <Text style={[s.flag_text_detail,{marginLeft: 15, marginBottom: 7}]}>
-                  {Lang_chg.female_txt[config.language]}
+                  {user.value == 1 ?  Lang_chg.female_txt[1] :Lang_chg.female_txt[0]}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -593,7 +593,7 @@ export default class EditProfile extends Component {
           <ScrollView>
             <View style={{marginTop: 50, paddingHorizontal: 10}}>
               <Input
-                placeholder="Name"
+                placeholder={user.value == 1 ? Lang_chg.textname[1] : Lang_chg.textname[0]}
                 containerStyle={s.Input}
                 inputContainerStyle={s.Input}
                 placeholderTextColor={Colors.inputFieldEditProfile}
@@ -610,6 +610,7 @@ export default class EditProfile extends Component {
                 placeholderTextColor={Colors.inputFieldEditProfile}
                 inputStyle={s.inputStyles}
                 keyboardType="email-address"
+                editable={false}
                 onChangeText={txt => {
                   this.setState({email: txt});
                 }}
@@ -617,7 +618,7 @@ export default class EditProfile extends Component {
               />
 
               <Input
-                placeholder="Mobile"
+                placeholder={user.value == 1  ? Lang_chg.textmobile[1] : Lang_chg.textmobile[0]}
                 containerStyle={s.Input}
                 inputContainerStyle={s.Input}
                 placeholderTextColor={Colors.inputFieldEditProfile}
@@ -630,7 +631,7 @@ export default class EditProfile extends Component {
               />
               <TouchableOpacity onPress={() => this.showDatePicker()}>
                 <Input
-                  placeholder="Birthday"
+                  placeholder={user.value == 1  ? Lang_chg.textBirthday[1] : Lang_chg.textBirthday[0]}
                   containerStyle={s.Input}
                   editable={false}
                   inputContainerStyle={s.Input}
@@ -650,7 +651,7 @@ export default class EditProfile extends Component {
                 }}>
                 <Input
                   editable={false}
-                  placeholder="Gender"
+                  placeholder={user.value ==1 ? Lang_chg.Gender_txt[1] : Lang_chg.Gender_txt[0]}
                   containerStyle={s.Input}
                   inputContainerStyle={s.Input}
                   placeholderTextColor={Colors.inputFieldEditProfile}
@@ -689,7 +690,7 @@ export default class EditProfile extends Component {
               </TouchableOpacity>
 
               <Input
-                placeholder="Address"
+                placeholder={user.value ==1 ? Lang_chg.Address_txt[1] : Lang_chg.Address_txt[0]}
                 containerStyle={s.Input}
                 inputContainerStyle={s.Input}
                 placeholderTextColor={Colors.inputFieldEditProfile}
@@ -701,7 +702,7 @@ export default class EditProfile extends Component {
               />
 
               <Input
-                placeholder="About"
+                placeholder={user.value ==1 ? Lang_chg.about_txt[1] : Lang_chg.about_txt[0]}
                 containerStyle={s.Input}
                 inputContainerStyle={s.Input}
                 placeholderTextColor={Colors.inputFieldEditProfile}

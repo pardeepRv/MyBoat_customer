@@ -51,7 +51,7 @@ export default class PremotionDetail extends Component {
 
   openUrl = () => {
     const { promotion } = this.state;
-    console.log(promotion,'promotionpromotionpromotion');
+    console.log(promotion, 'promotionpromotionpromotion');
     Linking
       .openURL(`https://${promotion.link}`)
       .catch(err => console.error('Error', err));
@@ -67,89 +67,89 @@ export default class PremotionDetail extends Component {
     console.log('context in home', user);
     return (
       <View style={{ flex: 1 }}>
-        
-         
-
-          <View>
-            <ImageBackground
-              style={{ height: 300 }}
-              source={{
-                uri:
-                  config.image_url4 +
-                  this.state.promotion.image,
-              }}
-              imageStyle={s.ImageBackground_Img}
-            >
-              <View style={{ alignItems: 'center', width: '100%' , flexDirection:'row' ,   }}>
-               
-                {user.value == 1 ? <TouchableOpacity
-            onPress={() => this.props.navigation.goBack()}
-            style={{
-              // marginBottom: -10,
-              // zIndex: 1,
-              alignItems: 'flex-start',
-              marginTop: 50,
-              marginLeft: 20,
-              borderRadius: 25,
-              backgroundColor: Colors.orange,
-              width: 25,
-              transform: [{ rotate: '180deg' }],
-            }}>
-            <Icon
-              name="arrow-back"
-              type="ionicons"
-              size={26}
-              color={Colors.white}
-            />
-          </TouchableOpacity> : <TouchableOpacity
-            onPress={() => this.props.navigation.goBack()}
-            style={{
-              // marginBottom: -50,
-              // zIndex: 1,
-              alignItems: 'flex-start',
-              marginTop: 50,
-              marginLeft: 20,
-              borderRadius: 25,
-              backgroundColor: Colors.orange,
-              width: 25,
-
-            }}>
-            <Icon
-              name="arrow-back"
-              type="ionicons"
-              size={26}
-              color={Colors.white}
-            />
-          </TouchableOpacity>}
-<View  style={{ left:130 ,}}>
 
 
-          <Text style={{ backgroundColor: Colors.orange, borderRadius: 20, marginTop: 45, fontFamily: FontFamily.semi_bold, color: Colors.white, textAlign: "center" }}>
+
+        <View>
+          <ImageBackground
+            style={{ height: 300 }}
+            source={{
+              uri:
+                config.image_url4 +
+                this.state.promotion.image,
+            }}
+            imageStyle={s.ImageBackground_Img}
+          >
+            <View style={{ alignItems: 'center', width: '100%', flexDirection: 'row', }}>
+
+              {user.value == 1 ? <TouchableOpacity
+                onPress={() => this.props.navigation.goBack()}
+                style={{
+                  // marginBottom: -10,
+                  // zIndex: 1,
+                  alignItems: 'flex-start',
+                  marginTop: 50,
+                  marginLeft: 20,
+                  borderRadius: 25,
+                  backgroundColor: Colors.orange,
+                  width: 25,
+                  transform: [{ rotate: '180deg' }],
+                }}>
+                <Icon
+                  name="arrow-back"
+                  type="ionicons"
+                  size={26}
+                  color={Colors.white}
+                />
+              </TouchableOpacity> : <TouchableOpacity
+                onPress={() => this.props.navigation.goBack()}
+                style={{
+                  // marginBottom: -50,
+                  // zIndex: 1,
+                  alignItems: 'flex-start',
+                  marginTop: 50,
+                  marginLeft: 20,
+                  borderRadius: 25,
+                  backgroundColor: Colors.orange,
+                  width: 25,
+
+                }}>
+                <Icon
+                  name="arrow-back"
+                  type="ionicons"
+                  size={26}
+                  color={Colors.white}
+                />
+              </TouchableOpacity>}
+              <View style={{ left: 130, }}>
+
+
+                <Text style={{ backgroundColor: Colors.orange, borderRadius: 20, marginTop: 45, fontFamily: FontFamily.semi_bold, color: Colors.white, textAlign: "center" }}>
                   {user.value == 1 ? Lang_chg.Promotion[1] : Lang_chg.Promotion[0]}
                 </Text>
 
-                </View>
-
               </View>
 
+            </View>
 
-            </ImageBackground>
-          </View>
+
+          </ImageBackground>
+        </View>
+
+        <View
+          style={{
+            backgroundColor: Colors.white,
           
-          <View
-            style={{
-              backgroundColor: Colors.white,
-              height: 700,
-              marginTop: -30,
-              borderRadius: 30,
-              padding: 10,
-            }}>
-              <View style={{
-              backgroundColor: Colors.white,
-              height: 500,
-              borderRadius: 30,
-              padding: 10,
-            }}>
+            flex:1,
+            marginTop: -30,
+            borderRadius: 30,
+            padding: 10,
+          }}>
+          <View style={{
+            backgroundColor: Colors.white,
+            height: 500,
+         
+          }}>
             <Text
               style={{
                 fontSize: 18,
@@ -163,16 +163,17 @@ export default class PremotionDetail extends Component {
               {user.value == 1 ? this.state.promotion.description_arabic : this.state.promotion.description}
             </Text>
             {/* <Text style={{textAlign:'justify',marginTop:10}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </Text> */}
-            </View>
-            <View style={{alignItems:'flex-end' , backgroundColor:Colors.orange}}>
-            <TouchableOpacity style={s.btn1} onPress={() => this.openUrl()}>
-              <Text style={s.btn1Text}>
-                Let's see
-              </Text>
-            </TouchableOpacity>
           </View>
-          </View>
-        
+         
+          <TouchableOpacity style={s.btn1} onPress={() => this.openUrl()}>
+            <Text style={s.btn1Text}>
+              {user.value == 1  ? Lang_chg.lets_see[1] : "let's see"}
+            </Text>
+          </TouchableOpacity>
+      
+          
+        </View>
+
       </View>
     );
   }
@@ -187,6 +188,7 @@ export const s = StyleSheet.create({
     //opacity:0.5
   },
   btn1: {
+    top:'90%',
     height: 48,
     width: "85%",
     backgroundColor: Colors.orange,
@@ -197,7 +199,7 @@ export const s = StyleSheet.create({
     marginVertical: 10,
     elevation: 5,
     position: "absolute",
-    borderRadius:25,
+    borderRadius: 25,
     // bottom:10
 
   },

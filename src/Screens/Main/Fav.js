@@ -226,7 +226,7 @@ export default class Fav extends Component {
                         }]}
 
                       >
-                        <Text style={s.place}>starting{'\n'}KD {item.extra_price}
+                        <Text style={s.place}>{user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}KD {item.extra_price}
                         </Text>
                       </View>
                     </ImageBackground>

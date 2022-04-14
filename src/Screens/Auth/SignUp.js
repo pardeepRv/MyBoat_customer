@@ -516,7 +516,7 @@ export default class SignUp extends Component {
                 {/* <Text style={s.Text1}>Boat Owner</Text> */}
                 <View style={{ marginVertical: 10 }}>
                   <Input
-                    placeholder="First Name"
+                    placeholder={user.value == 1 ? Lang_chg.First_Name[1] : Lang_chg.First_Name[0]}
                     // containerStyle={s.Input}
                     // inputContainerStyle={s.Input}
                     placeholderTextColor={Colors.white}
@@ -527,7 +527,7 @@ export default class SignUp extends Component {
                     defaultValue={this.state.name}
                   />
                   <Input
-                    placeholder="Last Name"
+                    placeholder={user.value == 1 ? Lang_chg.last_Name[1] : Lang_chg.last_Name[0]}
                     // containerStyle={s.Input}
                     // inputContainerStyle={s.Input}
                     placeholderTextColor={Colors.white}
@@ -538,7 +538,7 @@ export default class SignUp extends Component {
                     defaultValue={this.state.last_name}
                   />
                   <Input
-                    placeholder="Email"
+                    placeholder={user.value == 1 ? Lang_chg.loginEmail[1] : Lang_chg.loginEmail[0]}
                     // containerStyle={s.Input}
                     // inputContainerStyle={s.Input}
                     placeholderTextColor={Colors.white}
@@ -550,7 +550,7 @@ export default class SignUp extends Component {
 
                   />
                   <Input
-                    placeholder="Mobile"
+                    placeholder={user.value == 1 ? Lang_chg.textmobile[1] : Lang_chg.textmobile[0]}
                     // containerStyle={s.Input}
                     // inputContainerStyle={s.Input}
                     placeholderTextColor={Colors.white}
@@ -560,7 +560,7 @@ export default class SignUp extends Component {
                     }}
                   />
                   <Input
-                    placeholder="Password"
+                    placeholder={user.value == 1 ? Lang_chg.loginpassword[1] : Lang_chg.loginpassword[0]}
                     // containerStyle={s.Input}
                     // inputContainerStyle={s.Input}
                     placeholderTextColor={Colors.white}
@@ -571,7 +571,7 @@ export default class SignUp extends Component {
                     }}
                   />
                   <Input
-                    placeholder="Confirm Password"
+                    placeholder={user.value == 1 ? Lang_chg.logincpass[1] : Lang_chg.logincpass[0]}
                     // containerStyle={s.Input}
                     // inputContainerStyle={s.Input}
                     placeholderTextColor={Colors.white}
@@ -629,7 +629,7 @@ export default class SignUp extends Component {
                 </View>
 
                 <TouchableOpacity style={s.btn1} onPress={() => this.SignUp()}>
-                  <Text style={s.btn1Text}>Sign Up</Text>
+                  <Text style={s.btn1Text}>{user.value == 1 ? Lang_chg.txt_signup[1] : Lang_chg.txt_signup[0]}</Text>
                 </TouchableOpacity>
 
                 <View>
@@ -644,7 +644,7 @@ export default class SignUp extends Component {
                       }}
                       suppressHighlighting={true}
                       onPress={() => this.props.navigation.navigate('Login')}>
-                      Login
+                      {user.value == 1 ? Lang_chg.Login_txt[1] : Lang_chg.Login_txt[0]}
                     </Text>
                   </Text>
                 </View>

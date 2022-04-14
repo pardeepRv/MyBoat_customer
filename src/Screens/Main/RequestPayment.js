@@ -44,7 +44,7 @@ export default class RequestPayment extends Component {
       hour: '',
       selected_date: '',
       booking_id: '',
-      unavailabe_arr:'NA',
+      unavailabe_arr: 'NA',
       bookingDateTimeStart: '',
       bookingDateTimeEnd: '',
       selectedIndex: null,
@@ -711,7 +711,7 @@ export default class RequestPayment extends Component {
             <View style={{ marginTop: 15, borderTopLeftRadius: 20, borderTopRightRadius: 25, }}>
               <Calendar
                 minDate={new Date()}
-                markedDates={this.state.calender_arr }
+                markedDates={this.state.calender_arr}
                 // disabledDaysIndexes={this.state.booking_arr}
                 // disabled={this.state.booking_arr}
                 // markedDates={this.state.booking_arr}
@@ -725,33 +725,41 @@ export default class RequestPayment extends Component {
                   this._selectDate(day.dateString);
                 }}
                 renderArrow={direction => <Icon type="ionicon"
-color={Colors.orange}
+                  color={Colors.orange}
 
-                                            name={direction === 'left'
-                                               ? (user.value==1  ? 'arrow-forward' : 'arrow-back')
-                                               : (user.value == 1 ? 'arrow-back' : 'arrow-forward')}
-                                               />}
+                  name={direction === 'left'
+                    ? (user.value == 1 ? 'arrow-forward' : 'arrow-back')
+                    : (user.value == 1 ? 'arrow-back' : 'arrow-forward')}
+                />}
               />
             </View>
           </View>
 
           <TouchableOpacity
-            style={{ marginTop: 10 }}
+            style={{ marginTop: 10  }}
             onPress={() => this.showDatePicker()}>
             <Input
-              editable={false}
+            onPressonPress={() => this.showDatePicker()}  
+             editable={false}
               placeholder={user.value == 1 ? Lang_chg.choose_time_txt[1] : Lang_chg.choose_time_txt[0]}
               placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
-              inputStyle={{ color: Colors.black, fontFamily: FontFamily.default }}
+              inputStyle={user.value == 1 ? { color: Colors.black, fontFamily: FontFamily.default , textAlign:'right' } : { color: Colors.black, fontFamily: FontFamily.default  }}
               autoCapitalize={false}
               returnKeyType="done"
-              rightIcon={
+              rightIcon={ user.value == 1 ? 
                 <Icon
                   name="right"
                   size={18}
                   type="antdesign"
                   color="rgba(0, 0, 0, 0.5)"
-                />
+                  style={ {transform: [{ rotate: "180deg" }]}}
+                  />
+                  :  <Icon
+                  name="right"
+                  size={18}
+                  type="antdesign"
+                  color="rgba(0, 0, 0, 0.5)"
+                  />
               }
               onSubmitEditing={() => {
                 Keyboard.dismiss();
@@ -770,7 +778,7 @@ color={Colors.orange}
             />
           </TouchableOpacity>
 
-          <View style={{ width: '100%', alignItems: 'center' }}>
+          <View style={{ width: '100%', alignItems: 'flex-start' }}>
             {/* <Input
               placeholder="Extra Hour"
               placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
@@ -795,9 +803,9 @@ color={Colors.orange}
             /> */}
 
             <Input
-              placeholder={user.value ==1 ? Lang_chg.text_how_many_guest[1] : Lang_chg.text_how_many_guest[0]}
+              placeholder={user.value == 1 ? Lang_chg.text_how_many_guest[1] : Lang_chg.text_how_many_guest[0]}
               placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
-              inputStyle={{ color: Colors.black, fontFamily: FontFamily.default }}
+              inputStyle={ user.value == 1 ? { color: Colors.black, fontFamily: FontFamily.default , textAlign:'right' } : { color: Colors.black, fontFamily: FontFamily.default  }}
               returnKeyLabel="done"
               autoCapitalize={false}
               keyboardType="numeric"

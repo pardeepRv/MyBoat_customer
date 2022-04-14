@@ -13,6 +13,7 @@ import {
   Image,
   ActivityIndicator,
   Alert,
+  Platform,
 } from 'react-native';
 import { Icon, Input, Card, AirbnbRating } from 'react-native-elements';
 import Header from '../../Components/Header';
@@ -473,18 +474,18 @@ export default class Checkout extends Component {
             marginBottom: 60
           }}>
           <ScrollView>
-
-            <Text
-              style={{
-                marginTop: 15,
-                marginLeft: '5%',
-                fontSize: 18,
-                fontFamily: FontFamily.semi_bold,
-              }}>
-{user.value == 1 ? Lang_chg.text_booking_details[1] : Lang_chg.text_booking_details[0]}
-            </Text>
-
-            <Text />
+            <View style={{ alignItems: 'flex-start' }}>
+              <Text
+                style={{
+                  marginTop: 15,
+                  marginLeft: '5%',
+                  fontSize: 18,
+                  fontFamily: FontFamily.semi_bold,
+                  // textAlign:"right",
+                }}>
+                {user.value == 1 ? Lang_chg.text_booking_details[1] : Lang_chg.text_booking_details[0]}
+              </Text>
+            </View>
             <View style={{ Flex: 1 }}>
               <View style={s.container}>
                 <View style={s.item}>
@@ -562,57 +563,81 @@ export default class Checkout extends Component {
                 <View style={s.item}>
                   <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.equpmenttrip[1] : Lang_chg.equpmenttrip[0]}</Text>
                 </View>
+                {this.state.adv == 'NA' ?
+                  <View style={{
+                    width: '45%',
+                    alignItems: "flex-start",// is 50% of container width
+                    right: 20
+                  }}>
+                    <Text style={[s.text1, { fontFamily: FontFamily.default }]}>{user.value == 1 ? Lang_chg.no_equpments_found[1] : Lang_chg.no_equpments_found[0]}</Text>
+                  </View>
+                  :
+                  <View style={{
+                    width: 200,
+                    height: 18,
+                    flexDirection: 'row',
+                    alignItems: 'flex-start'
+                  }}>
+                    {this.state.adv && this.state.adv != 'NA' && this.state.adv.length > 0 && this.state.adv.map((item) => {
+                      return (
+                        <View style={{}}>
+                          <Text style={[{ fontFamily: FontFamily.default, fontSize: 12 }]}>
+                            {item.add_On_name == "Equipment " &&
+                              item.isChecked == true  ?
+                              `${ user.value == 1 ? item.addon_product_name[1] : item.addon_product_name[0]},` :
+                              user.value == 1 ? Lang_chg.no_eqipments_selected[1] : Lang_chg.no_eqipments_selected[0]}
+                          </Text>
+                        </View>
+                      );
+                    })}
+                  </View>}
 
-                <View style={{
-                  width: 200,
-                  height: 18,
-                  flexDirection: 'row',
-                  alignItems: 'flex-start'
-                }}>
-                  {this.state.adv && this.state.adv!= 'NA' && this.state.adv.length > 0 && this.state.adv.map((item) => {
-                    return (
-                      <View style={{}}>
-                        <Text style={[{ fontFamily: FontFamily.default, fontSize: 12 }]}>
-                          {item.add_On_name == "Equipment " &&
-                            item.isChecked == true ?
-                            `${item.addon_product_name[0]},` :
-                            null}
-                        </Text>
-                      </View>
-                    );
-                  })}
-                </View>
               </View>
 
               <View style={s.container2}>
                 <View style={s.item}>
                   <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.entertainmenttrip[1] : Lang_chg.entertainmenttrip[0]}</Text>
                 </View>
+                {this.state.adv == 'NA' ?
+                  <View style={{
+                    width: '45%',
+                    alignItems: "flex-start",// is 50% of container width
+                    right: 20
+                  }}>
+                    <Text style={[s.text1, { fontFamily: FontFamily.default }]}>{user.value == 1 ?  Lang_chg.no_entertainment_found[1] : Lang_chg.no_entertainment_found[0]}</Text>
+                  </View> : 
                 <View style={{
                   width: 200,
                   height: 18,
                   flexDirection: 'row',
                 }}>
-                  {this.state.adv && this.state.adv!= 'NA'&& this.state.adv.length > 0 && this.state.adv.map((item) => {
+                  {this.state.adv && this.state.adv != 'NA' && this.state.adv.length > 0 && this.state.adv.map((item) => {
                     return (
                       <View style={{}}>
                         <Text style={[{ fontFamily: FontFamily.default, fontSize: 12 }]}>
                           {item.add_On_name == "entertainment" &&
                             item.isChecked == true ?
-                            `${item.addon_product_name[0]},` :
-                            null}
+                            `${user.value == 1 ? item.addon_product_name[1] : item.addon_product_name[0]},` :
+                            user.value == 1 ?  Lang_chg.no_entertainment_selected[1] : Lang_chg.no_entertainment_selected[0]}
                         </Text>
                       </View>
                     );
                   })}
-                </View>
+                </View> }
 
               </View>
               <View style={s.container2}>
                 <View style={s.item}>
                   <Text style={[s.text1]}>{user.value == 1 ? Lang_chg.foodtrip[1] : Lang_chg.foodtrip[0]}</Text>
                 </View>
-
+                {this.state.adv == 'NA' ?
+                  <View style={{
+                    width: '45%',
+                    alignItems: "flex-start",// is 50% of container width
+                    right: 20
+                  }}>
+                    <Text style={[s.text1, { fontFamily: FontFamily.default }]}>{user.value == 1 ?  Lang_chg.no_food_found[1] : Lang_chg.no_food_found[0]}</Text>
+                  </View> :
                 <View style={{
                   width: 200,
                   height: 18,
@@ -620,19 +645,19 @@ export default class Checkout extends Component {
                   // justifyContent:'space-around',
                   alignItems: 'flex-start'
                 }}>
-                  {this.state.adv && this.state.adv!= 'NA' &&  this.state.adv.length > 0 && this.state.adv.map((item) => {
+                  {this.state.adv && this.state.adv != 'NA' && this.state.adv.length > 0 && this.state.adv.map((item) => {
                     return (
                       <View style={{}}>
                         <Text style={[{ fontFamily: FontFamily.default, fontSize: 12 }]}>
                           {item.add_On_name == "Food" &&
                             item.isChecked == true ?
-                            `${item.addon_product_name[0]},` :
-                            null}
+                            `${user.value == 1 ? item.addon_product_name[1] : item.addon_product_name[0]},` :
+                            user.value == 1 ?  Lang_chg.no_food_selevcetd[1] : Lang_chg.no_food_selevcetd[0]}
                         </Text>
                       </View>
                     );
                   })}
-                </View>
+                </View>}
               </View>
 
               <View style={s.container}>
@@ -642,7 +667,7 @@ export default class Checkout extends Component {
 
                 <View style={s.item}>
                   <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                    { user.value == 1 ?  this.state.adver_arr.city_name[1] : this.state.adver_arr.city_name[0]}{' '}
+                    {user.value == 1 ? this.state.adver_arr.city_name[1] : this.state.adver_arr.city_name[0]}{' '}
                   </Text>
                 </View>
               </View>
@@ -653,7 +678,7 @@ export default class Checkout extends Component {
                 </View>
 
                 <View style={s.item}>
-                  <Text numberOfLines={2} ellipsizeMode='tail'  style={[s.text1, {bottom:6, height:30 , fontFamily: FontFamily.default   }]}>
+                  <Text numberOfLines={2} ellipsizeMode='tail' style={[s.text1, { bottom: 6, height: 30, fontFamily: FontFamily.default }]}>
                     {this.state.adver_arr.location_address}{' '}
                   </Text>
                 </View>
@@ -666,7 +691,7 @@ export default class Checkout extends Component {
 
                 <View style={s.item}>
                   <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                    { user.value==1 ? this.state.adver_arr.trip_type_name[1] : this.state.adver_arr.trip_type_name[0]}{' '}
+                    {user.value == 1 ? this.state.adver_arr.trip_type_name[1] : this.state.adver_arr.trip_type_name[0]}{' '}
                   </Text>
                 </View>
               </View>
@@ -683,7 +708,7 @@ export default class Checkout extends Component {
               </View>
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.coupendiscountcheckout[0] : Lang_chg.coupendiscountcheckout[0]}</Text>
+                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.coupendiscountcheckout[1] : Lang_chg.coupendiscountcheckout[0]}</Text>
                 </View>
 
                 <View style={s.item}>
@@ -695,7 +720,7 @@ export default class Checkout extends Component {
 
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.toatalpricecheckout[0] : Lang_chg.toatalpricecheckout[0]}</Text>
+                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.toatalpricecheckout[1] : Lang_chg.toatalpricecheckout[0]}</Text>
                 </View>
 
                 <View style={s.item}>
@@ -733,16 +758,18 @@ export default class Checkout extends Component {
 
             <View style={{ top: 5, height: 0.5, backgroundColor: 'lightgrey' }}></View>
             <View style={{ flex: 1, marginTop: 20, marginBottom: 40 }}>
-              <Text
-                style={{
-                  lineHeight: 27,
-                  marginLeft: '3%',
-                  fontSize: 18,
-                  fontFamily: FontFamily.semi_bold,
-                }}>
-                {' '}
-                {user.value == 1 ? Lang_chg.payment_method_txt[1] :Lang_chg.payment_method_txt[0]}
-              </Text>
+              <View style={{ alignItems: 'flex-start' }}>
+                <Text
+                  style={{
+                    lineHeight: 27,
+                    marginLeft: '3%',
+                    fontSize: 18,
+                    fontFamily: FontFamily.semi_bold,
+                  }}>
+                  {' '}
+                  {user.value == 1 ? Lang_chg.payment_method_txt[1] : Lang_chg.payment_method_txt[0]}
+                </Text>
+              </View>
               {this.state.paymentMethod.map(opt => (
                 <View key={opt.title} style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                   <CheckBox
@@ -769,7 +796,7 @@ export default class Checkout extends Component {
                     style={s.paymnetImage}
                     resizeMode='contain'
                   />
-                  <Text style={s.paymentText}> {opt.title}</Text>
+                  <Text style={Platform.OS === 'ios' ? s.paymentText : s.paymentText1}> {opt.title}</Text>
 
                 </View>
               ))}
@@ -995,7 +1022,6 @@ const s = StyleSheet.create({
   item: {
     width: '45%',
     alignItems: "flex-start",// is 50% of container width
-    // backgroundColor:'red'
   },
   disc: {
     marginLeft: 20,
@@ -1150,7 +1176,17 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     textAlignVertical: 'center',
     top: 20,
-    fontFamily: FontFamily.semi_bold
+    fontFamily: FontFamily.semi_bold,
+    left: 20
+
+  }, paymentText1: {
+    fontSize: 14,
+    justifyContent: 'center',
+    textAlignVertical: 'center',
+
+    fontFamily: FontFamily.semi_bold,
+    left: 20
+
   },
   checkbox: {
     color: '#fff',

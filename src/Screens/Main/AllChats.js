@@ -119,12 +119,12 @@ class AllChats extends PureComponent {
         return (
             <Card containerStyle={{
                 borderRadius: 20,
-                elevation: 3,
+                elevation: 1,
                 // marginHorizontal: 10,
                 // marginTop: 14,
                 marginBottom: 15,
                 // padding: 10,s
-                backgroundColor: colors.orange,
+                backgroundColor: colors.white,
                 margin: 5,
                 width: Sizes.width * 0.95,
             }}>
@@ -190,7 +190,7 @@ class AllChats extends PureComponent {
                     name={user.value == 1 ? Lang_chg.mesage[1] : Lang_chg.mesage[0]}
                     backImgSource={require('../../Images/backgroundImg.png')}
                 />
-                {isLoading && <Loader />}
+                {/* {isLoading && <Loader />} */}
                 <View style={{
           backgroundColor: Colors.white,
           borderTopLeftRadius: 25,

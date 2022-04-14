@@ -524,7 +524,7 @@ export default class Login extends Component {
                       OR
                     </Text>
                   </View>
-                  <View>
+                  <View style={{alignItems:'center'}}>
                     <Text style={styles.Text1}>{user.value == 1 ? Lang_chg.Signupwith[1] : Lang_chg.Signupwith[0]}</Text>
                     <View
                       style={{

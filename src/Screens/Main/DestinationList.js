@@ -34,7 +34,7 @@ export default class DestinationList extends Component {
       localData: [],
       addon_arr: [],
       citylist: [],
-Guests:'',
+      Guests: '',
       advertisment: '',
       updateState: '',
       time: '',
@@ -82,9 +82,9 @@ Guests:'',
 
     // console.log(this.props.navigation.state.params.item)
     this.foodArr = [];
-    this.enterarr =[];
-    this.equipmearr=[];
-    this.cityarr =[];
+    this.enterarr = [];
+    this.equipmearr = [];
+    this.cityarr = [];
   }
 
   componentDidMount() {
@@ -96,7 +96,7 @@ Guests:'',
 
     this.setState({ getdate: date });
 
-    console.log(this.state.destination , 'destination images ');
+    console.log(this.state.destination, 'destination images ');
 
     // this.getData('user_arr');
 
@@ -138,14 +138,14 @@ Guests:'',
 
       if (json.success == 'true') {
         this.setState({ addon_arr: json.addon_arr != 'NA' ? json.addon_arr : [] });
-        this.equipmearr =json.addon_arr[2].addon_products;
+        this.equipmearr = json.addon_arr[2].addon_products;
         this.setState({ type_gear: json.addon_arr[2].addon_products })
 
         this.foodArr = json.addon_arr[0].addon_products;
         this.setState({ food: json.addon_arr[0].addon_products })
-        this.enterarr =json.addon_arr[1].addon_products ;
+        this.enterarr = json.addon_arr[1].addon_products;
         this.setState({ entertainment: json.addon_arr[1].addon_products })
-this.cityarr=  json.selected_City_Array ;
+        this.cityarr = json.selected_City_Array;
         this.setState({ citylist: json.selected_City_Array != 'NA' ? json.selected_City_Array : [] })
 
         console.log('object :>> ', this.state.type_gear);
@@ -264,7 +264,7 @@ this.cityarr=  json.selected_City_Array ;
 
       //          console.log('local '+value)
 
-       console.log('value 93', value);
+      console.log('value 93', value);
       if (value !== null) {
         const arrayData = JSON.parse(value);
 
@@ -285,7 +285,7 @@ this.cityarr=  json.selected_City_Array ;
     console.log('goto');
     this.props.navigation.navigate('GoogleMap', {
       adver_arr: this.state.adver_arr,
-      arry : this.state.destination,
+      arry: this.state.destination,
       type: 1
     });
   }
@@ -304,7 +304,7 @@ this.cityarr=  json.selected_City_Array ;
   };
 
   async ProfileDetail(user_id) {
-     console.log(
+    console.log(
       'user ',
       this.state.trip_type,
       'destination ',
@@ -322,12 +322,12 @@ this.cityarr=  json.selected_City_Array ;
       '&filter_rating=0&filter_guest=0&filter_cabin=0&filter_price=0&filter_toilet=0';
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
 
-      console.log(url, 'user details url');
+    console.log(url, 'user details url');
     try {
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-       console.log('json123', json);
+      console.log('json123', json);
 
       if (json.success == 'true') {
         this.setState({ adver_arr: json.adver_arr != 'NA' ? json.adver_arr : [] });
@@ -424,7 +424,7 @@ this.cityarr=  json.selected_City_Array ;
       advertisment: '',
       cabin: '',
       entertainment: this.enterarr,
-      Guests:'',
+      Guests: '',
     });
   }
 
@@ -452,7 +452,7 @@ this.cityarr=  json.selected_City_Array ;
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-       console.log('json  in addfav/*', json);
+      console.log('json  in addfav/*', json);
 
       if (json.success == 'true') {
         msgProvider.toast(json.msg[config.language], 'center');
@@ -472,7 +472,7 @@ this.cityarr=  json.selected_City_Array ;
 
 
   onShare = async (imgUrl) => {
-     console.log(imgUrl, 'link');
+    console.log(imgUrl, 'link');
 
     try {
       const result = await Share.share({
@@ -519,12 +519,12 @@ this.cityarr=  json.selected_City_Array ;
       '&filter_price=0&filter_toilet=0' + '&filter_food=' +
       this.state.foodselected + '&filter_entertainment=' + this.state.entertainmentselected +
       '&filter_citylist=' + this.state.citylistselected + '&filter_advertisement=' + this.state.advertisment +
-      '&filter_equipement=' + this.state.type_gearslected + "&choose_date=" + this.state.calender_arr.date  +
+      '&filter_equipement=' + this.state.type_gearslected + "&choose_date=" + this.state.calender_arr.date +
       '&sort_key=' +
       this.state.short;
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
 
-      console.log(url);
+    console.log(url);
     try {
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
@@ -566,7 +566,7 @@ this.cityarr=  json.selected_City_Array ;
 
 
     const user = this.context
-console.log('context in home', user);
+    console.log('context in home', user);
 
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
@@ -576,9 +576,9 @@ console.log('context in home', user);
 
           backImgSource={{
             uri:
-            config.image_url4 + this.state.destination.image
+              config.image_url4 + this.state.destination.image
           }}
-          name={ user.value == 1 ? this.state.destination.destination_name_arabic :this.state.destination.destination_name}
+          name={user.value == 1 ? this.state.destination.destination_name_arabic : this.state.destination.destination_name}
           searchBtn={false}
           headerHeight={300}
         />
@@ -611,7 +611,7 @@ console.log('context in home', user);
                 color: '#0A8481',
                 fontFamily: 'Montserrat-Regular',
               }}>
-                         {user.value ==1 ? Lang_chg.Sortby[1] :Lang_chg.Sortby[0] }
+              {user.value == 1 ? Lang_chg.Sortby[1] : Lang_chg.Sortby[0]}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={s.col} onPress={() => this.Filter()}>
@@ -627,7 +627,7 @@ console.log('context in home', user);
                 color: '#0A8481',
                 fontFamily: 'Montserrat-Regular',
               }}>
-                          {user.value ==1 ? Lang_chg.text_filter[1] :Lang_chg.text_filter[0] }{' '}
+              {user.value == 1 ? Lang_chg.text_filter[1] : Lang_chg.text_filter[0]}{' '}
             </Text>
           </TouchableOpacity>
 
@@ -651,7 +651,7 @@ console.log('context in home', user);
                 color: '#0A8481',
                 fontFamily: 'Montserrat-Regular',
               }}>
-                          {user.value == 1 ? Lang_chg.map[1] : Lang_chg.map[0]}
+              {user.value == 1 ? Lang_chg.map[1] : Lang_chg.map[0]}
             </Text>
           </TouchableOpacity>
         </View>
@@ -689,6 +689,7 @@ console.log('context in home', user);
             data={this.state.adver_arr}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => {
+              console.log('item in destinatio list :>> ', item);
               return (
                 <View style={{ padding: 5 }}>
                   <TouchableOpacity
@@ -719,20 +720,22 @@ console.log('context in home', user);
                         resizeMode="cover"
                         imageStyle={s.imgStyle}
                         source={{ uri: config.image_url4 + item.image }}
-                        >
-{item.discount  != "0.00" ? <View style={[{
-                        justifyContent: 'center'
-                      }, s.trapezoid_discount]}>
-                        <Text style={{
-                          position: "absolute",
-                          fontFamily: FontFamily.semi_bold,
-                          fontSize: 11,
-                          alignSelf: "center",
-                          color: Colors.white
-                        }}>
-                          {item.discount} OFF
-                        </Text>
-                      </View> : null }
+                      >
+                        {item.discount != "0.00" ? <View style={ user.value == 1  ? [{
+                          justifyContent: 'center'
+                        }, s.trapezoid_discount1] :  [{
+                          justifyContent: 'center'
+                        }, s.trapezoid_discount]}>
+                          <Text style={{
+                            position: "absolute",
+                            fontFamily: FontFamily.semi_bold,
+                            fontSize: 11,
+                            alignSelf: "center",
+                            color: Colors.white
+                          }}>
+                            {item.discount} OFF
+                          </Text>
+                        </View> : null}
                         <TouchableOpacity
                           style={{ position: 'absolute', right: 10, padding: 3, top: 7, backgroundColor: Colors.orange, borderRadius: 20 }}
                           onPress={() => this.addFavorite(item)}
@@ -779,7 +782,7 @@ console.log('context in home', user);
                             },
                           ]}>
                           <Text style={s.place}>
-                            starting{'\n'}KD {item.price}
+                            {user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}KD {item.price}
                           </Text>
                         </View>
                       </ImageBackground>
@@ -864,7 +867,7 @@ console.log('context in home', user);
                                   fontSize: 12,
                                   fontFamily: FontFamily.default,
                                 }}>
-                                {item?.destination_name}
+                                {user.value == 1 ? this.state.destination.destination_name_arabic : this.state.destination.destination_name}
                               </Text>
                               <View
                                 style={{
@@ -879,7 +882,7 @@ console.log('context in home', user);
                                     fontSize: 10,
                                     fontFamily: FontFamily.default,
                                   }}>
-                                  {item?.no_of_people} Person
+                                  {item?.no_of_people}{user.value == 1 ? Lang_chg.text_Person[1] : Lang_chg.text_Person[0]}
                                 </Text>
                               </View>
                             </View>
@@ -1453,7 +1456,7 @@ console.log('context in home', user);
                           color:
                             this.state.Guests != '7 - 9' ? Colors.orange : '#fff',
                         }}>
-                       7 - 9
+                        7 - 9
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -2253,10 +2256,11 @@ const s = StyleSheet.create({
     fontWeight: '900',
     fontFamily: 'Montserrat-SemiBold',
   },
-  trapezoid_discount: {
+  trapezoid_discount1: {
     width: 115,
     height: 0,
     borderBottomWidth: 25,
+    justifyContent: 'center',
     borderBottomColor: Colors.orange,
     borderLeftWidth: 25,
     borderLeftColor: "transparent",
@@ -2265,7 +2269,7 @@ const s = StyleSheet.create({
     borderStyle: "solid",
     backgroundColor: 'transparent',
     alignItems: "center",
-    transform: [{ rotate: "-45deg" }],
+    transform: [{ rotate: "45deg" }],
     marginTop: 19.2,
     marginLeft: -26
   },
