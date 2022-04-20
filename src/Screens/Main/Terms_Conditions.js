@@ -51,7 +51,7 @@ export default class Terms_Conditions extends Component {
 
   componentDidMount() {
     this.getData('user_arr');
-
+this.ProfileDetail();
     //    let d= useWindowDimensions();
 
     console.log(this.state.type)
@@ -90,7 +90,7 @@ export default class Terms_Conditions extends Component {
 
         console.log(arrayData)
         //this.setState({localData:arrayData})
-        this.ProfileDetail(arrayData.user_id)
+        this.ProfileDetail()
 
 
       }
@@ -100,12 +100,13 @@ export default class Terms_Conditions extends Component {
   }
 
 
-  async ProfileDetail(user_id) {
+  async ProfileDetail() {
     const user = this.context
     console.log('context in home', user);
-    console.log('user ', user_id)
+    // console.log('user ', user_id)
 
-    let url = config.baseURL + 'get_all_content.php?user_id_post=' + user_id + '&user_type=1';
+    let url = config.baseURL + 'get_all_content.php?user_type=1';
+    console.log('url :>> ', url);
     try {
       const response = await fetch(url);
       const json = await response.json();

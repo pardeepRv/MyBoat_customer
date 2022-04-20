@@ -22,9 +22,12 @@ import { back_img4, Colors, FontFamily, Sizes } from '../../Constants/Constants'
 import { useNavigation } from '@react-navigation/core';
 import {Switch} from 'react-native-elements'
 import { config } from '../../Provider/configProvider';
+import { UserContext } from './UserContext';
+import { Lang_chg } from '../../Provider/Language_provider';
 
 
 const Notifications_Details=(props)=>{
+    const user = React.useContext(UserContext);
     console.log('props :>> ', props);
     const [data , setData] = useState(props.route.params.data)
 useEffect(() => {
@@ -34,7 +37,7 @@ useEffect(() => {
         <View style={{flex:1,backgroundColor:Colors.white}}>
             <Header
              backBtn={true}
-             name="Notifications" 
+             name={user.value == 1 ? Lang_chg.text_notification[1] : Lang_chg.text_notification[0]} 
              />
              <View style={sb.SEC2}>
                  {/*  */}
@@ -50,237 +53,241 @@ useEffect(() => {
                             </Text>
                         </View>
                         {/*  */}
-                        <View style={{marginVertical:20}}>
+
+                        
+                        <View style={{marginVertical:20 , alignItems:'flex-start'}}>
                             <Text style={{fontFamily:FontFamily.default,fontSize:12,color:"rgba(0, 0, 0, 0.58)"}}>
-                           {data.message[0]}
+                           { user.value == 1 ? data.message[1] : data.message[0]}
                             </Text>
                         </View>
-                        {/* DIVIDER */}
                         <View style={sb.DIVIDER} />
-                        {/* Booking Details */}
-                        <View style={{marginVertical:10}}>
-                            <Text style={{fontSize:14,fontFamily:FontFamily.semi_bold,marginVertical:10}}>
-                                Booking Details :
-                            </Text>
-                            {/*  */}
-                            {/* Customer Name */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                    Customer Name : 
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                        {data?.booking_details?.booking_arr?.user_name}
-                                    </Text>
-                                </View>
-                            </View>
-                            {/*  */}
-                            {/*  Book date  */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                    Book date : 
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                    {data?.booking_details?.booking_arr?.date}
+                      {data?.booking_details?.booking_arr == 'NA'  ? null :
+                      
+                 
+                       <View style={{marginVertical:10}}>
+                           <View style={{alignItems:'flex-start'}}>
+                           <Text style={{fontSize:14,fontFamily:FontFamily.semi_bold,marginVertical:10 }}>
+                           {user.value==1 ?  Lang_chg.text_booking_details[1]: Lang_chg.text_booking_details[0]}
+                           </Text>
+                           </View>
+                      
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.Customer_Name[1]: Lang_chg.Customer_Name[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                       {data?.booking_details?.booking_arr == 'NA' ? "NA":data?.booking_details?.booking_arr?.user_name}
+                                   </Text>
+                               </View>
+                           </View>
+                  
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.Bookdatetrip[1]: Lang_chg.Bookdatetrip[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   {data?.booking_details?.booking_arr == 'NA' ? "NA": data?.booking_details?.booking_arr?.date}
 
-                                    </Text>
-                                </View>
-                            </View>
-                            {/*  */}
-                            {/* Trip time : */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                    Trip time : 
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                    {data?.booking_details?.booking_arr?.time}
-                                    </Text>
-                                </View>
-                            </View>
-                            {/*  */}
-                            {/* Number of guests : */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                    Number of guests :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                    {data?.booking_details?.booking_arr?.no_of_guest}
-                                    </Text>
-                                </View>
-                            </View>
-                            {/* --------- */}
-                            {/* Trip hours : */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                Trip hours :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                    {data?.booking_details?.booking_arr?.minimum_hours} hr
-                                    </Text>
-                                </View>
-                            </View>
-                            {/* --------- */}
-                            {/* Extra hours : */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                Extra hours :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                    {data?.booking_details?.booking_arr?.extra_time} hr
-                                    </Text>
-                                </View>
-                            </View>
-                            {/* Equipment :*/}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                Equipment :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                    Equipment
-                                    </Text>
-                                </View>
-                            </View>
-                            {/* Entertainment : */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                Entertainment :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                    Entertainment
-                                    </Text>
-                                </View>
-                            </View>
-                            {/* Food : */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                Food :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                        Food
-                                    </Text>
-                                </View>
-                            </View>
-                            {/* Boat Place */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                Boat Place :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                    {data?.booking_details?.booking_arr?.location_address}
-                                    </Text>
-                                </View>
-                            </View>
-                            {/* Trip Destination */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                    Trip Destination :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                    {data?.booking_details?.booking_arr?.location_address}
-                                    </Text>
-                                </View>
-                            </View>
-                            {/* Trip Type */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                Trip type :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                    {data?.booking_details?.booking_arr?.trip_name[0]}
+                                   </Text>
+                               </View>
+                           </View>
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.TripTimetrip[1]: Lang_chg.TripTimetrip[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   {data?.booking_details?.booking_arr == 'NA' ? "NA": data?.booking_details?.booking_arr?.time}
+                                   </Text>
+                               </View>
+                           </View>
+                      
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.noogguesttriptour[1]: Lang_chg.noogguesttriptour[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   {data?.booking_details?.booking_arr == 'NA' ? "NA":data?.booking_details?.booking_arr?.no_of_guest}
+                                   </Text>
+                               </View>
+                           </View>
+                         
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.triphourstrip[1]: Lang_chg.triphourstrip[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   {data?.booking_details?.booking_arr == 'NA' ? "NA": data?.booking_details?.booking_arr?.minimum_hours} hr
+                                   </Text>
+                               </View>
+                           </View>
+                        
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.extrahourcheckout[1]: Lang_chg.extrahourcheckout[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   {data?.booking_details?.booking_arr == 'NA' ? "NA": data?.booking_details?.booking_arr?.extra_time} hr
+                                   </Text>
+                               </View>
+                           </View>
+                    
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.equpmenttrip[1]: Lang_chg.equpmenttrip[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   Equipment
+                                   </Text>
+                               </View>
+                           </View>
+                        
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.entertainmenttrip[1]: Lang_chg.entertainmenttrip[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   Entertainment
+                                   </Text>
+                               </View>
+                           </View>
+                         
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.entertainmenttrip[1]: Lang_chg.entertainmenttrip[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                       Food
+                                   </Text>
+                               </View>
+                           </View>
+                     
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.Boatplacetrip[1]: Lang_chg.Boatplacetrip[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   {data?.booking_details?.booking_arr == 'NA' ? "NA": data?.booking_details?.booking_arr?.location_address}
+                                   </Text>
+                               </View>
+                           </View>
+                          
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.tripdestinationcheckout[1]: Lang_chg.tripdestinationcheckout[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   {data?.booking_details?.booking_arr == 'NA' ? "NA": data?.booking_details?.booking_arr?.location_address}
+                                   </Text>
+                               </View>
+                           </View>
+                           
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.triptypetrip[1]: Lang_chg.triptypetrip[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   {data?.booking_details?.booking_arr == 'NA' ? "NA": user.value==1 ?  data?.booking_details?.booking_arr?.trip_name[1] : data?.booking_details?.booking_arr?.trip_name[0]}
 
-                                    </Text>
-                                </View>
-                            </View>
-                            {/* Discount */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                Discount :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                    {data?.booking_details?.booking_arr?.discount} %
+                                   </Text>
+                               </View>
+                           </View>
+                          
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.Discounttrip[1]: Lang_chg.Discounttrip[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   {data?.booking_details?.booking_arr == 'NA' ? "NA": data?.booking_details?.booking_arr?.discount} %
 
-                                    </Text>
-                                </View>
-                            </View>
-                            {/* Coupon discount */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                Coupon discount :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                        {/* 30% */}
-                                    </Text>
-                                </View>
-                            </View>
-                            {/* Total price */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                Total price :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                   kD {data?.booking_details?.booking_arr?.total_amt}
-                                    </Text>
-                                </View>
-                            </View>
-                            {/* Extra request */}
-                            <View style={sb.style1}>
-                                <Text style={sb.parameters}>
-                                Extra requests :
-                                </Text>
-                                <View style={sb.style2}>
-                                    <Text style={sb.values}>
-                                      No Request
-                                    </Text>
-                                </View>
-                            </View>
-                            {/*  */}
-                        </View>
-                        {/*  */}
+                                   </Text>
+                               </View>
+                           </View>
+                
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.coupendiscountcheckout[1]: Lang_chg.coupendiscountcheckout[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   
+                                   </Text>
+                               </View>
+                           </View>
+                
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.toatalpricecheckout[1]: Lang_chg.toatalpricecheckout[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                   {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {data?.booking_details?.booking_arr == 'NA' ? "NA": data?.booking_details?.booking_arr?.total_amt}
+                                   </Text>
+                               </View>
+                           </View>
+                       
+                           <View style={sb.style1}>
+                               <Text style={sb.parameters}>
+                               {user.value==1 ?  Lang_chg.Extrarequestcheckout[1]: Lang_chg.Extrarequestcheckout[0]}
+                               </Text>
+                               <View style={sb.style2}>
+                                   <Text style={sb.values}>
+                                     No Request
+                                   </Text>
+                               </View>
+                           </View>
+                           
+                       </View>
+                       } 
+                       
+                        
                      </ScrollView>
                  </View>
              </View>
              {/*  */}
-             <View style={{position:"absolute",alignItems:"center",width:"100%",bottom:10}}>
-             <View style={sb.btn_1}>
-                 <TouchableOpacity
-                  style={[sb.btn1,{borderColor:Colors.orange,backgroundColor:Colors.white}]}
-                  onPress={()=>props.navigation.goBack()}
-                  activeOpacity={0.8}
-                  >
-                     <Text style={[sb.btn1Text,{color:Colors.orange}]}>
-                         Cancel
-                     </Text>
-                 </TouchableOpacity>
-                 <TouchableOpacity
-                  style={[sb.btn1,{borderColor:Colors.orange,backgroundColor:Colors.orange}]}
-                  onPress={() =>
-              props.navigation.navigate('TripTypeDetail', {
-                      item: data,
-                    
-                    })
-                  }
-                  activeOpacity={0.8}
-                  >
-                     <Text style={[sb.btn1Text,{color:Colors.white}]}>
-                     See Trip
-                     </Text>
-                 </TouchableOpacity>
-             </View>
-             </View>
+             {
+                 data?.booking_details?.booking_arr == 'NA' ? null :
+                 <View style={{position:"absolute",alignItems:"center",width:"100%",bottom:10}}>
+                 <View style={sb.btn_1}>
+                     <TouchableOpacity
+                      style={[sb.btn1,{borderColor:Colors.orange,backgroundColor:Colors.white}]}
+                      onPress={()=>props.navigation.goBack()}
+                      activeOpacity={0.8}
+                      >
+                         <Text style={[sb.btn1Text,{color:Colors.orange}]}>
+                             Cancel
+                         </Text>
+                     </TouchableOpacity>
+                     <TouchableOpacity
+                      style={[sb.btn1,{borderColor:Colors.orange,backgroundColor:Colors.orange}]}
+                      onPress={() =>
+                  props.navigation.navigate('TripTypeDetail', {
+                          item: data,
+                        
+                        })
+                      }
+                      activeOpacity={0.8}
+                      >
+                         <Text style={[sb.btn1Text,{color:Colors.white}]}>
+                         See Trip
+                         </Text>
+                     </TouchableOpacity>
+                 </View>
+                 </View>
+             }
+           
         </View>
     )
 }

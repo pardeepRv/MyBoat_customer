@@ -34,6 +34,9 @@ export default class Forgot extends Component {
     }
 
     _btnSubmitForgot = () => {
+        const user = this.context
+        console.log('context in login', user);
+
         let user_email = this.state.email;
         //email============================
         if (user_email.length <= 0) {
@@ -68,11 +71,11 @@ export default class Forgot extends Component {
                             this.mailsendfunction(email_arr);
                         }
                     }
-                    msgProvider.alert(msgTitle.information[config.language], obj.msg[config.language], false);
+                    msgProvider.alert(user.value == 1 ? msgTitle.information[1] :msgTitle.information[0] , user.value == 1 ? obj.msg[1] : obj.msg[0], false);
                     this.backpress();
                     return false;
                 } else {
-                    msgProvider.alert(msgTitle.information[config.language], obj.msg[config.language], false);
+                    msgProvider.alert(user.value == 1 ? msgTitle.information[1] :msgTitle.information[0] , user.value == 1 ? obj.msg[1] : obj.msg[0], false);
                     return false;
                 }
             }).catch((error) => {
@@ -81,7 +84,7 @@ export default class Forgot extends Component {
             });
         }
         else {
-            msgProvider.alert(msgTitle.internet[config.language], msgText.networkconnection[config.language], false);
+            msgProvider.alert( user.value == 1 ? msgTitle.internet[1] : msgTitle.internet[0], user.value == 1 ? msgText.networkconnection[1] :  msgText.networkconnection[1], false);
         }
     }
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {
   Dimensions, FlatList, Keyboard, KeyboardAvoidingView, Modal, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
-import { Calendar } from 'react-native-calendars';
+import { Calendar ,LocaleConfig , RNCalendarsLocaleConfig} from 'react-native-calendars';
 import { colors, Icon, Input } from 'react-native-elements';
 import { WebView } from 'react-native-webview';
 import Header from '../../Components/Header';
@@ -108,7 +108,85 @@ export default class RequestPayment extends Component {
 
 
     console.log('markdate2', this.state.test_arr);
+    this.laungugaelocal();
   }
+
+
+laungugaelocal= () =>{
+  const user = this.context
+console.log('user :>> ', user);
+if (user.value==0 ){
+  LocaleConfig.locales['en'] = {
+    monthNames: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'may',
+      'June',
+      'July',
+      'august',
+      'September',
+      'October',
+      'November',
+      'December'
+    ],
+    monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+    dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+    dayNamesShort: ['Sun.','Mon.' , 'Tue.', 'Wed.', 'Thr.', 'Fri.', 'Sat.'],
+    today: "Aujourd'hui"
+  };
+  LocaleConfig.defaultLocale = 'en';
+} else if (user.value == 1){
+  LocaleConfig.locales['ar'] = {
+    monthNames: [
+      'يناير',
+      'فبراير',
+      'مارس',
+      'ابريل',
+      'مايو',
+      'يونيو',
+      'يوليو',
+      'اغسطس',
+      'سبتمبر',
+      'اكتوبر',
+      'نوفمبر',
+      'ديسمبر'
+    ],
+    monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+    dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+    dayNamesShort: ['Sun.','Mon.' , 'Tue.', 'Wed.', 'Thr.', 'Fri.', 'Sat.'],
+    today: "Aujourd'hui"
+  };
+  LocaleConfig.defaultLocale = 'ar';
+}
+
+
+// if (user.value==1 ){
+//   LocaleConfig.locales['ar'] = {
+//     monthNames: [
+//       'Janvier',
+//       'Février',
+//       'Mars',
+//       'Avril',
+//       'Mai',
+//       'Juin',
+//       'Juillet',
+//       'Août',
+//       'Septembre',
+//       'Octobre',
+//       'Novembre',
+//       'Décembre'
+//     ],
+//     monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+//     dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+//     dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+//     today: "Aujourd'hui"
+//   };
+//   LocaleConfig.defaultLocale = 'ar';
+// }
+  
+}
 
   showDatePicker = () => {
     this.setState({
@@ -172,7 +250,12 @@ export default class RequestPayment extends Component {
     this.props.navigation.navigate('ExtraRequest', {
       adver_arr: this.state.adver_arr.addon_arr,
       adv: this.state.adver_arr,
+      destination_name: this.state.advertisement.destination_name,
       data: {
+        'destination_name[0]' :this.state.advertisement.destination_name[0],
+        'destination_name[1]' :this.state.advertisement.destination_name[1],
+        // 'destination_name' :this.state.advertisement.destination_name,
+        'destination_name[1]' :this.state.advertisement.destination_name[1],
         'user_id_post': this.state.user_id_post.user_id,
         'advertisement_id': this.state.advertisement.advertisement_id,
         'boat_id': this.state.adver_arr.boat_id,
@@ -681,6 +764,7 @@ export default class RequestPayment extends Component {
 
   render() {
     const user = this.context
+    
     // console.log('context in home', user);
     // console.log(
     //   'URL------',

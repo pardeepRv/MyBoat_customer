@@ -148,7 +148,7 @@ export default class PremotionDetail extends Component {
           <View style={{
             backgroundColor: Colors.white,
             height: 500,
-         
+          alignItems:'flex-start'
           }}>
             <Text
               style={{

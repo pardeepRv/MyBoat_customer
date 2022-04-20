@@ -183,7 +183,7 @@ export default class ContactUs extends Component {
                         <View style={{ marginTop: 50, paddingHorizontal: 10 }}>
 
                             <Input
-                                placeholder="Name"
+                                placeholder={user.value == 1 ? Lang_chg.textname[1] : Lang_chg.textname[0]}
                                 containerStyle={s.Input}
                                 inputContainerStyle={s.Input}
                                 placeholderTextColor={Colors.inputFieldEditProfile}
@@ -199,7 +199,7 @@ export default class ContactUs extends Component {
                             />
 
                             <Input
-                                placeholder="Email"
+                                placeholder={user.value == 1 ? Lang_chg.loginEmail[1] : Lang_chg.loginEmail[0]}
                                 containerStyle={s.Input}
                                 inputContainerStyle={s.Input}
                                 placeholderTextColor={Colors.inputFieldEditProfile}
@@ -207,12 +207,13 @@ export default class ContactUs extends Component {
                                 keyboardType="email-address"
                                 onChangeText={(txt) => { this.setState({ contact_email: txt }) }}
                                 value={this.state.contact_email}
+                                editable={false}
                             />
 
 
 
                             <Input
-                                placeholder="Mobile"
+                                placeholder={user.value == 1 ? Lang_chg.loginEmail[1] : Lang_chg.loginEmail[0]}
                                 containerStyle={s.Input}
                                 inputContainerStyle={s.Input}
                                 placeholderTextColor={Colors.inputFieldEditProfile}
@@ -238,7 +239,7 @@ export default class ContactUs extends Component {
                 <View>
                     <TouchableOpacity style={s.btn1} onPress={() => this.UpdateProfile()} >
                         <Text style={s.btn1Text}>
-                            Submit
+                            {user.value == 1 ? Lang_chg.txt_Submit[1] : Lang_chg.txt_Submit[0]}
                         </Text>
                     </TouchableOpacity>
                 </View>

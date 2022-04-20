@@ -134,7 +134,7 @@ const NotificationsPage = () => {
                         fontFamily: FontFamily.default,
                         fontSize: 14
                     }}>
-                        clear
+                        {user.value == 1 ? Lang_chg.text_clear[1] : Lang_chg.text_clear[0]}
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -194,7 +194,7 @@ const NotificationsPage = () => {
                                                                         lineHeight: 22,
                                                                     }}
                                                                 >
-                                                                    {item.item.title[0]}
+                                                                    {user.value == 1 ? item.item.title[1] :  item.item.title[0]}
                                                                 </Text>
                                                                 <Text
                                                                     style={{
@@ -204,7 +204,7 @@ const NotificationsPage = () => {
                                                                         color: "rgba(0, 0, 0, 0.58)",
                                                                     }}
                                                                 >
-                                                                    {item.item.message[0]}
+                                                                    { user.value == 1 ? item.item.message[1] : item.item.message[0]}
                                                                 </Text>
                                                             </View>
                                                         </View>

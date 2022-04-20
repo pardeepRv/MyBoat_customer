@@ -153,9 +153,9 @@ if (confirm_password !== password) {
         <View style={{flex:1,backgroundColor:Colors.white}}>
             <Header backBtn={true} name= {user.value == 1 ? Lang_chg.change_language_txt[1] : Lang_chg.change_language_txt[0]}/>
             <View style={sb.SEC2}>
-                <View style={{marginTop:30,paddingHorizontal:20}}>
+                <View style={{marginTop:30,paddingHorizontal:20 , alignItems:'flex-start'}}>
                 <Input
-                 placeholder="Old Password" 
+                 placeholder={user.value == 1 ? Lang_chg.old_pass_txt[1] : Lang_chg.old_pass_txt[0]} 
                  containerStyle={sb.Input}
                  inputContainerStyle={sb.Input}
                  selectionColor={'green'}
@@ -173,10 +173,11 @@ if (confirm_password !== password) {
                  }}
                  iconColor={Colors.gray}
                  onChangeText={(txt) => { this.setState({ old_password: txt }) }}
+                 textAlign={user.value == 1 ? "right" : "left"}
 
                  />
                 <Input
-                 placeholder="New Password" 
+                 placeholder={user.value == 1 ? Lang_chg.new_pass_txt[1] : Lang_chg.new_pass_txt[0]} 
                //  secureTextEntry={true} 
                  placeholderTextColor={Colors.gray}
                  viewPass
@@ -189,30 +190,34 @@ if (confirm_password !== password) {
                  }}
                  iconColor={Colors.gray}
                  onChangeText={(txt) => { this.setState({ password: txt }) }}
+                 textAlign={user.value == 1 ? "right" : "left"}
                
                  />
                 <Input
-                 placeholder="Confirm Password" 
+                 placeholder={user.value == 1 ? Lang_chg.c_pass_txt[1] : Lang_chg.c_pass_txt[0]} 
                 // secureTextEntry={true} 
                  placeholderTextColor={Colors.gray}
                  viewPass
                  password
-               //  caretHidden
+                // caretHidden
                 //  borderless
                  style={{
                      borderWidth:0,
-                     borderBottomWidth:1
+                     borderBottomWidth:1,
+
                  }}
+                 textAlign={user.value == 1 ? "right" : "left"}
                  iconColor={Colors.gray}
+
                  onChangeText={(txt) => { this.setState({ confirm_password: txt }) }}
                
                  />
-                </View>
+         </View>
             </View>
             <View>
                 <TouchableOpacity style={sb.btn1} onPress={()=>this.Change_Pass()}>
                     <Text style={sb.btn1Text}>
-                        Submit
+                    {user.value == 1 ? Lang_chg.txt_Submit[1] : Lang_chg.txt_Submit[0]} 
                     </Text>
                 </TouchableOpacity>
             </View>

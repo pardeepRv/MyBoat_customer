@@ -68,7 +68,7 @@ export class MyTrip extends PureComponent {
       //https://server3.rvtechnologies.in/My-Boat/app/app/webservice/booking_list_user.php?user_id_post=209
       const json = await response.json();
 
-      console.log('______', json);
+       console.log('______', json);
       if (json.booking_arr != 'NA') {
         this.setState({
           myTrips: json.booking_arr
@@ -228,7 +228,7 @@ export class MyTrip extends PureComponent {
               }}
               ListEmptyComponent={() =>
                 this.state.myTrips >= 0 && (
-                  <Text style={s.nomatch}>No Booking found</Text>
+                  <Text style={s.nomatch}>{user.value == 1 ? Lang_chg.No_booking_found[1] : Lang_chg.No_booking_found[0]}</Text>
                 )
               }
             />

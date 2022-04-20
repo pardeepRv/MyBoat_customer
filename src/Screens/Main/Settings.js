@@ -61,7 +61,7 @@ const Settings=()=>{
              <View style={sb.SEC2}>
                  <ScrollView style={{marginTop:30}} showsVerticalScrollIndicator={false}>
                      {/* Account */}
-                     <Text style={{paddingHorizontal:30,paddingBottom:5,color:Colors.orange,fontFamily:FontFamily.semi_bold}}>Account</Text>
+                     <Text style={{paddingHorizontal:30,paddingBottom:5,color:Colors.orange,fontFamily:FontFamily.semi_bold}}>{user.value == 1  ? Lang_chg.text_account[1] : Lang_chg.text_account[0]}</Text>
                      {/* 1 */}
                      <TouchableOpacity style={{marginBottom:1}} onPress={()=>gotoNoti_Settings()}>
                         <Card containerStyle={{height:50,paddingVertical:2,justifyContent:"center",borderRadius:12}}>
@@ -116,7 +116,8 @@ const Settings=()=>{
                         </Card>
                     </TouchableOpacity>
                     {/* Support */}
-                    <Text style={{paddingHorizontal:30,paddingBottom:5,paddingTop:15,color:Colors.orange,fontFamily:FontFamily.semi_bold}}>Support</Text>
+                    <Text style={{paddingHorizontal:30,paddingBottom:5,paddingTop:15,color:Colors.orange,fontFamily:FontFamily.semi_bold}}> 
+                    {user.value == 1 ? Lang_chg.text_support[1] : Lang_chg.text_support[0]}</Text>
                      {/* 1 */}
                      <TouchableOpacity style={{marginBottom:1}} onPress={()=>gotoTerms_Conditions()}>
                         <Card containerStyle={{height:50,paddingVertical:2,justifyContent:"center",borderRadius:12}}>

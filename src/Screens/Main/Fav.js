@@ -226,7 +226,7 @@ export default class Fav extends Component {
                         }]}
 
                       >
-                        <Text style={s.place}>{user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}KD {item.extra_price}
+                        <Text style={s.place}>{user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}{user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {item.extra_price}
                         </Text>
                       </View>
                     </ImageBackground>
@@ -289,7 +289,7 @@ export default class Fav extends Component {
           />
 
           {this.state.isLoading && <ActivityIndicator size={30} color={Colors.orange} style={{ alignSelf: "center" }} />}
-          {!this.state.fav_arr.length && !this.state.isLoading ? <Text style={{ alignSelf: 'center', position: 'absolute', top: '50%', }}>No Record Found</Text> : null}
+          {!this.state.fav_arr.length && !this.state.isLoading ? <Text style={{ alignSelf: 'center', position: 'absolute', top: '50%', }}>{user.value ==1 ? Lang_chg.No_Record_found[1] : Lang_chg.No_Record_found[0]}</Text> : null}
         </View>
       </View>
     )

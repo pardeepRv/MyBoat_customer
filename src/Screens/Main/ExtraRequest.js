@@ -49,6 +49,7 @@ export default class ExtraRequest extends Component {
       adver_arr: this.props.route.params.adver_arr,
       adv: this.props.route.params.adv,
       data: this.props.route.params.data,
+      destination_name:this.props.route.params.destination_name,
       isSelected: false,
       coupon_discount: '0.00',
       check: [],
@@ -58,7 +59,8 @@ export default class ExtraRequest extends Component {
       extraHours: "",
       rentam: this.props.route.params.adv.extra_price,
       totalPrice:
-        Number(this.props.route.params.data.rent_amount)
+        Number(this.props.route.params.data.rent_amount),
+        chooseprice :'',
       // +
       // Number(this.props.route.params.data.extra_rent_amt),
     };
@@ -90,11 +92,16 @@ export default class ExtraRequest extends Component {
     if (!item.isChecked) {
       this.state.totalPrice =
         this.state.totalPrice + Number(item.addon_product_price);
+        this.state.chooseprice =
+        this.state.chooseprice + Number(item.addon_product_price);
     } else {
       this.state.totalPrice =
         this.state.totalPrice - Number(item.addon_product_price);
+        this.state.chooseprice =
+        this.state.chooseprice - Number(item.addon_product_price);
     }
     console.log('Total Price', this.state.totalPrice);
+  console.log('object :>> ', this.state.chooseprice);
 
     console.log(array[id], 'array[index]');
     array[id].isChecked = !array[id].isChecked;
@@ -123,7 +130,7 @@ export default class ExtraRequest extends Component {
 
 
   ExtraRequest() {
-    console.log(this.state.couponCode, '^^^^^', this.state.data.coupon_code);
+     console.log(this.state.couponCode, '^^^^^', this.state.data.coupon_code , this.state.data.coupon_discount ,this.state.chooseprice);
     if (this.state.couponCode) {
       if (this.state.couponCode != this.state.data.coupon_code) {
         alert('Please enter valid coupon code');
@@ -139,6 +146,7 @@ export default class ExtraRequest extends Component {
     }
 
     this.props.navigation.navigate('Checkout', {
+      destination_name:this.state.destination_name,
       adver_arr: this.state.adver_arr,
       adv: this.state.adv,
       coupon_discount: this.state.data.coupon_discount,
@@ -146,6 +154,8 @@ export default class ExtraRequest extends Component {
       extraHours: this.state.extraHours,
       extra_rent_amt: Number(this.state.extraHours) * Number(this.props.route.params.adv.extra_price),
       totalPrice: this.state.totalPrice + Number(this.state.data.coupon_discount),
+      total_price2:  this.state.totalPrice - Number(this.state.totalPrice*this.state.adv?.discount /100),
+      selected_price : Number(this.state.chooseprice)
     }
     );
   }
@@ -208,7 +218,7 @@ export default class ExtraRequest extends Component {
                                 textAlign: 'right',
                                 marginLeft: '20%',
                                 fontFamily: FontFamily.default,
-                              }}>KD {item.addon_product_price}</Text>
+                              }}>{user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {item.addon_product_price}</Text>
                         }
 
                       </View>

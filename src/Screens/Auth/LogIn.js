@@ -419,14 +419,14 @@ export default class Login extends Component {
 
               <View style={{ alignItems: 'flex-start' }} >
 
-                <Text style={styles.myboat}>{user.value == 1 ? Lang_chg.Myboattextlogin[1] : Lang_chg.Myboattextlogin[0]}</Text>
+                <Text style={styles.myboat}>{user.value == 1 ? Lang_chg.Myboattextlogin[0] : Lang_chg.Myboattextlogin[0]}</Text>
                 <Text style={styles.Wlcome}>{user.value == 1 ? Lang_chg.welcomeMyboat[1] : Lang_chg.welcomeMyboat[0]}</Text>
               </View>
               <View style={{ alignItems: 'flex-start' }}>
                 <Text style={styles.Login}>{user.value == 1 ? Lang_chg.Login_txt[1] : Lang_chg.Login_txt[0]}</Text>
               </View>
               <Input
-                placeholder="Email"
+                placeholder={user.value == 1 ? Lang_chg.loginEmail[1] : Lang_chg.loginEmail[0]}
                 containerStyle={styles.Input}
                 inputContainerStyle={styles.Input}
                 placeholderTextColor={Colors.white}
@@ -446,7 +446,7 @@ export default class Login extends Component {
 
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
                 <Input
-                  placeholder="Password"
+                  placeholder={user.value == 1 ? Lang_chg.loginpassword[1] : Lang_chg.loginpassword[0]}
                   containerStyle={styles.Input}
                   inputContainerStyle={styles.Input}
                   placeholderTextColor={Colors.white}
@@ -588,7 +588,7 @@ const styles = StyleSheet.create({
     // height:Sizes.height+100
   },
   myboat: {
-    fontFamily: FontFamily.default,
+    fontFamily: FontFamily.semi_bold,
     color: Colors.white,
   },
   Wlcome: {

@@ -467,86 +467,90 @@ export default class Home extends Component {
                 data={this.state.destinations}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => {
+                  console.log('item :>> ', item);
                   return (
                     <View style={{ padding: 5 }}>
+                      { item.no_of_boat ?  
                       <Card
-                        containerStyle={{
-                          padding: 0,
-                          borderRadius: 15,
-                          paddingHorizontal: 0,
-                          margin: 7.5,
-                          marginHorizontal: 10,
-                          elevation: 5,
-                        }}>
-                        <TouchableOpacity onPress={() => this.ModalClick(item)}>
-                          <ImageBackground
-                            style={s.ImageBackground}
-                            imageStyle={s.imgStyle}
-                            source={{
-                              uri:
-                                config.image_url4 +
-                                item.image,
-                            }}>
-                            <View
-                              style={[
-                                {
-                                  height: 50,
-                                  //  width:97,
-                                  backgroundColor: Colors.white,
-                                  flexDirection: 'row',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  position: 'absolute',
-                                  right: 35,
-                                  bottom: -1,
-                                  paddingHorizontal: 10,
-                                  borderTopLeftRadius: 12,
-                                  borderTopRightRadius: 12,
-                                },
-                              ]}>
-                              <Text style={s.place}>
-                                {user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}KD {item.min_price}
-                              </Text>
-                            </View>
-                          </ImageBackground>
-                        </TouchableOpacity>
-                        {/*  */}
-                        <View style={s.SEC3}>
-                          <View style={{}}>
-                            <Text style={s.title}>{user.value == 1 ? item.destination_name_arabic : item.destination_name}</Text>
-                            {/*  <View style={{flexDirection:"row",alignItems:"center",marginTop:5}}>
-                        <Image style={{
-                          height:40,
-                          width:40,
-                          borderRadius:20,
-                          resizeMode:"cover",
-                          }}
-                          source={{uri:'https://source.unsplash.com/400x400/?face'}}
-                          PlaceholderContent={<ActivityIndicator size={30} color={Colors.orange} style={{alignSelf:"center"}} />}
-                          />
-                        <View style={{marginLeft:5}}>
-                          <Text style={{color:"rgba(51, 51, 51, 1)",fontSize:14,fontFamily:FontFamily.default}}>{item.type}</Text>
-                          <AirbnbRating
-                           showRating={false}
-                           size={12}
-                           isDisabled
-                           defaultRating={4}
-                           starContainerStyle={{alignSelf:"flex-start"}}
-                            />
-                        </View>
-                      </View> */}
+                      containerStyle={{
+                        padding: 0,
+                        borderRadius: 15,
+                        paddingHorizontal: 0,
+                        margin: 7.5,
+                        marginHorizontal: 10,
+                        elevation: 5,
+                      }}>
+                      <TouchableOpacity onPress={() => this.ModalClick(item)}>
+                        <ImageBackground
+                          style={s.ImageBackground}
+                          imageStyle={s.imgStyle}
+                          source={{
+                            uri:
+                              config.image_url4 +
+                              item.image,
+                          }}>
+                          <View
+                            style={[
+                              {
+                                height: 50,
+                                //  width:97,
+                                backgroundColor: Colors.white,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                position: 'absolute',
+                                right: 35,
+                                bottom: -1,
+                                paddingHorizontal: 10,
+                                borderTopLeftRadius: 12,
+                                borderTopRightRadius: 12,
+                              },
+                            ]}>
+                            <Text style={s.place}>
+                              {user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}{user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {item.min_price}
+                            </Text>
                           </View>
-                          {/* <View>
-                      <Text style={{color:"rgba(51, 51, 51, 1)",fontSize:12,fontFamily:FontFamily.default}}>
-                        Destination
-                      </Text>
-                      <View style={{flexDirection:'row',alignItems:"center",alignSelf:'flex-end'}}>
-                      <Icon name="person" size={14} />
-                      <Text style={{color:"rgba(51, 51, 51, 1)",fontSize:10,fontFamily:FontFamily.default}}>10 Person</Text>
+                        </ImageBackground>
+                      </TouchableOpacity>
+                      {/*  */}
+                      <View style={s.SEC3}>
+                        <View style={{}}>
+                          <Text style={s.title}>{user.value == 1 ? item.destination_name_arabic : item.destination_name}</Text>
+                          {/*  <View style={{flexDirection:"row",alignItems:"center",marginTop:5}}>
+                      <Image style={{
+                        height:40,
+                        width:40,
+                        borderRadius:20,
+                        resizeMode:"cover",
+                        }}
+                        source={{uri:'https://source.unsplash.com/400x400/?face'}}
+                        PlaceholderContent={<ActivityIndicator size={30} color={Colors.orange} style={{alignSelf:"center"}} />}
+                        />
+                      <View style={{marginLeft:5}}>
+                        <Text style={{color:"rgba(51, 51, 51, 1)",fontSize:14,fontFamily:FontFamily.default}}>{item.type}</Text>
+                        <AirbnbRating
+                         showRating={false}
+                         size={12}
+                         isDisabled
+                         defaultRating={4}
+                         starContainerStyle={{alignSelf:"flex-start"}}
+                          />
                       </View>
                     </View> */}
                         </View>
-                      </Card>
+                        {/* <View>
+                    <Text style={{color:"rgba(51, 51, 51, 1)",fontSize:12,fontFamily:FontFamily.default}}>
+                      Destination
+                    </Text>
+                    <View style={{flexDirection:'row',alignItems:"center",alignSelf:'flex-end'}}>
+                    <Icon name="person" size={14} />
+                    <Text style={{color:"rgba(51, 51, 51, 1)",fontSize:10,fontFamily:FontFamily.default}}>10 Person</Text>
+                    </View>
+                  </View> */}
+                      </View>
+                    </Card>  :  null 
+                      }
+                      
                     </View>
                   );
                 }}

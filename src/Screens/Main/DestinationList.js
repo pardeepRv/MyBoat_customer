@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {
   ActivityIndicator, FlatList, Image, ImageBackground, Modal, Share, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
-import { Calendar } from 'react-native-calendars';
+import { Calendar , LocaleConfig } from 'react-native-calendars';
 import { AirbnbRating, Card, colors, Icon } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import Header2 from '../../Components/Header2';
@@ -99,10 +99,10 @@ export default class DestinationList extends Component {
     console.log(this.state.destination, 'destination images ');
 
     // this.getData('user_arr');
-
+    this.laungugaelocal();
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       console.log('focus :>> ');
-      this.setState({ isLoading: true });
+      this.setState({ isLoading: true , calender_arr:{} , date:'' });
       this.getData('user_arr')
     });
   }
@@ -111,6 +111,55 @@ export default class DestinationList extends Component {
     this._unsubscribe();
   }
 
+
+  laungugaelocal= () =>{
+    const user = this.context
+  console.log('user :>> ', user);
+  if (user.value==0 ){
+    LocaleConfig.locales['en'] = {
+      monthNames: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'may',
+        'June',
+        'July',
+        'august',
+        'September',
+        'October',
+        'November',
+        'December'
+      ],
+      monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+      dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+      dayNamesShort: ['Sun.','Mon.' , 'Tue.', 'Wed.', 'Thr.', 'Fri.', 'Sat.'],
+      today: "Aujourd'hui"
+    };
+    LocaleConfig.defaultLocale = 'en';
+  } else if (user.value == 1){
+    LocaleConfig.locales['ar'] = {
+      monthNames: [
+        'يناير',
+        'فبراير',
+        'مارس',
+        'ابريل',
+        'مايو',
+        'يونيو',
+        'يوليو',
+        'اغسطس',
+        'سبتمبر',
+        'اكتوبر',
+        'نوفمبر',
+        'ديسمبر'
+      ],
+      monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+      dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+      dayNamesShort: ['Sun.','Mon.' , 'Tue.', 'Wed.', 'Thr.', 'Fri.', 'Sat.'],
+      today: "Aujourd'hui"
+    };
+    LocaleConfig.defaultLocale = 'ar';
+  }}
   async filterdata(user_id) {
     // console.log(
     //   'user ',
@@ -672,7 +721,8 @@ export default class DestinationList extends Component {
             shadowRadius: 0,
             elevation: 5,
           }}>
-          <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choose_from_library_txt[1] : Lang_chg.Choose_from_library_txt[0]}</Text>
+            {this.state.date ?  <Text style={s.select_date}> {this.state.date}</Text>:
+          <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choose_from_library_txt[1] : Lang_chg.Choose_from_library_txt[0]}</Text> }
         </TouchableOpacity>
 
         <View
@@ -733,7 +783,7 @@ export default class DestinationList extends Component {
                             alignSelf: "center",
                             color: Colors.white
                           }}>
-                            {item.discount} OFF
+                            {item.discount}%OFF
                           </Text>
                         </View> : null}
                         <TouchableOpacity
@@ -782,7 +832,7 @@ export default class DestinationList extends Component {
                             },
                           ]}>
                           <Text style={s.place}>
-                            {user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}KD {item.price}
+                            {user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}{user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {item.price}
                           </Text>
                         </View>
                       </ImageBackground>
@@ -2074,6 +2124,13 @@ export default class DestinationList extends Component {
                 onDayPress={day => {
                   this._selectDate(day.dateString);
                 }}
+                renderArrow={direction => <Icon type="ionicon"
+                  color={Colors.orange}
+
+                  name={direction === 'left'
+                    ? (user.value == 1 ? 'arrow-forward' : 'arrow-back')
+                    : (user.value == 1 ? 'arrow-back' : 'arrow-forward')}
+                />}
               />
             </View>
 

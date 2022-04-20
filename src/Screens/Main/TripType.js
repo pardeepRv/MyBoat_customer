@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Input, Card, AirbnbRating } from 'react-native-elements';
 import Header from '../../Components/Header';
 import Header2 from '../../Components/Header2';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { Calendar , LocaleConfig } from 'react-native-calendars';
 import cloneDeep from 'clone-deep';
 import {
   back_img3,
@@ -69,6 +69,22 @@ export default class TripType extends Component {
       modalVisible2: false,
       modalVisible3: false,
       descending: false,
+      time: '',
+      getdate: '',
+      date: '',
+      pay_amount: '',
+      booking_no: '',
+      time: new Date('2020-06-12T14:42:42'),
+      mode: 'time',
+      isConnected: true,
+      calender_arr: {},
+      guest: '',
+      hour: '',
+      selected_date: '',
+      booking_id: '',
+      unavailabe_arr: 'NA',
+      bookingDateTimeStart: '',
+      bookingDateTimeEnd: '',
       short: 'none',
       userid: '',
       dob: '',
@@ -82,10 +98,74 @@ export default class TripType extends Component {
   }
 
   componentDidMount() {
+this.laungugaelocal();
+    let date = new Date('2020-06-12T14:42:42');
+
+    this.setState({ getdate: date });
     // const text = this.props.navigation.getParams('item');
     console.log('did ', this.state.trip_type);
-    this.getData('user_arr');
+   
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      console.log('focus :>> ');
+      this.setState({ isLoading: true });
+      this.getData('user_arr');
+     this.setState({calender_arr:{} , date:''});
+     
+    });
   }
+
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
+  laungugaelocal= () =>{
+    const user = this.context
+  console.log('user :>> ', user);
+  if (user.value==0 ){
+    LocaleConfig.locales['en'] = {
+      monthNames: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'may',
+        'June',
+        'July',
+        'august',
+        'September',
+        'October',
+        'November',
+        'December'
+      ],
+      monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+      dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+      dayNamesShort: ['Sun.','Mon.' , 'Tue.', 'Wed.', 'Thr.', 'Fri.', 'Sat.'],
+      today: "Aujourd'hui"
+    };
+    LocaleConfig.defaultLocale = 'en';
+  } else if (user.value == 1){
+    LocaleConfig.locales['ar'] = {
+      monthNames: [
+        'يناير',
+        'فبراير',
+        'مارس',
+        'ابريل',
+        'مايو',
+        'يونيو',
+        'يوليو',
+        'اغسطس',
+        'سبتمبر',
+        'اكتوبر',
+        'نوفمبر',
+        'ديسمبر'
+      ],
+      monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+      dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+      dayNamesShort: ['Sun.','Mon.' , 'Tue.', 'Wed.', 'Thr.', 'Fri.', 'Sat.'],
+      today: "Aujourd'hui"
+    };
+    LocaleConfig.defaultLocale = 'ar';
+  }}
 
   getData = async key => {
     this.setState({
@@ -269,6 +349,7 @@ export default class TripType extends Component {
       advertisment: '',
       entertainment: this.enterarr,
       Guests: '',
+      date:'',
     });
   }
   async TripType() {
@@ -411,9 +492,76 @@ export default class TripType extends Component {
   }
 
 
+  _selectDate = async date => {
+    console.log('date ', date);
+
+    if (this.state.unavailabe_arr != 'NA') {
+      var i = this.state.unavailabe_arr.findIndex(x => x.date == date);
+      if (i >= 0) {
+        msgProvider.toast(Lang_chg.owner_not_avail[config.language], 'center');
+        return false;
+      } else {
+        delete this.state.calender_arr[this.state.date];
+        this.state.calender_arr[date] = {
+          selected: true,
+          selectedColor: Colors.orange,
+        };
+        this.setState({
+          date: date,
+          calender_arr: { ...this.state.calender_arr, date: date },
+        });
+        // console.log(this.state.calender_arr);
+
+        let idle_hours = this.state.adver_arr.idle_time;
+        let extra_hours = this.state.extra_time;
+        let tot_hours = parseInt(idle_hours) + parseInt(extra_hours);
+        if (this.state.time != '') {
+          let date1 = date + ' ' + this.state.time + ':00';
+          let date1xy = date + ' ' + this.state.time;
+          var date12 = new Date(...this.getParsedDate(date1));
+          date12.setTime(date12.getTime() + tot_hours * 3600000);
+          let formate_date = await this.getFormatedDate(date12);
+          this.setState({
+            bookingDateTimeStart: date1xy,
+            bookingDateTimeEnd: formate_date,
+          });
+        }
+      }
+    } else {
+      delete this.state.calender_arr[this.state.date];
+      this.state.calender_arr[date] = { selected: true, selectedColor: Colors.orange };
+      this.setState({
+        date: date,
+        calender_arr: { ...this.state.calender_arr, date: date },
+      });
+      let idle_hours = this.state.adver_arr.idle_time;
+      let extra_hours = this.state.extra_time;
+      let tot_hours = parseInt(idle_hours) + parseInt(extra_hours);
+
+      if (this.state.time != '') {
+        let date1 = date + ' ' + this.state.time + ':00';
+        let date1xy = date + ' ' + this.state.time;
+        var date12 = new Date(...this.getParsedDate(date1));
+        date12.setTime(date12.getTime() + tot_hours * 3600000);
+        let formate_date = await this.getFormatedDate(date12);
+        this.setState({
+          bookingDateTimeStart: date1xy,
+          bookingDateTimeEnd: formate_date,
+        });
+      }
+    }
+  };
+
+  Selectdate = () => {
+    this.setState({ modalVisible3: true });
+  };
+
+
+
   render() {
     console.log('this.state.des :>> ', this.state.destinations_arr);
     console.log('this.state.des :>> ', this.state.dob);
+    console.log('date in render :>> ', this.state.date);
 
     const user = this.context
     console.log('context in home', user);
@@ -510,7 +658,7 @@ export default class TripType extends Component {
         </View>
 
         <TouchableOpacity
-          onPress={() => this.showDatePicker()}
+          onPress={() => this.Selectdate()}
           style={{
             backgroundColor: '#fff',
             height: 40,
@@ -525,7 +673,9 @@ export default class TripType extends Component {
             shadowRadius: 0,
             elevation: 5,
           }}>
-          <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choose_from_library_txt[1] : Lang_chg.Choose_from_library_txt[0]}</Text>
+            {this.state.date ?<Text style={s.select_date}> {this.state.date}</Text> :
+            <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choose_from_library_txt[1] : Lang_chg.Choose_from_library_txt[0]}</Text> }
+          
         </TouchableOpacity>
 
         <View
@@ -580,7 +730,7 @@ export default class TripType extends Component {
                             },
                           ]}>
                           <Text style={s.place}>
-                          {user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}KD {item.min_price}
+                          {user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}{user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {item.min_price}
                           </Text>
                         </View>
                       </ImageBackground>
@@ -641,13 +791,13 @@ export default class TripType extends Component {
             }}
           />
         </View>
-        <DateTimePickerModal
+        {/* <DateTimePickerModal
           isVisible={this.state.isShowDatePicker}
           mode="date"
           minimumDate={new Date()}
           onConfirm={this.handleConfirm}
           onCancel={this.hideDatePicker}
-        />
+        /> */}
 
         <Modal
           animationType="slide"
@@ -1428,6 +1578,68 @@ export default class TripType extends Component {
                 <Text style={s.Btn1Text}>Show Results</Text>
               </TouchableOpacity>
             </ScrollView>
+          </View>
+        </Modal>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible3}
+          onRequestClose={() => {
+            // this.closeButtonFunction()
+            this.setState({ modalVisible3: false });
+          }}>
+          <View
+            style={{
+              height: '70%',
+              marginTop: 'auto',
+              backgroundColor: '#fff',
+              fontFamily: 'Montserrat-Regular',
+              borderRadius: 30,
+            }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+
+              <TouchableOpacity
+                onPress={() => this.gotoBack()}
+
+                style={{
+
+                  alignItems: 'flex-start',
+                  marginTop: 10,
+                  marginLeft: 20,
+
+                  borderRadius: 25
+
+                }}>
+                <Icon
+
+                  name="x-circle"
+                  type="feather"
+                  size={26}
+                  color={Colors.orange}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ marginTop: '3%' }}>
+              <Calendar
+                minDate={new Date()}
+                markedDates={this.state.calender_arr}
+                onDayPress={day => {
+                  this._selectDate(day.dateString);
+                }}
+                renderArrow={direction => <Icon type="ionicon"
+                  color={Colors.orange}
+
+                  name={direction === 'left'
+                    ? (user.value == 1 ? 'arrow-forward' : 'arrow-back')
+                    : (user.value == 1 ? 'arrow-back' : 'arrow-forward')}
+                />}
+              />
+            </View>
+
+
+            <TouchableOpacity style={s.Btn1} onPress={() => this.ShowResult()}>
+              <Text style={s.Btn1Text}>Select Date</Text>
+            </TouchableOpacity>
           </View>
         </Modal>
       </View>

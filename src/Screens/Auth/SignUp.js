@@ -593,22 +593,23 @@ export default class SignUp extends Component {
                     checkedColor={Colors.orange}
                   />
                   <Text style={s.Text1}>
-                    By sign up, you agree to our <Text> </Text>
+                   {user.value == 1 ? Lang_chg.signup_text_via_agree[1] : Lang_chg.signup_text_via_agree[0]} <Text> </Text>
                     <Text
                       style={{
                         fontWeight: 'bold',
                         borderColor: '#fff',
                         alignSelf: 'center',
                         textDecorationLine: 'underline',
+                        textAlign:'right'
                       }}
                       onPress={() =>
                         this.props.navigation.navigate('Terms_Conditions', {
                           type: 1,
                         })
                       }>
-                      terms and conditions
+                      {user.value == 1 ? Lang_chg.text_Terms_And_Conditions[1] : Lang_chg.text_Terms_And_Conditions[0]}
                     </Text>{' '}
-                    and <Text> </Text>
+                   {user.value == 1 ?  'و' : 'and'} <Text></Text>
                     <Text
                       style={{
                         fontWeight: 'bold',
@@ -622,7 +623,7 @@ export default class SignUp extends Component {
                           type: 2,
                         })
                       }>
-                      privacy policy
+                       {user.value == 1 ? Lang_chg.loginterm4[1] : Lang_chg.loginterm4[0]}
                     </Text>
                     .
                   </Text>
@@ -634,7 +635,7 @@ export default class SignUp extends Component {
 
                 <View>
                   <Text style={[s.Text1, { marginBottom: 10 }]}>
-                    I have already account ?{' '}
+                  {user.value == 1 ? Lang_chg.I_have_already_account[1] : Lang_chg.I_have_already_account[0]}{' '}
                     <Text
                       style={{
                         fontFamily: FontFamily.semi_bold,
@@ -803,6 +804,7 @@ const s = StyleSheet.create({
     width: '85%',
     // padding:10,
     //  marginLeft:'65%'
+    alignItems:'flex-start'
   },
   inputView: {
     flexDirection: 'row',

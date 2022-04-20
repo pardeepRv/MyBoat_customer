@@ -15,7 +15,7 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import { Icon, Input, Card, AirbnbRating } from 'react-native-elements';
+import { Icon, Input, Card, AirbnbRating, colors } from 'react-native-elements';
 import Header from '../../Components/Header';
 import {
   back_img3,
@@ -51,11 +51,14 @@ export default class Checkout extends Component {
     super(props);
 
     this.state = {
+      destination_name:this.props.route.params.destination_name,
       adv: this.props.route.params.adver_arr,
       adver_arr: this.props.route.params.adv,
       data: this.props.route.params.data,
       totalPrice: Number(this.props.route.params.totalPrice) + Number(this.props.route.params.extra_rent_amt),
       webviewshow: false,
+      rent_amount : Number(this.props.route.params.selected_price),
+      checkoutprice :  Number(this.props.route.params.total_price2),
       booking_no: '',
       pay_amount: '',
       booking_id: '',
@@ -94,7 +97,7 @@ export default class Checkout extends Component {
     console.log(this.state.adv, 'hhhhhhhh');
     // alert(JSON.stringify(this.props.route.params.extra_rent_amt))
     console.log('props in html :>> ', this.props.route.params);
-
+console.log('this.state.checkoutprice :>> ', this.state.checkoutprice);
   }
 
   gotoBack = () => {
@@ -167,7 +170,14 @@ export default class Checkout extends Component {
     form_data.append('extraHours', this.props.route.params.extraHours)
     form_data.append('extra_rent_amt', this.props.route.params.extra_rent_amt)
     form_data.append('rent_amount', this.state.totalPrice) //aa
-    console.log('Form data', form_data);
+    form_data.append('trip_price',Number(this.state.data?.rent_amount)) //aa
+    form_data.append('selected_Item_price', this.state.rent_amount) //aa
+    form_data.append('boat_place[0]', this.state.adver_arr.city_name[0]) //aa
+    form_data.append('boat_place[1]', this.state.adver_arr.city_name[1]) //aa
+    form_data.append('Coustemer_name', this.props.route.params.adv.user_name) //aa
+    form_data.append('trip_type[0]', this.state.adver_arr.trip_type_name[0]) //aa
+    form_data.append('trip_type[1]', this.state.adver_arr.trip_type_name[1]) //aa
+     console.log('Form data', form_data);
 
     // return;
     apifuntion
@@ -453,6 +463,7 @@ export default class Checkout extends Component {
     console.log('this.state. :>> ', this.state.selectedPaymentMethod);
     const user = this.context
     console.log('context in home', user);
+    console.log('this.state.data :>> ', this.state.destination_name);
     return (
       <View style={{ backgroundColor: '#fff', height: '100%' }}>
         <Header
@@ -678,8 +689,8 @@ export default class Checkout extends Component {
                 </View>
 
                 <View style={s.item}>
-                  <Text numberOfLines={2} ellipsizeMode='tail' style={[s.text1, { bottom: 6, height: 30, fontFamily: FontFamily.default }]}>
-                    {this.state.adver_arr.location_address}{' '}
+                  <Text numberOfLines={1} ellipsizeMode='tail' style={[s.text1, { fontFamily: FontFamily.default }]}>
+                    { user.value == 1 ? this.state.destination_name[1] :this.state.destination_name[0] }{' '}
                   </Text>
                 </View>
               </View>
@@ -688,10 +699,8 @@ export default class Checkout extends Component {
                 <View style={s.item}>
                   <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.triptypetrip[1] : Lang_chg.triptypetrip[0]}</Text>
                 </View>
-
                 <View style={s.item}>
-                  <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                    {user.value == 1 ? this.state.adver_arr.trip_type_name[1] : this.state.adver_arr.trip_type_name[0]}{' '}
+                  <Text style={[s.text1, { fontFamily: FontFamily.default }]}>{user.value == 1 ? this.state.adver_arr.trip_type_name[1] : this.state.adver_arr.trip_type_name[0]}{' '}
                   </Text>
                 </View>
               </View>
@@ -702,7 +711,7 @@ export default class Checkout extends Component {
 
                 <View style={s.item}>
                   <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                    {this.state.adver_arr?.discount}{' '}
+                    {this.state.adver_arr?.discount} %{' '}
                   </Text>
                 </View>
               </View>
@@ -713,20 +722,53 @@ export default class Checkout extends Component {
 
                 <View style={s.item}>
                   <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                    {this.state.data?.coupon_discount}{' '}
+                    {this.state.data?.coupon_discount} %{' '}
                   </Text>
                 </View>
               </View>
 
               <View style={s.container}>
                 <View style={s.item}>
-                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.toatalpricecheckout[1] : Lang_chg.toatalpricecheckout[0]}</Text>
+                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.Triptypeprice[1] : Lang_chg.Triptypeprice[0]}</Text>
                 </View>
 
                 <View style={s.item}>
                   <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
-                    {this.state.data?.rent_amount}{' '}
+                  {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {this.state.data?.rent_amount}{' '}
                   </Text>
+                </View>
+              </View>
+              {this.state.rent_amount == 0 ? null : 
+              <View style={s.container}>
+              <View style={s.item}>
+                <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.Sel_data[1] : Lang_chg.Sel_data[0]}</Text>
+              </View>
+
+              <View style={s.item}>
+                <Text style={[s.text1, { fontFamily: FontFamily.default }]}>
+                {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {this.state.rent_amount}{' '}
+                </Text>
+              </View>
+            </View>}
+              
+              {/* rent_amount */}
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={[s.text1]}> {user.value == 1 ? Lang_chg.toatalpricecheckout[1] : Lang_chg.toatalpricecheckout[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  {this.state.adver_arr?.discount == 0 ? <Text style={[s.text1, { fontFamily: FontFamily.default, textDecorationLine: 'line-through', color:'red' }]}>
+                  {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {this.state.totalPrice}{' '}
+                  </Text>:
+                  <View style={s.item}>
+                  <Text style={[s.text1, { fontFamily: FontFamily.default, textDecorationLine: 'line-through', color:'red' }]}>
+                  {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {this.state.totalPrice}{' '}
+                  </Text>
+                  <Text style={[s.text1, { fontFamily: FontFamily.bold,  color:Colors.orange }]}>
+                  {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} { this.state.totalPrice -(this.state.totalPrice*this.state.adver_arr?.discount /100)  }{' '}
+                  </Text>
+                  </View>}
                 </View>
               </View>
 
@@ -824,10 +866,11 @@ export default class Checkout extends Component {
           <Text
             style={{
               fontSize: 18,
-              fontFamily: FontFamily.semi_bold,
+              fontFamily: FontFamily.bold,
               marginLeft: 30,
+              color:Colors.orange
             }}>
-            KD {this.state.totalPrice}
+            {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {this.state.checkoutprice}
           </Text>
         </View>
 

@@ -8,14 +8,17 @@ import { Card, Switch } from 'react-native-elements';
 import Header from '../../Components/Header';
 import { Colors, FontFamily } from '../../Constants/Constants';
 import { config } from '../../Provider/configProvider';
+import { Lang_chg } from '../../Provider/Language_provider';
 import { localStorage } from '../../Provider/localStorageProvider';
 import { msgProvider } from '../../Provider/messageProvider';
+import { UserContext } from './UserContext';
 
 const Noti_Setting = () => {
   const [onGoingNotification, setOnGoingNotification] = useState(false);
   const [chatNotification, setChatNotification] = useState(false);
   const [promotion, setPromotion] = useState(false);
   const [userInfo, setUserInfo] = useState({});
+  const user = React.useContext(UserContext);
 
 
   const getData = async () => {
@@ -81,7 +84,7 @@ const Noti_Setting = () => {
         imgBack={true}
         headerHeight={300}
         backImgSource={require('../../Images/back3.jpg')}
-        name={'Notification settings'}
+        name={user.value == 1  ? Lang_chg.text_Notification_Setting[1] : Lang_chg.text_Notification_Setting[0]}
 
       />
       <View style={styles.SEC2}>
@@ -108,7 +111,7 @@ const Noti_Setting = () => {
                       fontFamily: FontFamily.semi_bold,
                       marginHorizontal: 7,
                     }}>
-                    On Going Notifications
+                    {user.value == 1 ? Lang_chg.On_Going_Notifications[1] : Lang_chg.On_Going_Notifications[0]}
                   </Text>
                 </View>
                 <View>
@@ -150,7 +153,7 @@ const Noti_Setting = () => {
                       fontFamily: FontFamily.semi_bold,
                       marginHorizontal: 7,
                     }}>
-                    Chat Notifications
+                    {user.value == 1 ? Lang_chg.txt_Chat_Notifications[1] : Lang_chg.txt_Chat_Notifications[0]}
                   </Text>
                 </View>
                 <View>
@@ -192,7 +195,7 @@ const Noti_Setting = () => {
                       fontFamily: FontFamily.semi_bold,
                       marginHorizontal: 7,
                     }}>
-                    Promotion
+                {user.value == 1  ? Lang_chg.Promotion[1] :Lang_chg.Promotion[0]}
                   </Text>
                 </View>
                 <View>
