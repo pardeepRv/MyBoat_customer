@@ -31,6 +31,8 @@ export default class Home extends Component {
       promotions_arr: [],
       backgroundColor: 1,
       modalVisible: false,
+      modalVisible1 : false , 
+      destination_trip_array : [],
       item: {},
       isLoading: false,
       err: false
@@ -112,7 +114,7 @@ export default class Home extends Component {
   ChangeColor(index, item, type) {
     console.log('color', item);
 
-    this.setState({ modalVisible: false });
+    this.setState({ modalVisible: false  , modalVisible1 : false});
 
     this.setState({ backgroundColor: index });
     if (type) {
@@ -231,12 +233,13 @@ export default class Home extends Component {
       });
     }
 
-    console.log('modal');
-    this.setState({ modalVisible: true });
+     console.log('modal' , item);
+    this.setState({  destination_trip_array : item ? item.trip_array  : []});
+    this.setState({  modalVisible1 : true});
   }
 
   gotoBack = () => {
-    this.setState({ modalVisible: false });
+    this.setState({  modalVisible1 : false });
   };
 
   Premotion(index) {
@@ -470,7 +473,7 @@ export default class Home extends Component {
                   console.log('item :>> ', item);
                   return (
                     <View style={{ padding: 5 }}>
-                      { item.no_of_boat ?  
+                      { item.no_of_trips ?  
                       <Card
                       containerStyle={{
                         padding: 0,
@@ -698,6 +701,136 @@ export default class Home extends Component {
                       <Text style={{ color: '#b6b6b6' }}>
                         {' '}
                         {item.no_of_boat} Boats
+                      </Text>
+                    </TouchableOpacity>
+
+                  </View>
+
+                )
+              }}
+            />
+          </View>
+        </Modal>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible1}
+          onRequestClose={() => {
+            // this.closeButtonFunction()
+            this.setState({ modalVisible1: false });
+          }}>
+          <View
+            style={{
+              height: '50%',
+              marginTop: 'auto',
+              backgroundColor: '#fff',
+              borderRadius: 30,
+            }}>
+            <Text
+              style={{
+                color: Colors.orange,
+                alignSelf: 'center',
+                fontSize: 18,
+                fontWeight: 'bold',
+                padding: 8,
+              }}>
+              {user.value == 1 ? Lang_chg.txt_type_of_trips[1] : Lang_chg.txt_type_of_trips[0]}
+            </Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+
+              <TouchableOpacity
+
+                style={{
+                  // marginBottom: -50,
+                  alignItems: 'flex-start',
+                  marginTop: -25,
+                  // marginLeft: 50,
+                  marginRight: 20,
+                  // backgroundColor: Colors.gray,
+                  borderRadius: 25
+
+                }}>
+                <Icon
+                  onPress={() => this.gotoBack()}
+                  name="x-circle"
+                  type="feather"
+                  size={26}
+                  color={Colors.orange}
+                />
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={this.state.destination_trip_array}
+              //  horizontal={true}
+              numColumns={3}
+              //  keyExtractor={(item, index) => console.log(item)}
+              renderItem={({ item, index }) => {
+                 console.log('item 1:>> ', item);
+
+                return (
+
+                  <View
+                    style={{
+                      flex: 1,
+                      height: 120,
+                      alignSelf: 'center',
+                      alignItems: 'center',
+                      alignContent: 'center',
+                      // backgroundColor: item.no_of_boat > 0 ? Colors.white : Colors.gray,
+                      backgroundColor:Colors.white,
+                      margin: 15,
+                      borderRadius: 22,
+                      padding: 10,
+                      shadowColor: '#000',
+                      // width:90,
+                      maxWidth: '25%',
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowOpacity: 0.8,
+                      shadowRadius: 2,
+                      elevation: 5,
+                    }}
+                  >
+
+                    <TouchableOpacity
+                      onPress={
+                        () =>  this.ChangeColor(index, item) 
+                        //  this.handleClick(item)
+                      }
+                      activeOpacity={0.8}
+
+                      style={
+                        {
+                          top: -12,
+                          borderRadius: 20,
+                          alignItems: 'center',
+                          alignSelf: 'center',
+                          alignContent: 'center',
+                          height: 90,
+                          width: 110,
+                          borderRadius: 7,
+                          margin: 7,
+                        }
+                      }
+                    >
+                      <Image
+                        source={{
+                          uri: config.baseURL + 'images/' + item.icon_green,
+                        }}
+                        style={{ height: 50, width: 50, resizeMode: 'contain' }}
+                      />
+                      <Text
+                        style={{
+                          color: Colors.orange,
+                          fontWeight: 'bold',
+                          fontSize: 16,
+                          textAlign: 'center',
+                        }}>
+                        {user.value == 1 ? item.trip_type_name_arabic : item.trip_type_name}
+                      </Text>
+
+                      <Text style={{ color: '#b6b6b6' }}>
+                        {' '}
+                        {item.no_of_boats} Boats
                       </Text>
                     </TouchableOpacity>
 

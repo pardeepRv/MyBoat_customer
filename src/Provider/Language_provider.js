@@ -426,5 +426,6 @@ Customer_Name = [' Customer Name :', 'اسم الزبون :']
   Hours=['hrs' , 'ساعة']
   No_booking_found = ['No Booking found' ,'لم يتم العثور على الحجز']
   No_Record_found =['No Record Found', 'لا يوجد سجلات']
+  See_Trip = ['See trip','انظر الرحلة']
 }
 export const Lang_chg = new Language_provider();

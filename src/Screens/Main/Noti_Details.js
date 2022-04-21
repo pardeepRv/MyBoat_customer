@@ -267,7 +267,7 @@ useEffect(() => {
                       activeOpacity={0.8}
                       >
                          <Text style={[sb.btn1Text,{color:Colors.orange}]}>
-                             Cancel
+                             {user.value == 1 ?  Lang_chg.chatcancel[1] : Lang_chg.chatcancel[0]}
                          </Text>
                      </TouchableOpacity>
                      <TouchableOpacity
@@ -281,7 +281,7 @@ useEffect(() => {
                       activeOpacity={0.8}
                       >
                          <Text style={[sb.btn1Text,{color:Colors.white}]}>
-                         See Trip
+                         {user.value == 1 ?  Lang_chg.See_Trip[1] : Lang_chg.See_Trip[0]}
                          </Text>
                      </TouchableOpacity>
                  </View>

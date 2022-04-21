@@ -186,7 +186,7 @@ const NotificationsPage = () => {
                                                                 }}
                                                                 source={{ uri: config.image_url4 + item.item.user_image }}
                                                             />
-                                                            <View style={{ marginLeft: 7 }}>
+                                                            <View style={{ marginLeft: 7 , alignItems:'flex-start' }}>
                                                                 <Text
                                                                     style={{
                                                                         fontFamily: FontFamily.semi_bold,
