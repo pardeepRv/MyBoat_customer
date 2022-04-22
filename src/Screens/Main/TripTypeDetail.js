@@ -18,6 +18,8 @@ import { config } from "../../Provider/configProvider";
 import { Lang_chg } from "../../Provider/Language_provider";
 import { msgProvider } from "../../Provider/messageProvider";
 import { UserContext } from "./UserContext";
+import getDirections from 'react-native-google-maps-directions'
+import GetLocation from 'react-native-get-location';
 
 //import {SliderBox} from 'react-native-image-slider-box';
 const { width } = Dimensions.get("window");
@@ -47,10 +49,33 @@ export default class TripTypeDetail extends Component {
       other_user_img: "",
       other_user_name: '',
       mobile: "",
+      location : [
+        latitude= '',
+        longitude= '',
+      ]
     };
   }
 
   componentDidMount() {
+   
+      GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        //I'm not sure what is best for the timeout to be set as. Some more testing could be beneficial
+        timeout: 15000,
+      })
+        .then(location => {
+           console.log('getting locationn >>>>>>>>>>>>>', location);
+this.setState({location :[
+  latitude= location.latitude,
+        longitude= location.longitude,
+] })
+          // setLocation(location);
+        })
+        .catch(error => {
+          const {code, message} = error;
+          console.log(code, message);
+        });
+   
     this.getData("user_arr");
 
     return console.log(this.props.route.params.list, " hhhhhhhhhhhhh");
@@ -69,6 +94,48 @@ export default class TripTypeDetail extends Component {
       })
       .catch((err) => errorHandler(err));
   };
+
+  handleGetDirections = () => {
+
+    const data = {
+       source: {
+        latitude: this.state.location[0],
+        longitude: this.state.location[1]
+      },
+      destination: {
+        latitude: Number(this.state.adver_arr.location_lat),
+        longitude: Number(this.state.adver_arr.location_lng)
+      },
+      params: [
+        {
+          key: "travelmode",
+          value: "driving"        // may be "walking", "bicycling" or "transit" as well
+        },
+        {
+          key: "dir_action",
+          value: "navigate"       // this instantly initializes navigation using the given travel mode
+        }
+      ],
+      // waypoints: [
+      //   {
+      //     latitude: -33.8600025,
+      //     longitude: 18.697452
+      //   },
+      //   {
+      //     latitude: -33.8600026,
+      //     longitude: 18.697453
+      //   },
+      //      {
+      //     latitude: -33.8600036,
+      //     longitude: 18.697493
+      //   }
+      // ]
+    }
+
+    console.log('data :>> ', data);
+
+    getDirections(data)
+  }
 
   onShare = async () => {
     let shareMessage =
@@ -1102,7 +1169,8 @@ export default class TripTypeDetail extends Component {
                 // style={{backgroundColor: Colors.orange,}}
                 >
                   <TouchableOpacity style={s.Btn1}
-                    onPress={() => this.Goto()}
+                    // onPress={() => this.Goto()}
+                    onPress={this.handleGetDirections}
                   >
                     <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.Loactiontrip[1] : Lang_chg.Loactiontrip[0]}</Text>
                   </TouchableOpacity>

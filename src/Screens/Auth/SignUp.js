@@ -204,6 +204,8 @@ export default class SignUp extends Component {
   }
 
   SignUp() {
+    const user = this.context
+
     debugger
     console.log(this.state);
 
@@ -316,7 +318,7 @@ export default class SignUp extends Component {
     data.append('player_id', this.state.player_id);
     data.append('login_type', 0);
     data.append('user_type_post', 1);
-    data.append('language_id', config.language);
+    data.append('language_id', user.value);
 
      console.log(data, 'sending to signup api');
     this.setState({ loading: true });

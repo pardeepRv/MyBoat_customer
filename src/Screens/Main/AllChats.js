@@ -1,34 +1,25 @@
+import AsyncStorage from "@react-native-community/async-storage";
 import React, { PureComponent } from "react";
 import {
     Dimensions,
     FlatList,
-    Image,
-    RefreshControl,
-    SafeAreaView,
-    StyleSheet,
+    Image, StyleSheet,
     Text,
     TouchableOpacity,
-    View,
+    View, 
+    Alert
 } from "react-native";
+import {
+    Card, colors, Icon
+} from 'react-native-elements';
+import TimeAgo from "react-native-timeago";
 // import { connect } from "react-redux";
 import Header from "../../Components/Header";
-import {
-    Icon,
-    Input,
-    Card,
-    AirbnbRating,
-    Overlay,
-    colors,
-
-} from 'react-native-elements';
 import { Colors, FontFamily, Sizes } from "../../Constants/Constants";
-import { Lang_chg } from "../../Provider/Language_provider";
-import { config } from "../../Provider/configProvider";
-import { UserContext } from "./UserContext";
-import AsyncStorage from "@react-native-community/async-storage";
 import { apifuntion } from "../../Provider/apiProvider";
-import Loader from "../../Provider/Loader";
-import TimeAgo from "react-native-timeago";
+import { config } from "../../Provider/configProvider";
+import { Lang_chg } from "../../Provider/Language_provider";
+import { UserContext } from "./UserContext";
 
 
 const { width, height } = Dimensions.get("window");
@@ -113,6 +104,67 @@ class AllChats extends PureComponent {
             });
     };
 
+     deleteNotification = async (item) => {
+         console.log('type :>> ', item);
+       
+      this.setState({
+        isLoading: true,
+    });
+       const value = await AsyncStorage.getItem('user_arr');
+       console.log('value :>> ', value);
+       const arrayData = JSON.parse(value);
+        console.log('arrayData :>> ', arrayData);
+
+       let url =
+       config.baseURL +
+       'chat_delete_list.php' ;
+       let data = new FormData();
+        data.append("user_id", arrayData.user_id);
+        data.append("other_user_id", item.other_user_id);
+
+     console.log(url, "url gere");
+     apifuntion
+            .postApi(url, data)
+            .then(obj => {
+                return obj.json();
+            })
+            .then(obj => {
+                console.log(obj, "get all chats");
+                if (obj?.data?.success === "true") {
+                    alert("Chat has been deleted successfully!");
+                     
+                } 
+            })
+            .catch((err) => {
+                console.log(err);
+                this.setState({
+                    isLoading: false,
+                });
+            });
+     }
+alertreset =(item)=>{
+    Alert.alert(
+        "Delete Chat",
+        "Are you sure yo want to delete the chat ?",
+        [
+            {
+                text: "Restart now",
+                onPress: () => {
+                    this.deleteNotification(item);
+                },
+            },
+            {
+                text: "Cancel",
+                onPress: () => {
+                    console.log('cancel');
+                },
+            },
+        ],
+        { cancelable: true }
+    );
+}
+   
+
     renderChats = ({ item }) => {
         // let data = {};
 
@@ -164,7 +216,26 @@ class AllChats extends PureComponent {
                             </Text>
                         </View>
                         <View style={{ flexDirection: 'column' }}>
-                        <TimeAgo time={item?.last_message_time} />
+                            <TimeAgo time={item?.last_message_time} />
+                            <TouchableOpacity
+                                onPress={() => this.alertreset( item)}
+                            >
+                                <Card
+                                    containerStyle={{
+                                        height: 27,
+                                        width: 27,
+                                        padding: 0,
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <Icon
+                                        name="trash-outline"
+                                        type="ionicon"
+                                        color={Colors.orange}
+                                    />
+                                </Card>
+                            </TouchableOpacity>
 
 
                         </View>
@@ -192,38 +263,38 @@ class AllChats extends PureComponent {
                 />
                 {/* {isLoading && <Loader />} */}
                 <View style={{
-          backgroundColor: Colors.white,
-          borderTopLeftRadius: 25,
-          borderTopEndRadius: 25,
-          marginTop: -30,
-          flex: 1
-        }}
-        >
-                {allChatMember.length > 0 ? (
-                    <FlatList
-                        keyboardShouldPersistTaps={"handled"}
-                        showsVerticalScrollIndicator={false}
-                        data={allChatMember}
-                        style={{
-                            marginTop: 10,
-                            alignSelf: "center",
-                        }}
-                        extraData={allChatMember}
-                        renderItem={this.renderChats}
-                        item={(item, index) => index.toString()}
-                    />
-                ) : (
-                    <View
-                        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-                    >
-                        {/* <Text style={{}}>No chat yet</Text> */}
-                        <TouchableOpacity activeOpacity={0.7} onPress={() => { this.props.navigation.navigate('Home') }} style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', height: 600, width: 400 }}>
-                            <Image source={require('../../../assets/icons/inbox_not_found.png')} style={{ height: 100, width: 100, resizeMode: 'contain' }} />
-                            <View style={{ borderBottomColor: '#000', borderBottomWidth: 1 }}><Text style={{ color: "#000000" }}>{Lang_chg.inbox_not_found[config.language]}</Text></View>
-                        </TouchableOpacity>
-                    </View>
+                    backgroundColor: Colors.white,
+                    borderTopLeftRadius: 25,
+                    borderTopEndRadius: 25,
+                    marginTop: -30,
+                    flex: 1
+                }}
+                >
+                    {allChatMember.length > 0 ? (
+                        <FlatList
+                            keyboardShouldPersistTaps={"handled"}
+                            showsVerticalScrollIndicator={false}
+                            data={allChatMember}
+                            style={{
+                                marginTop: 10,
+                                alignSelf: "center",
+                            }}
+                            extraData={allChatMember}
+                            renderItem={this.renderChats}
+                            item={(item, index) => index.toString()}
+                        />
+                    ) : (
+                        <View
+                            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+                        >
+                            {/* <Text style={{}}>No chat yet</Text> */}
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => { this.props.navigation.navigate('Home') }} style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', height: 600, width: 400 }}>
+                                <Image source={require('../../../assets/icons/inbox_not_found.png')} style={{ height: 100, width: 100, resizeMode: 'contain' }} />
+                                <View style={{ borderBottomColor: '#000', borderBottomWidth: 1 }}><Text style={{ color: "#000000" }}>{user.value == 1 ? Lang_chg.inbox_not_found[1] : Lang_chg.inbox_not_found[0]}</Text></View>
+                            </TouchableOpacity>
+                        </View>
 
-                )}
+                    )}
                 </View>
             </View>
         );

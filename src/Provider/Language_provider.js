@@ -322,7 +322,7 @@ textBirthday = ['Birthday' , 'عيد الميلاد']
   rate_now = ["Rate Now", "قييم الان "]
   text_chat = ["Chat", "Chat"]
 
-  text_complete = ["Complete", "اكتمال "]
+  text_complete = ["Completed", "اكتمال "]
   text_Confirmed = ["Confirmed", "تأكيد "]
   text_Cancel_By_User = ["Cancel By User", "إلغاء من العميل "]
   text_Cancel_By_Owner = ["Cancel By Owner", "إلغاء من مزود الرحلة "]
@@ -427,5 +427,7 @@ Customer_Name = [' Customer Name :', 'اسم الزبون :']
   No_booking_found = ['No Booking found' ,'لم يتم العثور على الحجز']
   No_Record_found =['No Record Found', 'لا يوجد سجلات']
   See_Trip = ['See trip','انظر الرحلة']
+  Pending =['Pending', 'قيد الانتظار']
+  Cancelled = ['Cancelled','ألغيت']
 }
 export const Lang_chg = new Language_provider();

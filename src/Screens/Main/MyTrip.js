@@ -98,6 +98,8 @@ export class MyTrip extends PureComponent {
   }
   CardView = ({ item }) => {
     console.log(item)
+    const user = this.context
+
     return <Card containerStyle={s.Card}>
       <TouchableOpacity
         onPress={() =>
@@ -107,7 +109,7 @@ export class MyTrip extends PureComponent {
           })
         }
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' , justifyContent:"space-around" }}>
           <Image
             source={{ uri: config.baseURL + 'images/' + item.image }}
             style={{
@@ -146,9 +148,7 @@ export class MyTrip extends PureComponent {
                       color: Colors.confirmed
                     },
                   ]}>
-
-                  Pending
-
+                 {user.value == 1 ? Lang_chg.Pending[1] : Lang_chg.Pending[0]}
                 </Text> : null}
               {item.booking_status === 1 ?
                 <Text
@@ -158,7 +158,7 @@ export class MyTrip extends PureComponent {
                       color: Colors.orange
                     },
                   ]}>
-                  Confirmed
+                  {user.value == 1 ? Lang_chg.text_Confirmed[1] : Lang_chg.text_Confirmed[0]}
                 </Text> : null}
               {item.booking_status === 4 ?
                 <Text
@@ -168,7 +168,7 @@ export class MyTrip extends PureComponent {
                       color: Colors.red
                     },
                   ]}>
-                  Cancelled
+                   {user.value == 1 ? Lang_chg.Cancelled[1] : Lang_chg.Cancelled[0]}
                 </Text> : null}
               {item.booking_status === 3 ?
                 <Text
@@ -179,7 +179,7 @@ export class MyTrip extends PureComponent {
                       color: Colors.red
                     },
                   ]}>
-                  Cancelled
+                 {user.value == 1 ? Lang_chg.Cancelled[1] : Lang_chg.Cancelled[0]}
                 </Text> : null}
               {item.booking_status === 2 ?
                 <Text
@@ -190,7 +190,7 @@ export class MyTrip extends PureComponent {
                       color: Colors.orange
                     },
                   ]}>
-                  Completed
+                 {user.value == 1 ? Lang_chg.text_complete[1] : Lang_chg.text_complete[0]}
                 </Text> : null}
 
             </View>

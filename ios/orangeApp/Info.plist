@@ -59,7 +59,7 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>$(PRODUCT_NAME) wants to access your location for saving your Lat and long in database.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>$(PRODUCT_NAME) wants to access your location for saving your Lat and long in database.</string>
+	<string>My Boat wants to access your location for saving your Lat and long in database.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) to upload boat stories</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

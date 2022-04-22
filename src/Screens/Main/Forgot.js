@@ -57,6 +57,8 @@ export default class Forgot extends Component {
             let url = config.baseURL + "forget_password.php";
             var data = new FormData();
             data.append('user_email', user_email)
+            data.append('language_id', user.value )
+             console.log('data :>> ', data);
             this.setState({ loading: true })
             apifuntion.postApi(url, data).then((obj) => {
                 this.setState({ loading: false });
@@ -89,7 +91,7 @@ export default class Forgot extends Component {
     }
 
     mailsendfunction = (email_arr) => {
-        console.log('email_arr', email_arr);
+         console.log('email_arr', email_arr);
         for (let i = 0; i < email_arr.length; i++) {
             var email = email_arr[i].email;
             var mailcontent = email_arr[i].mailcontent
@@ -102,7 +104,9 @@ export default class Forgot extends Component {
             data.append("mailsubject", mailsubject);
             data.append("fromName", fromName);
             data.append("mail_file", 'NA');
+
             console.log('forget==', data);
+
 
             // api calling start==============================
             apifuntion.postApi(url, data).then((obj) => {
