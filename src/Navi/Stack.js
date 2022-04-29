@@ -35,6 +35,7 @@ import ExtraRequest from '../Screens/Main/ExtraRequest';
 import Checkout from '../Screens/Main/Checkout';
 import Citylist from '../Screens/Main/Citylist';
 import OneToOneChat from '../Screens/Main/OneToOneChat';
+import AllChats from '../Screens/Main/AllChats';
 
 // import MyTabs from './BottomNav';
 
@@ -68,7 +69,7 @@ const Stacks = () => {
             <Stack.Screen name="Edit_Profile" component={EditProfile} />
             <Stack.Screen name="SelectedDate" component={SelectedDate} />
             <Stack.Screen name="Citylist" component={Citylist} />
-
+            <Stack.Screen name="AllChats" component={AllChats} />
             <Stack.Screen name="MyTrip" component={MyTrip} />
             <Stack.Screen name="TripType" component={TripType} />
             <Stack.Screen name="ContactUs" component={ContactUs} />

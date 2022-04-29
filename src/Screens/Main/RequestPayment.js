@@ -155,7 +155,7 @@ export default class RequestPayment extends Component {
         ],
         monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
         dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-        dayNamesShort: ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thr.', 'Fri.', 'Sat.'],
+      dayNamesShort: ['احد.','اثنين.' , 'الثلاثاء.', 'الاربعاء.', 'الخميس.', 'الجمعة.', 'السبت.'],
         today: "Aujourd'hui"
       };
       LocaleConfig.defaultLocale = 'ar';

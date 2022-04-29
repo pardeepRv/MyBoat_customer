@@ -17,7 +17,7 @@ import { UserContext } from "./src/Screens/Main/UserContext";
 import { Lang_chg } from './src/Provider/Language_provider';
 import { Platform } from "react-native";
 import FlashMessage from "react-native-flash-message";
-
+import { navigationRef } from './NavigationService';
 LogBox.ignoreAllLogs();
 
 const App = () => {
@@ -85,7 +85,7 @@ const App = () => {
   // };
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Root>
         {/* { Platform.OS == "ios" ?<StatusBar backgroundColor="#5E8D48" barStyle="light-content" /> : <StatusBar barStyle="light-content" backgroundColor="#000" /> } */}
         <StatusBar barStyle={"light-content"}

@@ -2,6 +2,7 @@ import messaging from '@react-native-firebase/messaging';
 import {useNavigation} from '@react-navigation/native';
 import {showMessage} from "react-native-flash-message";
 import { Colors, FontFamily } from '../Constants/Constants';
+import * as NavigationService from "../../NavigationService";
 
 export const createNotificationListener = async () => {
   const {navigation} = useNavigation;
@@ -13,15 +14,19 @@ export const createNotificationListener = async () => {
   //     // navigation.navigate('Haulage')
   // });
 
-  messaging().onNotificationOpenedApp(async remoteMessage => {
-    // setTimeout(() => {
-    //   console.log(
-    //     navigation,
-    //     'hte +++++++++++++++++++++++++++++++++++++++++++',
-    //   );
-    //   remoteMessage.data?.type == "chat_message"
-    //    &&  navigation.navigate('SignUp')
-    // }, 1000);
+  messaging().onNotificationOpenedApp(async (remoteMessage) => {
+    console.log("coming in noification", navigation);
+    // alert(JSON.stringify(remoteMessage))
+     console.log(remoteMessage, "remoteMessage");
+    setTimeout(() => {
+      if (remoteMessage.data?.type == "chat_message") {
+        NavigationService.navigate("Inbox", { notificationParam: 1 });
+      }
+      if (remoteMessage.notification?.body == "Booking request declined" || remoteMessage.notification?.body == "Booking request accepted") {
+        NavigationService.navigate("Notifications" );
+      }
+     
+    }, 1500);
   });
 
   messaging().onMessage(async remoteMessage => {

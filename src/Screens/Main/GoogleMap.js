@@ -42,12 +42,14 @@ export default class GoogleMap extends Component {
       aboutus: '',
       latitude: '29.3117',
       longitude: '47.4818',
+      image:{},
       latdelta: '0.0922',
       longdelta: '0.0421',
       addressbar2: '',
       addressselected: '',
       address_selected: '',
       input_search: '',
+      iconshow:this?.props?.route?.params?.destination,
       item: this?.props?.route?.params?.item 
       ? this?.props?.route?.params?.destinationitems_arr :'',
       destination : this?.props?.route?.params?.destinations_arr 
@@ -74,6 +76,18 @@ export default class GoogleMap extends Component {
     };
     this.setMarkers();
   }
+  componentDidMount=()=>{
+    this.onFocusSubscribe = this.props.navigation.addListener("focus", () => {
+// if (this.state.iconshow[0]){
+// this.setState({image : this.state.iconshow[0]?.trip_icons[0]})
+// }
+console.log('this.state.image :>> ', this.state.iconshow);
+  });
+}
+
+componentWillUnmount() {
+  this.onFocusSubscribe();
+}
   setMarkers = () => {
     var adver_arr = this.state.adver_arr;
     if (adver_arr != 'NA') {
@@ -123,6 +137,8 @@ export default class GoogleMap extends Component {
   render() {
     console.log("$$$$$", this.state.adver_arr);
     console.log('this.state.de :>> ', this.state.destination);
+    console.log('this.state.de :>> ', this.state.iconshow);
+
     return (
       <View style={{flex: 1}}>
         {/* <StatusBar backgroundColor="#ffffff25" ></StatusBar> */}
@@ -275,7 +291,7 @@ export default class GoogleMap extends Component {
                                 left:5
                                 // tintColor: '#fff',
                               }}
-                              source={{uri : config.image_url4 + this.state.arry.image}}
+                              source={{uri : config.image_url4 + this.state.iconshow[0]?.trip_icons[0].icon_green}}
                             />
                           </View>
                         </View>

@@ -795,7 +795,7 @@ this.setState({location :[
 
           <View style={s.container}>
             <View style={s.item}>
-              <Text style={[s.texleftTextt1]}>{user.value == 1 ? Lang_chg.noogguesttriptour[1] : Lang_chg.noogguesttriptour[0]}</Text>
+              <Text style={[s.leftText]}>{user.value == 1 ? Lang_chg.noogguesttriptour[1] : Lang_chg.noogguesttriptour[0]}</Text>
             </View>
 
             <View style={s.item}>
@@ -812,7 +812,7 @@ this.setState({location :[
 
             <View style={s.item}>
               <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                {this.state.advertisement.minimum_hours}{' '}
+                {this.state.advertisement.minimum_hours} {user.value == 1 ? Lang_chg.Hours[1]: Lang_chg.Hours[0]}{' '}
               </Text>
             </View>
           </View>
@@ -823,7 +823,7 @@ this.setState({location :[
 
             <View style={s.item}>
               <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                {this.state.advertisement.extra_time}
+                {this.state.advertisement.extra_time} {user.value == 1 ? Lang_chg.Hours[1]: Lang_chg.Hours[0]}
 
               </Text>
             </View>
@@ -937,7 +937,7 @@ this.setState({location :[
 
           <View style={s.item}>
             <Text style={s.rightText}>
-              {this.state.adver_arr ? this.state.adver_arr.boat_type : ''}{" "}
+              {this.state.adver_arr.boat_type == 2 ? user.value == 1 ? 'رحلة خاصة' :  "Public trip" : user.value == 1 ? 'رحلة عامة' :  "Private trip" }{" "}
             </Text>
           </View>
         </View>
@@ -1006,7 +1006,7 @@ this.setState({location :[
           </View>
 
           <View style={s.item}>
-            <Text style={s.rightText}>{user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]}{ this.state.advertisement.price == 'NA' ?user.value ==1 ?  'غير متوفر' : 'not available' : this.state.advertisement.price} </Text>
+            <Text style={s.rightText}>{user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} { this.state.advertisement.price == 'NA' ?user.value ==1 ?  'غير متوفر' : 'not available' : this.state.advertisement.price} </Text>
           </View>
         </View>
 
@@ -1017,7 +1017,7 @@ this.setState({location :[
 
           <View style={s.item}>
             <Text style={s.rightText}>
-              {this.state.adver_arr ? this.state.adver_arr.extra_price : ''} {user.value == 1 ? Lang_chg.Hours[1] : Lang_chg.Hours[0]}{" "}
+            {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {this.state.adver_arr ? this.state.adver_arr.extra_price : ''}{" "}
             </Text>
           </View>
         </View>

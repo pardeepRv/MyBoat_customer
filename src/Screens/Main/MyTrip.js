@@ -96,6 +96,24 @@ export class MyTrip extends PureComponent {
   componentWillUnmount() {
     this._unsubscribe();
   }
+  _listEmptyComponent = () => {
+    const user = this.context
+
+    return (
+        // <View>
+        //    <Text style={{ alignSelf: 'center', position: 'absolute', top: '50%',fontSize:18 }}>{user.value ==1 ? Lang_chg.No_Record_found[1] : Lang_chg.No_Record_found[0]}</Text>
+        // </View>
+        <View
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+    >
+        {/* <Text style={{}}>No chat yet</Text> */}
+        <TouchableOpacity activeOpacity={0.7} onPress={() => { this.props.navigation.navigate('Home') }} style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', height: 600, width: 400 }}>
+            {/* <Image source={require('../../../assets/icons/inbox_not_found.png')} style={{ height: 100, width: 100, resizeMode: 'contain' }} /> */}
+            <View style={{ borderBottomColor: '#000', borderBottomWidth: 1 }}><Text style={{ color: "#000000" , fontSize:16 }}>{user.value == 1 ? Lang_chg.No_booking_found[1] : Lang_chg.No_booking_found[0]}</Text></View>
+        </TouchableOpacity>
+    </View>
+    )
+  }
   CardView = ({ item }) => {
     console.log(item)
     const user = this.context
@@ -226,11 +244,12 @@ export class MyTrip extends PureComponent {
                 paddingBottom: 10,
                 //    height:"100%"
               }}
-              ListEmptyComponent={() =>
-                this.state.myTrips >= 0 && (
-                  <Text style={s.nomatch}>{user.value == 1 ? Lang_chg.No_booking_found[1] : Lang_chg.No_booking_found[0]}</Text>
-                )
-              }
+              // ListEmptyComponent={() =>
+              //   this.state.myTrips >= 0 && (
+              //     <Text style={s.nomatch}>{user.value == 1 ? Lang_chg.No_booking_found[1] : Lang_chg.No_booking_found[0]}</Text>
+              //   )
+              // }
+            ListEmptyComponent={this._listEmptyComponent}
             />
           </View>
         </View>

@@ -117,7 +117,23 @@ export default class Fav extends Component {
   }
 
 
+  _listEmptyComponent = () => {
+    const user = this.context
 
+    return (
+        // <View>
+        //    <Text style={{ alignSelf: 'center', position: 'absolute', top: '50%',fontSize:18 }}>{user.value ==1 ? Lang_chg.No_Record_found[1] : Lang_chg.No_Record_found[0]}</Text>
+        // </View>
+        <View
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+    >
+        {/* <Text style={{}}>No chat yet</Text> */}
+        <TouchableOpacity activeOpacity={0.7} onPress={() => { this.props.navigation.navigate('Home') }} style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', height: 600, width: 400 }}>
+        <View style={{ borderBottomColor: '#000', borderBottomWidth: 1 }}><Text style={{ color: "#000000" , fontSize:16 }}>{user.value ==1 ? Lang_chg.No_Record_found[1] : Lang_chg.No_Record_found[0]}</Text></View>
+           </TouchableOpacity>
+    </View>
+    )
+}
 
 
   async FavoriteList(arrayData) {
@@ -286,10 +302,11 @@ export default class Fav extends Component {
               paddingBottom: 10,
               //    height:"100%"
             }}
+            ListEmptyComponent={this._listEmptyComponent}
           />
 
           {this.state.isLoading && <ActivityIndicator size={30} color={Colors.orange} style={{ alignSelf: "center" }} />}
-          {!this.state.fav_arr.length && !this.state.isLoading ? <Text style={{ alignSelf: 'center', position: 'absolute', top: '50%', }}>{user.value ==1 ? Lang_chg.No_Record_found[1] : Lang_chg.No_Record_found[0]}</Text> : null}
+          {/* {!this.state.fav_arr.length && !this.state.isLoading ? <Text style={{ alignSelf: 'center', position: 'absolute', top: '50%',fontSize:18 }}>{user.value ==1 ? Lang_chg.No_Record_found[1] : Lang_chg.No_Record_found[0]}</Text> : null} */}
         </View>
       </View>
     )

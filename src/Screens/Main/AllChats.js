@@ -77,7 +77,7 @@ class AllChats extends PureComponent {
 
         let data = new FormData();
         data.append("user_id", arrayData.user_id);
-
+  console.log('url :>> ', url);
         apifuntion
             .postApi(url, data)
             .then(obj => {
@@ -85,9 +85,9 @@ class AllChats extends PureComponent {
             })
             .then(obj => {
                 console.log(obj, "get all chats");
-                if (obj?.data) {
+                if (obj?.success === "true") {
                     this.setState({
-                        allChatMember: obj?.data,
+                        allChatMember: obj && obj.data ,
                         isLoading: false,
                     });
                 } else {
@@ -130,9 +130,9 @@ class AllChats extends PureComponent {
             })
             .then(obj => {
                 console.log(obj, "get all chats");
-                if (obj?.data?.success === "true") {
-                    alert("Chat has been deleted successfully!");
-                     
+                if (obj?.success===  "true") {
+                    Alert.alert("Chat has been deleted successfully!");
+                  this.getAllChatMembers();
                 } 
             })
             .catch((err) => {
@@ -148,7 +148,7 @@ alertreset =(item)=>{
         "Are you sure yo want to delete the chat ?",
         [
             {
-                text: "Restart now",
+                text: "Delete",
                 onPress: () => {
                     this.deleteNotification(item);
                 },
@@ -167,8 +167,11 @@ alertreset =(item)=>{
 
     renderChats = ({ item }) => {
         // let data = {};
+        const user = this.context
 
         return (
+            <>
+            {item && item.last_message ?(
             <Card containerStyle={{
                 borderRadius: 20,
                 elevation: 1,
@@ -207,34 +210,34 @@ alertreset =(item)=>{
                                 style={{ height: 50, width: 50, resizeMode: 'cover', borderRadius: 50 }}
                             />
                         </TouchableOpacity>
+                
                         <View style={{ flexDirection: 'column', marginRight: 15, width: '50%' }}>
-                            <Text numberOfLines={1} style={{ textAlign: 'left', fontSize: 16, bottom: 2, fontFamily: FontFamily.bold, }} >
+                            <Text numberOfLines={1} style={{ textAlign: 'left', fontSize: 16, fontFamily: FontFamily.bold,top:-2 }} >
                                 {item.name}
                             </Text>
-                            <Text numberOfLines={1} style={{ textAlign: 'left', fontSize: 8 }}>
+                            <Text numberOfLines={1} style={{ textAlign: 'left', fontSize: 13 , top : 2 }}>
                                 {item.last_message}
                             </Text>
                         </View>
-                        <View style={{ flexDirection: 'column' }}>
+                        <View style={{ flexDirection: 'column'  , alignItems:'center'}}>
                             <TimeAgo time={item?.last_message_time} />
                             <TouchableOpacity
                                 onPress={() => this.alertreset( item)}
+                                style={{
+                                    height: 30,
+                                    width: 30,
+                                    padding: 0,
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                  }}
                             >
-                                <Card
-                                    containerStyle={{
-                                        height: 27,
-                                        width: 27,
-                                        padding: 0,
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
+                                
                                     <Icon
                                         name="trash-outline"
                                         type="ionicon"
                                         color={Colors.orange}
                                     />
-                                </Card>
+                                
                             </TouchableOpacity>
 
 
@@ -242,6 +245,18 @@ alertreset =(item)=>{
                     </View>
                 </TouchableOpacity>
             </Card>
+            ):
+            <View
+                            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+                        >
+                            {/* <Text style={{}}>No chat yet</Text> */}
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => { this.props.navigation.navigate('Home') }} style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', height: 600, width: 400 }}>
+                                <Image source={require('../../../assets/icons/inbox_not_found.png')} style={{ height: 100, width: 100, resizeMode: 'contain' }} />
+                                <View style={{ borderBottomColor: '#000', borderBottomWidth: 1 }}><Text style={{ color: "#000000" , fontSize:15 }}>{user.value == 1 ? Lang_chg.inbox_not_found[1] : Lang_chg.inbox_not_found[0]}</Text></View>
+                            </TouchableOpacity>
+                        </View>
+            }
+            </>
         );
     };
 
@@ -254,12 +269,14 @@ alertreset =(item)=>{
             <View style={{ backgroundColor: '#fff', flex: 1 }}>
 
                 <Header
+                backBtn={this.props?.route.params?.notificationParam ? true : false}
                     imgBack={true}
                     notiBtn={false}
                     searchBtn={this.state?.inboxmessage?.length > 0 ? true : false}
                     headerHeight={250}
                     name={user.value == 1 ? Lang_chg.mesage[1] : Lang_chg.mesage[0]}
                     backImgSource={require('../../Images/backgroundImg.png')}
+                    
                 />
                 {/* {isLoading && <Loader />} */}
                 <View style={{

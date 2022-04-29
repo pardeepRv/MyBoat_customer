@@ -264,7 +264,7 @@ class OneToOneChat extends PureComponent {
             </TouchableOpacity>
             <View style={{ flexDirection: 'column', marginRight: 15, width: '50%' }}>
               <Text numberOfLines={1} style={{ color: Colors.white, textAlign: 'left', fontSize: 16, bottom: 2, fontFamily: FontFamily.bold, }} >{data.name}</Text>
-              <Text numberOfLines={1} style={{ color: Colors.white, textAlign: 'left', fontSize: 12, fontFamily: FontFamily.bold, }}> online </Text>
+              {/* <Text numberOfLines={1} style={{ color: Colors.white, textAlign: 'left', fontSize: 12, fontFamily: FontFamily.bold, }}> online </Text> */}
             </View>
           </View>
           <TouchableOpacity

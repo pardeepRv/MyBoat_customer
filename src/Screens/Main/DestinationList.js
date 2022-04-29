@@ -29,6 +29,7 @@ export default class DestinationList extends Component {
       promotions_arr: [],
       trip_type: this?.props?.route?.params?.trip_type,
       destination: this?.props?.route?.params?.item,
+      iconsdestination:this?.props?.route?.params?.tripdestination,
       destinations_arr: [],
       adver_arr: [],
       localData: [],
@@ -38,7 +39,6 @@ export default class DestinationList extends Component {
       advertisment: '',
       updateState: '',
       time: '',
-      getdate: '',
       date: '',
       pay_amount: '',
       booking_no: '',
@@ -62,7 +62,9 @@ export default class DestinationList extends Component {
       short: 'none',
       calender_arr: {},
       time: '',
-      getdate: '',
+      getdate: new Date(),
+    month:'',
+    // currunt_date:Number(this.state.month.currunt_date),
       date: '',
       pay_amount: '',
       booking_no: '',
@@ -89,12 +91,10 @@ export default class DestinationList extends Component {
 
   componentDidMount() {
     // const text = this.props.navigation.getParams('item');
-
-    let date = new Date('2020-06-12T14:42:42');
-
+    const month = new Date().getMonth() + 1;
+    this.setState({ month:month }); 
+    console.log('this.state.month :>> ', this.state.month);
     console.log('date ', this?.props?.route?.params?.trip_type);
-
-    this.setState({ getdate: date });
 
     console.log(this.state.destination, 'destination images ');
 
@@ -102,6 +102,7 @@ export default class DestinationList extends Component {
     this.laungugaelocal();
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       console.log('focus :>> ');
+      // this.setcurrentdate();
       this.setState({ isLoading: true , calender_arr:{} , date:'' });
       this.getData('user_arr')
     });
@@ -111,7 +112,13 @@ export default class DestinationList extends Component {
     this._unsubscribe();
   }
 
-
+// setcurrentdate=()=>{
+//   let date = this.state.getdate;
+//   let month = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+//   console.log('date :>> ', month);
+// this.setState({month})
+//   console.log('getdate :>> ', this.state.month);
+// }
   laungugaelocal= () =>{
     const user = this.context
   console.log('user :>> ', user);
@@ -155,7 +162,7 @@ export default class DestinationList extends Component {
       ],
       monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
       dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-      dayNamesShort: ['Sun.','Mon.' , 'Tue.', 'Wed.', 'Thr.', 'Fri.', 'Sat.'],
+      dayNamesShort: ['احد.','اثنين.' , 'الثلاثاء.', 'الاربعاء.', 'الخميس.', 'الجمعة.', 'السبت.'],
       today: "Aujourd'hui"
     };
     LocaleConfig.defaultLocale = 'ar';
@@ -335,6 +342,7 @@ export default class DestinationList extends Component {
     this.props.navigation.navigate('GoogleMap', {
       adver_arr: this.state.adver_arr,
       arry: this.state.destination,
+      destination:this.state.iconsdestination,
       type: 1
     });
   }
@@ -379,7 +387,9 @@ export default class DestinationList extends Component {
       console.log('json123', json);
 
       if (json.success == 'true') {
-        this.setState({ adver_arr: json.adver_arr != 'NA' ? json.adver_arr : [] });
+        this.setState({ adver_arr: json.adver_arr != 'NA' ? json.adver_arr : []  , month:json.currunt_date});
+        console.log('month :>> ', this.state.month);
+
       } else {
       }
 
@@ -610,8 +620,8 @@ export default class DestinationList extends Component {
     console.log('entertainmentslected :>> ', this.state.entertainmentselected);
     console.log('rating :>> ', this.state.rating);
     console.log('cabin :>> ', this.state.cabin);
-    console.log('destiation :>> ', this.state.destination);
-    console.log('destiation :>> ', this.state.calender_arr);
+    console.log('destiation :>> ', this.state.selected_date);
+    console.log('destiation :>> ', this.state.month);
 
 
     const user = this.context
@@ -904,6 +914,7 @@ export default class DestinationList extends Component {
                                 <AirbnbRating
                                   showRating={false}
                                   size={12}
+                                  value={item.rating}
                                   isDisabled
                                   defaultRating={item.rating}
                                   starContainerStyle={{ alignSelf: 'flex-start' }}
@@ -926,14 +937,24 @@ export default class DestinationList extends Component {
                                   alignSelf: 'flex-end',
                                 }}>
                                 <Icon name="person" size={14} />
+                                {this.state.month == this.state.selected_date ?
                                 <Text
                                   style={{
                                     color: 'rgba(51, 51, 51, 1)',
                                     fontSize: 10,
                                     fontFamily: FontFamily.default,
                                   }}>
-                                  {item?.no_of_people}{user.value == 1 ? Lang_chg.text_Person[1] : Lang_chg.text_Person[0]}
-                                </Text>
+                                  {item?.remaining_seats}{user.value == 1 ? Lang_chg.text_Person[1] : Lang_chg.text_Person[0]}
+                                </Text> :
+                                <Text
+                                style={{
+                                  color: 'rgba(51, 51, 51, 1)',
+                                  fontSize: 10,
+                                  fontFamily: FontFamily.default,
+                                }}>
+                                {item?.no_of_people}{user.value == 1 ? Lang_chg.text_Person[1] : Lang_chg.text_Person[0]}
+                              </Text> }
+                                
                               </View>
                             </View>
                           </View>

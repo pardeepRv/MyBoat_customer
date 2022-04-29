@@ -108,7 +108,7 @@ export default class EditProfile extends Component {
     try {
       const response = await fetch(url);
       const json = await response.json();
-      // console.log('citylist  ',json)
+      console.log('citylist 456 ',json)
 
       if (json.success == 'true') {
         this.setState({city_arr: json.city_arr, city_arr1: json.city_arr});
@@ -127,15 +127,18 @@ export default class EditProfile extends Component {
   }
 
   async ProfileDetail(user_id) {
+    const user = this.context
+
     console.log('user ', user_id);
 
     let url = config.baseURL + 'getUserDetails.php?user_id_post=' + user_id;
     try {
       const response = await fetch(url);
       const json = await response.json();
-      console.log('image   ', json.user_details?.image);
+      console.log('image   ', json);
 
       if (json.success == 'true') {
+        
         this.setState({
           user_details: json.user_details,
           name:
@@ -152,8 +155,17 @@ export default class EditProfile extends Component {
           city_name: json.user_details?.city_name[config.language],
           city_id:json.user_details?.city,
           avatar: json.user_details?.image && json.user_details?.image !== 'NA' ?config.image_url4+json.user_details?.image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png',
-          gender: json.user_details?.gender==0?"Male":"Female",
+          gender: json.user_details?.gender==0? "Male":"Female",
+          
         });
+        { user.value == 1 ? 
+          
+          this.setState({gender:json.user_details?.gender==0? "ذكر":"انثى" ,city_name: json.user_details?.city_name[1], })
+          : 
+          this.setState({gender:json.user_details?.gender==0? "Male":"Female" , city_name: json.user_details?.city_name[0],})
+        }
+        // gender: json.user_details?.gender==0? "Male":"Female",
+
 
         console.log('image   ', this.state.avatar);
       } else {
@@ -476,7 +488,7 @@ export default class EditProfile extends Component {
                     }}>
                     <View style={s.main_view_flag}>
                       <Text style={s.flag_text_detail}>
-                        {item.city[config.language]}
+                        { user.value== 1 ? item.city[1] :item.city[0]}
                       </Text>
                     </View>
                   </TouchableOpacity>

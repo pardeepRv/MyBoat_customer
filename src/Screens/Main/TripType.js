@@ -161,7 +161,7 @@ this.laungugaelocal();
       ],
       monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
       dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-      dayNamesShort: ['Sun.','Mon.' , 'Tue.', 'Wed.', 'Thr.', 'Fri.', 'Sat.'],
+      dayNamesShort: ['احد.','اثنين.' , 'الثلاثاء.', 'الاربعاء.', 'الخميس.', 'الجمعة.', 'السبت.'],
       today: "Aujourd'hui"
     };
     LocaleConfig.defaultLocale = 'ar';
@@ -631,7 +631,7 @@ this.laungugaelocal();
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => this.Goto()}
             style={[
               s.col,
@@ -654,7 +654,7 @@ this.laungugaelocal();
               {' '}
               {user.value == 1 ? Lang_chg.map[1] : Lang_chg.map[0]}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <TouchableOpacity
@@ -698,6 +698,7 @@ this.laungugaelocal();
                       this.props.navigation.navigate('DestinationList', {
                         item: item,
                         trip_type: this.state.trip_type.trip_id,
+                        tripdestination: this.state.destinations_arr, 
                       })
                     }>
                     <Card
