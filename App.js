@@ -25,6 +25,9 @@ const App = () => {
   const [barStyle, setBarStyle] = useState('light-content');
   const [isrtl, setisrtl] = useState(false)
   useEffect(async () => {
+    if (!__DEV__) {
+      console.log = () => {};
+    }
     // getLang();
     checkPermission();
     requestUserPermission();

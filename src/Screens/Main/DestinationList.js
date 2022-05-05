@@ -129,7 +129,7 @@ export default class DestinationList extends Component {
         'February',
         'March',
         'April',
-        'may',
+        'May',
         'June',
         'July',
         'august',
@@ -140,7 +140,7 @@ export default class DestinationList extends Component {
       ],
       monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
       dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-      dayNamesShort: ['Sun.','Mon.' , 'Tue.', 'Wed.', 'Thr.', 'Fri.', 'Sat.'],
+      dayNamesShort: ['Sun','Mon' , 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'],
       today: "Aujourd'hui"
     };
     LocaleConfig.defaultLocale = 'en';
@@ -162,7 +162,7 @@ export default class DestinationList extends Component {
       ],
       monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
       dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-      dayNamesShort: ['احد.','اثنين.' , 'الثلاثاء.', 'الاربعاء.', 'الخميس.', 'الجمعة.', 'السبت.'],
+      dayNamesShort: ['احد','اثنين' , 'الثلاثاء', 'الاربعاء', 'الخميس', 'الجمعة', 'السبت'],
       today: "Aujourd'hui"
     };
     LocaleConfig.defaultLocale = 'ar';
@@ -1695,7 +1695,7 @@ export default class DestinationList extends Component {
                     fontWeight: 'bold',
                     padding: 8,
                   }}>
-                  Equpments
+                  Eqipments
                   {/* {this.state.type_gear && this.state.type_gear?.addon_name?.length > 0 && this.state.type_gear?.addon_name[0]} */}
                 </Text>
 
@@ -1780,7 +1780,7 @@ export default class DestinationList extends Component {
                           color:
                             this.state.rating != '1' ? Colors.orange : '#fff',
                         }}>
-                        1Stars
+                        1Star
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -1807,7 +1807,7 @@ export default class DestinationList extends Component {
                           color:
                             this.state.rating != '2' ? Colors.orange : '#fff',
                         }}>
-                        2Starts
+                        2Stars
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -1834,7 +1834,7 @@ export default class DestinationList extends Component {
                           color:
                             this.state.rating != '3' ? Colors.orange : '#fff',
                         }}>
-                        3Starts
+                        3Stars
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -1863,7 +1863,7 @@ export default class DestinationList extends Component {
                           color:
                             this.state.rating != '4' ? Colors.orange : '#fff',
                         }}>
-                        4Starts
+                        4Stars
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -1889,7 +1889,7 @@ export default class DestinationList extends Component {
                           color:
                             this.state.rating != '5' ? Colors.orange : '#fff',
                         }}>
-                        5Starts
+                        5Stars
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -1927,7 +1927,7 @@ export default class DestinationList extends Component {
                   fontSize: 18,
                   marginTop: 8,
                 }}>
-                Sort By
+              {user.value == 1 ? Lang_chg.Sortby[1] : Lang_chg.Sortby[0]}{" "}
               </Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

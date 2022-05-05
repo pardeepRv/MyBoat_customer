@@ -1,46 +1,28 @@
-import React, { Component, useState } from 'react';
+import AsyncStorage from "@react-native-community/async-storage";
+import cloneDeep from "clone-deep";
+import React, { Component } from "react";
 import {
-  Text,
-  View,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-  ScrollView,
   FlatList,
   Image,
-  ActivityIndicator,
+  ImageBackground,
   Modal,
-} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import { Input, Card, AirbnbRating } from 'react-native-elements';
-import Header from '../../Components/Header';
-import Header2 from '../../Components/Header2';
-import { Calendar , LocaleConfig } from 'react-native-calendars';
-import cloneDeep from 'clone-deep';
-import {
-  back_img3,
-  boat_img1,
-  Colors,
-  FontFamily,
-  Sizes,
-} from '../../Constants/Constants';
-import Ad from '../../Data/Ad';
-import Outgoing from '../../Data/Outgoing';
-import Upcoming from '../../Data/Upcoming';
-import { SliderBox } from 'react-native-image-slider-box';
-import FastImage from 'react-native-fast-image';
-import { renderNode } from 'react-native-elements/dist/helpers';
-import { apifuntion } from '../../Provider/apiProvider';
-import { config } from '../../Provider/configProvider';
-// import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { Icon } from 'react-native-elements';
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Calendar, LocaleConfig } from "react-native-calendars";
+import { Card, Icon } from "react-native-elements";
+import Header2 from "../../Components/Header2";
+import { Colors, FontFamily } from "../../Constants/Constants";
+import { config } from "../../Provider/configProvider";
+import { Lang_chg } from "../../Provider/Language_provider";
 import { UserContext } from "./UserContext";
-import { Lang_chg } from '../../Provider/Language_provider';
-var moment = require('moment');
-
+var moment = require("moment");
 
 export default class TripType extends Component {
-  static contextType = UserContext
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -55,10 +37,10 @@ export default class TripType extends Component {
       type_gear: [],
       entertainment: [],
       food: [],
-      triphours: '',
-      rating: '',
-      advertisment: '',
-      Guests: '',
+      triphours: "",
+      rating: "",
+      advertisment: "",
+      Guests: "",
       foodselected: null,
       entertainmentselected: null,
       citylistselected: null,
@@ -69,25 +51,25 @@ export default class TripType extends Component {
       modalVisible2: false,
       modalVisible3: false,
       descending: false,
-      time: '',
-      getdate: '',
-      date: '',
-      pay_amount: '',
-      booking_no: '',
-      time: new Date('2020-06-12T14:42:42'),
-      mode: 'time',
+      time: "",
+      getdate: "",
+      date: "",
+      pay_amount: "",
+      booking_no: "",
+      time: new Date("2020-06-12T14:42:42"),
+      mode: "time",
       isConnected: true,
       calender_arr: {},
-      guest: '',
-      hour: '',
-      selected_date: '',
-      booking_id: '',
-      unavailabe_arr: 'NA',
-      bookingDateTimeStart: '',
-      bookingDateTimeEnd: '',
-      short: 'none',
-      userid: '',
-      dob: '',
+      guest: "",
+      hour: "",
+      selected_date: "",
+      booking_id: "",
+      unavailabe_arr: "NA",
+      bookingDateTimeStart: "",
+      bookingDateTimeEnd: "",
+      short: "none",
+      userid: "",
+      dob: "",
     };
     this.foodArr = [];
     this.enterarr = [];
@@ -98,19 +80,18 @@ export default class TripType extends Component {
   }
 
   componentDidMount() {
-this.laungugaelocal();
-    let date = new Date('2020-06-12T14:42:42');
+    this.laungugaelocal();
+    let date = new Date("2020-06-12T14:42:42");
 
     this.setState({ getdate: date });
     // const text = this.props.navigation.getParams('item');
-    console.log('did ', this.state.trip_type);
-   
-    this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      console.log('focus :>> ');
+    console.log("did ", this.state.trip_type);
+
+    this._unsubscribe = this.props.navigation.addListener("focus", () => {
+      console.log("focus :>> ");
       this.setState({ isLoading: true });
-      this.getData('user_arr');
-     this.setState({calender_arr:{} , date:''});
-     
+      this.getData("user_arr");
+      this.setState({ calender_arr: {}, date: "" });
     });
   }
 
@@ -118,66 +99,117 @@ this.laungugaelocal();
     this._unsubscribe();
   }
 
-  laungugaelocal= () =>{
-    const user = this.context
-  console.log('user :>> ', user);
-  if (user.value==0 ){
-    LocaleConfig.locales['en'] = {
-      monthNames: [
-        'January',
-        'February',
-        'March',
-        'April',
-        'may',
-        'June',
-        'July',
-        'august',
-        'September',
-        'October',
-        'November',
-        'December'
-      ],
-      monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
-      dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-      dayNamesShort: ['Sun.','Mon.' , 'Tue.', 'Wed.', 'Thr.', 'Fri.', 'Sat.'],
-      today: "Aujourd'hui"
-    };
-    LocaleConfig.defaultLocale = 'en';
-  } else if (user.value == 1){
-    LocaleConfig.locales['ar'] = {
-      monthNames: [
-        'يناير',
-        'فبراير',
-        'مارس',
-        'ابريل',
-        'مايو',
-        'يونيو',
-        'يوليو',
-        'اغسطس',
-        'سبتمبر',
-        'اكتوبر',
-        'نوفمبر',
-        'ديسمبر'
-      ],
-      monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
-      dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-      dayNamesShort: ['احد.','اثنين.' , 'الثلاثاء.', 'الاربعاء.', 'الخميس.', 'الجمعة.', 'السبت.'],
-      today: "Aujourd'hui"
-    };
-    LocaleConfig.defaultLocale = 'ar';
-  }}
+  laungugaelocal = () => {
+    const user = this.context;
+    console.log("user :>> ", user);
+    if (user.value == 0) {
+      LocaleConfig.locales["en"] = {
+        monthNames: [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "august",
+          "September",
+          "October",
+          "November",
+          "December",
+        ],
+        monthNamesShort: [
+          "Janv.",
+          "Févr.",
+          "Mars",
+          "Avril",
+          "Mai",
+          "Juin",
+          "Juil.",
+          "Août",
+          "Sept.",
+          "Oct.",
+          "Nov.",
+          "Déc.",
+        ],
+        dayNames: [
+          "Dimanche",
+          "Lundi",
+          "Mardi",
+          "Mercredi",
+          "Jeudi",
+          "Vendredi",
+          "Samedi",
+        ],
+        dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"],
+        today: "Aujourd'hui",
+      };
+      LocaleConfig.defaultLocale = "en";
+    } else if (user.value == 1) {
+      LocaleConfig.locales["ar"] = {
+        monthNames: [
+          "يناير",
+          "فبراير",
+          "مارس",
+          "ابريل",
+          "مايو",
+          "يونيو",
+          "يوليو",
+          "اغسطس",
+          "سبتمبر",
+          "اكتوبر",
+          "نوفمبر",
+          "ديسمبر",
+        ],
+        monthNamesShort: [
+          "Janv.",
+          "Févr.",
+          "Mars",
+          "Avril",
+          "Mai",
+          "Juin",
+          "Juil.",
+          "Août",
+          "Sept.",
+          "Oct.",
+          "Nov.",
+          "Déc.",
+        ],
+        dayNames: [
+          "Dimanche",
+          "Lundi",
+          "Mardi",
+          "Mercredi",
+          "Jeudi",
+          "Vendredi",
+          "Samedi",
+        ],
+        dayNamesShort: [
+          "احد",
+          "اثنين",
+          "الثلاثاء",
+          "الاربعاء",
+          "الخميس",
+          "الجمعة",
+          "السبت",
+        ],
+        today: "Aujourd'hui",
+      };
+      LocaleConfig.defaultLocale = "ar";
+    }
+  };
 
-  getData = async key => {
+  getData = async (key) => {
     this.setState({
-      isLoading: true
-    })
-    console.log('local ' + key);
+      isLoading: true,
+    });
+    console.log("local " + key);
     try {
       const value = await AsyncStorage.getItem(key);
 
       //          console.log('local '+value)
 
-      console.log('value 93', value);
+      console.log("value 93", value);
       if (value !== null) {
         const arrayData = JSON.parse(value);
 
@@ -193,7 +225,7 @@ this.laungugaelocal();
       }
     } catch (e) {
       // error reading value
-      console.log(e, 'coming in err');
+      console.log(e, "coming in err");
     }
   };
 
@@ -209,30 +241,35 @@ this.laungugaelocal();
 
     let url =
       config.baseURL +
-      'boat_trip_type_for_add_advr.php?user_id_post=' +
+      "boat_trip_type_for_add_advr.php?user_id_post=" +
       user_id +
-      '&country_code=965';
+      "&country_code=965";
 
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
 
-    console.log(url, 'user details url in filter array');
+    console.log(url, "user details url in filter array");
     try {
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-      console.log('json  ', json);
+      console.log("json  ", json);
 
-      if (json.success == 'true') {
-        this.setState({ addon_arr: json.addon_arr != 'NA' ? json.addon_arr : [] });
+      if (json.success == "true") {
+        this.setState({
+          addon_arr: json.addon_arr != "NA" ? json.addon_arr : [],
+        });
         this.equipmearr = json.addon_arr[2].addon_products;
-        this.setState({ type_gear: json.addon_arr[2].addon_products })
+        this.setState({ type_gear: json.addon_arr[2].addon_products });
 
         this.foodArr = json.addon_arr[0].addon_products;
-        this.setState({ food: json.addon_arr[0].addon_products })
+        this.setState({ food: json.addon_arr[0].addon_products });
         this.enterarr = json.addon_arr[1].addon_products;
-        this.setState({ entertainment: json.addon_arr[1].addon_products })
+        this.setState({ entertainment: json.addon_arr[1].addon_products });
         this.cityarr = json.selected_City_Array;
-        this.setState({ citylist: json.selected_City_Array != 'NA' ? json.selected_City_Array : [] })
+        this.setState({
+          citylist:
+            json.selected_City_Array != "NA" ? json.selected_City_Array : [],
+        });
 
         // console.log('typearr :>> ', this.state.type_gear);
         // console.log('food :>> ', this.state.food);
@@ -243,8 +280,7 @@ this.laungugaelocal();
         // console.log('this.foodArr :>> ', this.foodArr);
         // console.log('this.equipmearr :>> ', this.equipmearr);
 
-
-        return console.log('addon arr :>> ', this.state.addon_arr);
+        return console.log("addon arr :>> ", this.state.addon_arr);
       } else {
       }
 
@@ -257,114 +293,121 @@ this.laungugaelocal();
   }
 
   onChangeCheck = (idx) => {
-    console.log('id :>> ', idx);
+    console.log("id :>> ", idx);
 
-    const array = this.state.food.map(v => {
+    const array = this.state.food.map((v) => {
       const newItem = Object.assign({}, v);
       newItem.isSelected = false;
       return newItem;
     });
-    console.log(array, ' food before');
-
+    console.log(array, " food before");
 
     array[idx].isSelected = !array[idx].isSelected;
-    this.setState({
-      food: array,
-      foodselected: array[idx].addon_product_id,
-    }, () => {
-      console.log(this.state.food, 'after food');
-      console.log(this.state.foodselected, 'after foodselected');
-    })
-  }
-
+    this.setState(
+      {
+        food: array,
+        foodselected: array[idx].addon_product_id,
+      },
+      () => {
+        console.log(this.state.food, "after food");
+        console.log(this.state.foodselected, "after foodselected");
+      }
+    );
+  };
 
   onChangeselected = (idx) => {
-    console.log('id :>> ', idx);
+    console.log("id :>> ", idx);
 
-    const array = this.state.entertainment.map(v => {
+    const array = this.state.entertainment.map((v) => {
       const newItem = Object.assign({}, v);
       newItem.isSelected = false;
       return newItem;
     });
-    console.log(array, ' food before');
-
+    console.log(array, " food before");
 
     array[idx].isSelected = !array[idx].isSelected;
-    this.setState({
-      entertainment: array,
-      entertainmentselected: array[idx].addon_product_id
-    }, () => {
-      console.log(this.state.entertainment, 'after food');
-      console.log(this.state.entertainmentselected, 'after foodselected');
-    })
-  }
+    this.setState(
+      {
+        entertainment: array,
+        entertainmentselected: array[idx].addon_product_id,
+      },
+      () => {
+        console.log(this.state.entertainment, "after food");
+        console.log(this.state.entertainmentselected, "after foodselected");
+      }
+    );
+  };
   onChangedone = (idx) => {
-    console.log('id :>> ', idx);
+    console.log("id :>> ", idx);
 
-    const array = this.state.type_gear.map(v => {
+    const array = this.state.type_gear.map((v) => {
       const newItem = Object.assign({}, v);
       newItem.isSelected = false;
       return newItem;
     });
-    console.log(array, ' food before');
-
+    console.log(array, " food before");
 
     array[idx].isSelected = !array[idx].isSelected;
-    this.setState({
-      type_gear: array,
-      type_gearslected: array[idx].addon_product_id
-    }, () => {
-      console.log(this.state.type_gear, 'after food');
-      console.log(this.state.type_gearslected, 'after foodselected');
-    })
-  }
+    this.setState(
+      {
+        type_gear: array,
+        type_gearslected: array[idx].addon_product_id,
+      },
+      () => {
+        console.log(this.state.type_gear, "after food");
+        console.log(this.state.type_gearslected, "after foodselected");
+      }
+    );
+  };
 
   _oncityselected = (idx) => {
-    console.log('id :>> ', idx);
+    console.log("id :>> ", idx);
 
-    const array = this.state.citylist.map(v => {
+    const array = this.state.citylist.map((v) => {
       const newItem = Object.assign({}, v);
       newItem.isSelected = false;
       return newItem;
     });
-    console.log(array, ' food before');
-
+    console.log(array, " food before");
 
     array[idx].isSelected = !array[idx].isSelected;
-    this.setState({
-      citylist: array,
-      citylistselected: array[idx].city_id
-    }, () => {
-      console.log(this.state.citylist, 'after food');
-      console.log(this.state.citylistselected, 'after foodselected');
-    })
-  }
+    this.setState(
+      {
+        citylist: array,
+        citylistselected: array[idx].city_id,
+      },
+      () => {
+        console.log(this.state.citylist, "after food");
+        console.log(this.state.citylistselected, "after foodselected");
+      }
+    );
+  };
   reset() {
     this.setState({
       citylist: this.cityarr,
-      triphours: '',
+      triphours: "",
       type_gear: this.equipmearr,
       food: this.foodArr,
-      rating: '',
-      advertisment: '',
+      rating: "",
+      advertisment: "",
       entertainment: this.enterarr,
-      Guests: '',
-      date:'',
+      Guests: "",
+      date: "",
     });
   }
   async TripType() {
     let url =
       config.baseURL +
-      'destination_list_filter.php?user_id_post=82&trip_type_id_post=' +
+      "destination_list_filter.php?user_id_post=82&trip_type_id_post=" +
       this.state.trip_type.trip_id;
-    console.log('urlin triptype :>> ', url);
+    console.log("urlin triptype :>> ", url);
     try {
       const response = await fetch(url);
       const json = await response.json();
-      console.log('json  ', json);
+      console.log("json  ", json);
       this.setState({
         destinations_arr:
-          json.destinations_arr != 'NA' ? json.destinations_arr : [],
+          json.destinations_arr != "NA" ? json.destinations_arr : [],
       });
 
       // console.log(this.state.img)
@@ -392,17 +435,19 @@ this.laungugaelocal();
     this.setState({ modalVisible2: false });
     this.setState({ modalVisible3: false });
   };
-  handleConfirm = date => {
-    console.warn('A date has been picked: ', date);
-    var now = moment(date).format('YYYY-MM-DD');
-    console.log('now :>> ', now);
-    this.setState({
-      dob: now,
-    }, () => {
-      this.ShowResult();
-    });
+  handleConfirm = (date) => {
+    console.warn("A date has been picked: ", date);
+    var now = moment(date).format("YYYY-MM-DD");
+    console.log("now :>> ", now);
+    this.setState(
+      {
+        dob: now,
+      },
+      () => {
+        this.ShowResult();
+      }
+    );
     this.hideDatePicker();
-
   };
 
   Price = () => {
@@ -410,36 +455,42 @@ this.laungugaelocal();
   };
   filtertrip = () => {
     this.setState({ modalVisible: true });
-  }
+  };
 
   // sort function>>>
   sortingBYPrice = (descending) => {
     this.setState({ modalVisible2: false });
-    const sortedAds = this.sortAdsByPrice(this.state.destinations_arr, descending);
+    const sortedAds = this.sortAdsByPrice(
+      this.state.destinations_arr,
+      descending
+    );
 
     this.setState({
-      destinations_arr: sortedAds
-    })
-  }
+      destinations_arr: sortedAds,
+    });
+  };
 
   //common function
   sortAdsByPrice(arr, descending) {
     const ads = cloneDeep(arr);
 
     if (descending) {
-      return ads.sort((a, b) => parseFloat(b.min_price || 0) - parseFloat(a.min_price || 0));
+      return ads.sort(
+        (a, b) => parseFloat(b.min_price || 0) - parseFloat(a.min_price || 0)
+      );
     }
 
-    return ads.sort((a, b) => parseFloat(a.min_price || 0) - parseFloat(b.min_price || 0));
-  };
-
+    return ads.sort(
+      (a, b) => parseFloat(a.min_price || 0) - parseFloat(b.min_price || 0)
+    );
+  }
 
   Goto() {
-    console.log('goto');
-    this.props.navigation.navigate('GoogleMap', {
+    console.log("goto");
+    this.props.navigation.navigate("GoogleMap", {
       destinations_arr: this.state.destinations_arr,
       item: this.state.trip_type,
-      type: 3
+      type: 3,
     });
   }
 
@@ -448,17 +499,26 @@ this.laungugaelocal();
 
     let url =
       config.baseURL +
-      'adver_filter_island.php?user_id_post=' +
+      "adver_filter_island.php?user_id_post=" +
       this.state.userid +
-      '&latitude=29.3117&longitude=47.4818&find_key=NA&trip_type=all&trip_type_id_send=' +
+      "&latitude=29.3117&longitude=47.4818&find_key=NA&trip_type=all&trip_type_id_send=" +
       this.state.trip_type.trip_id +
-      '&filter_guest=' + this.state.Guests + '&filter_triphours=' +
-      this.state.triphours
-      + '&filter_food=' +
-      this.state.foodselected + '&filter_entertainment=' + this.state.entertainmentselected +
-      '&filter_citylist=' + this.state.citylistselected + '&filter_advertisement=' + this.state.advertisment +
-      '&filter_equipement=' + this.state.type_gearslected + '&choose_Date=' + this.state.dob
-      ;
+      "&filter_guest=" +
+      this.state.Guests +
+      "&filter_triphours=" +
+      this.state.triphours +
+      "&filter_food=" +
+      this.state.foodselected +
+      "&filter_entertainment=" +
+      this.state.entertainmentselected +
+      "&filter_citylist=" +
+      this.state.citylistselected +
+      "&filter_advertisement=" +
+      this.state.advertisment +
+      "&filter_equipement=" +
+      this.state.type_gearslected +
+      "&choose_Date=" +
+      this.state.dob;
     // let url = 'https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=31&trip_type=1&find_key=NA&latitude=29.3117&longitude=47.4818&search_type=by_trip&trip_type_id_send=1'
 
     console.log(url);
@@ -466,14 +526,17 @@ this.laungugaelocal();
       // const response = await fetch('https://myboatonline.com/app/webservice/adver_filter_user.php?user_id_post=82&trip_type=all&trip_type_id_send=2&search_type=by_trip&destination_id=7&latitude=&longitude=&find_key=');
       const response = await fetch(url);
       const json = await response.json();
-      console.log('json  ', json);
+      console.log("json  ", json);
 
-      if (json.success == 'true') {
+      if (json.success == "true") {
         this.setState({ modalVisible: false });
         this.setState({ modalVisible2: false });
         this.setState({ modalVisible3: false });
         if (json && json.destinations_arr != "NA") {
-          this.setState({ destinations_arr: json.destinations_arr != 'NA' ? json.destinations_arr : [], });
+          this.setState({
+            destinations_arr:
+              json.destinations_arr != "NA" ? json.destinations_arr : [],
+          });
         } else {
           this.setState({ destinations_arr: [] });
         }
@@ -491,14 +554,13 @@ this.laungugaelocal();
     }
   }
 
+  _selectDate = async (date) => {
+    console.log("date ", date);
 
-  _selectDate = async date => {
-    console.log('date ', date);
-
-    if (this.state.unavailabe_arr != 'NA') {
-      var i = this.state.unavailabe_arr.findIndex(x => x.date == date);
+    if (this.state.unavailabe_arr != "NA") {
+      var i = this.state.unavailabe_arr.findIndex((x) => x.date == date);
       if (i >= 0) {
-        msgProvider.toast(Lang_chg.owner_not_avail[config.language], 'center');
+        msgProvider.toast(Lang_chg.owner_not_avail[config.language], "center");
         return false;
       } else {
         delete this.state.calender_arr[this.state.date];
@@ -515,9 +577,9 @@ this.laungugaelocal();
         let idle_hours = this.state.adver_arr.idle_time;
         let extra_hours = this.state.extra_time;
         let tot_hours = parseInt(idle_hours) + parseInt(extra_hours);
-        if (this.state.time != '') {
-          let date1 = date + ' ' + this.state.time + ':00';
-          let date1xy = date + ' ' + this.state.time;
+        if (this.state.time != "") {
+          let date1 = date + " " + this.state.time + ":00";
+          let date1xy = date + " " + this.state.time;
           var date12 = new Date(...this.getParsedDate(date1));
           date12.setTime(date12.getTime() + tot_hours * 3600000);
           let formate_date = await this.getFormatedDate(date12);
@@ -529,7 +591,10 @@ this.laungugaelocal();
       }
     } else {
       delete this.state.calender_arr[this.state.date];
-      this.state.calender_arr[date] = { selected: true, selectedColor: Colors.orange };
+      this.state.calender_arr[date] = {
+        selected: true,
+        selectedColor: Colors.orange,
+      };
       this.setState({
         date: date,
         calender_arr: { ...this.state.calender_arr, date: date },
@@ -538,9 +603,9 @@ this.laungugaelocal();
       let extra_hours = this.state.extra_time;
       let tot_hours = parseInt(idle_hours) + parseInt(extra_hours);
 
-      if (this.state.time != '') {
-        let date1 = date + ' ' + this.state.time + ':00';
-        let date1xy = date + ' ' + this.state.time;
+      if (this.state.time != "") {
+        let date1 = date + " " + this.state.time + ":00";
+        let date1xy = date + " " + this.state.time;
         var date12 = new Date(...this.getParsedDate(date1));
         date12.setTime(date12.getTime() + tot_hours * 3600000);
         let formate_date = await this.getFormatedDate(date12);
@@ -556,67 +621,68 @@ this.laungugaelocal();
     this.setState({ modalVisible3: true });
   };
 
-
-
   render() {
-    console.log('this.state.des :>> ', this.state.destinations_arr);
-    console.log('this.state.des :>> ', this.state.dob);
-    console.log('date in render :>> ', this.state.date);
+    console.log("this.state.des :>> ", this.state.destinations_arr);
+    console.log("this.state.des :>> ", this.state.dob);
+    console.log("date in render :>> ", this.state.date);
 
-    const user = this.context
-    console.log('context in home', user);
+    const user = this.context;
+    console.log("context in home", user);
     return (
       <View style={{ backgroundColor: Colors.white, flex: 1 }}>
         <Header2
           imgBack={true}
           backBtn={true}
           backImgSource={{
-            uri:
-            config.image_url4 + this.state.trip_type.cover_image
+            uri: config.image_url4 + this.state.trip_type.cover_image,
           }}
-            
-          
-          name={user.value == 1 ? this.state.trip_type.trip_type_name_arabic : this.state.trip_type.trip_type_name}
+          name={
+            user.value == 1
+              ? this.state.trip_type.trip_type_name_arabic
+              : this.state.trip_type.trip_type_name
+          }
           searchBtn={false}
           headerHeight={300}
         />
 
         <View
           style={{
-            backgroundColor: '#fff',
+            backgroundColor: "#fff",
             height: 40,
-            width: '82%',
-            marginTop: '-45%',
-            alignSelf: 'center',
+            width: "82%",
+            marginTop: "-45%",
+            alignSelf: "center",
             borderRadius: 30,
-            flexDirection: 'row',
+            flexDirection: "row",
             borderColor: Colors.orange,
             borderWidth: 1,
-            shadowColor: '#fff',
+            shadowColor: "#fff",
             shadowOffset: { width: 500, height: 500 },
             shadowOpacity: 0.8,
             shadowRadius: 0,
             elevation: 5,
-          }}>
-          <TouchableOpacity style={s.col} onPress={() => this.Price()} >
+          }}
+        >
+          <TouchableOpacity style={s.col} onPress={() => this.Price()}>
             <Image
-              source={require('../../../assets/icons/updown.png')}
+              source={require("../../../assets/icons/updown.png")}
               style={s.icons}
             />
             <Text
               style={{
                 fontSize: 11,
                 marginLeft: 5,
-                color: '#0A8481',
-                fontFamily: 'Montserrat-Regular',
-              }}>
-              {' '}
-              {user.value == 1 ? Lang_chg.Sortby[1] : Lang_chg.Sortby[0]}{' '}
+                color: "#0A8481",
+                fontFamily: "Montserrat-Regular",
+              }}
+            >
+              {" "}
+              {user.value == 1 ? Lang_chg.Sortby[1] : Lang_chg.Sortby[0]}{" "}
             </Text>
-          </TouchableOpacity  >
+          </TouchableOpacity>
           <TouchableOpacity style={s.col} onPress={() => this.filtertrip()}>
             <Image
-              source={require('../../../assets/icons/filter_icon.png')}
+              source={require("../../../assets/icons/filter_icon.png")}
               style={s.icons}
             />
             <Text
@@ -624,10 +690,13 @@ this.laungugaelocal();
                 marginLeft: 7,
                 fontSize: 11,
                 padding: 5,
-                color: '#0A8481',
-                fontFamily: 'Montserrat-Regular',
-              }}>
-              {user.value == 1 ? Lang_chg.text_filter[1] : Lang_chg.text_filter[0]}{' '}
+                color: "#0A8481",
+                fontFamily: "Montserrat-Regular",
+              }}
+            >
+              {user.value == 1
+                ? Lang_chg.text_filter[1]
+                : Lang_chg.text_filter[0]}{" "}
             </Text>
           </TouchableOpacity>
 
@@ -660,47 +729,57 @@ this.laungugaelocal();
         <TouchableOpacity
           onPress={() => this.Selectdate()}
           style={{
-            backgroundColor: '#fff',
+            backgroundColor: "#fff",
             height: 40,
-            width: '82%',
+            width: "82%",
             marginTop: 10,
-            alignSelf: 'center',
+            alignSelf: "center",
             borderRadius: 30,
             borderColor: Colors.orange,
-            shadowColor: '#fff',
+            shadowColor: "#fff",
             shadowOffset: { width: 500, height: 500 },
             shadowOpacity: 0.8,
             shadowRadius: 0,
             elevation: 5,
-          }}>
-            {this.state.date ?<Text style={s.select_date}> {this.state.date}</Text> :
-            <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choose_from_library_txt[1] : Lang_chg.Choose_from_library_txt[0]}</Text> }
-          
+          }}
+        >
+          {this.state.date ? (
+            <Text style={s.select_date}> {this.state.date}</Text>
+          ) : (
+            <Text style={s.select_date}>
+              {" "}
+              {user.value == 1
+                ? Lang_chg.Choose_from_library_txt[1]
+                : Lang_chg.Choose_from_library_txt[0]}
+            </Text>
+          )}
         </TouchableOpacity>
 
         <View
           style={{
-            marginTop: '15%',
+            marginTop: "15%",
             // marginBottom: '10%',
             borderRadius: 20,
             flex: 1,
             backgroundColor: Colors.white,
-          }}>
+          }}
+        >
           <FlatList
             data={this.state.destinations_arr}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => {
-              console.log('item :>> in trip type', item);
+              console.log("item :>> in trip type", item);
               return (
                 <View style={{}}>
                   <TouchableOpacity
                     onPress={() =>
-                      this.props.navigation.navigate('DestinationList', {
+                      this.props.navigation.navigate("DestinationList", {
                         item: item,
                         trip_type: this.state.trip_type.trip_id,
-                        tripdestination: this.state.destinations_arr, 
+                        tripdestination: this.state.destinations_arr,
                       })
-                    }>
+                    }
+                  >
                     <Card
                       containerStyle={{
                         padding: 0,
@@ -709,42 +788,59 @@ this.laungugaelocal();
                         margin: 7.5,
                         marginHorizontal: 10,
                         elevation: 5,
-                      }}>
+                      }}
+                    >
                       <ImageBackground
                         style={s.ImageBackground}
                         imageStyle={s.imgStyle}
-                        source={{ uri: config.baseURL + 'images/' + item.image }}>
+                        source={{
+                          uri: config.baseURL + "images/" + item.image,
+                        }}
+                      >
                         <View
                           style={[
                             {
                               height: 50,
                               backgroundColor: Colors.white,
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              position: 'absolute',
+                              flexDirection: "row",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              position: "absolute",
                               right: 35,
                               bottom: -1,
                               paddingHorizontal: 10,
                               borderTopLeftRadius: 12,
                               borderTopRightRadius: 12,
                             },
-                          ]}>
+                          ]}
+                        >
                           <Text style={s.place}>
-                          {user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}{user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {item.min_price}
+                            {user.value == 1
+                              ? Lang_chg.Starting[1]
+                              : Lang_chg.Starting[0]}
+                            {"\n"}
+                            {user.value == 1
+                              ? Lang_chg.KD[1]
+                              : Lang_chg.KD[0]}{" "}
+                            {item.min_price}
                           </Text>
                         </View>
                       </ImageBackground>
                       {/*  */}
                       <View style={s.SEC3}>
                         <View style={{}}>
-                          <Text style={s.title}>{user.value == 1 ? item.destination_name_arabic : item.destination_name}</Text>
+                          <Text style={s.title}>
+                            {user.value == 1
+                              ? item.destination_name_arabic
+                              : item.destination_name}
+                          </Text>
                           <View
                             style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
+                              flexDirection: "row",
+                              alignItems: "center",
                               marginTop: 5,
-                            }}>
+                            }}
+                          >
                             {/* <View style={{marginLeft:5}}>
                           <Text style={{color:"rgba(51, 51, 51, 1)",fontSize:14,fontFamily:FontFamily.default}}>{item.type}</Text>
                           <AirbnbRating
@@ -776,13 +872,17 @@ this.laungugaelocal();
             ListEmptyComponent={() =>
               this.state.destinations_arr &&
               this.state.destinations_arr.length >= 0 && (
-                <Text style={{
-                  alignSelf: 'center',
-                  marginTop: 20,
-                  color: Colors.black,
-                  // fontFamily: fonts.semiBold,
-                  fontWeight: 'bold'
-                }}>No Request found</Text>
+                <Text
+                  style={{
+                    alignSelf: "center",
+                    marginTop: 20,
+                    color: Colors.black,
+                    // fontFamily: fonts.semiBold,
+                    fontWeight: "bold",
+                  }}
+                >
+                  No Request found
+                </Text>
               )
             }
             contentInsetAdjustmentBehavior="automatic"
@@ -807,42 +907,43 @@ this.laungugaelocal();
           onRequestClose={() => {
             // this.closeButtonFunction()
             this.setState({ modalVisible2: false });
-          }}>
+          }}
+        >
           <View
             style={{
-              height: '50%',
-              marginTop: 'auto',
-              backgroundColor: '#fff',
-              fontFamily: 'Montserrat-Regular',
+              height: "50%",
+              marginTop: "auto",
+              backgroundColor: "#fff",
+              fontFamily: "Montserrat-Regular",
               borderRadius: 30,
-            }}>
+            }}
+          >
             <View>
               <Text
                 style={{
-                  alignSelf: 'center',
-                  fontWeight: 'bold',
+                  alignSelf: "center",
+                  fontWeight: "bold",
                   fontSize: 18,
                   marginTop: 8,
-                }}>
+                }}
+              >
                 Sort By
               </Text>
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
               <TouchableOpacity
                 onPress={() => this.gotoBack()}
-
                 style={{
-
-                  alignItems: 'flex-start',
+                  alignItems: "flex-start",
                   marginTop: -25,
                   marginLeft: 20,
 
-                  borderRadius: 25
-
-                }}>
+                  borderRadius: 25,
+                }}
+              >
                 <Icon
-
                   name="x-circle"
                   type="feather"
                   size={26}
@@ -851,67 +952,73 @@ this.laungugaelocal();
               </TouchableOpacity>
             </View>
 
-            <View style={{ flexDirection: 'row', marginTop: '10%' }}>
-              <View style={{ width: '50%' }}>
+            <View style={{ flexDirection: "row", marginTop: "10%" }}>
+              <View style={{ width: "50%" }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({ short: 'Price_low_high' })}>
+                  onPress={() => this.setState({ short: "Price_low_high" })}
+                >
                   <View
                     style={{
                       borderColor:
-                        this.state.short != 'Price_low_high' ? 'grey' : '#fff',
+                        this.state.short != "Price_low_high" ? "grey" : "#fff",
                       backgroundColor:
-                        this.state.short != 'Price_low_high'
-                          ? '#fff'
+                        this.state.short != "Price_low_high"
+                          ? "#fff"
                           : Colors.orange,
-                      borderColor: 'grey',
+                      borderColor: "grey",
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
                       width: 150,
-                      alignSelf: 'center',
+                      alignSelf: "center",
                       borderRadius: 15,
-                    }}>
+                    }}
+                  >
                     <Text
                       style={{
-                        alignSelf: 'center',
+                        alignSelf: "center",
                         color:
-                          this.state.short != 'Price_low_high'
+                          this.state.short != "Price_low_high"
                             ? Colors.orange
-                            : '#fff',
-                      }}>
+                            : "#fff",
+                      }}
+                    >
                       Price low to high
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
-              <View style={{ width: '50%' }}>
+              <View style={{ width: "50%" }}>
                 <TouchableOpacity
-                  onPress={() => this.setState({ short: 'Price_high_low' })}>
+                  onPress={() => this.setState({ short: "Price_high_low" })}
+                >
                   <View
                     style={{
                       borderColor:
-                        this.state.short != 'Price_high_low' ? 'grey' : '#fff',
+                        this.state.short != "Price_high_low" ? "grey" : "#fff",
                       backgroundColor:
-                        this.state.short != 'Price_high_low'
-                          ? '#fff'
+                        this.state.short != "Price_high_low"
+                          ? "#fff"
                           : Colors.orange,
-                      borderColor: 'grey',
+                      borderColor: "grey",
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
                       width: 150,
-                      alignSelf: 'center',
+                      alignSelf: "center",
                       borderRadius: 15,
-                    }}>
+                    }}
+                  >
                     <Text
                       style={{
-                        alignSelf: 'center',
+                        alignSelf: "center",
                         color:
-                          this.state.short != 'Price_high_low'
+                          this.state.short != "Price_high_low"
                             ? Colors.orange
-                            : '#fff',
-                      }}>
+                            : "#fff",
+                      }}
+                    >
                       Price high to low
                     </Text>
                   </View>
@@ -919,14 +1026,16 @@ this.laungugaelocal();
               </View>
             </View>
 
-            <TouchableOpacity style={s.Btn1} onPress={() => {
-              if (this.state.short == 'Price_low_high') {
-                this.sortingBYPrice(false)
-
-              } else if (this.state.short == 'Price_high_low') {
-                this.sortingBYPrice(true)
-              }
-            }}>
+            <TouchableOpacity
+              style={s.Btn1}
+              onPress={() => {
+                if (this.state.short == "Price_low_high") {
+                  this.sortingBYPrice(false);
+                } else if (this.state.short == "Price_high_low") {
+                  this.sortingBYPrice(true);
+                }
+              }}
+            >
               <Text style={s.Btn1Text}>Show Results</Text>
             </TouchableOpacity>
           </View>
@@ -938,18 +1047,17 @@ this.laungugaelocal();
           onRequestClose={() => {
             // this.closeButtonFunction()
             this.setState({ modalVisible: false });
-          }}>
+          }}
+        >
           <View
             style={{
-              height: '72%',
-              marginTop: 'auto',
-              backgroundColor: '#fff',
-              fontFamily: 'Montserrat-Regular',
+              height: "72%",
+              marginTop: "auto",
+              backgroundColor: "#fff",
+              fontFamily: "Montserrat-Regular",
               borderRadius: 30,
-            }}>
-
-
-
+            }}
+          >
             <ScrollView>
               {/* <View >
       <Text>This is Half Modal</Text>
@@ -964,30 +1072,32 @@ this.laungugaelocal();
               <View>
                 <Text
                   style={{
-                    alignSelf: 'center',
-                    fontWeight: 'bold',
+                    alignSelf: "center",
+                    fontWeight: "bold",
                     fontSize: 18,
                     marginTop: 8,
-                  }}>
+                  }}
+                >
                   Filter
                 </Text>
               </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
                 <TouchableOpacity
                   onPress={() => this.gotoBack()}
-
                   style={{
-
-                    alignItems: 'flex-start',
+                    alignItems: "flex-start",
                     marginTop: -25,
                     marginLeft: 20,
 
-                    borderRadius: 25
-
-                  }}>
+                    borderRadius: 25,
+                  }}
+                >
                   <Icon
-
                     name="x-circle"
                     type="feather"
                     size={26}
@@ -996,20 +1106,24 @@ this.laungugaelocal();
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => this.reset()}
-
                   style={{
-                    alignItems: 'flex-end',
+                    alignItems: "flex-end",
                     marginTop: -30,
                     marginRight: 30,
-                    borderRadius: 25
-                  }}>
-                  <Text style={{
-                    alignSelf: 'center',
-                    fontWeight: 'bold',
-                    fontSize: 15,
-                    marginTop: 8,
-                    color: Colors.orange
-                  }}>Reset</Text>
+                    borderRadius: 25,
+                  }}
+                >
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontWeight: "bold",
+                      fontSize: 15,
+                      marginTop: 8,
+                      color: Colors.orange,
+                    }}
+                  >
+                    Reset
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View>
@@ -1017,9 +1131,10 @@ this.laungugaelocal();
                   style={{
                     color: Colors.black,
                     fontSize: 18,
-                    fontWeight: 'bold',
+                    fontWeight: "bold",
                     padding: 8,
-                  }}>
+                  }}
+                >
                   Pickup Location
                   {/* {this.state.entertainment && this.state.entertainment?.addon_name?.length > 0 && this.state.entertainment?.addon_name[0]} */}
                 </Text>
@@ -1038,106 +1153,124 @@ this.laungugaelocal();
                         >
                           <View
                             style={{
-                              borderColor: item.isSelected ? Colors.orange : '#000',
-                              backgroundColor: item.isSelected ? Colors.orange : 'white',
+                              borderColor: item.isSelected
+                                ? Colors.orange
+                                : "#000",
+                              backgroundColor: item.isSelected
+                                ? Colors.orange
+                                : "white",
                               borderWidth: 1,
                               padding: 8,
                               margin: 8,
                               width: 100,
-                              alignSelf: 'center',
+                              alignSelf: "center",
                               borderRadius: 15,
-                            }}>
+                            }}
+                          >
                             <Text
                               style={{
-                                alignSelf: 'center',
+                                alignSelf: "center",
 
-                                color:
-                                  item.isSelected ? 'white' : Colors.orange,
-                              }}>
+                                color: item.isSelected
+                                  ? "white"
+                                  : Colors.orange,
+                              }}
+                            >
                               {item && item?.city}
-
                             </Text>
                           </View>
                         </TouchableOpacity>
                       </View>
-
                     );
                   }}
                   keyExtractor={(i, ind) => ind}
-                // ListHeaderComponent={() =>
-                //   !this.state.entertainment.addon_products.length ? (
-                //     <Text >No data found</Text>
-                //   ) : null
-                // }
+                  // ListHeaderComponent={() =>
+                  //   !this.state.entertainment.addon_products.length ? (
+                  //     <Text >No data found</Text>
+                  //   ) : null
+                  // }
                 />
               </View>
               <Text
                 style={{
                   color: Colors.black,
                   fontSize: 18,
-                  fontWeight: 'bold',
+                  fontWeight: "bold",
                   padding: 8,
-                }}>
+                }}
+              >
                 Advertisement
               </Text>
 
-              <View style={{ flexDirection: 'row', marginTop: -10 }}>
-                <View style={{ width: '30%' }}>
+              <View style={{ flexDirection: "row", marginTop: -10 }}>
+                <View style={{ width: "30%" }}>
                   <TouchableOpacity
-                    onPress={() => this.setState({ advertisment: ' Public' })}>
+                    onPress={() => this.setState({ advertisment: " Public" })}
+                  >
                     <View
                       style={{
                         borderColor:
-                          this.state.advertisment != ' Public' ? 'grey' : '#fff',
+                          this.state.advertisment != " Public"
+                            ? "grey"
+                            : "#fff",
                         backgroundColor:
-                          this.state.advertisment != ' Public' ? '#fff' : Colors.orange,
+                          this.state.advertisment != " Public"
+                            ? "#fff"
+                            : Colors.orange,
                         borderWidth: 1,
                         padding: 8,
                         margin: 8,
                         width: 100,
-                        alignSelf: 'center',
+                        alignSelf: "center",
                         borderRadius: 15,
-                      }}>
+                      }}
+                    >
                       <Text
                         style={{
-                          alignSelf: 'center',
+                          alignSelf: "center",
                           color:
-                            this.state.advertisment != ' Public'
+                            this.state.advertisment != " Public"
                               ? Colors.orange
-                              : '#fff',
-                        }}>
+                              : "#fff",
+                        }}
+                      >
                         Public
                       </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
 
-                <View style={{ width: '30%' }}>
+                <View style={{ width: "30%" }}>
                   <TouchableOpacity
-                    onPress={() => this.setState({ advertisment: 'Private' })}>
+                    onPress={() => this.setState({ advertisment: "Private" })}
+                  >
                     <View
                       style={{
                         borderColor:
-                          this.state.advertisment != 'Private' ? 'grey' : '#fff',
+                          this.state.advertisment != "Private"
+                            ? "grey"
+                            : "#fff",
                         backgroundColor:
-                          this.state.advertisment != 'Private'
-                            ? '#fff'
+                          this.state.advertisment != "Private"
+                            ? "#fff"
                             : Colors.orange,
                         borderWidth: 1,
                         padding: 8,
                         margin: 8,
                         width: 100,
-                        alignSelf: 'center',
+                        alignSelf: "center",
                         borderRadius: 15,
-                      }}>
+                      }}
+                    >
                       <Text
                         style={{
-                          alignSelf: 'center',
+                          alignSelf: "center",
                           color:
-                            this.state.advertisment != 'Private'
+                            this.state.advertisment != "Private"
                               ? Colors.orange
-                              : '#fff',
-                        }}>
+                              : "#fff",
+                        }}
+                      >
                         Private
                       </Text>
                     </View>
@@ -1149,14 +1282,14 @@ this.laungugaelocal();
                   style={{
                     color: Colors.black,
                     fontSize: 18,
-                    fontWeight: 'bold',
+                    fontWeight: "bold",
                     padding: 8,
-                  }}>
+                  }}
+                >
                   Food
                   {/*  need to change form addon_arr */}
                   {/* {this.state.food && this.state.food?.addon_name?.length > 0 && this.state.food?.addon_name[0]} */}
                 </Text>
-
 
                 <FlatList
                   extraData={this.state.food}
@@ -1167,54 +1300,63 @@ this.laungugaelocal();
                     return (
                       <View style={{}}>
                         <TouchableOpacity
-                          onPress={() => this.onChangeCheck(index)}  >
+                          onPress={() => this.onChangeCheck(index)}
+                        >
                           <View
                             style={{
-                              borderColor: item.isSelected ? Colors.orange : '#000',
-                              backgroundColor: item.isSelected ? Colors.orange : 'white',
+                              borderColor: item.isSelected
+                                ? Colors.orange
+                                : "#000",
+                              backgroundColor: item.isSelected
+                                ? Colors.orange
+                                : "white",
                               borderWidth: 1,
                               padding: 8,
                               margin: 8,
                               width: 100,
-                              alignSelf: 'center',
+                              alignSelf: "center",
                               borderRadius: 15,
-                            }}>
+                            }}
+                          >
                             <Text
                               style={{
-                                alignSelf: 'center',
-                                color:
-                                  item.isSelected ? 'white' : Colors.orange,
-                              }}>
-                              {item && item?.addon_product_name && item?.addon_product_name?.length > 0 ? item?.addon_product_name[0] : null}
-
+                                alignSelf: "center",
+                                color: item.isSelected
+                                  ? "white"
+                                  : Colors.orange,
+                              }}
+                            >
+                              {item &&
+                              item?.addon_product_name &&
+                              item?.addon_product_name?.length > 0
+                                ? item?.addon_product_name[0]
+                                : null}
                             </Text>
                           </View>
                         </TouchableOpacity>
                       </View>
-
                     );
                   }}
                   keyExtractor={(i, ind) => ind}
-                // ListHeaderComponent={() =>
-                //   !this.state.food ? (
-                //     <Text >No data found</Text>
-                //   ) : null
-                // }
+                  // ListHeaderComponent={() =>
+                  //   !this.state.food ? (
+                  //     <Text >No data found</Text>
+                  //   ) : null
+                  // }
                 />
-
               </View>
               <View>
                 <Text
                   style={{
                     color: Colors.black,
                     fontSize: 18,
-                    fontWeight: 'bold',
+                    fontWeight: "bold",
                     padding: 8,
-                  }}>
+                  }}
+                >
                   Entertainment
                   {/* {this.state.entertainment && this.state.entertainment?.addon_name?.length > 0 && this.state.entertainment?.addon_name[0]} */}
                 </Text>
-
 
                 <FlatList
                   extraData={this.state.entertainment}
@@ -1231,56 +1373,63 @@ this.laungugaelocal();
                         >
                           <View
                             style={{
-                              borderColor: item.isSelected ? Colors.orange : '#000',
-                              backgroundColor: item.isSelected ? Colors.orange : 'white',
+                              borderColor: item.isSelected
+                                ? Colors.orange
+                                : "#000",
+                              backgroundColor: item.isSelected
+                                ? Colors.orange
+                                : "white",
                               borderWidth: 1,
                               padding: 8,
                               margin: 8,
                               width: 100,
-                              alignSelf: 'center',
+                              alignSelf: "center",
                               borderRadius: 15,
-                            }}>
+                            }}
+                          >
                             <Text
                               style={{
-                                alignSelf: 'center',
+                                alignSelf: "center",
 
-                                color:
-                                  item.isSelected ? 'white' : Colors.orange,
-                              }}>
-                              {item && item?.addon_product_name && item?.addon_product_name?.length > 0 ? item?.addon_product_name[0] : null}
-
+                                color: item.isSelected
+                                  ? "white"
+                                  : Colors.orange,
+                              }}
+                            >
+                              {item &&
+                              item?.addon_product_name &&
+                              item?.addon_product_name?.length > 0
+                                ? item?.addon_product_name[0]
+                                : null}
                             </Text>
                           </View>
                         </TouchableOpacity>
                       </View>
-
                     );
                   }}
                   keyExtractor={(i, ind) => ind}
-                // ListHeaderComponent={() =>
-                //   !this.state.entertainment.addon_products.length ? (
-                //     <Text >No data found</Text>
-                //   ) : null
-                // }
+                  // ListHeaderComponent={() =>
+                  //   !this.state.entertainment.addon_products.length ? (
+                  //     <Text >No data found</Text>
+                  //   ) : null
+                  // }
                 />
-
               </View>
               <View>
                 <Text
                   style={{
                     color: Colors.black,
                     fontSize: 18,
-                    fontWeight: 'bold',
+                    fontWeight: "bold",
                     padding: 8,
-                  }}>
+                  }}
+                >
                   Equpments
                   {/* {this.state.type_gear && this.state.type_gear?.addon_name?.length > 0 && this.state.type_gear?.addon_name[0]} */}
                 </Text>
 
-
                 <FlatList
                   extraData={this.state.type_gear}
-
                   showsHorizontalScrollIndicator={false}
                   numColumns={3}
                   data={this.state.type_gear}
@@ -1290,27 +1439,36 @@ this.laungugaelocal();
                       <View style={{}}>
                         <TouchableOpacity
                           onPress={() => this.onChangedone(index)}
-
                         >
                           <View
                             style={{
-                              borderColor: item.isSelected ? Colors.orange : '#000',
-                              backgroundColor: item.isSelected ? Colors.orange : 'white',
+                              borderColor: item.isSelected
+                                ? Colors.orange
+                                : "#000",
+                              backgroundColor: item.isSelected
+                                ? Colors.orange
+                                : "white",
                               borderWidth: 1,
                               padding: 8,
                               margin: 8,
                               width: 100,
-                              alignSelf: 'center',
+                              alignSelf: "center",
                               borderRadius: 15,
-                            }}>
+                            }}
+                          >
                             <Text
                               style={{
-                                alignSelf: 'center',
-                                color:
-                                  item.isSelected ? 'white' : Colors.orange,
-                              }}>
-                              {item && item?.addon_product_name && item?.addon_product_name?.length > 0 ? item?.addon_product_name[0] : null}
-
+                                alignSelf: "center",
+                                color: item.isSelected
+                                  ? "white"
+                                  : Colors.orange,
+                              }}
+                            >
+                              {item &&
+                              item?.addon_product_name &&
+                              item?.addon_product_name?.length > 0
+                                ? item?.addon_product_name[0]
+                                : null}
                             </Text>
                           </View>
                         </TouchableOpacity>
@@ -1318,99 +1476,115 @@ this.laungugaelocal();
                     );
                   }}
                   keyExtractor={(i, ind) => ind}
-                // ListHeaderComponent={() =>
-                //   !this.state.type_gear.addon_products.length > 0 ? (
-                //     <Text >No data found</Text>
-                //   ) : null
-                // }
+                  // ListHeaderComponent={() =>
+                  //   !this.state.type_gear.addon_products.length > 0 ? (
+                  //     <Text >No data found</Text>
+                  //   ) : null
+                  // }
                 />
               </View>
               <Text
                 style={{
                   color: Colors.black,
                   fontSize: 18,
-                  fontWeight: 'bold',
+                  fontWeight: "bold",
                   padding: 8,
-                }}>
+                }}
+              >
                 Guests
               </Text>
 
-              <View style={{ flexDirection: 'row', marginTop: -10 }}>
-                <View style={{ width: '30%' }}>
-                  <TouchableOpacity onPress={() => this.setState({ Guests: '1_3' })}>
+              <View style={{ flexDirection: "row", marginTop: -10 }}>
+                <View style={{ width: "30%" }}>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ Guests: "1_3" })}
+                  >
                     <View
                       style={{
-                        borderColor: this.state.Guests != '1_3' ? 'grey' : '#fff',
+                        borderColor:
+                          this.state.Guests != "1_3" ? "grey" : "#fff",
                         backgroundColor:
-                          this.state.Guests != '1_3' ? '#fff' : Colors.orange,
-                        borderColor: 'grey',
+                          this.state.Guests != "1_3" ? "#fff" : Colors.orange,
+                        borderColor: "grey",
                         borderWidth: 1,
                         padding: 8,
                         margin: 8,
                         width: 100,
-                        alignSelf: 'center',
+                        alignSelf: "center",
                         borderRadius: 15,
-                      }}>
+                      }}
+                    >
                       <Text
                         style={{
-                          alignSelf: 'center',
+                          alignSelf: "center",
                           color:
-                            this.state.Guests != '1_3' ? Colors.orange : '#fff',
-                        }}>
+                            this.state.Guests != "1_3" ? Colors.orange : "#fff",
+                        }}
+                      >
                         1 - 3
                       </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
 
-                <View style={{ width: '30%' }}>
-                  <TouchableOpacity onPress={() => this.setState({ Guests: '4_6' })}>
+                <View style={{ width: "30%" }}>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ Guests: "4_6" })}
+                  >
                     <View
                       style={{
-                        borderColor: this.state.Guests != '4_6' ? 'grey' : '#fff',
+                        borderColor:
+                          this.state.Guests != "4_6" ? "grey" : "#fff",
                         backgroundColor:
-                          this.state.Guests != '4_6' ? '#fff' : Colors.orange,
-                        borderColor: 'grey',
+                          this.state.Guests != "4_6" ? "#fff" : Colors.orange,
+                        borderColor: "grey",
                         borderWidth: 1,
                         padding: 8,
                         margin: 8,
                         width: 100,
-                        alignSelf: 'center',
+                        alignSelf: "center",
                         borderRadius: 15,
-                      }}>
+                      }}
+                    >
                       <Text
                         style={{
-                          alignSelf: 'center',
+                          alignSelf: "center",
                           color:
-                            this.state.Guests != '4_6' ? Colors.orange : '#fff',
-                        }}>
+                            this.state.Guests != "4_6" ? Colors.orange : "#fff",
+                        }}
+                      >
                         4 - 6
                       </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
 
-                <View style={{ width: '30%' }}>
-                  <TouchableOpacity onPress={() => this.setState({ Guests: '7_9' })}>
+                <View style={{ width: "30%" }}>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ Guests: "7_9" })}
+                  >
                     <View
                       style={{
-                        borderColor: this.state.Guests != '7_9' ? 'grey' : '#fff',
+                        borderColor:
+                          this.state.Guests != "7_9" ? "grey" : "#fff",
                         backgroundColor:
-                          this.state.Guests != '7_9' ? '#fff' : Colors.orange,
-                        borderColor: 'grey',
+                          this.state.Guests != "7_9" ? "#fff" : Colors.orange,
+                        borderColor: "grey",
                         borderWidth: 1,
                         padding: 8,
                         margin: 8,
                         width: 100,
-                        alignSelf: 'center',
+                        alignSelf: "center",
                         borderRadius: 15,
-                      }}>
+                      }}
+                    >
                       <Text
                         style={{
-                          alignSelf: 'center',
+                          alignSelf: "center",
                           color:
-                            this.state.Guests != '7_9' ? Colors.orange : '#fff',
-                        }}>
+                            this.state.Guests != "7_9" ? Colors.orange : "#fff",
+                        }}
+                      >
                         7 - 9
                       </Text>
                     </View>
@@ -1418,28 +1592,33 @@ this.laungugaelocal();
                 </View>
               </View>
 
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ width: '30%' }}>
-                  <TouchableOpacity onPress={() => this.setState({ Guests: '10_' })}>
+              <View style={{ flexDirection: "row" }}>
+                <View style={{ width: "30%" }}>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ Guests: "10_" })}
+                  >
                     <View
                       style={{
-                        borderColor: this.state.Guests != '10_' ? 'grey' : '#fff',
+                        borderColor:
+                          this.state.Guests != "10_" ? "grey" : "#fff",
                         backgroundColor:
-                          this.state.Guests != '10_' ? '#fff' : Colors.orange,
-                        borderColor: 'grey',
+                          this.state.Guests != "10_" ? "#fff" : Colors.orange,
+                        borderColor: "grey",
                         borderWidth: 1,
                         padding: 8,
                         margin: 8,
                         width: 100,
-                        alignSelf: 'center',
+                        alignSelf: "center",
                         borderRadius: 15,
-                      }}>
+                      }}
+                    >
                       <Text
                         style={{
-                          alignSelf: 'center',
+                          alignSelf: "center",
                           color:
-                            this.state.Guests != '10_' ? Colors.orange : '#fff',
-                        }}>
+                            this.state.Guests != "10_" ? Colors.orange : "#fff",
+                        }}
+                      >
                         10+
                       </Text>
                     </View>
@@ -1451,131 +1630,175 @@ this.laungugaelocal();
                 style={{
                   color: Colors.black,
                   fontSize: 18,
-                  fontWeight: 'bold',
+                  fontWeight: "bold",
                   padding: 8,
                   marginTop: 6,
-                }}>
+                }}
+              >
                 Trip Hours
               </Text>
 
-              <View style={{ flexDirection: 'row', marginTop: -10 }}>
-                <TouchableOpacity onPress={() => this.setState({ triphours: '1_2' })}>
+              <View style={{ flexDirection: "row", marginTop: -10 }}>
+                <TouchableOpacity
+                  onPress={() => this.setState({ triphours: "1_2" })}
+                >
                   <View
                     style={{
-                      borderColor: this.state.triphours != '1_2' ? 'grey' : '#fff',
+                      borderColor:
+                        this.state.triphours != "1_2" ? "grey" : "#fff",
                       backgroundColor:
-                        this.state.triphours != '1_2' ? '#fff' : Colors.orange,
+                        this.state.triphours != "1_2" ? "#fff" : Colors.orange,
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
                       width: 60,
-                      alignSelf: 'center',
+                      alignSelf: "center",
                       borderRadius: 15,
-                    }}>
+                    }}
+                  >
                     <Text
                       style={{
-                        alignSelf: 'center',
-                        color: this.state.triphours != '1_2' ? Colors.orange : '#fff',
-                      }}>
+                        alignSelf: "center",
+                        color:
+                          this.state.triphours != "1_2"
+                            ? Colors.orange
+                            : "#fff",
+                      }}
+                    >
                       1-2hr
                     </Text>
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.setState({ triphours: '3_4' })}>
+                <TouchableOpacity
+                  onPress={() => this.setState({ triphours: "3_4" })}
+                >
                   <View
                     style={{
-                      borderColor: this.state.triphours != '3_4' ? 'grey' : '#fff',
+                      borderColor:
+                        this.state.triphours != "3_4" ? "grey" : "#fff",
                       backgroundColor:
-                        this.state.triphours != '3_4' ? '#fff' : Colors.orange,
+                        this.state.triphours != "3_4" ? "#fff" : Colors.orange,
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
                       width: 60,
-                      alignSelf: 'center',
+                      alignSelf: "center",
                       borderRadius: 15,
-                    }}>
+                    }}
+                  >
                     <Text
                       style={{
-                        alignSelf: 'center',
-                        color: this.state.triphours != '3_4' ? Colors.orange : '#fff',
-                      }}>
+                        alignSelf: "center",
+                        color:
+                          this.state.triphours != "3_4"
+                            ? Colors.orange
+                            : "#fff",
+                      }}
+                    >
                       3-4hr
                     </Text>
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.setState({ triphours: '5_6' })}>
+                <TouchableOpacity
+                  onPress={() => this.setState({ triphours: "5_6" })}
+                >
                   <View
                     style={{
-                      borderColor: this.state.triphours != '5_6' ? 'grey' : '#fff',
+                      borderColor:
+                        this.state.triphours != "5_6" ? "grey" : "#fff",
                       backgroundColor:
-                        this.state.triphours != '5_6' ? '#fff' : Colors.orange,
+                        this.state.triphours != "5_6" ? "#fff" : Colors.orange,
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
                       width: 60,
-                      alignSelf: 'center',
+                      alignSelf: "center",
                       borderRadius: 15,
-                    }}>
+                    }}
+                  >
                     <Text
                       style={{
-                        alignSelf: 'center',
-                        color: this.state.triphours != '5_6' ? Colors.orange : '#fff',
-                      }}>
+                        alignSelf: "center",
+                        color:
+                          this.state.triphours != "5_6"
+                            ? Colors.orange
+                            : "#fff",
+                      }}
+                    >
                       5-6hr
                     </Text>
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.setState({ triphours: '7_8' })}>
+                <TouchableOpacity
+                  onPress={() => this.setState({ triphours: "7_8" })}
+                >
                   <View
                     style={{
-                      borderColor: this.state.triphours != '7_8' ? 'grey' : '#fff',
+                      borderColor:
+                        this.state.triphours != "7_8" ? "grey" : "#fff",
                       backgroundColor:
-                        this.state.triphours != '7_8' ? '#fff' : Colors.orange,
+                        this.state.triphours != "7_8" ? "#fff" : Colors.orange,
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
                       width: 60,
-                      alignSelf: 'center',
+                      alignSelf: "center",
                       borderRadius: 15,
-                    }}>
+                    }}
+                  >
                     <Text
                       style={{
-                        alignSelf: 'center',
-                        color: this.state.triphours != '7_8' ? Colors.orange : '#fff',
-                      }}>
+                        alignSelf: "center",
+                        color:
+                          this.state.triphours != "7_8"
+                            ? Colors.orange
+                            : "#fff",
+                      }}
+                    >
                       7-8hr
                     </Text>
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.setState({ triphours: '9_10' })}>
+                <TouchableOpacity
+                  onPress={() => this.setState({ triphours: "9_10" })}
+                >
                   <View
                     style={{
-                      borderColor: this.state.triphours != '9_10' ? 'grey' : '#fff',
+                      borderColor:
+                        this.state.triphours != "9_10" ? "grey" : "#fff",
                       backgroundColor:
-                        this.state.triphours != '9_10' ? '#fff' : Colors.orange,
+                        this.state.triphours != "9_10" ? "#fff" : Colors.orange,
                       borderWidth: 1,
                       padding: 8,
                       margin: 8,
                       width: 60,
-                      alignSelf: 'center',
+                      alignSelf: "center",
                       borderRadius: 15,
-                    }}>
+                    }}
+                  >
                     <Text
                       style={{
-                        alignSelf: 'center',
-                        color: this.state.triphours != '9_10' ? Colors.orange : '#fff',
-                      }}>
+                        alignSelf: "center",
+                        color:
+                          this.state.triphours != "9_10"
+                            ? Colors.orange
+                            : "#fff",
+                      }}
+                    >
                       9-10h
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
-              <TouchableOpacity style={s.Btn1} onPress={() => this.ShowResult()}>
+              <TouchableOpacity
+                style={s.Btn1}
+                onPress={() => this.ShowResult()}
+              >
                 <Text style={s.Btn1Text}>Show Results</Text>
               </TouchableOpacity>
             </ScrollView>
@@ -1588,31 +1811,31 @@ this.laungugaelocal();
           onRequestClose={() => {
             // this.closeButtonFunction()
             this.setState({ modalVisible3: false });
-          }}>
+          }}
+        >
           <View
             style={{
-              height: '70%',
-              marginTop: 'auto',
-              backgroundColor: '#fff',
-              fontFamily: 'Montserrat-Regular',
+              height: "70%",
+              marginTop: "auto",
+              backgroundColor: "#fff",
+              fontFamily: "Montserrat-Regular",
               borderRadius: 30,
-            }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-
+            }}
+          >
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
               <TouchableOpacity
                 onPress={() => this.gotoBack()}
-
                 style={{
-
-                  alignItems: 'flex-start',
+                  alignItems: "flex-start",
                   marginTop: 10,
                   marginLeft: 20,
 
-                  borderRadius: 25
-
-                }}>
+                  borderRadius: 25,
+                }}
+              >
                 <Icon
-
                   name="x-circle"
                   type="feather"
                   size={26}
@@ -1620,23 +1843,30 @@ this.laungugaelocal();
                 />
               </TouchableOpacity>
             </View>
-            <View style={{ marginTop: '3%' }}>
+            <View style={{ marginTop: "3%" }}>
               <Calendar
                 minDate={new Date()}
                 markedDates={this.state.calender_arr}
-                onDayPress={day => {
+                onDayPress={(day) => {
                   this._selectDate(day.dateString);
                 }}
-                renderArrow={direction => <Icon type="ionicon"
-                  color={Colors.orange}
-
-                  name={direction === 'left'
-                    ? (user.value == 1 ? 'arrow-forward' : 'arrow-back')
-                    : (user.value == 1 ? 'arrow-back' : 'arrow-forward')}
-                />}
+                renderArrow={(direction) => (
+                  <Icon
+                    type="ionicon"
+                    color={Colors.orange}
+                    name={
+                      direction === "left"
+                        ? user.value == 1
+                          ? "arrow-forward"
+                          : "arrow-back"
+                        : user.value == 1
+                        ? "arrow-back"
+                        : "arrow-forward"
+                    }
+                  />
+                )}
               />
             </View>
-
 
             <TouchableOpacity style={s.Btn1} onPress={() => this.ShowResult()}>
               <Text style={s.Btn1Text}>Select Date</Text>
@@ -1651,10 +1881,10 @@ this.laungugaelocal();
 const s = StyleSheet.create({
   col: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRightColor: '#39DCE5',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRightColor: "#39DCE5",
     borderRightWidth: 0.8,
   },
   icons: { height: 15, width: 15 },
@@ -1669,9 +1899,9 @@ const s = StyleSheet.create({
   btn1: {
     height: 90,
     width: 60,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 7,
     elevation: 5,
     margin: 7,
@@ -1681,8 +1911,8 @@ const s = StyleSheet.create({
     fontFamily: FontFamily.semi_bold,
   },
   btn_1: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   Card: {
     borderRadius: 20,
@@ -1713,35 +1943,35 @@ const s = StyleSheet.create({
     fontFamily: FontFamily.semi_bold,
     fontSize: 15,
     color: Colors.price,
-    textAlign: 'right',
+    textAlign: "right",
   },
   status: {
     color: Colors.orange,
     fontFamily: FontFamily.default,
-    fontWeight: '500',
+    fontWeight: "500",
     fontSize: 14,
-    textAlign: 'right',
+    textAlign: "right",
   },
   ImageBackground: {
     height: 215,
-    width: '100%',
+    width: "100%",
     borderRadius: 15,
-    alignSelf: 'center',
+    alignSelf: "center",
     // marginHorizontal:10,
     elevation: 0,
   },
   imgStyle: {
     borderRadius: 15,
     height: 215,
-    width: '100%',
-    alignSelf: 'center',
+    width: "100%",
+    alignSelf: "center",
   },
   SEC3: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 10,
     paddingHorizontal: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontFamily: FontFamily.semi_bold,
@@ -1777,13 +2007,13 @@ const s = StyleSheet.create({
     borderBottomWidth: 25,
     borderBottomColor: Colors.orange,
     borderLeftWidth: 25,
-    borderLeftColor: 'transparent',
+    borderLeftColor: "transparent",
     borderRightWidth: 25,
-    borderRightColor: 'transparent',
-    borderStyle: 'solid',
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    transform: [{ rotate: '-45deg' }],
+    borderRightColor: "transparent",
+    borderStyle: "solid",
+    backgroundColor: "transparent",
+    alignItems: "center",
+    transform: [{ rotate: "-45deg" }],
     marginTop: 19.2,
     marginLeft: -26,
   },
@@ -1791,23 +2021,23 @@ const s = StyleSheet.create({
   select_date: {
     fontSize: 13,
     color: Colors.orange,
-    alignSelf: 'center',
+    alignSelf: "center",
     padding: 9,
-    fontWeight: '900',
-    fontFamily: 'Montserrat-SemiBold',
+    fontWeight: "900",
+    fontFamily: "Montserrat-SemiBold",
   },
   Btn1: {
     height: 48,
-    width: '80%',
+    width: "80%",
     backgroundColor: Colors.orange,
     margin: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 30,
-    marginLeft: '10%',
+    marginLeft: "10%",
     elevation: 3,
-    overflow: 'hidden',
-    shadowColor: '#fff',
+    overflow: "hidden",
+    shadowColor: "#fff",
     shadowRadius: 10,
     shadowOpacity: 1,
   },

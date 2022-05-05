@@ -1,26 +1,31 @@
-import moment from 'moment';
-import React, { Component } from 'react';
+import moment from "moment";
+import React, { Component } from "react";
 import {
-  Dimensions, FlatList, Keyboard, KeyboardAvoidingView, Modal, StyleSheet, Text, TouchableOpacity, View
-} from 'react-native';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
-import { Icon, Input } from 'react-native-elements';
-import { WebView } from 'react-native-webview';
-import Header from '../../Components/Header';
-import {
-  Colors,
-  FontFamily
-} from '../../Constants/Constants';
-import Timeslots from '../../Data/Timeslots';
-import { apifuntion } from '../../Provider/apiProvider';
-import { config } from '../../Provider/configProvider';
-import { Lang_chg } from '../../Provider/Language_provider';
-import { msgProvider, msgText, msgTitle } from '../../Provider/messageProvider';
+  Dimensions,
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Calendar, LocaleConfig } from "react-native-calendars";
+import { Icon, Input } from "react-native-elements";
+import { WebView } from "react-native-webview";
+import Header from "../../Components/Header";
+import { Colors, FontFamily } from "../../Constants/Constants";
+import Timeslots from "../../Data/Timeslots";
+import { apifuntion } from "../../Provider/apiProvider";
+import { config } from "../../Provider/configProvider";
+import { Lang_chg } from "../../Provider/Language_provider";
+import { msgProvider, msgText, msgTitle } from "../../Provider/messageProvider";
 import { UserContext } from "./UserContext";
 
-const { height } = Dimensions.get('window');
+const { height } = Dimensions.get("window");
 export default class RequestPayment extends Component {
-  static contextType = UserContext
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -30,23 +35,23 @@ export default class RequestPayment extends Component {
       booking_arr: this.props.route.params.booking_arr,
       webviewshow: false,
       TimeSlot: Timeslots,
-      time: '',
-      getdate: '',
-      date: '',
-      pay_amount: '',
-      booking_no: '',
-      mode: 'time',
+      time: "",
+      getdate: "",
+      date: "",
+      pay_amount: "",
+      booking_no: "",
+      mode: "time",
       isConnected: true,
       calender_arr: {},
       test_arr: {},
       isShowDatePicker: false,
-      guest: '',
-      hour: '',
-      selected_date: '',
-      booking_id: '',
-      unavailabe_arr: 'NA',
-      bookingDateTimeStart: '',
-      bookingDateTimeEnd: '',
+      guest: "",
+      hour: "",
+      selected_date: "",
+      booking_id: "",
+      unavailabe_arr: "NA",
+      bookingDateTimeStart: "",
+      bookingDateTimeEnd: "",
       selectedIndex: null,
       hoursData: [
         { hours: 1, status: false },
@@ -77,23 +82,21 @@ export default class RequestPayment extends Component {
     };
   }
 
-
   componentDidMount() {
     // alert(this.state.adver_arr.extra_price)
-    let date = new Date('2020-06-12T14:42:42');
-    console.log('date ', date);
+    let date = new Date("2020-06-12T14:42:42");
+    console.log("date ", date);
     this.setState({ getdate: date });
 
-    console.log('adv_arr', this.state.adver_arr);
-    console.log('booking_arr', this.state.booking_arr);
+    console.log("adv_arr", this.state.adver_arr);
+    console.log("booking_arr", this.state.booking_arr);
 
     let markedDay = {};
-    this.state.booking_arr.map(item => {
-
+    this.state.booking_arr.map((item) => {
       this.state.calender_arr[item.date] = {
         selected: true,
         // marked: true,
-        selectedColor: 'grey',
+        selectedColor: "grey",
         disabled: true,
         disableTouchEvent: true,
       };
@@ -106,61 +109,109 @@ export default class RequestPayment extends Component {
     // }
     // console.log('booking_arr after', this.state.booking_arr);
 
-
-    console.log('markdate2', this.state.test_arr);
+    console.log("markdate2", this.state.test_arr);
     this.laungugaelocal();
   }
 
-
   laungugaelocal = () => {
-    const user = this.context
-    console.log('user :>> ', user);
+    const user = this.context;
+    console.log("user :>> ", user);
     if (user.value == 0) {
-      LocaleConfig.locales['en'] = {
+      LocaleConfig.locales["en"] = {
         monthNames: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'may',
-          'June',
-          'July',
-          'august',
-          'September',
-          'October',
-          'November',
-          'December'
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "august",
+          "September",
+          "October",
+          "November",
+          "December",
         ],
-        monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
-        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-        dayNamesShort: ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thr.', 'Fri.', 'Sat.'],
-        today: "Aujourd'hui"
+        monthNamesShort: [
+          "Janv.",
+          "Févr.",
+          "Mars",
+          "Avril",
+          "Mai",
+          "Juin",
+          "Juil.",
+          "Août",
+          "Sept.",
+          "Oct.",
+          "Nov.",
+          "Déc.",
+        ],
+        dayNames: [
+          "Dimanche",
+          "Lundi",
+          "Mardi",
+          "Mercredi",
+          "Jeudi",
+          "Vendredi",
+          "Samedi",
+        ],
+        dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"],
+        today: "Aujourd'hui",
       };
-      LocaleConfig.defaultLocale = 'en';
+      LocaleConfig.defaultLocale = "en";
     } else if (user.value == 1) {
-      LocaleConfig.locales['ar'] = {
+      LocaleConfig.locales["ar"] = {
         monthNames: [
-          'يناير',
-          'فبراير',
-          'مارس',
-          'ابريل',
-          'مايو',
-          'يونيو',
-          'يوليو',
-          'اغسطس',
-          'سبتمبر',
-          'اكتوبر',
-          'نوفمبر',
-          'ديسمبر'
+          "يناير",
+          "فبراير",
+          "مارس",
+          "ابريل",
+          "مايو",
+          "يونيو",
+          "يوليو",
+          "اغسطس",
+          "سبتمبر",
+          "اكتوبر",
+          "نوفمبر",
+          "ديسمبر",
         ],
-        monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
-        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-      dayNamesShort: ['احد.','اثنين.' , 'الثلاثاء.', 'الاربعاء.', 'الخميس.', 'الجمعة.', 'السبت.'],
-        today: "Aujourd'hui"
+        monthNamesShort: [
+          "Janv.",
+          "Févr.",
+          "Mars",
+          "Avril",
+          "Mai",
+          "Juin",
+          "Juil.",
+          "Août",
+          "Sept.",
+          "Oct.",
+          "Nov.",
+          "Déc.",
+        ],
+        dayNames: [
+          "Dimanche",
+          "Lundi",
+          "Mardi",
+          "Mercredi",
+          "Jeudi",
+          "Vendredi",
+          "Samedi",
+        ],
+        dayNamesShort: [
+          "احد",
+          "اثنين",
+          "الثلاثاء",
+          "الاربعاء",
+          "الخميس",
+          "الجمعة",
+          "السبت",
+        ],
+        today: "Aujourd'hui",
       };
-      LocaleConfig.defaultLocale = 'ar';
-    } 
-  }
+      LocaleConfig.defaultLocale = "ar";
+    }
+  };
 
   showDatePicker = () => {
     this.setState({
@@ -174,108 +225,107 @@ export default class RequestPayment extends Component {
     });
   };
 
-  handleConfirm = date => {
-    console.warn('A date has been picked: ', date);
+  handleConfirm = (date) => {
+    console.warn("A date has been picked: ", date);
     this.setState({
-      time: moment(date).format('HH:mm'),
+      time: moment(date).format("HH:mm"),
     });
     this.hideDatePicker();
   };
 
   Payment() {
-
-    console.log('*******', this.state.adver_arr);
+    console.log("*******", this.state.adver_arr);
     Keyboard.dismiss();
     let { selected_date, guest, time } = this.state;
 
     if (selected_date.length <= 0) {
-      msgProvider.toast(Lang_chg.select_date[config.language], 'center');
+      msgProvider.toast(Lang_chg.select_date[config.language], "center");
       return false;
     }
     if (!time) {
-      msgProvider.toast(Lang_chg.text_select_time[config.language], 'center');
+      msgProvider.toast(Lang_chg.text_select_time[config.language], "center");
       return false;
     }
 
     if (!guest) {
-      msgProvider.toast(Lang_chg.no_of_guest_e[config.language], 'center');
+      msgProvider.toast(Lang_chg.no_of_guest_e[config.language], "center");
       return false;
     }
 
     var data = new FormData();
-    data.append('user_id_post', this.state.user_id_post.user_id);
-    data.append('advertisement_id', this.state.advertisement.advertisement_id);
-    data.append('boat_id', this.state.adver_arr.boat_id);
-    data.append('no_of_guest', this.state.guest);
-    data.append('date', this.state.selected_date);
-    data.append('time', this.state.time);
-    data.append('idle_time', this.state.adver_arr.idle_time);
-    data.append('rent_amount', this.state.advertisement?.price);
-    data.append('minimum_hours', this.state.adver_arr.minimum_hours);
-    data.append('discount', this.state.adver_arr.discount);
+    data.append("user_id_post", this.state.user_id_post.user_id);
+    data.append("advertisement_id", this.state.advertisement.advertisement_id);
+    data.append("boat_id", this.state.adver_arr.boat_id);
+    data.append("no_of_guest", this.state.guest);
+    data.append("date", this.state.selected_date);
+    data.append("time", this.state.time);
+    data.append("idle_time", this.state.adver_arr.idle_time);
+    data.append("rent_amount", this.state.advertisement?.price);
+    data.append("minimum_hours", this.state.adver_arr.minimum_hours);
+    data.append("discount", this.state.adver_arr.discount);
     data.append(
-      'extra_rent_amt',
+      "extra_rent_amt",
       this.state.hour &&
-      Number(this.state.hour) * Number(this.state.adver_arr.extra_price),
+        Number(this.state.hour) * Number(this.state.adver_arr.extra_price)
     );
-    data.append('payment_type', 1);
-    data.append('other_user_id', this.state.adver_arr.user_id);
-    data.append('coupon_code', '');
-    this.props.navigation.navigate('ExtraRequest', {
+    data.append("payment_type", 1);
+    data.append("other_user_id", this.state.adver_arr.user_id);
+    data.append("coupon_code", "");
+    this.props.navigation.navigate("ExtraRequest", {
       adver_arr: this.state.adver_arr.addon_arr,
       adv: this.state.adver_arr,
       destination_name: this.state.advertisement.destination_name,
       data: {
-        'destination_name[0]': this.state.advertisement.destination_name[0],
-        'destination_name[1]': this.state.advertisement.destination_name[1],
+        "destination_name[0]": this.state.advertisement.destination_name[0],
+        "destination_name[1]": this.state.advertisement.destination_name[1],
         // 'destination_name' :this.state.advertisement.destination_name,
-        'destination_name[1]': this.state.advertisement.destination_name[1],
-        'user_id_post': this.state.user_id_post.user_id,
-        'advertisement_id': this.state.advertisement.advertisement_id,
-        'boat_id': this.state.adver_arr.boat_id,
-        'no_of_guest': this.state.guest,
-        'date': this.state.selected_date,
-        'time': this.state.time,
-        'idle_time': this.state.adver_arr.idle_time,
-        'rent_amount': this.state.advertisement?.price,
-        'minimum_hours': this.state.adver_arr.minimum_hours,
-        'discount': this.state.adver_arr.discount,
+        "destination_name[1]": this.state.advertisement.destination_name[1],
+        user_id_post: this.state.user_id_post.user_id,
+        advertisement_id: this.state.advertisement.advertisement_id,
+        boat_id: this.state.adver_arr.boat_id,
+        no_of_guest: this.state.guest,
+        date: this.state.selected_date,
+        time: this.state.time,
+        idle_time: this.state.adver_arr.idle_time,
+        rent_amount: this.state.advertisement?.price,
+        minimum_hours: this.state.adver_arr.minimum_hours,
+        discount: this.state.adver_arr.discount,
         // 'extra_rent_amt': Number(this.state.hour) * Number(this.state.adver_arr.extra_price), //aa
-        'payment_type': 1,
-        'other_user_id': this.state.adver_arr.user_id,
-        'coupon_code': this.state.adver_arr.coupon_code,
-        'coupon_discount': this.state.adver_arr.coupon_discount,
+        payment_type: 1,
+        other_user_id: this.state.adver_arr.user_id,
+        coupon_code: this.state.adver_arr.coupon_code,
+        coupon_discount: this.state.adver_arr.coupon_discount,
         // 'extraHours':this.state.hour, //aa
-      }
+      },
       // paymentDetail: {
       //   booking_no: obj.booking_no,
       //   pay_amount: obj.pay_amount,
       //   booking_id: obj.booking_id,
       // },
     });
-    console.log('_____________', data);
+    console.log("_____________", data);
     return;
 
     this.setState({ loading: true });
-    let url = config.baseURL + 'booking_add.php';
+    let url = config.baseURL + "booking_add.php";
     apifuntion
       .postApi(url, data)
-      .then(obj => {
+      .then((obj) => {
         // console.log(obj)
         this.setState({ loading: false });
         return obj.json();
       })
-      .then(obj => {
+      .then((obj) => {
         console.log(obj);
 
-        if (obj.success == 'true') {
+        if (obj.success == "true") {
           this.setState({
             booking_no: obj.booking_no,
             pay_amount: obj.pay_amount,
             booking_id: obj.booking_id,
             // webviewshow: true,
           });
-          this.props.navigation.navigate('ExtraRequest', {
+          this.props.navigation.navigate("ExtraRequest", {
             adver_arr: this.state.adver_arr.addon_arr,
             adv: this.state.adver_arr,
             paymentDetail: {
@@ -286,22 +336,22 @@ export default class RequestPayment extends Component {
           });
           //    this.props.navigation.navigate('RequestPayment',{'user_id_post':this.state.user.user_id_post,'adver_arr':this.state.adver_arr})
         } else {
-          msgProvider.toast(obj.msg[config.language], 'center');
+          msgProvider.toast(obj.msg[config.language], "center");
         }
       })
-      .catch(error => {
-        console.log('-------- error ------- ' + error);
+      .catch((error) => {
+        console.log("-------- error ------- " + error);
         this.setState({ loading: false });
       });
   }
 
-  setBookingTime = async time => {
+  setBookingTime = async (time) => {
     let idle_hours = this.state.adver_arr.idle_time;
     let extra_hours = this.state.extra_time;
     let tot_hours = parseInt(idle_hours) + parseInt(extra_hours);
-    if (this.state.date != '') {
-      let date = this.state.date + ' ' + time + ':00';
-      let datexy = this.state.date + ' ' + time;
+    if (this.state.date != "") {
+      let date = this.state.date + " " + time + ":00";
+      let datexy = this.state.date + " " + time;
       var date1 = new Date();
       date1.setTime(date1.getTime() + 1 * 3600000);
       let formate_date = date1;
@@ -312,14 +362,14 @@ export default class RequestPayment extends Component {
     }
   };
 
-  _selectDate = async date => {
-    console.log('date ', date);
+  _selectDate = async (date) => {
+    console.log("date ", date);
 
     this.setState({ selected_date: date });
-    if (this.state.unavailabe_arr != 'NA') {
-      var i = this.state.unavailabe_arr.findIndex(x => x.date == date);
+    if (this.state.unavailabe_arr != "NA") {
+      var i = this.state.unavailabe_arr.findIndex((x) => x.date == date);
       if (i >= 0) {
-        msgProvider.toast(Lang_chg.owner_not_avail[config.language], 'center');
+        msgProvider.toast(Lang_chg.owner_not_avail[config.language], "center");
         return false;
       } else {
         delete this.state.calender_arr[this.state.date];
@@ -336,9 +386,9 @@ export default class RequestPayment extends Component {
         let idle_hours = this.state.adver_arr.idle_time;
         let extra_hours = this.state.extra_time;
         let tot_hours = parseInt(idle_hours) + parseInt(extra_hours);
-        if (this.state.time != '') {
-          let date1 = date + ' ' + this.state.time + ':00';
-          let date1xy = date + ' ' + this.state.time;
+        if (this.state.time != "") {
+          let date1 = date + " " + this.state.time + ":00";
+          let date1xy = date + " " + this.state.time;
           var date12 = new Date(...this.getParsedDate(date1));
           date12.setTime(date12.getTime() + tot_hours * 3600000);
           let formate_date = await this.getFormatedDate(date12);
@@ -350,7 +400,10 @@ export default class RequestPayment extends Component {
       }
     } else {
       delete this.state.calender_arr[this.state.date];
-      this.state.calender_arr[date] = { selected: true, selectedColor: Colors.orange };
+      this.state.calender_arr[date] = {
+        selected: true,
+        selectedColor: Colors.orange,
+      };
       this.setState({
         date: date,
         calender_arr: { ...this.state.calender_arr, date: date },
@@ -362,9 +415,9 @@ export default class RequestPayment extends Component {
       let extra_hours = this.state.extra_time;
       let tot_hours = parseInt(idle_hours) + parseInt(extra_hours);
 
-      if (this.state.time != '') {
-        let date1 = date + ' ' + this.state.time + ':00';
-        let date1xy = date + ' ' + this.state.time;
+      if (this.state.time != "") {
+        let date1 = date + " " + this.state.time + ":00";
+        let date1xy = date + " " + this.state.time;
         var date12 = new Date(...this.getParsedDate(date1));
         date12.setTime(date12.getTime() + tot_hours * 3600000);
         let formate_date = await this.getFormatedDate(date12);
@@ -382,21 +435,21 @@ export default class RequestPayment extends Component {
   ExtraRequest() {
     this.hideDatePicker();
   }
-  selectTimeslot = item => {
+  selectTimeslot = (item) => {
     let startInd = null;
     let endInd = null;
-    console.log(item, 'item');
+    console.log(item, "item");
     const tempArray = [...this.state.TimeSlot];
-    const array = tempArray.map(v => {
+    const array = tempArray.map((v) => {
       const newItem = Object.assign({}, v);
       newItem.selected = false;
       return newItem;
     });
     // array[item?.index].selected = !array[item?.index].selected;
-    console.log(array, 'array');
-    let loopV = item?.index + Number(this.state.adver_arr.minimum_hours)
-    console.log(item?.index, 'item?.index ');
-    console.log(loopV, 'loopV');
+    console.log(array, "array");
+    let loopV = item?.index + Number(this.state.adver_arr.minimum_hours);
+    console.log(item?.index, "item?.index ");
+    console.log(loopV, "loopV");
 
     for (let i = 0; i < array.length; i++) {
       const ind = i;
@@ -415,36 +468,38 @@ export default class RequestPayment extends Component {
     this.setState({
       TimeSlot: array,
       selectedIndex: item?.index,
-      time: moment(item.item.title, 'hh:mm A').format('HH:mm:ss'),
+      time: moment(item.item.title, "hh:mm A").format("HH:mm:ss"),
     });
   };
 
-
   selectTimeModal = (val) => {
-    console.log('val :>> ', val);
+    console.log("val :>> ", val);
     return (
       <Modal
         transparent={true}
         visible
         onRequestClose={() => {
           this.setState({ isShowDatePicker: false });
-        }}>
+        }}
+      >
         <View
           activeOpacity={1}
           style={{
             flex: 1,
-            justifyContent: 'flex-end',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          }}>
+            justifyContent: "flex-end",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+        >
           <View
             style={{
               height: height - 100,
-              width: '100%',
+              width: "100%",
               backgroundColor: Colors.white,
               borderTopLeftRadius: 20,
               borderTopRightRadius: 25,
-            }}>
-            <View style={{ alignItems: 'flex-start', left: 20 }}>
+            }}
+          >
+            <View style={{ alignItems: "flex-start", left: 20 }}>
               <Text
                 style={{
                   // marginLeft: 50,
@@ -453,16 +508,17 @@ export default class RequestPayment extends Component {
                   color: Colors.black,
                   fontSize: 16,
                   FontFamily: FontFamily.default,
-                }}>
-                {'Select Time'}
+                }}
+              >
+                {"Select Time"}
               </Text>
             </View>
             <View
               style={{
                 height: 0.8,
-                width: '90%',
+                width: "90%",
                 backgroundColor: Colors.black,
-                alignSelf: 'center',
+                alignSelf: "center",
               }}
             />
             <FlatList
@@ -474,14 +530,15 @@ export default class RequestPayment extends Component {
                     onPress={() => this.selectTimeslot(item)}
                     style={{
                       height: 40,
-                      width: '90%',
-                      alignSelf: 'center',
-                      borderBottomColor: 'rgba(0, 0, 0, 0.3)',
+                      width: "90%",
+                      alignSelf: "center",
+                      borderBottomColor: "rgba(0, 0, 0, 0.3)",
                       borderBottomWidth: 0.6,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      bottom: 3
-                    }}>
+                      flexDirection: "row",
+                      alignItems: "center",
+                      bottom: 3,
+                    }}
+                  >
                     {/* {item.index == this.state.selectedIndex ? ( */}
                     {item.item.selected ? (
                       <View
@@ -512,7 +569,8 @@ export default class RequestPayment extends Component {
                         color: Colors.black,
                         marginLeft: 10,
                         fontFamily: FontFamily.default,
-                      }}>
+                      }}
+                    >
                       {item?.item?.title}
                     </Text>
                   </TouchableOpacity>
@@ -521,8 +579,13 @@ export default class RequestPayment extends Component {
               ListFooterComponent={() => (
                 <TouchableOpacity
                   style={s.Btn1}
-                  onPress={() => this.ExtraRequest()}>
-                  <Text style={s.Btn1Text}>{val == 1 ? Lang_chg.select7edtrip[1] : Lang_chg.select7edtrip[0]}</Text>
+                  onPress={() => this.ExtraRequest()}
+                >
+                  <Text style={s.Btn1Text}>
+                    {val == 1
+                      ? Lang_chg.select7edtrip[1]
+                      : Lang_chg.select7edtrip[0]}
+                  </Text>
                 </TouchableOpacity>
               )}
             />
@@ -535,32 +598,32 @@ export default class RequestPayment extends Component {
   _onNavigationStateChange(webViewState) {
     webViewState.canGoBack = false;
     if (webViewState.loading == false) {
-      console.log('webViewState', webViewState);
+      console.log("webViewState", webViewState);
       console.log(webViewState.url);
-      var t = webViewState.url.split('/').pop().split('?')[0];
+      var t = webViewState.url.split("/").pop().split("?")[0];
       if (typeof t != null) {
-        var p = webViewState.url.split('?').pop().split('&');
-        console.log('file name', t);
-        if (t == 'success.php') {
+        var p = webViewState.url.split("?").pop().split("&");
+        console.log("file name", t);
+        if (t == "success.php") {
           // console.log('parameter', p);
           var txnId = 0;
           var merchantTxnId = 0;
 
-          console.log('p.length', p.length);
+          console.log("p.length", p.length);
           for (var i = 0; i < p.length; i++) {
-            var val = p[i].split('=');
-            console.log('val', val);
-            if (val[0] == 'txnId') {
+            var val = p[i].split("=");
+            console.log("val", val);
+            if (val[0] == "txnId") {
               txnId = val[1];
               // alert(txnId);
-            } else if (val[0] == 'merchantTxnId') {
+            } else if (val[0] == "merchantTxnId") {
               merchantTxnId = val[1];
               // alert(merchantTxnId);
             }
           }
           this._submitForPayment(txnId, merchantTxnId, this.state.booking_id);
-        } else if (t == 'failure.php') {
-          msgProvider.toast(Lang_chg.payment_failed[config.language], 'center');
+        } else if (t == "failure.php") {
+          msgProvider.toast(Lang_chg.payment_failed[config.language], "center");
           this.setState({ webviewshow: false });
           // this.props.navigation.navigate('Explore');
           return false;
@@ -578,30 +641,30 @@ export default class RequestPayment extends Component {
     // }
     if (this.state.isConnected === true) {
       var data = new FormData();
-      data.append('user_id_post', this.state.user_id_post.user_id);
-      data.append('txnId', txnId);
-      data.append('merchantTxnId', merchantTxnId);
-      data.append('booking_id', booking_id);
-      let url = config.baseURL + 'booking_add_pay.php';
+      data.append("user_id_post", this.state.user_id_post.user_id);
+      data.append("txnId", txnId);
+      data.append("merchantTxnId", merchantTxnId);
+      data.append("booking_id", booking_id);
+      let url = config.baseURL + "booking_add_pay.php";
       this.setState({ loading: true });
       apifuntion
         .postApi(url, data)
-        .then(obj => {
+        .then((obj) => {
           this.setState({ loading: false });
           return obj.json();
         })
-        .then(obj => {
+        .then((obj) => {
           //  alert(JSON.stringify(obj))
-          if (obj.success == 'true') {
+          if (obj.success == "true") {
             let booking_no = obj.booking_no;
             let booking_date = obj.createtime;
-            let noti = 'NA';
-            let email_arr = 'NA';
-            if (obj.email_arr != 'NA') {
+            let noti = "NA";
+            let email_arr = "NA";
+            if (obj.email_arr != "NA") {
               email_arr = obj.email_arr;
             }
 
-            if (obj.notification_arr != 'NA') {
+            if (obj.notification_arr != "NA") {
               noti = obj.notification_arr;
             }
             this._submitWidthDrowReq(
@@ -609,31 +672,31 @@ export default class RequestPayment extends Component {
               noti,
               booking_no,
               booking_date,
-              email_arr,
+              email_arr
             );
             return false;
           } else {
-            if (obj.account_active_status == 'deactivate') {
+            if (obj.account_active_status == "deactivate") {
               config.checkUserDeactivate(this.props.navigation);
               return false;
             }
             msgProvider.alert(
               msgTitle.information[config.language],
               obj.msg[config.language],
-              false,
+              false
             );
             return false;
           }
         })
-        .catch(error => {
-          console.log('-------- error ------- ' + error);
+        .catch((error) => {
+          console.log("-------- error ------- " + error);
           this.setState({ loading: false });
         });
     } else {
       msgProvider.alert(
         msgTitle.internet[config.language],
         msgText.networkconnection[config.language],
-        false,
+        false
       );
     }
   };
@@ -643,92 +706,92 @@ export default class RequestPayment extends Component {
     noti,
     booking_no,
     booking_date1,
-    email_arr,
+    email_arr
   ) => {
     this.setState({ webviewshow: false });
     if (this.state.isConnected === true) {
       var data = new FormData();
-      data.append('other_user_id', this.state.adver_arr.user_id);
-      data.append('txnId', txnId);
-      let url = config.baseURL + 'withdraw_request.php';
+      data.append("other_user_id", this.state.adver_arr.user_id);
+      data.append("txnId", txnId);
+      let url = config.baseURL + "withdraw_request.php";
       this.setState({ loading: true });
       apifuntion
         .postApi(url, data)
-        .then(obj => {
+        .then((obj) => {
           this.setState({ loading: false });
           return obj.json();
         })
-        .then(obj => {
+        .then((obj) => {
           //  alert(JSON.stringify(obj))
-          if (obj.success == 'true') {
-            if (noti != 'NA') {
+          if (obj.success == "true") {
+            if (noti != "NA") {
               //notification.oneSignalNotificationSendCall(noti)
               //notification.createNotif(noti)
             }
-            if (email_arr != 'NA') {
+            if (email_arr != "NA") {
               this.mailsendfunction(email_arr);
             }
             this.setState({ loading: false });
-            this.props.navigation.navigate('Success_booking', {
+            this.props.navigation.navigate("Success_booking", {
               booking_no: booking_no,
               booking_date: booking_date1,
             });
             return false;
           } else {
-            if (obj.account_active_status == 'deactivate') {
+            if (obj.account_active_status == "deactivate") {
               config.checkUserDeactivate(this.props.navigation);
               return false;
             }
             msgProvider.alert(
               msgTitle.information[config.language],
               obj.msg[config.language],
-              false,
+              false
             );
             return false;
           }
         })
-        .catch(error => {
-          console.log('-------- error ------- ' + error);
+        .catch((error) => {
+          console.log("-------- error ------- " + error);
           this.setState({ loading: false });
         });
     } else {
       msgProvider.alert(
         msgTitle.internet[config.language],
         msgText.networkconnection[config.language],
-        false,
+        false
       );
     }
   };
 
-  mailsendfunction = email_arr => {
-    console.log('email_arr', email_arr);
-    if (email_arr != 'NA') {
+  mailsendfunction = (email_arr) => {
+    console.log("email_arr", email_arr);
+    if (email_arr != "NA") {
       for (let i = 0; i < email_arr.length; i++) {
         var email = email_arr[i].email;
         var mailcontent = email_arr[i].mailcontent;
         var mailsubject = email_arr[i].mailsubject;
         var fromName = email_arr[i].fromName;
-        var url = config.baseURL + 'mailFunctionsSend.php';
+        var url = config.baseURL + "mailFunctionsSend.php";
         var data = new FormData();
-        data.append('email', email);
-        data.append('mailcontent', mailcontent);
-        data.append('mailsubject', mailsubject);
-        data.append('fromName', fromName);
-        data.append('mail_file', 'NA');
-        console.log('forget==', data);
+        data.append("email", email);
+        data.append("mailcontent", mailcontent);
+        data.append("mailsubject", mailsubject);
+        data.append("fromName", fromName);
+        data.append("mail_file", "NA");
+        console.log("forget==", data);
 
         // api calling start==============================
         apifuntion
           .postApi(url, data)
-          .then(obj => {
+          .then((obj) => {
             return obj.json();
           })
-          .then(obj => {
+          .then((obj) => {
             //  alert(JSON.stringify(obj))
-            if (obj.success == 'true') {
-              console.log('Mail send');
+            if (obj.success == "true") {
+              console.log("Mail send");
             } else {
-              console.log('not send mail');
+              console.log("not send mail");
             }
             // api calling end==============================
           });
@@ -737,7 +800,7 @@ export default class RequestPayment extends Component {
   };
 
   render() {
-    const user = this.context
+    const user = this.context;
 
     // console.log('context in home', user);
     // console.log(
@@ -753,20 +816,37 @@ export default class RequestPayment extends Component {
     // );
     // console.log('this.state.adver_arr.addon_arr :>> ', this.state.adver_arr.addon_arr);
     return (
-
-      <View style={{ backgroundColor: '#fff' }}>
+      <View style={{ backgroundColor: "#fff" }}>
         <Header
           imgBack={true}
           backBtn
           notiBtn={false}
           searchBtn={false}
           headerHeight={120}
-          backImgSource={require('../../Images/backgd2.jpg')}
-          name={user.value == 1 ? Lang_chg.text_request[1] : Lang_chg.text_request[0]}
+          backImgSource={require("../../Images/backgd2.jpg")}
+          name={
+            user.value == 1
+              ? Lang_chg.text_request[1]
+              : Lang_chg.text_request[0]
+          }
         />
         <KeyboardAvoidingView behavior="position">
-          <View style={{ marginTop: -20, height: 'auto', borderTopLeftRadius: 20, borderTopRightRadius: 25, backgroundColor: '#fff' }}>
-            <View style={{ marginTop: 15, borderTopLeftRadius: 20, borderTopRightRadius: 25, }}>
+          <View
+            style={{
+              marginTop: -20,
+              height: "auto",
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 25,
+              backgroundColor: "#fff",
+            }}
+          >
+            <View
+              style={{
+                marginTop: 15,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 25,
+              }}
+            >
               <Calendar
                 minDate={new Date()}
                 markedDates={this.state.calender_arr}
@@ -779,64 +859,88 @@ export default class RequestPayment extends Component {
                 //   '2022-03-28': { disabled: true, disableTouchEvent: true, selectedColor: 'blue' }
                 // }}
 
-                onDayPress={day => {
+                onDayPress={(day) => {
                   this._selectDate(day.dateString);
                 }}
-                renderArrow={direction => <Icon type="ionicon"
-                  color={Colors.orange}
-
-                  name={direction === 'left'
-                    ? (user.value == 1 ? 'arrow-forward' : 'arrow-back')
-                    : (user.value == 1 ? 'arrow-back' : 'arrow-forward')}
-                />}
+                renderArrow={(direction) => (
+                  <Icon
+                    type="ionicon"
+                    color={Colors.orange}
+                    name={
+                      direction === "left"
+                        ? user.value == 1
+                          ? "arrow-forward"
+                          : "arrow-back"
+                        : user.value == 1
+                        ? "arrow-back"
+                        : "arrow-forward"
+                    }
+                  />
+                )}
               />
             </View>
           </View>
 
           <TouchableOpacity
             style={{ marginTop: 10 }}
-            onPress={() => this.showDatePicker()}>
+            onPress={() => this.showDatePicker()}
+          >
             <Input
               onPressonPress={() => this.showDatePicker()}
               editable={false}
-              placeholder={user.value == 1 ? Lang_chg.choose_time_txt[1] : Lang_chg.choose_time_txt[0]}
-              placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
-              inputStyle={user.value == 1 ? { color: Colors.black, fontFamily: FontFamily.default, textAlign: 'right' } : { color: Colors.black, fontFamily: FontFamily.default }}
+              placeholder={
+                user.value == 1
+                  ? Lang_chg.choose_time_txt[1]
+                  : Lang_chg.choose_time_txt[0]
+              }
+              placeholderTextColor={"rgba(0, 0, 0, 0.4)"}
+              inputStyle={
+                user.value == 1
+                  ? {
+                      color: Colors.black,
+                      fontFamily: FontFamily.default,
+                      textAlign: "right",
+                    }
+                  : { color: Colors.black, fontFamily: FontFamily.default }
+              }
               autoCapitalize={false}
               returnKeyType="done"
-              rightIcon={user.value == 1 ?
-                <Icon
-                  name="right"
-                  size={18}
-                  type="antdesign"
-                  color="rgba(0, 0, 0, 0.5)"
-                  style={{ transform: [{ rotate: "180deg" }] }}
-                />
-                : <Icon
-                  name="right"
-                  size={18}
-                  type="antdesign"
-                  color="rgba(0, 0, 0, 0.5)"
-                />
+              rightIcon={
+                user.value == 1 ? (
+                  <Icon
+                    name="right"
+                    size={18}
+                    type="antdesign"
+                    color="rgba(0, 0, 0, 0.5)"
+                    style={{ transform: [{ rotate: "180deg" }] }}
+                  />
+                ) : (
+                  <Icon
+                    name="right"
+                    size={18}
+                    type="antdesign"
+                    color="rgba(0, 0, 0, 0.5)"
+                  />
+                )
               }
               onSubmitEditing={() => {
                 Keyboard.dismiss();
               }}
-              onChangeText={txt => {
+              onChangeText={(txt) => {
                 this.setState({ time: txt });
               }}
               maxLength={50}
               minLength={6}
               value={this.state.time}
               inputContainerStyle={{
-                width: '93%',
-                alignSelf: 'center',
-                borderBottomColor: 'rgba(0, 0, 0, 0.3)',
+                width: "93%",
+                alignSelf: "center",
+                borderBottomColor: "rgba(0, 0, 0, 0.3)",
               }}
             />
           </TouchableOpacity>
 
-          <View style={{ width: '100%', alignItems: 'flex-start' }}>
+          <View style={{ width: "100%", alignItems: "flex-start" }}>
             {/* <Input
               placeholder="Extra Hour"
               placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
@@ -861,9 +965,21 @@ export default class RequestPayment extends Component {
             /> */}
 
             <Input
-              placeholder={user.value == 1 ? Lang_chg.text_how_many_guest[1] : Lang_chg.text_how_many_guest[0]}
-              placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
-              inputStyle={user.value == 1 ? { color: Colors.black, fontFamily: FontFamily.default, textAlign: 'right' } : { color: Colors.black, fontFamily: FontFamily.default }}
+              placeholder={
+                user.value == 1
+                  ? Lang_chg.text_how_many_guest[1]
+                  : Lang_chg.text_how_many_guest[0]
+              }
+              placeholderTextColor={"rgba(0, 0, 0, 0.4)"}
+              inputStyle={
+                user.value == 1
+                  ? {
+                      color: Colors.black,
+                      fontFamily: FontFamily.default,
+                      textAlign: "right",
+                    }
+                  : { color: Colors.black, fontFamily: FontFamily.default }
+              }
               returnKeyLabel="done"
               autoCapitalize={false}
               keyboardType="numeric"
@@ -871,25 +987,29 @@ export default class RequestPayment extends Component {
               onSubmitEditing={() => {
                 Keyboard.dismiss();
               }}
-              onChangeText={txt => {
+              onChangeText={(txt) => {
                 this.setState({ guest: txt });
               }}
               maxLength={50}
               minLength={6}
               value={this.state.guest}
               inputContainerStyle={{
-                alignSelf: 'center',
-                width: '93%',
-                borderBottomColor: 'rgba(0, 0, 0, 0.3)',
+                alignSelf: "center",
+                width: "93%",
+                borderBottomColor: "rgba(0, 0, 0, 0.3)",
               }}
             />
           </View>
           <View
-            style={{ alignItems: 'center', alignSelf: 'center', width: '100%' }}>
+            style={{ alignItems: "center", alignSelf: "center", width: "100%" }}
+          >
             <TouchableOpacity style={s.Btn1} onPress={() => this.Payment()}>
-              <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.Proceedtrip[1] : Lang_chg.Proceedtrip[0]}</Text>
+              <Text style={s.Btn1Text}>
+                {user.value == 1
+                  ? Lang_chg.Proceedtrip[1]
+                  : Lang_chg.Proceedtrip[0]}
+              </Text>
             </TouchableOpacity>
-
           </View>
         </KeyboardAvoidingView>
         <Modal
@@ -898,24 +1018,26 @@ export default class RequestPayment extends Component {
           visible={this.state.webviewshow}
           onRequestClose={() => {
             this.setState({ webviewshow: false });
-          }}>
+          }}
+        >
           {/* <SafeAreaView style={{ flex: 0, backgroundColor: color1.white_color }} />
           <StatusBar barStyle='default' hidden={false} backgroundColor={color1.white_color} translucent={true}
             networkActivityIndicatorVisible={true} /> */}
           <View
             style={{
               flex: 1,
-              backgroundColor: 'white',
+              backgroundColor: "white",
               paddingLeft: 20,
               paddingRight: 20,
-            }}>
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                flexDirection: "row",
+                justifyContent: "space-between",
                 paddingLeft: 20,
                 paddingRight: 20,
-                backgroundColor: '#ffffff',
+                backgroundColor: "#ffffff",
                 paddingBottom: 10,
                 paddingTop: 10,
               }}
@@ -924,17 +1046,17 @@ export default class RequestPayment extends Component {
               <WebView
                 source={{
                   uri:
-                    'https://myboatonline.com/app/webservice/paymentgateway/bookeey_library/buy.php?amt=' +
+                    "https://myboatonline.com/app/webservice/paymentgateway/bookeey_library/buy.php?amt=" +
                     this.state.pay_amount +
-                    '&oid=' +
+                    "&oid=" +
                     this.state.booking_no +
-                    '&other_user_id=' +
+                    "&other_user_id=" +
                     this.state.adver_arr.user_id +
-                    '&user_id=' +
+                    "&user_id=" +
                     this.state.user_id_post.user_id,
                 }}
                 onNavigationStateChange={this._onNavigationStateChange.bind(
-                  this,
+                  this
                 )}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
@@ -948,9 +1070,9 @@ export default class RequestPayment extends Component {
                 // keyboardDisplayRequiresUserAction={false}
                 // allowFileAccess={true}
                 textZoom={100}
-              // onMessage={this.onMessage}
-              // onNavigationStateChange={(navEvent)=> console.log(navEvent.jsEvaluationValue)}
-              // onMessage={(event)=> console.log(event.nativeEvent.data)}
+                // onMessage={this.onMessage}
+                // onNavigationStateChange={(navEvent)=> console.log(navEvent.jsEvaluationValue)}
+                // onMessage={(event)=> console.log(event.nativeEvent.data)}
               />
             )}
           </View>
@@ -979,7 +1101,7 @@ const s = StyleSheet.create({
     flex: 1,
   },
   borders: {
-    borderBottomColor: '#000',
+    borderBottomColor: "#000",
     borderBottomWidth: 1,
     margin: 20,
     //borderColor:'#000',
@@ -987,19 +1109,19 @@ const s = StyleSheet.create({
   },
   Btn1: {
     height: 48,
-    width: '85%',
-    alignSelf: 'center',
+    width: "85%",
+    alignSelf: "center",
     backgroundColor: Colors.orange,
     margin: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 30,
     elevation: 3,
-    overflow: 'hidden',
-    shadowColor: '#fff',
+    overflow: "hidden",
+    shadowColor: "#fff",
     shadowRadius: 10,
     shadowOpacity: 1,
-    bottom: 3
+    bottom: 3,
   },
   Btn1Text: {
     fontSize: 18,
@@ -1008,36 +1130,36 @@ const s = StyleSheet.create({
   },
   container: {
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start', // if you want to fill rows left to right
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "flex-start", // if you want to fill rows left to right
   },
   item: {
-    width: '50%', // is 50% of container width
+    width: "50%", // is 50% of container width
   },
   disc: {
     marginLeft: 20,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   detail: {
     marginLeft: 20,
   },
   container: {
     // flex: 1,
-    marginLeft: '15%',
-    flexWrap: 'wrap',
-    flexDirection: 'row', // set elements horizontally, try column.
+    marginLeft: "15%",
+    flexWrap: "wrap",
+    flexDirection: "row", // set elements horizontally, try column.
   },
   datePickerStyle: {
-    width: '100%',
+    width: "100%",
   },
   btn1: {
     height: 90,
     width: 60,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 7,
     elevation: 5,
     margin: 7,
@@ -1047,17 +1169,17 @@ const s = StyleSheet.create({
     fontFamily: FontFamily.semi_bold,
   },
   book_nod_calender: {
-    width: '100%',
+    width: "100%",
     borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: '#c2c2c2',
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "#c2c2c2",
     paddingBottom: 5,
     borderRadius: 15,
   },
   btn_1: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   Card: {
     borderRadius: 20,
@@ -1088,38 +1210,38 @@ const s = StyleSheet.create({
     fontFamily: FontFamily.semi_bold,
     fontSize: 15,
     color: Colors.price,
-    textAlign: 'right',
+    textAlign: "right",
   },
   status: {
     color: Colors.orange,
     fontFamily: FontFamily.default,
-    fontWeight: '500',
+    fontWeight: "500",
     fontSize: 14,
-    textAlign: 'right',
+    textAlign: "right",
   },
   datePickerStyle: {
-    width: '100%',
+    width: "100%",
   },
   ImageBackground: {
     height: 215,
-    width: '100%',
+    width: "100%",
     borderRadius: 15,
-    alignSelf: 'center',
+    alignSelf: "center",
     // marginHorizontal:10,
     elevation: 0,
   },
   imgStyle: {
     borderRadius: 15,
     height: 215,
-    width: '100%',
-    alignSelf: 'center',
+    width: "100%",
+    alignSelf: "center",
   },
   SEC3: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 10,
     paddingHorizontal: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontFamily: FontFamily.semi_bold,
@@ -1155,20 +1277,20 @@ const s = StyleSheet.create({
     borderBottomWidth: 25,
     borderBottomColor: Colors.orange,
     borderLeftWidth: 25,
-    borderLeftColor: 'transparent',
+    borderLeftColor: "transparent",
     borderRightWidth: 25,
-    borderRightColor: 'transparent',
-    borderStyle: 'solid',
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    transform: [{ rotate: '-45deg' }],
+    borderRightColor: "transparent",
+    borderStyle: "solid",
+    backgroundColor: "transparent",
+    alignItems: "center",
+    transform: [{ rotate: "-45deg" }],
     marginTop: 19.2,
     marginLeft: -26,
   },
 
   booknow_header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingTop: 10,
     paddingBottom: 10,
     marginBottom: 30,
@@ -1176,25 +1298,25 @@ const s = StyleSheet.create({
 
   earnig_title: {
     fontSize: 20,
-    fontFamily: 'Ubuntu-Bold',
-    fontWeight: 'bold',
+    fontFamily: "Ubuntu-Bold",
+    fontWeight: "bold",
   },
   book_nod_calender: {
-    width: '100%',
+    width: "100%",
     borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: '#c2c2c2',
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "#c2c2c2",
     paddingBottom: 5,
     borderRadius: 15,
   },
   datePickerStyle: {
-    width: '100%',
+    width: "100%",
   },
   chhoice_time: {
-    width: '100%',
+    width: "100%",
     borderWidth: 1,
-    borderColor: '#c2c2c2',
+    borderColor: "#c2c2c2",
     borderRadius: 15,
     paddingLeft: 20,
     paddingRight: 20,
@@ -1202,8 +1324,8 @@ const s = StyleSheet.create({
     height: 50,
   },
   chooice_time_input: {
-    fontFamily: 'Ubuntu-Bold',
-    textAlign: 'right',
+    fontFamily: "Ubuntu-Bold",
+    textAlign: "right",
     height: 50,
   },
 });

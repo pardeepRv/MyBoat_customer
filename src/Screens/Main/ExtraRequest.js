@@ -1,109 +1,79 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from "react";
 import {
-  Text,
-  View,
-  StyleSheet,
-  ImageBackground,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Modal,
   Keyboard,
   ScrollView,
-  FlatList,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
-import { CheckBox, Icon, Input, Card, AirbnbRating } from 'react-native-elements';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-import Header from '../../Components/Header';
-import {
-  back_img3,
-  boat_img1,
-  Colors,
-  FontFamily,
-  Sizes,
-} from '../../Constants/Constants';
-import Ad from '../../Data/Ad';
-import Outgoing from '../../Data/Outgoing';
-import Upcoming from '../../Data/Upcoming';
-import { SliderBox } from 'react-native-image-slider-box';
-import FastImage from 'react-native-fast-image';
-import { renderNode } from 'react-native-elements/dist/helpers';
-import { apifuntion } from '../../Provider/apiProvider';
-import { config } from '../../Provider/configProvider';
-import AsyncStorage from '@react-native-community/async-storage';
-import { Calendar } from 'react-native-calendars';
-import DatePicker from 'react-native-datepicker';
-import { Lang_chg } from '../../Provider/Language_provider';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { WebView } from 'react-native-webview';
-import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
-import { UserContext } from './UserContext';
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { CheckBox, Input } from "react-native-elements";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Header from "../../Components/Header";
+import { Colors, FontFamily, Sizes } from "../../Constants/Constants";
+import { Lang_chg } from "../../Provider/Language_provider";
+import { UserContext } from "./UserContext";
 
 export default class ExtraRequest extends Component {
-  static contextType = UserContext
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
       adver_arr: this.props.route.params.adver_arr,
       adv: this.props.route.params.adv,
       data: this.props.route.params.data,
-      destination_name:this.props.route.params.destination_name,
+      destination_name: this.props.route.params.destination_name,
       isSelected: false,
-      coupon_discount: '0.00',
+      coupon_discount: "0.00",
       check: [],
-      hour: '',
+      hour: "",
       isChecked: false,
-      couponCode: '',
+      couponCode: "",
       extraHours: "",
       rentam: this.props.route.params.adv.extra_price,
-      totalPrice:
-        Number(this.props.route.params.data.rent_amount),
-        chooseprice :'',
+      totalPrice: Number(this.props.route.params.data.rent_amount),
+      chooseprice: "",
       // +
       // Number(this.props.route.params.data.extra_rent_amt),
     };
   }
 
   componentDidMount() {
-
     // alert(this.props.route.params.adv.extra_price)
     console.log(this.state.data, "????????????????????????????/");
     console.log(this.state.adv, "????????????????????????????/");
-    console.log('object :>> ', this.state.rentam);
-
+    console.log("object :>> ", this.state.rentam);
   }
   onChangeCheck = (item, index, id) => {
-    console.log(item.addon_product_price, 'item.addon_product_price');
-    console.log(index, 'index');
-    console.log(id, 'id');
+    console.log(item.addon_product_price, "item.addon_product_price");
+    console.log(index, "index");
+    console.log(id, "id");
 
     const tempArray = [...this.state.adver_arr];
 
-    console.log(tempArray, 'tem arr');
+    console.log(tempArray, "tem arr");
 
-    const array = tempArray.map(v => {
+    const array = tempArray.map((v) => {
       const newItem = Object.assign({}, v);
       return newItem;
     });
 
-    console.log(array, 'arrayarray');
-    if (!item.isChecked) {
+    console.log(array, "arrayarray");
+    if (!item.isChecked && item.addon_product_price != 0) {
       this.state.totalPrice =
         this.state.totalPrice + Number(item.addon_product_price);
-        this.state.chooseprice =
+      this.state.chooseprice =
         this.state.chooseprice + Number(item.addon_product_price);
     } else {
       this.state.totalPrice =
         this.state.totalPrice - Number(item.addon_product_price);
-        this.state.chooseprice =
+      this.state.chooseprice =
         this.state.chooseprice - Number(item.addon_product_price);
     }
-    console.log('Total Price', this.state.totalPrice);
-  console.log('object :>> ', this.state.chooseprice);
+    console.log("Total Price", this.state.totalPrice);
+    console.log("object :>> ", this.state.chooseprice);
 
-    console.log(array[id], 'array[index]');
+    console.log(array[id], "array[index]");
     array[id].isChecked = !array[id].isChecked;
     this.setState({
       adver_arr: array,
@@ -128,55 +98,66 @@ export default class ExtraRequest extends Component {
   //  });
   // };
 
-
   ExtraRequest() {
-     console.log(this.state.couponCode, '^^^^^', this.state.data.coupon_code , this.state.data.coupon_discount ,this.state.chooseprice);
+    console.log(
+      this.state.couponCode,
+      "^^^^^",
+      this.state.data.coupon_code,
+      this.state.data.coupon_discount,
+      this.state.chooseprice
+    );
     if (this.state.couponCode) {
       if (this.state.couponCode != this.state.data.coupon_code) {
-        alert('Please enter valid coupon code');
+        alert("Please enter valid coupon code");
         return;
       } else {
         this.setState({
           coupon_discount: this.state.data.coupon_discount,
           // adver_arr:Number(this.state.extraHours) * Number(this.props.route.params.adv.extra_price)
           // extraHours:this.state.extraHours
-
         });
       }
     }
+    console.log(this.state.chooseprice, "on press proceed");
 
-    this.props.navigation.navigate('Checkout', {
-      destination_name:this.state.destination_name,
+    this.props.navigation.navigate("Checkout", {
+      destination_name: this.state.destination_name,
       adver_arr: this.state.adver_arr,
       adv: this.state.adv,
       coupon_discount: this.state.data.coupon_discount,
       data: this.state.data,
       extraHours: this.state.extraHours,
-      extra_rent_amt: Number(this.state.extraHours) * Number(this.props.route.params.adv.extra_price),
-      totalPrice: this.state.totalPrice + Number(this.state.data.coupon_discount),
-      total_price2:  this.state.totalPrice - Number(this.state.totalPrice*this.state.adv?.discount /100),
-      selected_price : Number(this.state.chooseprice)
-    }
-    );
+      extra_rent_amt:
+        Number(this.state.extraHours) *
+        Number(this.props.route.params.adv.extra_price),
+      totalPrice:
+        this.state.totalPrice + Number(this.state.data.coupon_discount),
+      total_price2:
+        this.state.totalPrice -
+        Number((this.state.totalPrice * this.state.adv?.discount) / 100),
+      selected_price: Number(this.state.chooseprice),
+    });
   }
 
   render() {
     // alert(Number(this.state.extraHours) * Number(this.state.adver_arr.addon_product_price));
-    const user = this.context
-    console.log('context in home', user);
-    console.log('this.state.adver_arr :>> ', this.state.adver_arr);
+    const user = this.context;
+    console.log("context in home", user);
+    console.log("this.state.adver_arr :>> ", this.state.adver_arr);
     return (
-
-
-      <View style={{ backgroundColor: '#fff', height: '100%' }}>
+      <View style={{ backgroundColor: "#fff", height: "100%" }}>
         <Header
           imgBack={true}
           notiBtn={false}
           backBtn
           searchBtn={false}
           headerHeight={120}
-          name={user.value == 1 ? Lang_chg.extrarequesttrip[1] : Lang_chg.extrarequesttrip[0]}
-          backImgSource={require('../../Images/backgd2.jpg')}
+          name={
+            user.value == 1
+              ? Lang_chg.extrarequesttrip[1]
+              : Lang_chg.extrarequesttrip[0]
+          }
+          backImgSource={require("../../Images/backgd2.jpg")}
         />
 
         <ScrollView style={{ flex: 1 }}>
@@ -186,90 +167,101 @@ export default class ExtraRequest extends Component {
             enableOnAndroid={true}
             style={s.subContainer}
             contentContainerStyle={s.subContentContainer}
-            keyboardShouldPersistTaps={'always'}
-            showsVerticalScrollIndicator={false}>
-            <View
-              style={{ backgroundColor: '#fff', borderRadius: 20 }}>
-              {this.state.adver_arr && this.state.adver_arr!= 'NA' &&  this.state.adver_arr.length > 0 && this.state.adver_arr.map((item, id, index) => {
+            keyboardShouldPersistTaps={"always"}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={{ backgroundColor: "#fff", borderRadius: 20 }}>
+              {this.state.adver_arr &&
+                this.state.adver_arr != "NA" &&
+                this.state.adver_arr.length > 0 &&
+                this.state.adver_arr.map((item, id, index) => {
+                  console.log(")))))200", item);
+                  return (
+                    <TouchableOpacity activeOpacity={0.8}>
+                      <View style={{ flexDirection: "row", top: 12 }}>
+                        <View style={{ width: "10%" }} />
+                        <View style={{ width: "35%" }}>
+                          <Text style={{ textAlign: "left" }}>
+                            {user.value == 1
+                              ? item.addon_product_name[1]
+                              : item.addon_product_name[0]}{" "}
+                          </Text>
+                        </View>
 
-                console.log(')))))200', item);
-                return (
-                  <TouchableOpacity
-                    activeOpacity={0.8}>
-                    <View style={{ flexDirection: 'row', top: 12 }}>
-                      <View style={{ width: '10%' }} />
-                      <View style={{ width: '35%' }}>
-                        <Text style={{ textAlign: 'left' }}>
-                          {user.value == 1 ? item.addon_product_name[1] : item.addon_product_name[0]}{' '}
-                        </Text>
-                      </View>
-
-                      <View style={{ width: '35%', textAlign: 'right' }}>
-                        {
-                          item?.addon_product_price == 0 ?
+                        <View style={{ width: "35%", textAlign: "right" }}>
+                          {item?.addon_product_price == 0 ? (
                             <Text
                               style={{
-                                textAlign: 'right',
-                                marginLeft: '20%',
+                                textAlign: "right",
+                                marginLeft: "20%",
                                 fontFamily: FontFamily.default,
-                              }}>{user.value == 1 ? Lang_chg.free_text[1] : Lang_chg.free_text[0]}</Text> :
+                              }}
+                            >
+                              {user.value == 1
+                                ? Lang_chg.free_text[1]
+                                : Lang_chg.free_text[0]}
+                            </Text>
+                          ) : (
                             <Text
                               style={{
-                                textAlign: 'right',
-                                marginLeft: '20%',
+                                textAlign: "right",
+                                marginLeft: "20%",
                                 fontFamily: FontFamily.default,
-                              }}>{user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {item.addon_product_price}</Text>
-                        }
-
+                              }}
+                            >
+                              {user.value == 1
+                                ? Lang_chg.KD[1]
+                                : Lang_chg.KD[0]}{" "}
+                              {item.addon_product_price}
+                            </Text>
+                          )}
+                        </View>
+                        <View style={{ width: "10%", padding: 0, top: -15 }}>
+                          <CheckBox
+                            // value={this.state.isChecked}
+                            // onValueChange={setSelection}
+                            checked={item && item.isChecked}
+                            key={index}
+                            onPress={() => this.onChangeCheck(item, index, id)}
+                            style={s.checkbox}
+                            checkedColor={Colors.orange}
+                          />
+                        </View>
                       </View>
-                      <View style={{ width: '10%', padding: 0, top: -15 }}>
-
-                        <CheckBox
-                          // value={this.state.isChecked}
-                          // onValueChange={setSelection}
-                          checked={item && item.isChecked}
-                          key={index}
-                          onPress={() => this.onChangeCheck(item, index, id)}
-                          style={s.checkbox}
-                    checkedColor={Colors.orange}
-
-                        />
-
-                      </View>
-
-                    </View>
-
-                  </TouchableOpacity>
-                );
-              })}
-
+                    </TouchableOpacity>
+                  );
+                })}
             </View>
 
             <View
               style={{
                 height: 0.5,
-                width: '89%',
+                width: "89%",
                 backgroundColor: Colors.black,
-                alignSelf: 'center',
+                alignSelf: "center",
               }}
             />
             <View
               style={{
                 height: 60,
-                width: '89%',
-                alignSelf: 'center',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
+                width: "89%",
+                alignSelf: "center",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <Text
                 style={{
                   marginLeft: 10,
                   fontFamily: FontFamily.semi_bold,
                   color: Colors.black,
                   fontSize: 18,
-                }}>
-                {user.value == 1 ? Lang_chg.extraHourtrip[1] : Lang_chg.extraHourtrip[0]}
+                }}
+              >
+                {user.value == 1
+                  ? Lang_chg.extraHourtrip[1]
+                  : Lang_chg.extraHourtrip[0]}
               </Text>
               <Text
                 style={{
@@ -277,12 +269,12 @@ export default class ExtraRequest extends Component {
                   fontFamily: FontFamily.semi_bold,
                   color: Colors.black,
                   fontSize: 18,
-                }}>
-                {' '}
+                }}
+              >
+                {" "}
                 #
               </Text>
               <Input
-
                 inputContainerStyle={{
                   marginTop: 20,
                   height: 40,
@@ -303,7 +295,7 @@ export default class ExtraRequest extends Component {
                 minLength={6}
                 defaultValue={this.state.extraHours}
                 // onChangeText={val => this.setState({couponCode: val})}
-                onChangeText={txt => {
+                onChangeText={(txt) => {
                   this.setState({ extraHours: txt });
                 }}
               />
@@ -311,20 +303,24 @@ export default class ExtraRequest extends Component {
             <View
               style={{
                 height: 60,
-                width: '89%',
-                alignSelf: 'center',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
+                width: "89%",
+                alignSelf: "center",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <Text
                 style={{
                   marginLeft: 10,
                   fontFamily: FontFamily.semi_bold,
                   color: Colors.black,
                   fontSize: 18,
-                }}>
-                {user.value == 1 ? Lang_chg.txt_discount[1] : Lang_chg.txt_discount[0]}
+                }}
+              >
+                {user.value == 1
+                  ? Lang_chg.txt_discount[1]
+                  : Lang_chg.txt_discount[0]}
               </Text>
               <Text
                 style={{
@@ -332,13 +328,12 @@ export default class ExtraRequest extends Component {
                   fontFamily: FontFamily.semi_bold,
                   color: Colors.black,
                   fontSize: 18,
-
-                }}>
-                {' '}
+                }}
+              >
+                {" "}
                 #
               </Text>
               <Input
-
                 inputContainerStyle={{
                   height: 40,
                   width: 120,
@@ -351,49 +346,59 @@ export default class ExtraRequest extends Component {
                   color: Colors.black,
                 }}
                 defaultValue={this.state.couponCode}
-                onChangeText={val => this.setState({ couponCode: val })}
+                onChangeText={(val) => this.setState({ couponCode: val })}
               />
             </View>
             <View
               style={{
                 height: 0.7,
-                width: '89%',
+                width: "89%",
                 backgroundColor: Colors.black,
-                alignSelf: 'center',
-
+                alignSelf: "center",
               }}
             />
             <View
               style={{
-                alignContent: 'center',
-                alignSelf: 'center',
+                alignContent: "center",
+                alignSelf: "center",
                 // position: 'absolute',
                 // bottom: 40,
-                width: '100%',
-                alignItems: 'center',
-                backgroundColor: 'white'
-
-              }}>
-              <TouchableOpacity style={s.Btn2} onPress={() => this.ExtraRequest()}>
-                <Text style={[s.Btn1Text, { color: Colors.orange, }]}>{user.value == 1 ? Lang_chg.Skip[1] : Lang_chg.Skip[0]}</Text>
+                width: "100%",
+                alignItems: "center",
+                backgroundColor: "white",
+              }}
+            >
+              <TouchableOpacity
+                style={s.Btn2}
+                onPress={() => this.ExtraRequest()}
+              >
+                <Text style={[s.Btn1Text, { color: Colors.orange }]}>
+                  {user.value == 1 ? Lang_chg.Skip[1] : Lang_chg.Skip[0]}
+                </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={s.Btn1} onPress={() => this.ExtraRequest()}>
-                <Text style={s.Btn1Text}>{user.value == 1 ? Lang_chg.Proceedtrip[1] : Lang_chg.Proceedtrip[0]}</Text>
+              <TouchableOpacity
+                style={s.Btn1}
+                onPress={() => this.ExtraRequest()}
+              >
+                <Text style={s.Btn1Text}>
+                  {user.value == 1
+                    ? Lang_chg.Proceedtrip[1]
+                    : Lang_chg.Proceedtrip[0]}
+                </Text>
               </TouchableOpacity>
             </View>
-            <Text>{'\n'}</Text>
-            <Text>{'\n'}</Text>
+            <Text>{"\n"}</Text>
+            <Text>{"\n"}</Text>
           </KeyboardAwareScrollView>
         </ScrollView>
       </View>
-
     );
   }
 }
 
 const s = StyleSheet.create({
   ImageBackground: {
-    height: '100%',
+    height: "100%",
     width: Sizes.width,
     backgroundColor: Colors.black,
   },
@@ -405,44 +410,44 @@ const s = StyleSheet.create({
     width: 120,
     borderRadius: 20,
     backgroundColor: Colors.orange,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 0,
   },
   pickerIcon: {
-    color: '#fff',
-    position: 'absolute',
+    color: "#fff",
+    position: "absolute",
     bottom: 15,
     right: 10,
     fontSize: 20,
   },
   Btn1: {
     height: 48,
-    width: '90%',
+    width: "90%",
     backgroundColor: Colors.orange,
     margin: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 30,
     elevation: 3,
-    overflow: 'hidden',
-    shadowColor: '#fff',
+    overflow: "hidden",
+    shadowColor: "#fff",
     shadowRadius: 10,
     shadowOpacity: 1,
   },
   Btn2: {
     height: 48,
-    width: '90%',
+    width: "90%",
     borderColor: Colors.orange,
     borderWidth: 0.7,
     margin: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 30,
     elevation: 3,
-    overflow: 'hidden',
-    shadowColor: '#fff',
+    overflow: "hidden",
+    shadowColor: "#fff",
     shadowRadius: 10,
     shadowOpacity: 1,
   },
@@ -452,20 +457,20 @@ const s = StyleSheet.create({
     color: Colors.white,
   },
   lang: {
-    flexDirection: 'row',
-    width: '85%',
+    flexDirection: "row",
+    width: "85%",
     // padding:10,
-    marginLeft: '79%',
+    marginLeft: "79%",
   },
   condition: {
-    flexDirection: 'row',
-    width: '85%',
+    flexDirection: "row",
+    width: "85%",
     // padding:10,
     //  marginLeft:'65%'
   },
   inputView: {
-    flexDirection: 'row',
-    alignSelf: 'center',
+    flexDirection: "row",
+    alignSelf: "center",
   },
 
   Logo1: {
@@ -473,13 +478,13 @@ const s = StyleSheet.create({
     width: 120,
     borderRadius: 20,
     backgroundColor: Colors.orange,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 60,
   },
   Text1: {
-    textAlign: 'center',
+    textAlign: "center",
     //  justifyContent:"center",
     fontFamily: FontFamily.default,
     color: Colors.white,
@@ -502,15 +507,15 @@ const s = StyleSheet.create({
   },
   btn1: {
     height: 48,
-    width: '95%',
+    width: "95%",
     backgroundColor: Colors.orange,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 20,
     marginVertical: 10,
     elevation: 5,
-    shadowColor: '#fff',
+    shadowColor: "#fff",
     shadowRadius: 10,
     shadowOpacity: 1,
   },
