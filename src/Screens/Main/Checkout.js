@@ -1230,7 +1230,7 @@ export default class Checkout extends Component {
               <WebView
                 source={{
                   uri:
-                    "http://webservice.myboatonline.com/paymentgateway/bookeey_library/buy.php?selectedPaymentOption=" +
+                    "https://webservice.myboatonline.com/paymentgateway/bookeey_library/buy.php?selectedPaymentOption=" +
                     this.state.selectedPaymentMethod +
                     "&amt=" +
                     this.state.pay_amount +
