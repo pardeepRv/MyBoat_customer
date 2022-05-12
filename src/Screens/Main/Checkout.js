@@ -154,6 +154,10 @@ export default class Checkout extends Component {
     form_data.append("Coustemer_name", this.props.route.params.adv.user_name); //aa
     form_data.append("trip_type[0]", this.state.adver_arr.trip_type_name[0]); //aa
     form_data.append("trip_type[1]", this.state.adver_arr.trip_type_name[1]); //aa
+    // form_data.append("addons[0]",8); //aa
+    // form_data.append("addons[1]",9); //aa
+
+
     console.log("Form data", form_data);
 
     // return;
@@ -208,6 +212,16 @@ export default class Checkout extends Component {
       data.append("txnId", txnId);
       data.append("merchantTxnId", merchantTxnId);
       data.append("booking_id", booking_id);
+      // data.append("addons[0]", 8);
+      // data.append("addons[1]", 9);
+
+      for (let index = 0; index < this.state.adv.length; index++) {
+        const element = this.state.adv[index];
+        if (element.isChecked) {
+          data.append(`addons[${index}]`, element.addon_product_id);
+        }
+      }
+
       let url = config.baseURL + "booking_add_pay.php";
       console.log(url, "*****", data);
       this.setState({ loading: true });
@@ -723,15 +737,14 @@ export default class Checkout extends Component {
                               ]}
                             >
                               {item.add_On_name == "Equipment " &&
-                              item.isChecked == true
-                                ? `${
-                                    user.value == 1
-                                      ? item.addon_product_name[1]
-                                      : item.addon_product_name[0]
-                                  },`
+                                item.isChecked == true
+                                ? `${user.value == 1
+                                  ? item.addon_product_name[1]
+                                  : item.addon_product_name[0]
+                                },`
                                 : user.value == 1
-                                ? Lang_chg.no_eqipments_selected[1]
-                                : Lang_chg.no_eqipments_selected[0]}
+                                  ? Lang_chg.no_eqipments_selected[1]
+                                  : Lang_chg.no_eqipments_selected[0]}
                             </Text>
                           </View>
                         );
@@ -785,15 +798,14 @@ export default class Checkout extends Component {
                               ]}
                             >
                               {item.add_On_name == "entertainment" &&
-                              item.isChecked == true
-                                ? `${
-                                    user.value == 1
-                                      ? item.addon_product_name[1]
-                                      : item.addon_product_name[0]
-                                  },`
+                                item.isChecked == true
+                                ? `${user.value == 1
+                                  ? item.addon_product_name[1]
+                                  : item.addon_product_name[0]
+                                },`
                                 : user.value == 1
-                                ? Lang_chg.no_entertainment_selected[1]
-                                : Lang_chg.no_entertainment_selected[0]}
+                                  ? Lang_chg.no_entertainment_selected[1]
+                                  : Lang_chg.no_entertainment_selected[0]}
                             </Text>
                           </View>
                         );
@@ -848,15 +860,14 @@ export default class Checkout extends Component {
                               ]}
                             >
                               {item.add_On_name == "Food" &&
-                              item.isChecked == true
-                                ? `${
-                                    user.value == 1
-                                      ? item.addon_product_name[1]
-                                      : item.addon_product_name[0]
-                                  },`
+                                item.isChecked == true
+                                ? `${user.value == 1
+                                  ? item.addon_product_name[1]
+                                  : item.addon_product_name[0]
+                                },`
                                 : user.value == 1
-                                ? Lang_chg.no_food_selevcetd[1]
-                                : Lang_chg.no_food_selevcetd[0]}
+                                  ? Lang_chg.no_food_selevcetd[1]
+                                  : Lang_chg.no_food_selevcetd[0]}
                             </Text>
                           </View>
                         );
@@ -1044,9 +1055,9 @@ export default class Checkout extends Component {
                         {user.value == 1 ? Lang_chg.KD[1] : Lang_chg.KD[0]}{" "}
                         {Math.round(
                           this.state.totalPrice -
-                            (this.state.totalPrice *
-                              this.state.adver_arr?.discount) /
-                              100
+                          (this.state.totalPrice *
+                            this.state.adver_arr?.discount) /
+                          100
                         )}
                       </Text>
                     </View>
@@ -1258,9 +1269,9 @@ export default class Checkout extends Component {
                 // keyboardDisplayRequiresUserAction={false}
                 // allowFileAccess={true}
                 textZoom={100}
-                // onMessage={this.onMessage}
-                // onNavigationStateChange={(navEvent)=> console.log(navEvent.jsEvaluationValue)}
-                // onMessage={(event)=> console.log(event.nativeEvent.data)}
+              // onMessage={this.onMessage}
+              // onNavigationStateChange={(navEvent)=> console.log(navEvent.jsEvaluationValue)}
+              // onMessage={(event)=> console.log(event.nativeEvent.data)}
               />
             )}
           </View>

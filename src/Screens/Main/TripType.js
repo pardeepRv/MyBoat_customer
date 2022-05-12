@@ -680,7 +680,7 @@ export default class TripType extends Component {
               {user.value == 1 ? Lang_chg.Sortby[1] : Lang_chg.Sortby[0]}{" "}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={s.col} onPress={() => this.filtertrip()}>
+          <TouchableOpacity style={[s.col, { borderRightColor: 'transparent' }]} onPress={() => this.filtertrip()}>
             <Image
               source={require("../../../assets/icons/filter_icon.png")}
               style={s.icons}
@@ -1184,11 +1184,11 @@ export default class TripType extends Component {
                     );
                   }}
                   keyExtractor={(i, ind) => ind}
-                  // ListHeaderComponent={() =>
-                  //   !this.state.entertainment.addon_products.length ? (
-                  //     <Text >No data found</Text>
-                  //   ) : null
-                  // }
+                // ListHeaderComponent={() =>
+                //   !this.state.entertainment.addon_products.length ? (
+                //     <Text >No data found</Text>
+                //   ) : null
+                // }
                 />
               </View>
               <Text
@@ -1327,8 +1327,8 @@ export default class TripType extends Component {
                               }}
                             >
                               {item &&
-                              item?.addon_product_name &&
-                              item?.addon_product_name?.length > 0
+                                item?.addon_product_name &&
+                                item?.addon_product_name?.length > 0
                                 ? item?.addon_product_name[0]
                                 : null}
                             </Text>
@@ -1338,11 +1338,11 @@ export default class TripType extends Component {
                     );
                   }}
                   keyExtractor={(i, ind) => ind}
-                  // ListHeaderComponent={() =>
-                  //   !this.state.food ? (
-                  //     <Text >No data found</Text>
-                  //   ) : null
-                  // }
+                // ListHeaderComponent={() =>
+                //   !this.state.food ? (
+                //     <Text >No data found</Text>
+                //   ) : null
+                // }
                 />
               </View>
               <View>
@@ -1397,8 +1397,8 @@ export default class TripType extends Component {
                               }}
                             >
                               {item &&
-                              item?.addon_product_name &&
-                              item?.addon_product_name?.length > 0
+                                item?.addon_product_name &&
+                                item?.addon_product_name?.length > 0
                                 ? item?.addon_product_name[0]
                                 : null}
                             </Text>
@@ -1408,11 +1408,11 @@ export default class TripType extends Component {
                     );
                   }}
                   keyExtractor={(i, ind) => ind}
-                  // ListHeaderComponent={() =>
-                  //   !this.state.entertainment.addon_products.length ? (
-                  //     <Text >No data found</Text>
-                  //   ) : null
-                  // }
+                // ListHeaderComponent={() =>
+                //   !this.state.entertainment.addon_products.length ? (
+                //     <Text >No data found</Text>
+                //   ) : null
+                // }
                 />
               </View>
               <View>
@@ -1465,8 +1465,8 @@ export default class TripType extends Component {
                               }}
                             >
                               {item &&
-                              item?.addon_product_name &&
-                              item?.addon_product_name?.length > 0
+                                item?.addon_product_name &&
+                                item?.addon_product_name?.length > 0
                                 ? item?.addon_product_name[0]
                                 : null}
                             </Text>
@@ -1476,11 +1476,11 @@ export default class TripType extends Component {
                     );
                   }}
                   keyExtractor={(i, ind) => ind}
-                  // ListHeaderComponent={() =>
-                  //   !this.state.type_gear.addon_products.length > 0 ? (
-                  //     <Text >No data found</Text>
-                  //   ) : null
-                  // }
+                // ListHeaderComponent={() =>
+                //   !this.state.type_gear.addon_products.length > 0 ? (
+                //     <Text >No data found</Text>
+                //   ) : null
+                // }
                 />
               </View>
               <Text
@@ -1860,8 +1860,8 @@ export default class TripType extends Component {
                           ? "arrow-forward"
                           : "arrow-back"
                         : user.value == 1
-                        ? "arrow-back"
-                        : "arrow-forward"
+                          ? "arrow-back"
+                          : "arrow-forward"
                     }
                   />
                 )}

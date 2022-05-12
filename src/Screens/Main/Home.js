@@ -293,7 +293,7 @@ export default class Home extends Component {
         />
         {/* Buttons */}
         <View style={{ position: "absolute", width: "100%", top: 135 }}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => this.ModalClick()}
             style={{ alignItems: "flex-start" }}
           >
@@ -308,7 +308,7 @@ export default class Home extends Component {
                 ? Lang_chg.txt_view_all[1]
                 : Lang_chg.txt_view_all[0]}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View style={s.btn_1}>
             <ScrollView horizontal={true}>
@@ -519,7 +519,7 @@ export default class Home extends Component {
                                 uri: config.image_url4 + item.image,
                               }}
                             >
-                              <View
+                              {/* <View
                                 style={[
                                   {
                                     height: 50,
@@ -547,7 +547,7 @@ export default class Home extends Component {
                                     : Lang_chg.KD[0]}{" "}
                                   {item.min_price}
                                 </Text>
-                              </View>
+                              </View> */}
                             </ImageBackground>
                           </TouchableOpacity>
                           {/*  */}
