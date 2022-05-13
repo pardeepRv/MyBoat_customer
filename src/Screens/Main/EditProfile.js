@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, { useState, Component } from 'react';
 import {
   Text,
   View,
@@ -8,25 +8,25 @@ import {
   ScrollView,
   FlatList,
   Image,
-  SafeAreaView,Alert,
+  SafeAreaView, Alert,
   StatusBar,
   Modal,
   I18nManager,
   ActivityIndicator,
   TextInput,
 } from 'react-native';
-import {Icon, Input, Card} from 'react-native-elements';
-import {Colors, FontFamily, Sizes, default_profile} from '../../Constants/Constants';
-import {useNavigation} from '@react-navigation/core';
+import { Icon, Input, Card } from 'react-native-elements';
+import { Colors, FontFamily, Sizes, default_profile } from '../../Constants/Constants';
+import { useNavigation } from '@react-navigation/core';
 import ActionSheet from 'react-native-actionsheet';
 import Header from '../../Components/Header';
 import AsyncStorage from '@react-native-community/async-storage';
-import {config} from '../../Provider/configProvider';
-import {msgProvider, msgTitle, msgText} from '../../Provider/messageProvider';
-import {Lang_chg} from '../../Provider/Language_provider';
-import {apifuntion} from '../../Provider/apiProvider';
+import { config } from '../../Provider/configProvider';
+import { msgProvider, msgTitle, msgText } from '../../Provider/messageProvider';
+import { Lang_chg } from '../../Provider/Language_provider';
+import { apifuntion } from '../../Provider/apiProvider';
 import DatePicker from 'react-native-datepicker';
-import {Picker} from '@react-native-community/picker';
+import { Picker } from '@react-native-community/picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
@@ -45,6 +45,8 @@ export default class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedGenderM: 0,
+      selectedGenderF: 0,
       user_details: [],
       name: '',
       email: [],
@@ -58,7 +60,7 @@ export default class EditProfile extends Component {
       gender: '',
       city_arr: [],
       city: [],
-      city_id:'',
+      city_id: '',
       city_arr1: [],
       modalVisible: false,
       gender_selection: false,
@@ -108,10 +110,10 @@ export default class EditProfile extends Component {
     try {
       const response = await fetch(url);
       const json = await response.json();
-      console.log('citylist 456 ',json)
+      console.log('citylist 456 ', json)
 
       if (json.success == 'true') {
-        this.setState({city_arr: json.city_arr, city_arr1: json.city_arr});
+        this.setState({ city_arr: json.city_arr, city_arr1: json.city_arr });
         // this.setState({name:json.user_details.f_name})
 
         console.log('citylist ', this.state.city_arr);
@@ -122,7 +124,7 @@ export default class EditProfile extends Component {
     } catch (error) {
       console.log(error);
     } finally {
-      this.setState({isLoading: false});
+      this.setState({ isLoading: false });
     }
   }
 
@@ -138,7 +140,7 @@ export default class EditProfile extends Component {
       console.log('image   ', json);
 
       if (json.success == 'true') {
-        
+
         this.setState({
           user_details: json.user_details,
           name:
@@ -150,19 +152,20 @@ export default class EditProfile extends Component {
           email: json.user_details?.email,
           address: json.user_details?.address ? json.user_details?.address : '',
           phone_number: json.user_details?.mobile,
-          dob:  json.user_details?.dob?json.user_details?.dob:'',
+          dob: json.user_details?.dob ? json.user_details?.dob : '',
           city: json.user_details?.city_name,
           city_name: json.user_details?.city_name[config.language],
-          city_id:json.user_details?.city,
-          avatar: json.user_details?.image && json.user_details?.image !== 'NA' ?config.image_url4+json.user_details?.image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png',
-          gender: json.user_details?.gender==0? "Male":"Female",
-          
+          city_id: json.user_details?.city,
+          avatar: json.user_details?.image && json.user_details?.image !== 'NA' ? config.image_url4 + json.user_details?.image : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png',
+          gender: json.user_details?.gender == 0 ? "Male" : "Female",
+
         });
-        { user.value == 1 ? 
-          
-          this.setState({gender:json.user_details?.gender==0? "ذكر":"انثى" ,city_name: json.user_details?.city_name[1], })
-          : 
-          this.setState({gender:json.user_details?.gender==0? "Male":"Female" , city_name: json.user_details?.city_name[0],})
+        {
+          user.value == 1 ?
+
+            this.setState({ gender: json.user_details?.gender == 0 ? "ذكر" : "انثى", city_name: json.user_details?.city_name[1], })
+            :
+            this.setState({ gender: json.user_details?.gender == 0 ? "Male" : "Female", city_name: json.user_details?.city_name[0], })
         }
         // gender: json.user_details?.gender==0? "Male":"Female",
 
@@ -175,14 +178,14 @@ export default class EditProfile extends Component {
     } catch (error) {
       console.log(error);
     } finally {
-      this.setState({isLoading: false});
+      this.setState({ isLoading: false });
     }
   }
 
   UpdateProfile() {
     //  this.setState({modalVisible:true})
 
-    let {name, dob, gender, city_name, address, email, phone_number, about} =
+    let { name, dob, gender, city_name, address, email, phone_number, about } =
       this.state;
     if (name.length <= 0) {
       msgProvider.toast(Lang_chg.MobileMaxLength[config.language], 'center');
@@ -217,31 +220,31 @@ export default class EditProfile extends Component {
     if (dob.length <= 0) {
       msgProvider.toast(Lang_chg.adddate[config.language], 'center');
       return false;
-    }if (!gender ) {
+    } if (!gender) {
       msgProvider.toast(Lang_chg.adddate[config.language], 'center');
       return false;
-    }if (city_name == 'N' ) {
+    } if (city_name == 'N') {
       msgProvider.toast(Lang_chg.selectcity[config.language], 'center');
       return false;
     }
-  //  console.log('dob :>> ', city_name);
+    //  console.log('dob :>> ', city_name);
 
     var data = new FormData();
-    if(this.state.imageObj?.path){
-    data.append('profile_pic', {
-      uri: this.state.imageObj?.path,
-      type: this.state.imageObj.mime
-        ? this.state.imageObj.mime
-        : this.state.imageObj?.type,
-      name: new Date().getTime() + '.jpg', //imageObj.filename,//new Date().getTime() + "." + imageObj.uri.split(".")[imageObj.uri.split(".").length - 1]
-    });
-}
+    if (this.state.imageObj?.path) {
+      data.append('profile_pic', {
+        uri: this.state.imageObj?.path,
+        type: this.state.imageObj.mime
+          ? this.state.imageObj.mime
+          : this.state.imageObj?.type,
+        name: new Date().getTime() + '.jpg', //imageObj.filename,//new Date().getTime() + "." + imageObj.uri.split(".")[imageObj.uri.split(".").length - 1]
+      });
+    }
     data.append('user_id_post', this.state.user_details.user_id);
     data.append('user_type_post', 1);
     data.append('user_name', name);
     data.append('email', email);
     data.append('phone_number', phone_number);
-    data.append('gender', gender=="Male"?0:1);
+    data.append('gender', gender == "Male" ? 0 : 1);
     data.append('dob', dob);
     data.append('city', this.state.city_id);
     data.append('address', address);
@@ -252,7 +255,7 @@ export default class EditProfile extends Component {
     // data.append('profile_pic', '');
     data.append('about', about);
     console.log('Image object', data);
-    this.setState({loading: true});
+    this.setState({ loading: true });
     let url = config.baseURL + 'edit_profile.php';
     apifuntion
       .postApi(url, data)
@@ -260,32 +263,33 @@ export default class EditProfile extends Component {
         return obj.json();
       })
       .then(obj => {
-        this.setState({loading: false});
+        this.setState({ loading: false });
         console.log("Update Response", obj);
-       
+
         if (obj.success == 'true') {
           AsyncStorage.setItem('user_arr', JSON.stringify(obj?.user_details));
-          msgProvider.toast(obj?.msg&&obj?.msg[0], 'center');
+          msgProvider.toast(obj?.msg && obj?.msg[0], 'center');
           this.props.navigation.goBack()
-        }else{
-          msgProvider.toast(obj?.msg&&obj?.msg[0], 'center');
+        } else {
+          msgProvider.toast(obj?.msg && obj?.msg[0], 'center');
         }
       })
       .catch(error => {
         console.log('-------- error ------- ' + error);
-        this.setState({loading: false});
+        this.setState({ loading: false });
       });
   }
 
   setDate(date1) {
     console.log(date1);
 
-    this.setState({date: date1});
+    this.setState({ date: date1 });
   }
 
-  _selectCity(index) {
-    
+  _selectCity(index, v) {
+
     let data = this.state.city_arr;
+    console.log(data, 'data');
     console.log("-------", data[index].city_id);
     let len = this.state.city_arr.length;
     for (let i = 0; i < len; i++) {
@@ -294,7 +298,7 @@ export default class EditProfile extends Component {
 
     data[index].status = !data[index].status;
     this.setState({
-      city_name: data[index].city[config.language],
+      city_name: v == 1 ? data[index].city[1] : data[index].city[0],
       city_id: data[index].city_id,
       modalVisible: false,
     });
@@ -306,7 +310,7 @@ export default class EditProfile extends Component {
   _selectGender(s_gender) {
     console.log(s_gender);
 
-    this.setState({gender: s_gender, gender_selection: false});
+    this.setState({ gender: s_gender, gender_selection: false });
   }
 
   _searchCity = textToSearch => {
@@ -324,15 +328,15 @@ export default class EditProfile extends Component {
       '',
       'Please Select',
       [
-        {text: 'Camera', onPress: () => this._doOpenCamera()},
-        {text: 'Gallery', onPress: () => this._doOpenGallery()},
+        // { text: 'Camera', onPress: () => this._doOpenCamera() },
+        { text: 'Gallery', onPress: () => this._doOpenGallery() },
         {
           text: 'Cancel',
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
       ],
-      {cancelable: true},
+      { cancelable: true },
     );
     // if (index == 0) {
     //   this.openCamera();
@@ -378,9 +382,9 @@ export default class EditProfile extends Component {
       if (Platform.OS == 'ios') {
         // setProductPhoto(res.sourceURL);
         this.setState({
-                imageObj: photoObj,
-                avatar: photoObj?.sourceURL,
-              });
+          imageObj: photoObj,
+          avatar: photoObj?.sourceURL,
+        });
       } else {
         this.setState({
           imageObj: photoObj,
@@ -413,9 +417,9 @@ export default class EditProfile extends Component {
   render() {
     const user = this.context
 
-    console.log(user) 
+    console.log(user)
     return (
-      <View style={{flex: 1, backgroundColor: Colors.white}}>
+      <View style={{ flex: 1, backgroundColor: Colors.white }}>
         <Header
           backImgSource={require('../../Images/back4.jpg')}
           headerHeight={300}
@@ -428,7 +432,7 @@ export default class EditProfile extends Component {
           animationType="slide"
           visible={this.state.modalVisible}
           onRequestClose={() => {
-            this.setState({modalVisible: false});
+            this.setState({ modalVisible: false });
           }}>
           <StatusBar
             barStyle="default"
@@ -436,7 +440,7 @@ export default class EditProfile extends Component {
             translucent={false}
             networkActivityIndicatorVisible={true}
           />
-          <SafeAreaView style={{flex: 0, backgroundColor: 'white'}} />
+          <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
           {/* <View style={s.select_city}>
             <Text style={s.select_city_title}>
               {Lang_chg.Choose_City[config.language]}
@@ -446,7 +450,7 @@ export default class EditProfile extends Component {
 
           <View style={s.search_bar}>
             <TouchableOpacity
-              onPress={() => this.setState({modalVisible: false})}
+              onPress={() => this.setState({ modalVisible: false })}
               style={{
                 marginLeft: -5,
                 height: 50,
@@ -473,22 +477,22 @@ export default class EditProfile extends Component {
               onChangeText={text => this._searchCity(text)}
             />
           </View>
-          <View style={{flex: 1, backgroundColor: 'white'}}>
+          <View style={{ flex: 1, backgroundColor: 'white' }}>
             <FlatList
-              style={{marginBottom: 10, marginTop: 10}}
+              style={{ marginBottom: 10, marginTop: 10 }}
               showsVerticalScrollIndicator={false}
               data={this.state.city_arr}
-              renderItem={({item, index}) => {
+              renderItem={({ item, index }) => {
                 // this.state.city_id == item.city_id && alert('match')
                 return (
                   <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={() => {
-                      this._selectCity(index);
+                      this._selectCity(index, user.value);
                     }}>
                     <View style={s.main_view_flag}>
                       <Text style={s.flag_text_detail}>
-                        { user.value== 1 ? item.city[1] :item.city[0]}
+                        {user.value == 1 ? item.city[1] : item.city[0]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -503,7 +507,7 @@ export default class EditProfile extends Component {
           transparent
           visible={this.state.gender_selection}
           onRequestClose={() => {
-            this.setState({gender_selection: false});
+            this.setState({ gender_selection: false });
           }}>
           <View
             style={{
@@ -512,7 +516,7 @@ export default class EditProfile extends Component {
               alignItems: 'center',
               backgroundColor: 'rgba(0, 0, 0, 0.7)',
             }}>
-           
+
             <View
               style={{
                 height: 120,
@@ -525,30 +529,45 @@ export default class EditProfile extends Component {
                 },
                 shadowOpacity: 0.25,
                 shadowRadius: 3.84,
-                justifyContent: 'space-around', 
+                justifyContent: 'space-around',
                 elevation: 5,
               }}>
               <TouchableOpacity
                 activeOpacity={0.7}
+                style={{
+                  backgroundColor: this.state.selectedGenderM == 1 ? Colors.orange : 'white'
+                }}
                 onPress={() => {
+                  this.setState({
+                    selectedGenderM: 1,
+                    selectedGenderF: 0
+
+                  })
                   this._selectGender(user.value == 1 ? Lang_chg.male_txt[1] : Lang_chg.male_txt[0]);
                 }}>
-                <Text style={[s.flag_text_detail,{marginLeft: 15, marginTop: 7}]}>
-               { user.value == 1 ? Lang_chg.male_txt[1] : Lang_chg.male_txt[0]}
+                <Text style={[s.flag_text_detail, { marginLeft: 15, marginTop: 7 }]}>
+                  {user.value == 1 ? Lang_chg.male_txt[1] : Lang_chg.male_txt[0]}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.7}
+                style={{
+                  backgroundColor: this.state.selectedGenderF == 2 ? Colors.orange : 'white'
+                }}
                 onPress={() => {
-                  this._selectGender(user.value == 1 ?  Lang_chg.female_txt[1] :Lang_chg.female_txt[0]);
+                  this.setState({
+                    selectedGenderF: 2,
+                    selectedGenderM: 0
+                  })
+                  this._selectGender(user.value == 1 ? Lang_chg.female_txt[1] : Lang_chg.female_txt[0]);
                 }}>
-                <Text style={[s.flag_text_detail,{marginLeft: 15, marginBottom: 7}]}>
-                  {user.value == 1 ?  Lang_chg.female_txt[1] :Lang_chg.female_txt[0]}
+                <Text style={[s.flag_text_detail, { marginLeft: 15, marginBottom: 7 }]}>
+                  {user.value == 1 ? Lang_chg.female_txt[1] : Lang_chg.female_txt[0]}
                 </Text>
               </TouchableOpacity>
             </View>
-        
-         </View>
+
+          </View>
         </Modal>
 
         <View style={s.SEC2}>
@@ -568,7 +587,7 @@ export default class EditProfile extends Component {
                 top: -50,
                 alignSelf: 'center',
               }}
-              source={{uri: this.state.avatar}}
+              source={{ uri: this.state.avatar }}
               // source={{uri: this.state.imageObj != '' ? this.state.imageObj : this.state.avatar}}
 
               imageStyle={{
@@ -603,7 +622,7 @@ export default class EditProfile extends Component {
             </TouchableOpacity>
           </View>
           <ScrollView>
-            <View style={{marginTop: 50, paddingHorizontal: 10}}>
+            <View style={{ marginTop: 50, paddingHorizontal: 10 }}>
               <Input
                 placeholder={user.value == 1 ? Lang_chg.textname[1] : Lang_chg.textname[0]}
                 containerStyle={s.Input}
@@ -611,7 +630,7 @@ export default class EditProfile extends Component {
                 placeholderTextColor={Colors.inputFieldEditProfile}
                 inputStyle={s.inputStyles}
                 onChangeText={txt => {
-                  this.setState({name: txt});
+                  this.setState({ name: txt });
                 }}
                 defaultValue={this.state.name}
               />
@@ -624,26 +643,26 @@ export default class EditProfile extends Component {
                 keyboardType="email-address"
                 editable={false}
                 onChangeText={txt => {
-                  this.setState({email: txt});
+                  this.setState({ email: txt });
                 }}
                 defaultValue={this.state.user_details.email}
               />
 
               <Input
-                placeholder={user.value == 1  ? Lang_chg.textmobile[1] : Lang_chg.textmobile[0]}
+                placeholder={user.value == 1 ? Lang_chg.textmobile[1] : Lang_chg.textmobile[0]}
                 containerStyle={s.Input}
                 inputContainerStyle={s.Input}
                 placeholderTextColor={Colors.inputFieldEditProfile}
                 inputStyle={s.inputStyles}
                 keyboardType="phone-pad"
                 onChangeText={txt => {
-                  this.setState({phone_number: txt});
+                  this.setState({ phone_number: txt });
                 }}
                 defaultValue={this.state.phone_number}
               />
               <TouchableOpacity onPress={() => this.showDatePicker()}>
                 <Input
-                  placeholder={user.value == 1  ? Lang_chg.textBirthday[1] : Lang_chg.textBirthday[0]}
+                  placeholder={user.value == 1 ? Lang_chg.textBirthday[1] : Lang_chg.textBirthday[0]}
                   containerStyle={s.Input}
                   editable={false}
                   inputContainerStyle={s.Input}
@@ -651,7 +670,7 @@ export default class EditProfile extends Component {
                   inputStyle={s.inputStyles}
                   rightIcon={<Icon name="calendar" type="antdesign" />}
                   onChangeText={txt => {
-                    this.setState({dob: txt});
+                    this.setState({ dob: txt });
                   }}
                   defaultValue={this.state.dob}
                 />
@@ -659,18 +678,18 @@ export default class EditProfile extends Component {
 
               <TouchableOpacity
                 onPress={() => {
-                  this.setState({gender_selection: true});
+                  this.setState({ gender_selection: true });
                 }}>
                 <Input
                   editable={false}
-                  placeholder={user.value ==1 ? Lang_chg.Gender_txt[1] : Lang_chg.Gender_txt[0]}
+                  placeholder={user.value == 1 ? Lang_chg.Gender_txt[1] : Lang_chg.Gender_txt[0]}
                   containerStyle={s.Input}
                   inputContainerStyle={s.Input}
                   placeholderTextColor={Colors.inputFieldEditProfile}
                   inputStyle={s.inputStyles}
                   rightIcon={<Icon name="down" size={18} type="antdesign" />}
                   onChangeText={txt => {
-                    this.setState({gender: txt});
+                    this.setState({ gender: txt });
                   }}
                   defaultValue={
                     this.state.gender == ''
@@ -682,7 +701,7 @@ export default class EditProfile extends Component {
 
               <TouchableOpacity
                 onPress={() => {
-                  this.setState({modalVisible: true});
+                  this.setState({ modalVisible: true });
                 }}>
                 <Input
                   editable={false}
@@ -702,25 +721,25 @@ export default class EditProfile extends Component {
               </TouchableOpacity>
 
               <Input
-                placeholder={user.value ==1 ? Lang_chg.Address_txt[1] : Lang_chg.Address_txt[0]}
+                placeholder={user.value == 1 ? Lang_chg.Address_txt[1] : Lang_chg.Address_txt[0]}
                 containerStyle={s.Input}
                 inputContainerStyle={s.Input}
                 placeholderTextColor={Colors.inputFieldEditProfile}
                 inputStyle={s.inputStyles}
                 onChangeText={txt => {
-                  this.setState({address: txt});
+                  this.setState({ address: txt });
                 }}
                 defaultValue={this.state.address}
               />
 
               <Input
-                placeholder={user.value ==1 ? Lang_chg.about_txt[1] : Lang_chg.about_txt[0]}
+                placeholder={user.value == 1 ? Lang_chg.about_txt[1] : Lang_chg.about_txt[0]}
                 containerStyle={s.Input}
                 inputContainerStyle={s.Input}
                 placeholderTextColor={Colors.inputFieldEditProfile}
                 inputStyle={s.inputStyles}
                 onChangeText={txt => {
-                  this.setState({about: txt});
+                  this.setState({ about: txt });
                 }}
                 defaultValue={this.state?.about}
               />
@@ -742,18 +761,19 @@ export default class EditProfile extends Component {
           </ScrollView>
         </View>
         <View>
-            { this.state.loading && 
-              <ActivityIndicator size={30} color={Colors.orange} style={{alignSelf:"center"}} />
-            }
-          <TouchableOpacity style={[s.btn1, {flexDirection:'row'}]} onPress={() => this.UpdateProfile()}>
+          {this.state.loading &&
+            <ActivityIndicator size={30} color={Colors.orange} style={{ alignSelf: "center" }} />
+          }
+          <TouchableOpacity style={[s.btn1, { flexDirection: 'row' }]} onPress={() => this.UpdateProfile()}>
             <Text style={s.btn1Text}>{user.value == 1 ? Lang_chg.update[1] : Lang_chg.update[0]}</Text>
           </TouchableOpacity>
         </View>
         <ActionSheet
           ref={ref => (this.photoUploadDialogActionSheetRef = ref)}
           title={'Photo Upload'}
-          options={['Launch Camera', 'Open Photo Gallery', 'Cancel']}
-          cancelButtonIndex={2}
+          // options={['Launch Camera', 'Open Photo Gallery', 'Cancel']}
+          options={['Open Photo Gallery', 'Cancel']}
+          cancelButtonIndex={1}
           onPress={this.onPhotoUploadDialogDone}
         />
       </View>
@@ -772,7 +792,7 @@ const s = StyleSheet.create({
     height: 50,
     width: '100%',
     // marginLeft: 50,
-padding:15
+    padding: 15
   },
   search_bar: {
     flexDirection: 'row',
@@ -812,7 +832,7 @@ padding:15
     borderRadius: 25,
     marginVertical: 10,
     elevation: 5,
-    bottom:20
+    bottom: 20
   },
   btn1Text: {
     fontSize: 18,

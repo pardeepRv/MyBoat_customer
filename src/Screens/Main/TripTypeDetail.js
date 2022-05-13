@@ -6,6 +6,8 @@ import {
 } from "react-native";
 import { AirbnbRating, Icon } from "react-native-elements";
 import FastImage from "react-native-fast-image";
+import GetLocation from 'react-native-get-location';
+import getDirections from 'react-native-google-maps-directions';
 import { SliderBox } from "react-native-image-slider-box";
 import Share from "react-native-share";
 import RNFetchBlob from "rn-fetch-blob";
@@ -18,8 +20,6 @@ import { config } from "../../Provider/configProvider";
 import { Lang_chg } from "../../Provider/Language_provider";
 import { msgProvider } from "../../Provider/messageProvider";
 import { UserContext } from "./UserContext";
-import getDirections from 'react-native-google-maps-directions'
-import GetLocation from 'react-native-get-location';
 
 //import {SliderBox} from 'react-native-image-slider-box';
 const { width } = Dimensions.get("window");
@@ -28,6 +28,7 @@ export default class TripTypeDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      addon_arr_formatted: [],
       destinations: [],
       img: [],
       trips_arr: [],
@@ -49,33 +50,35 @@ export default class TripTypeDetail extends Component {
       other_user_img: "",
       other_user_name: '',
       mobile: "",
-      location : [
-        latitude= '',
-        longitude= '',
+      location: [
+        latitude = '',
+        longitude = '',
       ]
     };
   }
 
   componentDidMount() {
-   
-      GetLocation.getCurrentPosition({
-        enableHighAccuracy: true,
-        //I'm not sure what is best for the timeout to be set as. Some more testing could be beneficial
-        timeout: 15000,
-      })
-        .then(location => {
-           console.log('getting locationn >>>>>>>>>>>>>', location);
-this.setState({location :[
-  latitude= location.latitude,
-        longitude= location.longitude,
-] })
-          // setLocation(location);
+
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      //I'm not sure what is best for the timeout to be set as. Some more testing could be beneficial
+      timeout: 15000,
+    })
+      .then(location => {
+        console.log('getting locationn >>>>>>>>>>>>>', location);
+        this.setState({
+          location: [
+            latitude = location.latitude,
+            longitude = location.longitude,
+          ]
         })
-        .catch(error => {
-          const {code, message} = error;
-          console.log(code, message);
-        });
-   
+        // setLocation(location);
+      })
+      .catch(error => {
+        const { code, message } = error;
+        console.log(code, message);
+      });
+
     this.getData("user_arr");
 
     return console.log(this.props.route.params.list, " hhhhhhhhhhhhh");
@@ -98,7 +101,7 @@ this.setState({location :[
   handleGetDirections = () => {
 
     const data = {
-       source: {
+      source: {
         latitude: this.state.location[0],
         longitude: this.state.location[1]
       },
@@ -183,22 +186,23 @@ this.setState({location :[
       "&type=booking&advertisement_id=" +
       this.state.advertisement.advertisement_id;
 
-    console.log(url , 'url in triptype details ');
+    console.log(url, 'url in triptype details ');
     try {
       const response = await fetch(url);
       const json = await response.json();
       console.log("json  ", json);
 
       this.setState({
+        addon_arr_formatted: json?.adver_arr?.addon_arr_formatted,
         ratingscreen: json,
         adver_arr: json.adver_arr,
-        img_arr: json.adver_arr && json.adver_arr.img_arr.length > 0 && json.adver_arr.img_arr ,
+        img_arr: json.adver_arr && json.adver_arr.img_arr.length > 0 && json.adver_arr.img_arr,
         // booking_arr: json.booking_arr != "NA" ? json.booking_arr : [],
         booking_arr: json?.combine_unavailable_dates,
 
         other_user_id: json.adver_arr?.user_id,
         other_user_img: json.adver_arr?.other_user_img,
-        other_user_name:json.adver_arr?.other_user_name,
+        other_user_name: json.adver_arr?.other_user_name,
         mobile: json.adver_arr?.mobile,
       });
 
@@ -292,6 +296,8 @@ this.setState({location :[
       .catch((err) => console.log(err));
   };
   render() {
+    const { addon_arr_formatted } = this.state;
+
     const user = this.context
     console.log('context in home', user);
     console.log('advertisement in :>> ', this.state.adver_arr);
@@ -313,7 +319,7 @@ this.setState({location :[
           {user.value == 1 ?
 
             <TouchableOpacity
-            onPress={() => this.props.navigation.goBack()}
+              onPress={() => this.props.navigation.goBack()}
               style={{
                 marginBottom: -65,
                 alignItems: "flex-start",
@@ -333,7 +339,7 @@ this.setState({location :[
             </TouchableOpacity>
             :
             <TouchableOpacity
-            onPress={() => this.props.navigation.goBack()}
+              onPress={() => this.props.navigation.goBack()}
               style={{
                 marginBottom: -65,
                 alignItems: "flex-start",
@@ -485,9 +491,9 @@ this.setState({location :[
                     marginTop: -2,
                   }}
                 >
-                  { user.value == 1 ? this.state?.adver_arr?.captain_name &&
-                    this.state?.adver_arr?.captain_name[1] :this.state?.adver_arr?.captain_name &&
-                    this.state?.adver_arr?.captain_name[0]}
+                  {user.value == 1 ? this.state?.adver_arr?.captain_name &&
+                    this.state?.adver_arr?.captain_name[1] : this.state?.adver_arr?.captain_name &&
+                  this.state?.adver_arr?.captain_name[0]}
                 </Text>
               </View>
             </View>
@@ -521,9 +527,9 @@ this.setState({location :[
                 />
               </View>
               <Text style={s.text}>
-                {user.value== 1 ?  this.state.adver_arr?.trip_type_name &&
+                {user.value == 1 ? this.state.adver_arr?.trip_type_name &&
                   this.state.adver_arr?.trip_type_name[1] : this.state.adver_arr?.trip_type_name &&
-                  this.state.adver_arr?.trip_type_name[0]}
+                this.state.adver_arr?.trip_type_name[0]}
               </Text>
             </View>
 
@@ -545,9 +551,9 @@ this.setState({location :[
                 />
               </View>
               <Text style={s.text}>
-                {user.value==1 ?  this.state.adver_arr?.city_name &&
+                {user.value == 1 ? this.state.adver_arr?.city_name &&
                   this.state.adver_arr?.city_name[1] : this.state.adver_arr?.city_name &&
-                  this.state.adver_arr?.city_name[0] }{" "}
+                this.state.adver_arr?.city_name[0]}{" "}
               </Text>
             </View>
 
@@ -587,7 +593,7 @@ this.setState({location :[
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}>{user.value==1 ? Lang_chg.txt_Boat_brand[1] : Lang_chg.txt_Boat_brand[0]}</Text>
+                <Text style={s.text}>{user.value == 1 ? Lang_chg.txt_Boat_brand[1] : Lang_chg.txt_Boat_brand[0]}</Text>
                 <Text style={s.text}> {this.state.adver_arr ? this.state.adver_arr.boat_brand : ''} </Text>
               </View>
 
@@ -686,7 +692,7 @@ this.setState({location :[
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}>{user.value == 1  ? Lang_chg.txt_Cabin[1] : Lang_chg.txt_Cabin[0]}</Text>
+                <Text style={s.text}>{user.value == 1 ? Lang_chg.txt_Cabin[1] : Lang_chg.txt_Cabin[0]}</Text>
                 <Text style={s.text}>
                   {" "}
                   {this.state.adver_arr ? this.state.adver_arr?.boat_cabins : ''}{" "}
@@ -705,7 +711,7 @@ this.setState({location :[
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}>{user.value == 1  ? Lang_chg.noogguest[1] : Lang_chg.noogguest[0]}</Text>
+                <Text style={s.text}>{user.value == 1 ? Lang_chg.noogguest[1] : Lang_chg.noogguest[0]}</Text>
                 <Text style={s.text}>
                   {this.state.adver_arr ? this.state.adver_arr?.no_of_people : ''}{" "}
                 </Text>
@@ -723,305 +729,305 @@ this.setState({location :[
                     resizeMode="contain"
                   />
                 </ImageBackground>
-                <Text style={s.text}>{user.value==1 ? Lang_chg.toilets_txt[1] : Lang_chg.toilets_txt[0]}</Text>
+                <Text style={s.text}>{user.value == 1 ? Lang_chg.toilets_txt[1] : Lang_chg.toilets_txt[0]}</Text>
                 <Text style={s.text}>{this.state.adver_arr ? this.state.adver_arr.idle_time : ''}</Text>
               </View>
             </View>
           </View>
-          <View style={{ flex: 1, top: 8  ,alignItems:"flex-start"}}>
+          <View style={{ flex: 1, top: 8, alignItems: "flex-start" }}>
             <Text style={s.disc}>
-            {user.value == 1 ?  Lang_chg.Discription[1] : Lang_chg.Discription[0]}
+              {user.value == 1 ? Lang_chg.Discription[1] : Lang_chg.Discription[0]}
             </Text>
             <Text style={[s.detail, { lineHeight: 27 }]}>
-              {  user.value == 1  ? this.state.adver_arr && this.state.adver_arr.discription_arr &&
+              {user.value == 1 ? this.state.adver_arr && this.state.adver_arr.discription_arr &&
                 this.state.adver_arr.discription_arr[1] : this.state.adver_arr && this.state.adver_arr.discription_arr &&
-                this.state.adver_arr.discription_arr[0]}
+              this.state.adver_arr.discription_arr[0]}
             </Text>
           </View>
           <Text style={s.borders} />
-<View style={{alignItems:"flex-start"}}>
-          <Text
-            style={{
-              lineHeight: 27,
-              marginLeft: "3%",
-              fontSize: 18,
-              fontFamily: FontFamily.semi_bold,
-              
-            }}
-          >
-            {" "}
-           {user.value == 1 ?  Lang_chg.text_booking_details[1] : Lang_chg.text_booking_details[0]}
-          </Text>
-          </View>
+          <View style={{ alignItems: "flex-start" }}>
+            <Text
+              style={{
+                lineHeight: 27,
+                marginLeft: "3%",
+                fontSize: 18,
+                fontFamily: FontFamily.semi_bold,
 
-          {this.state.list == 2  ? 
-
-          <View style={{ Flex: 1 }}>
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={s.leftText}> {user.value == 1 ? Lang_chg.Customername[1] : Lang_chg.Customername[0]}</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                {this.state.advertisement.Coustemer_name}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Bookdatetrip[1] : Lang_chg.Bookdatetrip[0]}</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                {this.state.advertisement?.date}{' '}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.TripTimetrip[1] : Lang_chg.TripTimetrip[0]}</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                {this.state.advertisement?.time}{' '}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.leftText]}>{user.value == 1 ? Lang_chg.noogguesttriptour[1] : Lang_chg.noogguesttriptour[0]}</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                {this.state.advertisement.no_of_guest}{' '}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.leftText]}>{user.value == 1 ? Lang_chg.triphourcheckout[1] : Lang_chg.triphourcheckout[0]}</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                {this.state.advertisement.minimum_hours} {user.value == 1 ? Lang_chg.Hours[1]: Lang_chg.Hours[0]}{' '}
-              </Text>
-            </View>
-          </View>
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.extrahourcheckout[1] : Lang_chg.extrahourcheckout[0]}</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                {this.state.advertisement.extra_time} {user.value == 1 ? Lang_chg.Hours[1]: Lang_chg.Hours[0]}
-
-              </Text>
-            </View>
-          </View>
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.Boatplacetrip[1] : Lang_chg.Boatplacetrip[0]}</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                {user.value == 1 ? this.state.advertisement.boat_place[1] : this.state.advertisement.boat_place[0]}{' '}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.tripdestinationcheckout[1] : Lang_chg.tripdestinationcheckout[0]}</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text numberOfLines={1} ellipsizeMode='tail' style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                { user.value == 1 ? this.state.advertisement.destination_name[1] :this.state.advertisement.destination_name[0] }{' '}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.triptypetrip[1] : Lang_chg.triptypetrip[0]}</Text>
-            </View>
-            <View style={s.item}>
-              <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                {user.value == 1 ? this.state.advertisement.trip_type[1] : this.state.advertisement.trip_type[0]}{' '}
-              </Text>
-            </View>
-          </View>
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.discount_per_txt[1] : Lang_chg.discount_per_txt[0]}</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                {this.state.advertisement?.discount} %{' '}
-              </Text>
-            </View>
-          </View>
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.coupendiscountcheckout[1] : Lang_chg.coupendiscountcheckout[0]}</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-                {this.state.advertisement?.coupon_discount ? this.state.advertisement?.coupon_discount : " 0" } %{' '}
-              </Text>
-            </View>
-          </View>
-
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.Triptypeprice[1] : Lang_chg.Triptypeprice[0]}</Text>
-            </View>
-
-            <View style={s.item}>
-              <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-              {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {this.state.advertisement?.trip_price}{' '}
-              </Text>
-            </View>
-          </View>
-          {this.state.rent_amount == 0 ? null : 
-          <View style={s.container}>
-          <View style={s.item}>
-            <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.Sel_data[1] : Lang_chg.Sel_data[0]}</Text>
-          </View>
-
-          <View style={s.item}>
-            <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
-            {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {this.state.advertisement.selected_Item_price}{' '}
+              }}
+            >
+              {" "}
+              {user.value == 1 ? Lang_chg.text_booking_details[1] : Lang_chg.text_booking_details[0]}
             </Text>
           </View>
-        </View>}
-          
-          {/* rent_amount */}
-          <View style={s.container}>
-            <View style={s.item}>
-              <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.toatalpricecheckout[1] : Lang_chg.toatalpricecheckout[0]}</Text>
+
+          {this.state.list == 2 ?
+
+            <View style={{ Flex: 1 }}>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}> {user.value == 1 ? Lang_chg.Customername[1] : Lang_chg.Customername[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                    {this.state.advertisement.Coustemer_name}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Bookdatetrip[1] : Lang_chg.Bookdatetrip[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                    {this.state.advertisement?.date}{' '}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.TripTimetrip[1] : Lang_chg.TripTimetrip[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                    {this.state.advertisement?.time}{' '}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={[s.leftText]}>{user.value == 1 ? Lang_chg.noogguesttriptour[1] : Lang_chg.noogguesttriptour[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                    {this.state.advertisement.no_of_guest}{' '}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={[s.leftText]}>{user.value == 1 ? Lang_chg.triphourcheckout[1] : Lang_chg.triphourcheckout[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                    {this.state.advertisement.minimum_hours} {user.value == 1 ? Lang_chg.Hours[1] : Lang_chg.Hours[0]}{' '}
+                  </Text>
+                </View>
+              </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.extrahourcheckout[1] : Lang_chg.extrahourcheckout[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                    {this.state.advertisement.extra_time} {user.value == 1 ? Lang_chg.Hours[1] : Lang_chg.Hours[0]}
+
+                  </Text>
+                </View>
+              </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.Boatplacetrip[1] : Lang_chg.Boatplacetrip[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                    {user.value == 1 ? this.state.advertisement.boat_place[1] : this.state.advertisement.boat_place[0]}{' '}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.tripdestinationcheckout[1] : Lang_chg.tripdestinationcheckout[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text numberOfLines={1} ellipsizeMode='tail' style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                    {user.value == 1 ? this.state.advertisement.destination_name[1] : this.state.advertisement.destination_name[0]}{' '}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.triptypetrip[1] : Lang_chg.triptypetrip[0]}</Text>
+                </View>
+                <View style={s.item}>
+                  <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                    {user.value == 1 ? this.state.advertisement.trip_type[1] : this.state.advertisement.trip_type[0]}{' '}
+                  </Text>
+                </View>
+              </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.discount_per_txt[1] : Lang_chg.discount_per_txt[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                    {this.state.advertisement?.discount} %{' '}
+                  </Text>
+                </View>
+              </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.coupendiscountcheckout[1] : Lang_chg.coupendiscountcheckout[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                    {this.state.advertisement?.coupon_discount ? this.state.advertisement?.coupon_discount : " 0"} %{' '}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.Triptypeprice[1] : Lang_chg.Triptypeprice[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                    {user.value == 1 ? Lang_chg.KD[1] : Lang_chg.KD[0]} {this.state.advertisement?.trip_price}{' '}
+                  </Text>
+                </View>
+              </View>
+              {this.state.rent_amount == 0 ? null :
+                <View style={s.container}>
+                  <View style={s.item}>
+                    <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.Sel_data[1] : Lang_chg.Sel_data[0]}</Text>
+                  </View>
+
+                  <View style={s.item}>
+                    <Text style={[s.rightText, { fontFamily: FontFamily.default }]}>
+                      {user.value == 1 ? Lang_chg.KD[1] : Lang_chg.KD[0]} {this.state.advertisement.selected_Item_price}{' '}
+                    </Text>
+                  </View>
+                </View>}
+
+              {/* rent_amount */}
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={[s.leftText]}> {user.value == 1 ? Lang_chg.toatalpricecheckout[1] : Lang_chg.toatalpricecheckout[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text style={[s.rightText, { fontFamily: FontFamily.bold, color: Colors.orange }]}>
+                    {user.value == 1 ? Lang_chg.KD[1] : Lang_chg.KD[0]} {this.state.advertisement.total_amt}{' '}
+                  </Text>
+                </View>
+              </View>
+
+
             </View>
 
-            <View style={s.item}>
-            <Text style={[s.rightText, { fontFamily: FontFamily.bold, color:Colors.orange }]}>
-              {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {this.state.advertisement.total_amt}{' '}
-              </Text>
-            </View>
-          </View>
+            :
 
-      
-        </View>
-        
-        : 
-        
-        
-        <View style={{ flex: 1, top: 7 , alignItems:'flex-start'}}>
-        <View style={s.container}>
-          <View style={s.item}>
-            <Text style={s.leftText}>
-              {user.value == 1 ? Lang_chg.advertisementtrip[1] : Lang_chg.advertisementtrip[0]}</Text>
-          </View>
 
-          <View style={s.item}>
-            <Text style={s.rightText}>
-              {this.state.adver_arr.boat_type == 2 ? user.value == 1 ? 'رحلة خاصة' :  "Public trip" : user.value == 1 ? 'رحلة عامة' :  "Private trip" }{" "}
-            </Text>
-          </View>
-        </View>
+            <View style={{ flex: 1, top: 7, alignItems: 'flex-start' }}>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>
+                    {user.value == 1 ? Lang_chg.advertisementtrip[1] : Lang_chg.advertisementtrip[0]}</Text>
+                </View>
 
-        <View style={s.container}>
-          <View style={s.item}>
-            <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Discounttrip[1] : Lang_chg.Discounttrip[0]} </Text>
-          </View>
+                <View style={s.item}>
+                  <Text style={s.rightText}>
+                    {this.state.adver_arr.boat_type == 2 ? user.value == 1 ? 'رحلة خاصة' : "Public trip" : user.value == 1 ? 'رحلة عامة' : "Private trip"}{" "}
+                  </Text>
+                </View>
+              </View>
 
-          <View style={s.item}>
-            <Text style={s.rightText}>
-              {this.state.adver_arr ? this.state.adver_arr.discount : '0'} %{" "}
-            </Text>
-          </View>
-        </View>
-        <View style={s.container}>
-          <View style={s.item}>
-            <Text style={s.leftText}>{user.value == 1 ? Lang_chg.triptypetrip[1] : Lang_chg.triptypetrip[0]}</Text>
-          </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Discounttrip[1] : Lang_chg.Discounttrip[0]} </Text>
+                </View>
 
-          <View style={s.item}>
-            <Text style={s.rightText}>
-              {user.value ==1 ? this.state.adver_arr && this.state.adver_arr.trip_type_name && this.state.adver_arr.trip_type_name.length > 0 &&  this.state.adver_arr.trip_type_name[1] : this.state.adver_arr && this.state.adver_arr.trip_type_name && this.state.adver_arr.trip_type_name.length > 0 &&  this.state.adver_arr.trip_type_name[0] }{" "}
-            </Text>
-          </View>
-        </View>
+                <View style={s.item}>
+                  <Text style={s.rightText}>
+                    {this.state.adver_arr ? this.state.adver_arr.discount : '0'} %{" "}
+                  </Text>
+                </View>
+              </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.triptypetrip[1] : Lang_chg.triptypetrip[0]}</Text>
+                </View>
 
-        <View style={s.container}>
-          <View style={s.item}>
-            <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Destinationtrip[1] : Lang_chg.Destinationtrip[0]}</Text>
-          </View>
+                <View style={s.item}>
+                  <Text style={s.rightText}>
+                    {user.value == 1 ? this.state.adver_arr && this.state.adver_arr.trip_type_name && this.state.adver_arr.trip_type_name.length > 0 && this.state.adver_arr.trip_type_name[1] : this.state.adver_arr && this.state.adver_arr.trip_type_name && this.state.adver_arr.trip_type_name.length > 0 && this.state.adver_arr.trip_type_name[0]}{" "}
+                  </Text>
+                </View>
+              </View>
 
-          <View style={s.item}>
-            <Text style={s.rightText}>
-              {/* {this.state.adver_arr &&
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Destinationtrip[1] : Lang_chg.Destinationtrip[0]}</Text>
+                </View>
+
+                <View style={s.item}>
+                  <Text style={s.rightText}>
+                    {/* {this.state.adver_arr &&
                 this.state.adver_arr.destination_arr &&
                 this.state.adver_arr.destination_arr.length > 0 &&
                 this.state.adver_arr.destination_arr[0].destination &&
                 this.state.adver_arr.destination_arr[0].destination.length >
                 0 &&
                 this.state.adver_arr.destination_arr[0].destination[0]} */}
-                {user.value == 1 ?this.state.advertisement && this.state.advertisement.destination_name && this.state.advertisement.destination_name.length>0 && this.state.advertisement.destination_name[1] : 
-                this.state.advertisement && this.state.advertisement.destination_name && this.state.advertisement.destination_name.length>0 && this.state.advertisement.destination_name[0]}
-                {" "}
-            </Text>
-          </View>
-        </View>
+                    {user.value == 1 ? this.state.advertisement && this.state.advertisement.destination_name && this.state.advertisement.destination_name.length > 0 && this.state.advertisement.destination_name[1] :
+                      this.state.advertisement && this.state.advertisement.destination_name && this.state.advertisement.destination_name.length > 0 && this.state.advertisement.destination_name[0]}
+                    {" "}
+                  </Text>
+                </View>
+              </View>
 
-        <View style={s.container}>
-          <View style={s.item}>
-            <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Boatplacetrip[1] : Lang_chg.Boatplacetrip[0]} </Text>
-          </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Boatplacetrip[1] : Lang_chg.Boatplacetrip[0]} </Text>
+                </View>
 
-          <View style={s.item}>
-            <Text style={s.rightText}>
-              { user.value == 1 ?  this.state.adver_arr && this.state.adver_arr.city_name &&
-                this.state.adver_arr.city_name[1] :this.state.adver_arr && this.state.adver_arr.city_name &&
-                this.state.adver_arr.city_name[0] }{" "}
-            </Text>
-          </View>
-        </View>
+                <View style={s.item}>
+                  <Text style={s.rightText}>
+                    {user.value == 1 ? this.state.adver_arr && this.state.adver_arr.city_name &&
+                      this.state.adver_arr.city_name[1] : this.state.adver_arr && this.state.adver_arr.city_name &&
+                    this.state.adver_arr.city_name[0]}{" "}
+                  </Text>
+                </View>
+              </View>
 
-        <View style={s.container}>
-          <View style={s.item}>
-            <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Triptypeprice[1] : Lang_chg.Triptypeprice[0]}</Text>
-          </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Triptypeprice[1] : Lang_chg.Triptypeprice[0]}</Text>
+                </View>
 
-          <View style={s.item}>
-            <Text style={s.rightText}>{user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} { this.state.advertisement.price == 'NA' ?user.value ==1 ?  'غير متوفر' : 'not available' : this.state.advertisement.price} </Text>
-          </View>
-        </View>
+                <View style={s.item}>
+                  <Text style={s.rightText}>{user.value == 1 ? Lang_chg.KD[1] : Lang_chg.KD[0]} {this.state.advertisement.price == 'NA' ? user.value == 1 ? 'غير متوفر' : 'not available' : this.state.advertisement.price} </Text>
+                </View>
+              </View>
 
-        <View style={s.container}>
-          <View style={s.item}>
-            <Text style={s.leftText}>{user.value == 1 ? Lang_chg.extraperhourtrip[1] : Lang_chg.extraperhourtrip[0]} </Text>
-          </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.extraperhourtrip[1] : Lang_chg.extraperhourtrip[0]} </Text>
+                </View>
 
-          <View style={s.item}>
-            <Text style={s.rightText}>
-            {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {this.state.adver_arr ? this.state.adver_arr.extra_price : ''}{" "}
-            </Text>
-          </View>
-        </View>
-        {/* <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.rightText}>
+                    {user.value == 1 ? Lang_chg.KD[1] : Lang_chg.KD[0]} {this.state.adver_arr ? this.state.adver_arr.extra_price : ''}{" "}
+                  </Text>
+                </View>
+              </View>
+              {/* <View style={s.container}>
         <View style={s.item}>
           <Text style={s.leftText}> Trip time :</Text>
         </View>
@@ -1030,86 +1036,110 @@ this.setState({location :[
           <Text style={s.rightText}>{this.state.adver_arr.location_address} </Text>
         </View>
       </View> */}
-        <View style={s.container}>
-          <View style={s.item}>
-            <Text style={s.leftText}>{user.value == 1 ? Lang_chg.noogguesttrip[1] : Lang_chg.noogguesttrip[0]} </Text>
-          </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.noogguesttrip[1] : Lang_chg.noogguesttrip[0]} </Text>
+                </View>
 
-          <View style={s.item}>
-            <Text style={s.rightText}>
-              {this.state.adver_arr ? this.state.adver_arr.no_of_people : ''}{" "}
-            </Text>
-          </View>
-        </View>
+                <View style={s.item}>
+                  <Text style={s.rightText}>
+                    {this.state.adver_arr ? this.state.adver_arr.no_of_people : ''}{" "}
+                  </Text>
+                </View>
+              </View>
 
-        <View style={s.container}>
-          <View style={s.item}>
-            <Text style={s.leftText}>{user.value == 1 ? Lang_chg.triphourstrip[1] : Lang_chg.triphourstrip[0]} </Text>
-          </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.triphourstrip[1] : Lang_chg.triphourstrip[0]} </Text>
+                </View>
 
-          <View style={s.item}>
-            <Text style={s.rightText}>
-              {this.state.adver_arr ? this.state.adver_arr?.minimum_hours : '0'} {user.value == 1 ? Lang_chg.Hours[1] : Lang_chg.Hours[0]}{" "}
-            </Text>
-          </View>
-        </View>
+                <View style={s.item}>
+                  <Text style={s.rightText}>
+                    {this.state.adver_arr ? this.state.adver_arr?.minimum_hours : '0'} {user.value == 1 ? Lang_chg.Hours[1] : Lang_chg.Hours[0]}{" "}
+                  </Text>
+                </View>
+              </View>
 
-        <View style={s.container}>
-        <View style={s.item}>
-          <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Can_days[1] : Lang_chg.Can_days[0]} </Text>
-        </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.Can_days[1] : Lang_chg.Can_days[0]} </Text>
+                </View>
 
-        <View style={s.item}>
-          <Text style={s.rightText}>{this.state.adver_arr.free_cancel_days} {user.value == 1 ? Lang_chg.Day[1] : Lang_chg.Day[0]} </Text>
-        </View>
-      </View>
+                <View style={s.item}>
+                  <Text style={s.rightText}>{this.state.adver_arr.free_cancel_days} {user.value == 1 ? Lang_chg.Day[1] : Lang_chg.Day[0]} </Text>
+                </View>
+              </View>
 
-        <View style={s.container}>
-          <View style={s.item}>
-            <Text style={s.leftText}>{user.value == 1 ? Lang_chg.equpmenttrip[1] : Lang_chg.equpmenttrip[0]}</Text>
-          </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.equpmenttrip[1] : Lang_chg.equpmenttrip[0]}</Text>
+                </View>
 
-          <View style={s.item}>
-            <Text style={s.rightText}>
-              {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
-                && this.state.adver_arr?.addon_arr_formatted.equipment && this.state.adver_arr?.addon_arr_formatted.equipment.length > 0
-                && this.state.adver_arr?.addon_arr_formatted.equipment ? user.value == 1 ? Lang_chg.avilable_text[1] : Lang_chg.avilable_text[0]
-                : user.value == 1 ? Lang_chg.notavailable_text[1] : Lang_chg.notavailable_text[0]}
-            </Text>
-          </View>
-        </View>
+                <View style={[s.item,{padding:2}]}>
+                  {addon_arr_formatted?.equipment &&
+                    addon_arr_formatted?.equipment.map((v, i) => {
+                      return (
+                        <Text style={[{ fontFamily: FontFamily.default }]}>
+                          {v?.addon_product_name && v.addon_product_name[0]}
+                        </Text>
+                      );
+                    })}
+                  {/* <Text style={s.rightText}>
+                    {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
+                      && this.state.adver_arr?.addon_arr_formatted.equipment && this.state.adver_arr?.addon_arr_formatted.equipment.length > 0
+                      && this.state.adver_arr?.addon_arr_formatted.equipment ? user.value == 1 ? Lang_chg.avilable_text[1] : Lang_chg.avilable_text[0]
+                      : user.value == 1 ? Lang_chg.notavailable_text[1] : Lang_chg.notavailable_text[0]}
+                  </Text> */}
+                </View>
+              </View>
 
-        <View style={s.container}>
-          <View style={s.item}>
-            <Text style={s.leftText}>{user.value == 1 ? Lang_chg.entertainmenttrip[1] : Lang_chg.entertainmenttrip[0]}</Text>
-          </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.entertainmenttrip[1] : Lang_chg.entertainmenttrip[0]}</Text>
+                </View>
 
-          <View style={s.item}>
-            <Text style={s.rightText}>
-              {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
-                && this.state.adver_arr?.addon_arr_formatted.food && this.state.adver_arr?.addon_arr_formatted.food.length > 0
-                && this.state.adver_arr?.addon_arr_formatted.food ?  user.value == 1 ? Lang_chg.avilable_text[1] : Lang_chg.avilable_text[0]
-                : user.value == 1 ? Lang_chg.notavailable_text[1] : Lang_chg.notavailable_text[0]}
-            </Text>
-          </View>
-        </View>
+                <View style={[s.item, {}]}>
+                  {/* <Text style={s.rightText}>
+                    {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
+                      && this.state.adver_arr?.addon_arr_formatted.food && this.state.adver_arr?.addon_arr_formatted.food.length > 0
+                      && this.state.adver_arr?.addon_arr_formatted.food ? user.value == 1 ? Lang_chg.avilable_text[1] : Lang_chg.avilable_text[0]
+                      : user.value == 1 ? Lang_chg.notavailable_text[1] : Lang_chg.notavailable_text[0]}
+                  </Text> */}
+                  {addon_arr_formatted?.entertainment &&
+                    addon_arr_formatted?.entertainment.map((v, i) => {
+                      return (
+                        <Text style={[{ fontFamily: FontFamily.default }]}>
+                          {v?.addon_product_name && v.addon_product_name[0]}
+                        </Text>
+                      );
+                    })}
+                </View>
+              </View>
 
-        <View style={s.container}>
-          <View style={s.item}>
-            <Text style={s.leftText}>{user.value == 1 ? Lang_chg.foodtrip[1] : Lang_chg.foodtrip[0]}</Text>
-          </View>
+              <View style={s.container}>
+                <View style={s.item}>
+                  <Text style={s.leftText}>{user.value == 1 ? Lang_chg.foodtrip[1] : Lang_chg.foodtrip[0]}</Text>
+                </View>
 
-          <View style={s.item}>
-            <Text style={s.rightText}>
-              {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
-                && this.state.adver_arr?.addon_arr_formatted.entertainment && this.state.adver_arr?.addon_arr_formatted.entertainment.length > 0
-                && this.state.adver_arr?.addon_arr_formatted.entertainment ?  user.value == 1 ? Lang_chg.avilable_text[1] : Lang_chg.avilable_text[0]
-                : user.value == 1 ? Lang_chg.notavailable_text[1] : Lang_chg.notavailable_text[0]}
-            </Text>
-          </View>
-        </View>
-      </View>
-}
+                <View style={s.item}>
+                  {addon_arr_formatted?.food &&
+                    addon_arr_formatted?.food.map((v, i) => {
+                      return (
+                        <Text style={[{ fontFamily: FontFamily.default }]}>
+                          {v?.addon_product_name && v.addon_product_name[0]}
+                        </Text>
+                      );
+                    })}
+                  {/* <Text style={s.rightText}>
+                    {this.state.adver_arr && this.state.adver_arr.addon_arr_formatted
+                      && this.state.adver_arr?.addon_arr_formatted.entertainment && this.state.adver_arr?.addon_arr_formatted.entertainment.length > 0
+                      && this.state.adver_arr?.addon_arr_formatted.entertainment ? user.value == 1 ? Lang_chg.avilable_text[1] : Lang_chg.avilable_text[0]
+                      : user.value == 1 ? Lang_chg.notavailable_text[1] : Lang_chg.notavailable_text[0]}
+                  </Text> */}
+                </View>
+              </View>
+            </View>
+          }
           {this.state.list == 1 ? (
             <View
               style={{
@@ -1131,7 +1161,7 @@ this.setState({location :[
               <View style={{ justifyContent: "center", marginLeft: "20%" }}>
                 <Text style={s.rent}>{user.value == 1 ? Lang_chg.rental_amt_txt[1] : Lang_chg.rental_amt_txt[0]}</Text>
                 <Text style={s.rent}>
-                {user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]}{this.state.adver_arr ? this.state.advertisement?.price :''}
+                  {user.value == 1 ? Lang_chg.KD[1] : Lang_chg.KD[0]}{this.state.adver_arr ? this.state.advertisement?.price : ''}
                 </Text>
               </View>
             </View>
@@ -1321,7 +1351,7 @@ const s = StyleSheet.create({
   },
   container: {
     top: 15,
-    height: 20,
+    // height: 20,
     flexDirection: "row",
     alignItems: "flex-start", // if you want to fill rows left to right
     margin: 8,
@@ -1330,7 +1360,7 @@ const s = StyleSheet.create({
     width: "45%", // is 50% of container width
     marginLeft: "4%",
     fontSize: 10,
-    alignItems:'flex-start'
+    alignItems: 'flex-start'
   },
   leftText: {
     color: Colors.black,

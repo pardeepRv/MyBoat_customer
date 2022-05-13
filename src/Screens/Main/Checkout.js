@@ -725,9 +725,9 @@ export default class Checkout extends Component {
                     {this.state.adv &&
                       this.state.adv != "NA" &&
                       this.state.adv.length > 0 &&
-                      this.state.adv.map((item) => {
+                      this.state.adv.map((item, i) => {
                         return (
-                          <View style={{}}>
+                          <View key={i} style={{}}>
                             <Text
                               style={[
                                 {
@@ -786,9 +786,9 @@ export default class Checkout extends Component {
                     {this.state.adv &&
                       this.state.adv != "NA" &&
                       this.state.adv.length > 0 &&
-                      this.state.adv.map((item) => {
+                      this.state.adv.map((item, i) => {
                         return (
-                          <View style={{}}>
+                          <View key={i} style={{}}>
                             <Text
                               style={[
                                 {
@@ -848,9 +848,9 @@ export default class Checkout extends Component {
                     {this.state.adv &&
                       this.state.adv != "NA" &&
                       this.state.adv.length > 0 &&
-                      this.state.adv.map((item) => {
+                      this.state.adv.map((item, i) => {
                         return (
-                          <View style={{}}>
+                          <View key={i} style={{}}>
                             <Text
                               style={[
                                 {
