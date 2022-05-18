@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/core';
 import { UserContext } from '../Screens/Main/UserContext';
 
 
-const Header = ({ backBtn, notiBtn, searchBtn, name, imgBack, backColor, headerHeight, backImgSource }) => {
+const Header = ({ backBtn, notiBtn, searchBtn, name, imgBack, backColor, headerHeight, backImgSource, notificationRead }) => {
     const user = React.useContext(UserContext);
 
     const navigation = useNavigation();
@@ -75,16 +75,18 @@ const Header = ({ backBtn, notiBtn, searchBtn, name, imgBack, backColor, headerH
                                 ) : state.notiBtn ? (
                                     <TouchableOpacity onPress={() => gotoNotification()} style={{ backgroundColor: Colors.orange, borderRadius: 20 }}>
                                         <Icon name="bell" type="simple-line-icon" size={24} color={Colors.white} />
-                                        <View
-                                            style={{
-                                                height: 12,
-                                                width: 12,
-                                                borderRadius: 12 / 2,
-                                                backgroundColor: Colors.red,
-                                                position: "absolute",
-                                                bottom: 20,
-                                            }}
-                                        />
+                                        {
+                                            notificationRead == 0 && <View
+                                                style={{
+                                                    height: 12,
+                                                    width: 12,
+                                                    borderRadius: 12 / 2,
+                                                    backgroundColor: Colors.red,
+                                                    position: "absolute",
+                                                    bottom: 20,
+                                                }}
+                                            />
+                                        }
                                     </TouchableOpacity>
                                 ) : <View style={{ height: 25, width: 25 }} />
                             }

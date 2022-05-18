@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, { Component, useState } from 'react';
 import {
   Text,
   View,
@@ -12,8 +12,8 @@ import {
   ActivityIndicator,
   StatusBar,
 } from 'react-native';
-import {Icon, Input, Card, AirbnbRating} from 'react-native-elements';
-import MapView, {Marker, Callout, PROVIDER_GOOGLE} from 'react-native-maps';
+import { Icon, Input, Card, AirbnbRating } from 'react-native-elements';
+import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import Header from '../../Components/Header3';
 import {
   back_img3,
@@ -23,11 +23,11 @@ import {
   Sizes,
 } from '../../Constants/Constants';
 import Ad from '../../Data/Ad';
-import {renderNode} from 'react-native-elements/dist/helpers';
-import {apifuntion} from '../../Provider/apiProvider';
-import {Lang_chg} from '../../Provider/Language_provider';
-import {config} from '../../Provider/configProvider';
-import {TextInput} from 'react-native';
+import { renderNode } from 'react-native-elements/dist/helpers';
+import { apifuntion } from '../../Provider/apiProvider';
+import { Lang_chg } from '../../Provider/Language_provider';
+import { config } from '../../Provider/configProvider';
+import { TextInput } from 'react-native';
 //import Header from '../../Components/Header';
 global.city_lat = 29.2831;
 global.city_long = 47.9826;
@@ -42,23 +42,23 @@ export default class GoogleMap extends Component {
       aboutus: '',
       latitude: '29.3117',
       longitude: '47.4818',
-      image:{},
+      image: {},
       latdelta: '0.0922',
       longdelta: '0.0421',
       addressbar2: '',
       addressselected: '',
       address_selected: '',
       input_search: '',
-      iconshow:this?.props?.route?.params?.destination,
-      item: this?.props?.route?.params?.item 
-      ? this?.props?.route?.params?.destinationitems_arr :'',
-      destination : this?.props?.route?.params?.destinations_arr 
-      ? this?.props?.route?.params?.destinations_arr : [],
-      type:this?.props?.route?.params?.type,
+      iconshow: this?.props?.route?.params?.destination,
+      item: this?.props?.route?.params?.item
+        ? this?.props?.route?.params?.destinationitems_arr : '',
+      destination: this?.props?.route?.params?.destinations_arr
+        ? this?.props?.route?.params?.destinations_arr : [],
+      type: this?.props?.route?.params?.type,
       adver_arr: this?.props?.route?.params?.adver_arr
         ? this?.props?.route?.params?.adver_arr
         : [],
-        arry : this?.props?.route?.params?.arry,
+      arry: this?.props?.route?.params?.arry,
       mapRegion: {
         latitude: parseFloat(city_lat),
         longitude: parseFloat(city_long),
@@ -76,18 +76,18 @@ export default class GoogleMap extends Component {
     };
     this.setMarkers();
   }
-  componentDidMount=()=>{
+  componentDidMount = () => {
     this.onFocusSubscribe = this.props.navigation.addListener("focus", () => {
-// if (this.state.iconshow[0]){
-// this.setState({image : this.state.iconshow[0]?.trip_icons[0]})
-// }
-console.log('this.state.image :>> ', this.state.iconshow);
-  });
-}
+      // if (this.state.iconshow[0]){
+      // this.setState({image : this.state.iconshow[0]?.trip_icons[0]})
+      // }
+      console.log('this.state.image :>> ', this.state.iconshow);
+    });
+  }
 
-componentWillUnmount() {
-  this.onFocusSubscribe();
-}
+  componentWillUnmount() {
+    this.onFocusSubscribe();
+  }
   setMarkers = () => {
     var adver_arr = this.state.adver_arr;
     if (adver_arr != 'NA') {
@@ -140,11 +140,11 @@ componentWillUnmount() {
     console.log('this.state.de :>> ', this.state.iconshow);
 
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         {/* <StatusBar backgroundColor="#ffffff25" ></StatusBar> */}
         <View>
           <ImageBackground
-            style={{width: '100%', height: 250}}
+            style={{ width: '100%', height: 250 }}
             source={require('../../Images/backgd2.jpg')}>
             <Header
               imgBack={true}
@@ -199,108 +199,123 @@ componentWillUnmount() {
             </View>
           </View> */}
         </View>
-    { this.state.type != 3 ?
-        <View
-          style={{
-            top: -70,
-            width: '100%',
-            height: '100%',
-            overflow: 'hidden',
-            marginTop: '16%',
-            borderTopLeftRadius: 25,
-            borderTopRightRadius: 25,
-          }}>
-            {this.state.type == 1 ?  
-          <MapView
+        {this.state.type != 3 ?
+          <View
             style={{
-              flex: 1,
-              borderRadius: 40,
+              top: -70,
               width: '100%',
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-            }}
-            followUserLocation={true}
-            ref={ref => (this.mapView = ref)}
-            zoomEnabled={true}
-            showsUserLocation={true}
-            onMapReady={() => {
-              this.goToInitialLocation();
-            }}
-            initialRegion={this.state.initialRegion}>
-            {this.state.adver_arr != 'NA' &&
-              this.state.adver_arr.map((item, index) =>
-                item.location_lat && item.location_lng ? (
-                  <Marker.Animated
-                    coordinate={{
-                      latitude: parseFloat(item.location_lat),
-                      longitude: parseFloat(item.location_lng),
-                    }}
-                    isPreselected={true}
-                    description={'Your are here location'}>
-                    <View
-                      style={{
-                        height: 40,
-                        width: 40,
-                        borderRadius: 20,
-                        backgroundColor: '#fff',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      <Image
-                        style={{height: 30}}
-                        source={require('../../../assets/icons/markerIcon.png')}
-                        resizeMode="contain"
-                      />
-                    </View>
-                    <Callout
-                      onPress={() =>
-                        this.props.navigation.navigate('TripTypeDetail', {
-                          item: item,list: '1'
-                        })
-                      }>
-                      <TouchableOpacity
-                        style={{
-                          height: 40,
-                          width: 120,
-                          borderRadius: 10,
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}>
+              height: '100%',
+              overflow: 'hidden',
+              marginTop: '16%',
+              borderTopLeftRadius: 25,
+              borderTopRightRadius: 25,
+            }}>
+            {this.state.type == 1 ?
+              <MapView
+                style={{
+                  flex: 1,
+                  borderRadius: 40,
+                  width: '100%',
+                  borderTopLeftRadius: 10,
+                  borderTopRightRadius: 10,
+                }}
+                followUserLocation={true}
+                ref={ref => (this.mapView = ref)}
+                zoomEnabled={true}
+                showsUserLocation={true}
+                onMapReady={() => {
+                  this.goToInitialLocation();
+                }}
+                initialRegion={this.state.initialRegion}>
+                {this.state.adver_arr != 'NA' &&
+                  this.state.adver_arr.map((item, index) =>
+                    item.location_lat && item.location_lng ? (
+                      <Marker.Animated
+                        coordinate={{
+                          latitude: parseFloat(item.location_lat),
+                          longitude: parseFloat(item.location_lng),
+                        }}
+                        isPreselected={true}
+                        description={'Your are here location'}>
                         <View
                           style={{
-                            // backgroundColor: '#0A8481',
-                            justifyContent: 'flex-start',
+                            height: 40,
+                            width: 40,
+                            borderRadius: 20,
+                            backgroundColor: '#fff',
                             alignItems: 'center',
-                            borderRadius: 1,
-                            paddingRight:10
+                            justifyContent: 'center',
                           }}>
-                          <View
+                          <Image
+                            style={{ height: 30 }}
+                            source={require('../../../assets/icons/markerIcon.png')}
+                            resizeMode="contain"
+                          />
+                        </View>
+                        <Callout
+                          onPress={() =>
+                            this.props.navigation.navigate('TripTypeDetail', {
+                              item: item, list: '1'
+                            })
+                          }>
+                          <TouchableOpacity
                             style={{
-                              height: 30,
-                              width: 30,
-                              justifyContent: 'center',
+                              height: 40,
+                              width: 120,
+                              borderRadius: 10,
+                              flexDirection: 'row',
                               alignItems: 'center',
                             }}>
-                            <Image
-                              resizeMode="cover"
+                            <View
                               style={{
-                                bottom: 2,
-                                width: 37,
-                                // position: 'absolute',
-                                height: 30,
-                                left:5
-                                // tintColor: '#fff',
-                              }}
-                              source={{uri : config.image_url4 + this.state.iconshow[0]?.trip_icons[0].icon_green}}
-                            />
-                          </View>
-                        </View>
-                        <Text style={styles.map_kwd}>
-                          {Lang_chg.KWD_txt[config.language]} {item.price}
-                        </Text>
-                      </TouchableOpacity>
-                    </Callout>
-                    {/* <TouchableOpacity
+                                // backgroundColor: '#0A8481',
+                                justifyContent: 'flex-start',
+                                alignItems: 'center',
+                                borderRadius: 1,
+                                paddingRight: 10
+                              }}>
+                              <View
+                                style={{
+                                  height: 30,
+                                  width: 30,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+
+                                {
+                                  this.state.iconshow && <Image
+                                    resizeMode="cover"
+                                    style={{
+                                      bottom: 2,
+                                      width: 37,
+                                      height: 30,
+                                      left: 5
+                                    }}
+
+                                    source={{ uri: config.image_url4 + this.state.iconshow.icon_green }}
+                                  />
+                                }
+                                {/* 
+                                  <Image
+                                    resizeMode="cover"
+                                    style={{
+                                      bottom: 2,
+                                      width: 37,
+                                      height: 30,
+                                      left: 5
+                                    }}
+                                    
+                                    source={{ uri: config.image_url4 + this.state.iconshow[0]?.trip_icons[0].icon_green }}
+                                  /> */}
+
+                              </View>
+                            </View>
+                            <Text style={styles.map_kwd}>
+                              {Lang_chg.KWD_txt[config.language]} {item.price}
+                            </Text>
+                          </TouchableOpacity>
+                        </Callout>
+                        {/* <TouchableOpacity
                       style={{flexDirection: 'row', backgroundColor: 'red', alignItems: 'center'}}
                       activeOpacity={0.9}>
                       <Image
@@ -321,92 +336,35 @@ componentWillUnmount() {
                         </Text>
                       </View>
                     </TouchableOpacity> */}
-                  </Marker.Animated>
-                ) : null,
-              )}
-          </MapView>
-          : 
-<MapView
-            style={{
-              flex: 1,
-              borderRadius: 40,
-              width: '100%',
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-            }}
-            followUserLocation={true}
-            ref={ref => (this.mapView = ref)}
-            zoomEnabled={true}
-            showsUserLocation={true}
-            // onMapReady={() => {
-            //   this.goToInitialLocation();
-            // }}
-            initialRegion={this.state.initialRegion}>
-           
-                  <Marker.Animated
-                    coordinate={{
-                      latitude: parseFloat(this.state.adver_arr.location_lat),
-                      longitude: parseFloat(this.state.adver_arr.location_lng),
-                    }}
-                    isPreselected={true}
-                    description={'Your Boat location'}>
-                    <View
-                      style={{
-                        height: 40,
-                        width: 40,
-                        borderRadius: 20,
-                        backgroundColor: '#fff',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      <Image
-                        style={{height: 30}}
-                        source={require('../../../assets/icons/markerIcon.png')}
-                        resizeMode="contain"
-                      />
-                    </View> 
-                  </Marker.Animated>
-          </MapView>
-          } 
-        </View>
-        : 
-         <View
-        style={{
-          top: -70,
-          width: '100%',
-          height: '100%',
-          overflow: 'hidden',
-          marginTop: '16%',
-          borderTopLeftRadius: 25,
-          borderTopRightRadius: 25,
-        }}>
-         
-        <MapView
-          style={{
-            flex: 1,
-            borderRadius: 40,
-            width: '100%',
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-          }}
-          followUserLocation={true}
-          ref={ref => (this.mapView = ref)}
-          zoomEnabled={true}
-          showsUserLocation={true}
-          // onMapReady={() => {
-          //   this.goToInitialLocation();
-          // }}
-          initialRegion={this.state.initialRegion}>
-          {this.state.destination != 'NA' &&
-            this.state.destination.map((item, index) =>
-              item.lat && item.lng ? (
+                      </Marker.Animated>
+                    ) : null,
+                  )}
+              </MapView>
+              :
+              <MapView
+                style={{
+                  flex: 1,
+                  borderRadius: 40,
+                  width: '100%',
+                  borderTopLeftRadius: 10,
+                  borderTopRightRadius: 10,
+                }}
+                followUserLocation={true}
+                ref={ref => (this.mapView = ref)}
+                zoomEnabled={true}
+                showsUserLocation={true}
+                // onMapReady={() => {
+                //   this.goToInitialLocation();
+                // }}
+                initialRegion={this.state.initialRegion}>
+
                 <Marker.Animated
                   coordinate={{
-                    latitude: parseFloat(item.lat),
-                    longitude: parseFloat(item.lng),
+                    latitude: parseFloat(this.state.adver_arr.location_lat),
+                    longitude: parseFloat(this.state.adver_arr.location_lng),
                   }}
                   isPreselected={true}
-                  description={'Your island  location'}>
+                  description={'Your Boat location'}>
                   <View
                     style={{
                       height: 40,
@@ -417,13 +375,70 @@ componentWillUnmount() {
                       justifyContent: 'center',
                     }}>
                     <Image
-                      style={{height: 30}}
+                      style={{ height: 30 }}
                       source={require('../../../assets/icons/markerIcon.png')}
                       resizeMode="contain"
                     />
                   </View>
+                </Marker.Animated>
+              </MapView>
+            }
+          </View>
+          :
+          <View
+            style={{
+              top: -70,
+              width: '100%',
+              height: '100%',
+              overflow: 'hidden',
+              marginTop: '16%',
+              borderTopLeftRadius: 25,
+              borderTopRightRadius: 25,
+            }}>
 
-                  {/* <TouchableOpacity
+            <MapView
+              style={{
+                flex: 1,
+                borderRadius: 40,
+                width: '100%',
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
+              }}
+              followUserLocation={true}
+              ref={ref => (this.mapView = ref)}
+              zoomEnabled={true}
+              showsUserLocation={true}
+              // onMapReady={() => {
+              //   this.goToInitialLocation();
+              // }}
+              initialRegion={this.state.initialRegion}>
+              {this.state.destination != 'NA' || this.state.destination != undefined &&
+                this.state.destination.map((item, index) =>
+                  item.lat && item.lng ? (
+                    <Marker.Animated
+                      coordinate={{
+                        latitude: parseFloat(item.lat),
+                        longitude: parseFloat(item.lng),
+                      }}
+                      isPreselected={true}
+                      description={'Your island  location'}>
+                      <View
+                        style={{
+                          height: 40,
+                          width: 40,
+                          borderRadius: 20,
+                          backgroundColor: '#fff',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Image
+                          style={{ height: 30 }}
+                          source={require('../../../assets/icons/markerIcon.png')}
+                          resizeMode="contain"
+                        />
+                      </View>
+
+                      {/* <TouchableOpacity
                     style={{flexDirection: 'row', backgroundColor: 'red', alignItems: 'center'}}
                     activeOpacity={0.9}>
                     <Image
@@ -444,60 +459,60 @@ componentWillUnmount() {
                       </Text>
                     </View>
                   </TouchableOpacity> */}
-                  <Callout
+                      <Callout
                       // onPress={() =>
                       //   this.props.navigation.navigate('TripTypeDetail', {
                       //     item: item,list: '1'
                       //   })
                       // }
                       >
-                      <TouchableOpacity
-                        style={{
-                          height: 40,
-                          width: 120,
-                          borderRadius: 10,
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}>
-                        <View
+                        <TouchableOpacity
                           style={{
-                            // backgroundColor: '#0A8481',
-                            justifyContent: 'flex-start',
+                            height: 40,
+                            width: 120,
+                            borderRadius: 10,
+                            flexDirection: 'row',
                             alignItems: 'center',
-                            borderRadius: 1,
-                            paddingRight:10
                           }}>
                           <View
                             style={{
-                              height: 30,
-                              width: 30,
-                              justifyContent: 'center',
+                              // backgroundColor: '#0A8481',
+                              justifyContent: 'flex-start',
                               alignItems: 'center',
+                              borderRadius: 1,
+                              paddingRight: 10
                             }}>
-                            <Image
-                              resizeMode="cover"
+                            <View
                               style={{
-                                bottom: 2,
-                                width: 37,
-                                // position: 'absolute',
                                 height: 30,
-                                left:5
-                                // tintColor: '#fff',
-                              }}
-                              source={{uri : config.image_url4 + item.trip_icons[0].icon_green}}
-                            />
+                                width: 30,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <Image
+                                resizeMode="cover"
+                                style={{
+                                  bottom: 2,
+                                  width: 37,
+                                  // position: 'absolute',
+                                  height: 30,
+                                  left: 5
+                                  // tintColor: '#fff',
+                                }}
+                                source={{ uri: config.image_url4 + item.trip_icons[0].icon_green }}
+                              />
+                            </View>
                           </View>
-                        </View>
-                        <Text style={styles.map_kwd}>
-                          {Lang_chg.KWD_txt[config.language]} {item.min_price}
-                        </Text>
-                      </TouchableOpacity>
-                    </Callout>
-                </Marker.Animated>
-              ) : null,
-            )}
-        </MapView>
-        </View>}
+                          <Text style={styles.map_kwd}>
+                            {Lang_chg.KWD_txt[config.language]} {item.min_price}
+                          </Text>
+                        </TouchableOpacity>
+                      </Callout>
+                    </Marker.Animated>
+                  ) : null,
+                )}
+            </MapView>
+          </View>}
       </View>
     );
   }

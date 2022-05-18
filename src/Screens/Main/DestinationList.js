@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {
   ActivityIndicator, FlatList, Image, ImageBackground, Modal, Share, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
-import { Calendar , LocaleConfig } from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { AirbnbRating, Card, colors, Icon } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import Header2 from '../../Components/Header2';
@@ -21,6 +21,7 @@ export default class DestinationList extends Component {
   static contextType = UserContext
 
   constructor(props) {
+    console.log(props, 'props in dest list');
     super(props);
     this.state = {
       destinations: [],
@@ -29,7 +30,7 @@ export default class DestinationList extends Component {
       promotions_arr: [],
       trip_type: this?.props?.route?.params?.trip_type,
       destination: this?.props?.route?.params?.item,
-      iconsdestination:this?.props?.route?.params?.tripdestination,
+      iconsdestination: this?.props?.route?.params?.tripdestination,
       destinations_arr: [],
       adver_arr: [],
       localData: [],
@@ -63,8 +64,8 @@ export default class DestinationList extends Component {
       calender_arr: {},
       time: '',
       getdate: new Date(),
-    month:'',
-    // currunt_date:Number(this.state.month.currunt_date),
+      month: '',
+      // currunt_date:Number(this.state.month.currunt_date),
       date: '',
       pay_amount: '',
       booking_no: '',
@@ -92,7 +93,7 @@ export default class DestinationList extends Component {
   componentDidMount() {
     // const text = this.props.navigation.getParams('item');
     const month = new Date().getMonth() + 1;
-    this.setState({ month:month }); 
+    this.setState({ month: month });
     console.log('this.state.month :>> ', this.state.month);
     console.log('date ', this?.props?.route?.params?.trip_type);
 
@@ -103,7 +104,7 @@ export default class DestinationList extends Component {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       console.log('focus :>> ');
       // this.setcurrentdate();
-      this.setState({ isLoading: true , calender_arr:{} , date:'' });
+      this.setState({ isLoading: true, calender_arr: {}, date: '' });
       this.getData('user_arr')
     });
   }
@@ -112,61 +113,62 @@ export default class DestinationList extends Component {
     this._unsubscribe();
   }
 
-// setcurrentdate=()=>{
-//   let date = this.state.getdate;
-//   let month = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
-//   console.log('date :>> ', month);
-// this.setState({month})
-//   console.log('getdate :>> ', this.state.month);
-// }
-  laungugaelocal= () =>{
+  // setcurrentdate=()=>{
+  //   let date = this.state.getdate;
+  //   let month = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+  //   console.log('date :>> ', month);
+  // this.setState({month})
+  //   console.log('getdate :>> ', this.state.month);
+  // }
+  laungugaelocal = () => {
     const user = this.context
-  console.log('user :>> ', user);
-  if (user.value==0 ){
-    LocaleConfig.locales['en'] = {
-      monthNames: [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'august',
-        'September',
-        'October',
-        'November',
-        'December'
-      ],
-      monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
-      dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-      dayNamesShort: ['Sun','Mon' , 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'],
-      today: "Aujourd'hui"
-    };
-    LocaleConfig.defaultLocale = 'en';
-  } else if (user.value == 1){
-    LocaleConfig.locales['ar'] = {
-      monthNames: [
-        'يناير',
-        'فبراير',
-        'مارس',
-        'ابريل',
-        'مايو',
-        'يونيو',
-        'يوليو',
-        'اغسطس',
-        'سبتمبر',
-        'اكتوبر',
-        'نوفمبر',
-        'ديسمبر'
-      ],
-      monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
-      dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-      dayNamesShort: ['احد','اثنين' , 'الثلاثاء', 'الاربعاء', 'الخميس', 'الجمعة', 'السبت'],
-      today: "Aujourd'hui"
-    };
-    LocaleConfig.defaultLocale = 'ar';
-  }}
+    console.log('user :>> ', user);
+    if (user.value == 0) {
+      LocaleConfig.locales['en'] = {
+        monthNames: [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'august',
+          'September',
+          'October',
+          'November',
+          'December'
+        ],
+        monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+        dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'],
+        today: "Aujourd'hui"
+      };
+      LocaleConfig.defaultLocale = 'en';
+    } else if (user.value == 1) {
+      LocaleConfig.locales['ar'] = {
+        monthNames: [
+          'يناير',
+          'فبراير',
+          'مارس',
+          'ابريل',
+          'مايو',
+          'يونيو',
+          'يوليو',
+          'اغسطس',
+          'سبتمبر',
+          'اكتوبر',
+          'نوفمبر',
+          'ديسمبر'
+        ],
+        monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+        dayNamesShort: ['احد', 'اثنين', 'الثلاثاء', 'الاربعاء', 'الخميس', 'الجمعة', 'السبت'],
+        today: "Aujourd'hui"
+      };
+      LocaleConfig.defaultLocale = 'ar';
+    }
+  }
   async filterdata(user_id) {
     // console.log(
     //   'user ',
@@ -338,11 +340,16 @@ export default class DestinationList extends Component {
   };
 
   Goto() {
-    console.log('goto');
+    console.log('this.state.adver_arr', this.state.adver_arr);
+    console.log('this.state.destination', this.state.destination);
+    console.log('this.state.iconsdestination', this.state.iconsdestination);
+
+
     this.props.navigation.navigate('GoogleMap', {
       adver_arr: this.state.adver_arr,
       arry: this.state.destination,
-      destination:this.state.iconsdestination,
+      // destination:this.state.iconsdestination,
+      destination: this?.props?.route?.params?.trip_detail,
       type: 1
     });
   }
@@ -387,7 +394,7 @@ export default class DestinationList extends Component {
       console.log('json123', json);
 
       if (json.success == 'true') {
-        this.setState({ adver_arr: json.adver_arr != 'NA' ? json.adver_arr : []  , month:json.currunt_date});
+        this.setState({ adver_arr: json.adver_arr != 'NA' ? json.adver_arr : [], month: json.currunt_date });
         console.log('month :>> ', this.state.month);
 
       } else {
@@ -731,8 +738,8 @@ export default class DestinationList extends Component {
             shadowRadius: 0,
             elevation: 5,
           }}>
-            {this.state.date ?  <Text style={s.select_date}> {this.state.date}</Text>:
-          <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choose_from_library_txt[1] : Lang_chg.Choose_from_library_txt[0]}</Text> }
+          {this.state.date ? <Text style={s.select_date}> {this.state.date}</Text> :
+            <Text style={s.select_date}> {user.value == 1 ? Lang_chg.Choose_from_library_txt[1] : Lang_chg.Choose_from_library_txt[0]}</Text>}
         </TouchableOpacity>
 
         <View
@@ -781,9 +788,9 @@ export default class DestinationList extends Component {
                         imageStyle={s.imgStyle}
                         source={{ uri: config.image_url4 + item.image }}
                       >
-                        {item.discount != "0.00" ? <View style={ user.value == 1  ? [{
+                        {item.discount != "0.00" ? <View style={user.value == 1 ? [{
                           justifyContent: 'center'
-                        }, s.trapezoid_discount1] :  [{
+                        }, s.trapezoid_discount1] : [{
                           justifyContent: 'center'
                         }, s.trapezoid_discount]}>
                           <Text style={{
@@ -842,7 +849,7 @@ export default class DestinationList extends Component {
                             },
                           ]}>
                           <Text style={s.place}>
-                            {user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}{user.value==1 ?  Lang_chg.KD[1]: Lang_chg.KD[0]} {item.price}
+                            {user.value == 1 ? Lang_chg.Starting[1] : Lang_chg.Starting[0]}{'\n'}{user.value == 1 ? Lang_chg.KD[1] : Lang_chg.KD[0]} {item.price}
                           </Text>
                         </View>
                       </ImageBackground>
@@ -938,23 +945,23 @@ export default class DestinationList extends Component {
                                 }}>
                                 <Icon name="person" size={14} />
                                 {this.state.month == this.state.selected_date ?
-                                <Text
-                                  style={{
-                                    color: 'rgba(51, 51, 51, 1)',
-                                    fontSize: 10,
-                                    fontFamily: FontFamily.default,
-                                  }}>
-                                  {item?.remaining_seats}{user.value == 1 ? Lang_chg.text_Person[1] : Lang_chg.text_Person[0]}
-                                </Text> :
-                                <Text
-                                style={{
-                                  color: 'rgba(51, 51, 51, 1)',
-                                  fontSize: 10,
-                                  fontFamily: FontFamily.default,
-                                }}>
-                                {item?.no_of_people}{user.value == 1 ? Lang_chg.text_Person[1] : Lang_chg.text_Person[0]}
-                              </Text> }
-                                
+                                  <Text
+                                    style={{
+                                      color: 'rgba(51, 51, 51, 1)',
+                                      fontSize: 10,
+                                      fontFamily: FontFamily.default,
+                                    }}>
+                                    {item?.remaining_seats}{user.value == 1 ? Lang_chg.text_Person[1] : Lang_chg.text_Person[0]}
+                                  </Text> :
+                                  <Text
+                                    style={{
+                                      color: 'rgba(51, 51, 51, 1)',
+                                      fontSize: 10,
+                                      fontFamily: FontFamily.default,
+                                    }}>
+                                    {item?.no_of_people}{user.value == 1 ? Lang_chg.text_Person[1] : Lang_chg.text_Person[0]}
+                                  </Text>}
+
                               </View>
                             </View>
                           </View>
@@ -1927,7 +1934,7 @@ export default class DestinationList extends Component {
                   fontSize: 18,
                   marginTop: 8,
                 }}>
-              {user.value == 1 ? Lang_chg.Sortby[1] : Lang_chg.Sortby[0]}{" "}
+                {user.value == 1 ? Lang_chg.Sortby[1] : Lang_chg.Sortby[0]}{" "}
               </Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

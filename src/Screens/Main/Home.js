@@ -12,7 +12,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 // import { Card } from 'react-native-elements';
 import { Card, Icon } from "react-native-elements";
@@ -43,6 +43,7 @@ export default class Home extends Component {
       item: {},
       isLoading: false,
       err: false,
+      notificationRead: null
     };
   }
 
@@ -174,7 +175,7 @@ export default class Home extends Component {
     const response = await fetch(url);
     console.log("response", response);
     const json = await response.json();
-    this.setState({ isLoading: false });
+    this.setState({ isLoading: false, notificationRead: json?.is_read });
     console.log("destination kist res>>>>>>>", json);
     if (json && json.trips_arr && json.trips_arr.length > 0) {
       let updatedArr = json.trips_arr;
@@ -187,9 +188,12 @@ export default class Home extends Component {
         }
       });
 
-      json.promotions_arr.forEach((item) => {
-        item.serverImg = config.image_url4 + item.image;
-      });
+      if (json && json.promotions_arr != "NA") {
+        json.promotions_arr.forEach((item) => {
+          item.serverImg = config.image_url4 + item.image;
+        });
+
+      }
 
       console.log(newArr, "newArrnewArrnewArr");
       this.setState({
@@ -215,9 +219,11 @@ export default class Home extends Component {
         });
       } else {
         console.log("coming in else");
-        json.promotions_arr.forEach((i) => {
-          this.state.img.push(i.serverImg);
-        });
+        if (json && json.promotions_arr != "NA") {
+          json.promotions_arr.forEach((i) => {
+            this.state.img.push(i.serverImg);
+          });
+        }
       }
     });
     console.log(this.state.img, "all images");
@@ -284,6 +290,7 @@ export default class Home extends Component {
         <Header
           imgBack={true}
           notiBtn={true}
+          notificationRead={this.state.notificationRead}
           searchBtn={false}
           headerHeight={300}
           name={
