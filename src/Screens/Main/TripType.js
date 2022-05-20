@@ -927,7 +927,9 @@ export default class TripType extends Component {
                   marginTop: 8,
                 }}
               >
-                Sort By
+                {/* Sort By */}
+                {user.value == 1 ? Lang_chg.Sortby[1] : Lang_chg.Sortby[0]}{" "}
+
               </Text>
             </View>
             <View
@@ -1036,7 +1038,9 @@ export default class TripType extends Component {
                 }
               }}
             >
-              <Text style={s.Btn1Text}>Show Results</Text>
+              <Text style={s.Btn1Text}>
+                {user.value == 1 ? Lang_chg.ShowResult[1] : Lang_chg.ShowResult[0]}
+              </Text>
             </TouchableOpacity>
           </View>
         </Modal>
@@ -1078,7 +1082,7 @@ export default class TripType extends Component {
                     marginTop: 8,
                   }}
                 >
-                  Filter
+                  {user.value == 1 ? Lang_chg.filter[1] : Lang_chg.filter[0]}
                 </Text>
               </View>
               <View
@@ -1122,7 +1126,7 @@ export default class TripType extends Component {
                       color: Colors.orange,
                     }}
                   >
-                    Reset
+                    {user.value == 1 ? Lang_chg.Reset[1] : Lang_chg.Reset[0]}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -1799,7 +1803,9 @@ export default class TripType extends Component {
                 style={s.Btn1}
                 onPress={() => this.ShowResult()}
               >
-                <Text style={s.Btn1Text}>Show Results</Text>
+                <Text style={s.Btn1Text}>
+                  {user.value == 1 ? Lang_chg.ShowResult[1] : Lang_chg.ShowResult[0]}
+                </Text>
               </TouchableOpacity>
             </ScrollView>
           </View>

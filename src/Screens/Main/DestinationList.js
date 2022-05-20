@@ -1033,7 +1033,7 @@ export default class DestinationList extends Component {
                     fontSize: 18,
                     marginTop: 8,
                   }}>
-                  Filter
+                  {user.value == 1 ? Lang_chg.filter[1] : Lang_chg.filter[0]}
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -1073,7 +1073,10 @@ export default class DestinationList extends Component {
                     fontSize: 15,
                     marginTop: 8,
                     color: Colors.orange
-                  }}>Reset</Text>
+                  }}>{user.value == 1 ? Lang_chg.Reset[1] : Lang_chg.Reset[0]}
+                  </Text>
+
+
                 </TouchableOpacity>
               </View>
 
@@ -1904,7 +1907,9 @@ export default class DestinationList extends Component {
               </View>
 
               <TouchableOpacity style={s.Btn1} onPress={() => this.ShowResult()}>
-                <Text style={s.Btn1Text}>Show Results</Text>
+                <Text style={s.Btn1Text}>
+                  {user.value == 1 ? Lang_chg.ShowResult[1] : Lang_chg.ShowResult[0]}
+                </Text>
               </TouchableOpacity>
             </ScrollView>
           </View>
@@ -2101,7 +2106,9 @@ export default class DestinationList extends Component {
             </View>
 
             <TouchableOpacity style={s.Btn1} onPress={() => this.ShowResult()}>
-              <Text style={s.Btn1Text}>Show Results</Text>
+              <Text style={s.Btn1Text}>
+                {user.value == 1 ? Lang_chg.ShowResult[1] : Lang_chg.ShowResult[0]}
+              </Text>
             </TouchableOpacity>
           </View>
         </Modal>
